@@ -1,0 +1,17 @@
+{
+  "name": "user-data-collection",
+  "version": "1.0.0",
+  "description": "",
+  "keywords": [],
+  "repository": {
+    "type": "git",
+    "url": "user-data-collection"
+  },
+  "license": "ISC",
+  "author": "Alejandro Quesada",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
