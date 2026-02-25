@@ -40,8 +40,10 @@ user-data-collection/
 │   ├── class-udc-admin.php        (Admin menu, views and JS actions)
 │   ├── class-udc-list-table.php   (WP_List_Table implementation for rendering the list)
 │   ├── class-udc-ajax.php         (Admin AJAX confirmation & unconfirmation)
+│   ├── class-udc-backup.php       (Backup generator, JSON rotation limiter, and restorer)
+│   ├── class-udc-gdrive.php       (Google Drive via OAuth2 Service Account Integration)
+│   ├── class-udc-settings.php     (Settings interface for cloud sync integration)
 │   └── class-udc-i18n.php         (Polylang extensions)
-```
 
 ## Workflows
 - The project uses `@wordpress/env` for the local development environment.
