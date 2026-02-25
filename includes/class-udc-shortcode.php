@@ -25,6 +25,63 @@ class UDC_Shortcode
         } elseif (isset($_GET['udc_status']) && $_GET['udc_status'] === 'error') {
             echo '<p style="color: red;">' . esc_html(UDC_i18n::translate('msg_error')) . '</p>';
         }
+
+        $design_enabled = get_option('udc_design_enabled', '0');
+        if ($design_enabled) {
+            $input_bg = esc_html(get_option('udc_design_input_bg', 'transparent'));
+            $input_border = esc_html(get_option('udc_design_input_border', 'rgba(255, 255, 255, 0.5)'));
+            $input_text = esc_html(get_option('udc_design_input_text', '#ffffff'));
+            $care_bg = esc_html(get_option('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)'));
+            $care_border = esc_html(get_option('udc_design_care_border', '#ffffff'));
+            ?>
+            <style>
+                .udc-form input[type="text"], 
+                .udc-form input[type="date"], 
+                .udc-form input[type="time"], 
+                .udc-form input[type="tel"] {
+                    background: <?php echo $input_bg; ?>;
+                    border: 1px solid <?php echo $input_border; ?>;
+                    color: <?php echo $input_text; ?>;
+                    padding: 8px 12px;
+                    width: 100%;
+                    max-width: 400px;
+                    box-sizing: border-box;
+                    font-family: inherit;
+                }
+                .udc-form input[type="text"]:focus, 
+                .udc-form input[type="date"]:focus, 
+                .udc-form input[type="time"]:focus, 
+                .udc-form input[type="tel"]:focus {
+                    border-color: <?php echo $input_text; ?>;
+                    outline: none;
+                }
+                .udc-form .udc-care-instructions {
+                    background: <?php echo $care_bg; ?>;
+                    padding: 15px;
+                    border-left: 4px solid <?php echo $care_border; ?>;
+                    margin-bottom: 15px;
+                    color: <?php echo $input_text; ?>;
+                }
+                .udc-form .udc-care-instructions ul {
+                    margin: 0;
+                    padding-left: 20px;
+                }
+                .udc-form button[type="submit"] {
+                    background: transparent;
+                    border: 2px solid <?php echo $input_border; ?>;
+                    color: <?php echo $input_text; ?>;
+                    padding: 10px 20px;
+                    cursor: pointer;
+                    text-transform: uppercase;
+                    font-weight: bold;
+                }
+                .udc-form button[type="submit"]:hover {
+                    background: <?php echo $input_text; ?>;
+                    color: #000;
+                }
+            </style>
+            <?php
+        }
         ?>
 
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form">
@@ -105,7 +162,7 @@ class UDC_Shortcode
             </p>
 
             <h2><?php echo esc_html(UDC_i18n::translate('subtitle_care')); ?></h2>
-            <div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;">
+            <div class="udc-care-instructions" <?php if (!$design_enabled) echo 'style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;"'; ?>>
                 <ul>
                     <?php
                     $care_keys = ['care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6'];

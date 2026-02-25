@@ -62,7 +62,7 @@ msgstr "Sendedatum"
 msgid "Status"
 msgstr "Status"
 
-#: includes/class-udc-backup.php:223
+#: includes/class-udc-backup.php:279
 #: includes/class-udc-list-table.php:33
 msgid "Action"
 msgstr "Aktion"
@@ -87,18 +87,20 @@ msgid "Confirming..."
 msgstr "Bestätige..."
 
 #: includes/class-udc-admin.php:261
-#: includes/class-udc-backup.php:291
-#: includes/class-udc-backup.php:334
-#: includes/class-udc-settings.php:159
-#: includes/class-udc-settings.php:194
+#: includes/class-udc-backup.php:347
+#: includes/class-udc-backup.php:393
+#: includes/class-udc-backup.php:438
+#: includes/class-udc-settings.php:225
+#: includes/class-udc-settings.php:260
 msgid "An error occurred."
 msgstr "Ein Fehler ist aufgetreten."
 
 #: includes/class-udc-admin.php:267
-#: includes/class-udc-backup.php:297
-#: includes/class-udc-backup.php:340
-#: includes/class-udc-settings.php:165
-#: includes/class-udc-settings.php:200
+#: includes/class-udc-backup.php:353
+#: includes/class-udc-backup.php:400
+#: includes/class-udc-backup.php:444
+#: includes/class-udc-settings.php:231
+#: includes/class-udc-settings.php:266
 msgid "Network Error"
 msgstr "Netzwerkfehler"
 
@@ -129,7 +131,7 @@ msgstr ""
 
 #: includes/class-udc-admin.php:37
 #: includes/class-udc-admin.php:38
-#: includes/class-udc-settings.php:45
+#: includes/class-udc-settings.php:61
 msgid "Settings"
 msgstr ""
 
@@ -250,83 +252,84 @@ msgstr ""
 msgid "Unconfirm"
 msgstr ""
 
-#: includes/class-udc-backup.php:114
+#: includes/class-udc-backup.php:115
 msgid "Backup file not found or invalid."
 msgstr ""
 
-#: includes/class-udc-backup.php:119
+#: includes/class-udc-backup.php:120
 msgid "Could not read backup file."
 msgstr ""
 
-#: includes/class-udc-backup.php:124
+#: includes/class-udc-backup.php:125
 msgid "Could not parse backup JSON data."
 msgstr ""
 
-#: includes/class-udc-backup.php:150
-#: includes/class-udc-backup.php:164
+#: includes/class-udc-backup.php:163
+#: includes/class-udc-backup.php:177
+#: includes/class-udc-backup.php:196
 #: includes/class-udc-email-sync.php:91
 #: includes/class-udc-gdrive.php:261
 msgid "Permission denied or invalid security token."
 msgstr ""
 
-#: includes/class-udc-backup.php:155
+#: includes/class-udc-backup.php:168
 msgid "Backup created successfully."
 msgstr ""
 
-#: includes/class-udc-backup.php:157
+#: includes/class-udc-backup.php:170
 msgid "Failed to create backup."
 msgstr ""
 
-#: includes/class-udc-backup.php:169
+#: includes/class-udc-backup.php:182
 msgid "Invalid filename."
 msgstr ""
 
-#: includes/class-udc-backup.php:177
+#: includes/class-udc-backup.php:190
 #, php-format
 msgid "Backup processed. %d missing submissions were added."
 msgstr ""
 
-#: includes/class-udc-backup.php:200
+#: includes/class-udc-backup.php:249
 msgid "Data Backups"
 msgstr ""
 
-#: includes/class-udc-backup.php:204
+#: includes/class-udc-backup.php:253
 msgid "Create Manual Backup"
 msgstr ""
 
-#: includes/class-udc-backup.php:207
+#: includes/class-udc-backup.php:263
 msgid "The system automatically creates a daily backup via WP-Cron. It stores a maximum of 5 recent backups securely in the local filesystem."
 msgstr ""
 
-#: includes/class-udc-backup.php:214
+#: includes/class-udc-backup.php:270
 msgid "Filename"
 msgstr ""
 
-#: includes/class-udc-backup.php:217
+#: includes/class-udc-backup.php:273
 msgid "Date"
 msgstr ""
 
-#: includes/class-udc-backup.php:220
+#: includes/class-udc-backup.php:276
 msgid "Size"
 msgstr ""
 
-#: includes/class-udc-backup.php:231
+#: includes/class-udc-backup.php:287
 msgid "No backups available found."
 msgstr ""
 
-#: includes/class-udc-backup.php:254
+#: includes/class-udc-backup.php:310
 msgid "Restore"
 msgstr ""
 
-#: includes/class-udc-backup.php:275
+#: includes/class-udc-backup.php:331
 msgid "Creating..."
 msgstr ""
 
-#: includes/class-udc-backup.php:308
+#: includes/class-udc-backup.php:412
 msgid "Are you sure you want to process this backup? Only missing submissions will be added. Existing data will not be overwritten or deleted."
 msgstr ""
 
-#: includes/class-udc-backup.php:317
+#: includes/class-udc-backup.php:421
 msgid "Restoring..."
 msgstr ""
 
@@ -463,86 +466,159 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: includes/class-udc-settings.php:48
+#: includes/class-udc-settings.php:64
 msgid "Google Drive Integration"
 msgstr ""
 
-#: includes/class-udc-settings.php:49
+#: includes/class-udc-settings.php:65
 msgid "Email Backups"
 msgstr ""
 
-#: includes/class-udc-settings.php:59
+#: includes/class-udc-settings.php:76
 msgid "Last Sync Status:"
 msgstr ""
 
-#: includes/class-udc-settings.php:68
+#: includes/class-udc-settings.php:85
 msgid "Enable Cloud Sync"
 msgstr ""
 
-#: includes/class-udc-settings.php:71
+#: includes/class-udc-settings.php:88
 msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
 msgstr ""
 
-#: includes/class-udc-settings.php:75
+#: includes/class-udc-settings.php:92
 msgid "Google Drive Folder ID"
 msgstr ""
 
-#: includes/class-udc-settings.php:78
+#: includes/class-udc-settings.php:95
 msgid "The 33-character ID found in your Google Drive folder URL."
 msgstr ""
 
-#: includes/class-udc-settings.php:82
+#: includes/class-udc-settings.php:99
 msgid "Service Account JSON Key"
 msgstr ""
 
-#: includes/class-udc-settings.php:86
+#: includes/class-udc-settings.php:103
 msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
 msgstr ""
 
-#: includes/class-udc-settings.php:95
+#: includes/class-udc-settings.php:112
 msgid "Manual Sync"
 msgstr ""
 
-#: includes/class-udc-settings.php:96
+#: includes/class-udc-settings.php:113
 msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
 msgstr ""
 
-#: includes/class-udc-settings.php:98
+#: includes/class-udc-settings.php:115
 msgid "Test Connection & Sync Now"
 msgstr ""
 
-#: includes/class-udc-settings.php:107
+#: includes/class-udc-settings.php:124
 msgid "Enable Email Backups"
 msgstr ""
 
-#: includes/class-udc-settings.php:110
+#: includes/class-udc-settings.php:127
 msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
 msgstr ""
 
-#: includes/class-udc-settings.php:114
+#: includes/class-udc-settings.php:131
 msgid "Email Address"
 msgstr ""
 
-#: includes/class-udc-settings.php:117
+#: includes/class-udc-settings.php:134
 msgid "The email address where the automatic backups should be sent."
 msgstr ""
 
-#: includes/class-udc-settings.php:125
+#: includes/class-udc-settings.php:142
 msgid "Send Manual Backup"
 msgstr ""
 
-#: includes/class-udc-settings.php:126
+#: includes/class-udc-settings.php:143
 msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
 msgstr ""
 
-#: includes/class-udc-settings.php:128
+#: includes/class-udc-settings.php:145
 msgid "Send Backup Now"
 msgstr ""
 
-#: includes/class-udc-settings.php:143
+#: includes/class-udc-settings.php:209
 msgid "Synchronizing..."
 msgstr ""
 
-#: includes/class-udc-settings.php:179
+#: includes/class-udc-settings.php:245
 msgid "Sending..."
 msgstr ""
+
+#: includes/class-udc-backup.php:200
+msgid "No file uploaded."
+msgstr "No file uploaded."
+
+#: includes/class-udc-backup.php:206
+msgid "Error uploading file."
+msgstr "Error uploading file."
+
+#: includes/class-udc-backup.php:211
+msgid "Only JSON files are allowed."
+msgstr "Only JSON files are allowed."
+
+#: includes/class-udc-backup.php:216
+msgid "Could not read uploaded file."
+msgstr "Could not read uploaded file."
+
+#: includes/class-udc-backup.php:221
+msgid "Could not parse uploaded JSON data."
+msgstr "Could not parse uploaded JSON data."
+
+#: includes/class-udc-backup.php:226
+#, php-format
+msgid "Uploaded backup processed. %d missing submissions were added."
+msgstr "Uploaded backup processed. %d missing submissions were added."
+
+#: includes/class-udc-backup.php:259
+msgid "Upload Backup JSON"
+msgstr "Upload Backup JSON"
+
+#: includes/class-udc-backup.php:376
+msgid "Uploading..."
+msgstr "Uploading..."
+
+#: includes/class-udc-settings.php:66
+msgid "Design Customization"
+msgstr "Design Customization"
+
+#: includes/class-udc-settings.php:152
+msgid "Customize the frontend form colors to match your dark/red theme seamlessly."
+msgstr "Customize the frontend form colors to match your dark/red theme seamlessly."
+
+#: includes/class-udc-settings.php:156
+msgid "Enable Custom Design"
+msgstr "Enable Custom Design"
+
+#: includes/class-udc-settings.php:159
+msgid "Check to override default browser styles with the custom colors below."
+msgstr "Check to override default browser styles with the custom colors below."
+
+#: includes/class-udc-settings.php:163
+msgid "Input Background Color"
+msgstr "Input Background Color"
+
+#: includes/class-udc-settings.php:166
+msgid "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
+msgstr "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
+
+#: includes/class-udc-settings.php:170
+msgid "Input Border Color"
+msgstr "Input Border Color"
+
+#: includes/class-udc-settings.php:176
+msgid "Input Text Color"
+msgstr "Input Text Color"
+
+#: includes/class-udc-settings.php:182
+msgid "Care Instructions Background"
+msgstr "Care Instructions Background"
+
+#: includes/class-udc-settings.php:188
+msgid "Care Instructions Border"
+msgstr "Care Instructions Border"

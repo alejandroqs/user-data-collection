@@ -15,6 +15,7 @@ class UDC_Backup
         // Register AJAX actions for manual backups and restore
         add_action('wp_ajax_udc_create_backup', [$this, 'ajax_create_backup']);
         add_action('wp_ajax_udc_restore_backup', [$this, 'ajax_restore_backup']);
+        add_action('wp_ajax_udc_upload_backup', [$this, 'ajax_upload_backup']);
 
         // Register cron hook
         add_action('udc_daily_backup_action', [$this, 'create_backup']);
@@ -124,20 +125,32 @@ class UDC_Backup
             return new WP_Error('parse_error', __('Could not parse backup JSON data.', 'user-data-collection'));
         }
 
+        return $this->insert_backup_data($data);
+    }
+
+    private function insert_backup_data($data)
+    {
+        if (empty($data) || !is_array($data)) {
+            return 0;
+        }
+
         global $wpdb;
         $table_name = $wpdb->prefix . 'udc_submissions';
 
         $added_count = 0;
 
-        if (!empty($data)) {
-            foreach ($data as $row) {
-                // Check if the submission already exists
-                $exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(id) FROM $table_name WHERE id = %d", $row['id']));
+        foreach ($data as $row) {
+            if (!isset($row['id'])) {
+                continue;
+            }
 
-                if (!$exists) {
-                    $wpdb->insert($table_name, $row);
-                    $added_count++;
-                }
+            // Check if the submission already exists
+            $exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(id) FROM $table_name WHERE id = %d", $row['id']));
+
+            if (!$exists) {
+                // Ensure arrays are allowed in insert
+                $wpdb->insert($table_name, $row);
+                $added_count++;
             }
         }
 
@@ -177,6 +190,42 @@ class UDC_Backup
         wp_send_json_success(['message' => sprintf(__('Backup processed. %d missing submissions were added.', 'user-data-collection'), $result)]);
     }
 
+    public function ajax_upload_backup()
+    {
+        if (!current_user_can('manage_options') || !check_ajax_referer('udc_upload_nonce', 'security', false)) {
+            wp_send_json_error(__('Permission denied or invalid security token.', 'user-data-collection'));
+        }
+
+        if (empty($_FILES['backup_file']['tmp_name'])) {
+            wp_send_json_error(__('No file uploaded.', 'user-data-collection'));
+        }
+
+        $file = $_FILES['backup_file'];
+
+        if ($file['error'] !== UPLOAD_ERR_OK) {
+            wp_send_json_error(__('Error uploading file.', 'user-data-collection'));
+        }
+
+        $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+        if (strtolower($ext) !== 'json') {
+            wp_send_json_error(__('Only JSON files are allowed.', 'user-data-collection'));
+        }
+
+        $json_data = file_get_contents($file['tmp_name']);
+        if (!$json_data) {
+            wp_send_json_error(__('Could not read uploaded file.', 'user-data-collection'));
+        }
+
+        $data = json_decode($json_data, true);
+        if ($data === null) {
+            wp_send_json_error(__('Could not parse uploaded JSON data.', 'user-data-collection'));
+        }
+
+        $added_count = $this->insert_backup_data($data);
+
+        wp_send_json_success(['message' => sprintf(__('Uploaded backup processed. %d missing submissions were added.', 'user-data-collection'), $added_count)]);
+    }
+
     public function render_admin_page()
     {
         if (!current_user_can('manage_options')) {
@@ -203,6 +252,13 @@ class UDC_Backup
                 data-nonce="<?php echo esc_attr(wp_create_nonce('udc_backup_nonce')); ?>">
                 <?php esc_html_e('Create Manual Backup', 'user-data-collection'); ?>
             </button>
+            <div style="display:inline-block; margin-left: 10px;">
+                <input type="file" id="udc-upload-backup-file" accept=".json" style="display:none;" />
+                <button type="button" id="udc-upload-backup-btn" class="page-title-action"
+                    data-nonce="<?php echo esc_attr(wp_create_nonce('udc_upload_nonce')); ?>">
+                    <?php esc_html_e('Upload Backup JSON', 'user-data-collection'); ?>
+                </button>
+            </div>
             <p>
                 <?php esc_html_e('The system automatically creates a daily backup via WP-Cron. It stores a maximum of 5 recent backups securely in the local filesystem.', 'user-data-collection'); ?>
             </p>
@@ -297,6 +353,54 @@ class UDC_Backup
                                 alert('<?php echo esc_js(__('Network Error', 'user-data-collection')); ?>');
                                 btn.disabled = false;
                                 btn.innerHTML = originalText;
+                            });
+                    });
+                }
+
+                const uploadBtn = document.getElementById('udc-upload-backup-btn');
+                const fileInput = document.getElementById('udc-upload-backup-file');
+
+                if (uploadBtn && fileInput) {
+                    uploadBtn.addEventListener('click', function (e) {
+                        e.preventDefault();
+                        fileInput.click();
+                    });
+
+                    fileInput.addEventListener('change', function (e) {
+                        const file = e.target.files[0];
+                        if (!file) return;
+
+                        const nonce = uploadBtn.getAttribute('data-nonce');
+                        uploadBtn.disabled = true;
+                        const originalText = uploadBtn.innerHTML;
+                        uploadBtn.innerHTML = '<?php echo esc_js(__('Uploading...', 'user-data-collection')); ?>';
+
+                        const formData = new FormData();
+                        formData.append('action', 'udc_upload_backup');
+                        formData.append('security', nonce);
+                        formData.append('backup_file', file);
+
+                        fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', {
+                            method: 'POST',
+                            body: formData
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert(data.data.message);
+                                    window.location.reload();
+                                } else {
+                                    alert(data.data || '<?php echo esc_js(__('An error occurred.', 'user-data-collection')); ?>');
+                                    uploadBtn.disabled = false;
+                                    uploadBtn.innerHTML = originalText;
+                                    fileInput.value = '';
+                                }
+                            })
+                            .catch(error => {
+                                alert('<?php echo esc_js(__('Network Error', 'user-data-collection')); ?>');
+                                uploadBtn.disabled = false;
+                                uploadBtn.innerHTML = originalText;
+                                fileInput.value = '';
                             });
                     });
                 }

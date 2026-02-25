@@ -42,7 +42,7 @@ user-data-collection/
 │   ├── class-udc-ajax.php         (Admin AJAX confirmation & unconfirmation)
 │   ├── class-udc-backup.php       (Backup generator, JSON rotation limiter, and restorer)
 │   ├── class-udc-gdrive.php       (Google Drive via OAuth2 Service Account Integration)
-│   ├── class-udc-settings.php     (Settings interface for cloud sync integration)
+│   ├── class-udc-settings.php     (Settings interface for cloud sync and design integration)
 │   ├── class-udc-email-sync.php   (Standalone robust mailing handler via WP-Cron)
 │   └── class-udc-i18n.php         (Polylang extensions)
 ```

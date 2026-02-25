@@ -20,6 +20,14 @@ class UDC_Settings
         // Email Settings
         register_setting('udc_email_settings', 'udc_email_backup_enabled');
         register_setting('udc_email_settings', 'udc_email_address');
+
+        // Design Settings
+        register_setting('udc_design_settings', 'udc_design_enabled');
+        register_setting('udc_design_settings', 'udc_design_input_bg');
+        register_setting('udc_design_settings', 'udc_design_input_border');
+        register_setting('udc_design_settings', 'udc_design_input_text');
+        register_setting('udc_design_settings', 'udc_design_care_bg');
+        register_setting('udc_design_settings', 'udc_design_care_border');
     }
 
     public function render_admin_page()
@@ -40,6 +48,14 @@ class UDC_Settings
         $email_enabled = get_option('udc_email_backup_enabled', '0');
         $email_address = get_option('udc_email_address', get_option('admin_email'));
 
+        // Design options
+        $design_enabled = get_option('udc_design_enabled', '0');
+        $input_bg = get_option('udc_design_input_bg', 'transparent');
+        $input_border = get_option('udc_design_input_border', 'rgba(255, 255, 255, 0.5)');
+        $input_text = get_option('udc_design_input_text', '#ffffff');
+        $care_bg = get_option('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)');
+        $care_border = get_option('udc_design_care_border', '#ffffff');
+
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Settings', 'user-data-collection'); ?></h1>
@@ -47,6 +63,7 @@ class UDC_Settings
             <h2 class="nav-tab-wrapper">
                 <a href="?page=udc-settings&tab=gdrive" class="nav-tab <?php echo $active_tab == 'gdrive' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Google Drive Integration', 'user-data-collection'); ?></a>
                 <a href="?page=udc-settings&tab=email" class="nav-tab <?php echo $active_tab == 'email' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Email Backups', 'user-data-collection'); ?></a>
+                <a href="?page=udc-settings&tab=design" class="nav-tab <?php echo $active_tab == 'design' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Design Customization', 'user-data-collection'); ?></a>
             </h2>
 
             <?php if ($active_tab == 'gdrive'): ?>
@@ -127,6 +144,55 @@ class UDC_Settings
                 <button id="udc-manual-email" class="button button-secondary" data-nonce="<?php echo esc_attr(wp_create_nonce('udc_email_nonce')); ?>">
                     <?php esc_html_e('Send Backup Now', 'user-data-collection'); ?>
                 </button>
+
+            <?php elseif ($active_tab == 'design'): ?>
+                <form method="post" action="options.php">
+                    <?php settings_fields('udc_design_settings'); ?>
+                    
+                    <p><?php esc_html_e('Customize the frontend form colors to match your dark/red theme seamlessly.', 'user-data-collection'); ?></p>
+
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Enable Custom Design', 'user-data-collection'); ?></th>
+                            <td>
+                                <input type="checkbox" name="udc_design_enabled" value="1" <?php checked(1, $design_enabled, true); ?> />
+                                <p class="description"><?php esc_html_e('Check to override default browser styles with the custom colors below.', 'user-data-collection'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Input Background Color', 'user-data-collection'); ?></th>
+                            <td>
+                                <input type="text" name="udc_design_input_bg" value="<?php echo esc_attr($input_bg); ?>" class="regular-text" />
+                                <p class="description"><?php esc_html_e('E.g. transparent, #ffffff, rgba(0,0,0,0.5)', 'user-data-collection'); ?></p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Input Border Color', 'user-data-collection'); ?></th>
+                            <td>
+                                <input type="text" name="udc_design_input_border" value="<?php echo esc_attr($input_border); ?>" class="regular-text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Input Text Color', 'user-data-collection'); ?></th>
+                            <td>
+                                <input type="text" name="udc_design_input_text" value="<?php echo esc_attr($input_text); ?>" class="regular-text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Care Instructions Background', 'user-data-collection'); ?></th>
+                            <td>
+                                <input type="text" name="udc_design_care_bg" value="<?php echo esc_attr($care_bg); ?>" class="regular-text" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Care Instructions Border', 'user-data-collection'); ?></th>
+                            <td>
+                                <input type="text" name="udc_design_care_border" value="<?php echo esc_attr($care_border); ?>" class="regular-text" />
+                            </td>
+                        </tr>
+                    </table>
+                    <?php submit_button(); ?>
+                </form>
 
             <?php endif; ?>
         </div>

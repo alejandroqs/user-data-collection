@@ -11,10 +11,11 @@ A robust, high-performance, and GDPR-compliant WordPress plugin engineered to ha
 * **Instant AJAX Actions:** Vanilla Javascript AJAX integration allows you to mark submissions as "Confirmed" or "Unconfirmed" seamlessly without page reloads.
 * **Comprehensive Details View:** A dedicated, custom-designed inspector screen displays the breakdown of all demographic, health data, and legal acceptance clauses.
 * **Fully Internationalized (i18n):** The backend is fully translated using standard WordPress `__()` and `.po`/`.mo` files. The frontend dynamically ties into Polylang's string translation API for ultimate locale flexibility (FR, DE, IT, EN, ES, etc).
-* **Automated Backup System:** Includes a fully native JSON backup engine utilizing `WP-Cron` to automatically capture daily snapshots of the database, keeping strictly the 5 most recent files securely stored inside a `.htaccess`-protected hidden directory.
+* **Automated Backup System:** Includes a fully native JSON backup engine utilizing `WP-Cron` to automatically capture daily snapshots of the database, keeping strictly the 5 most recent files securely stored inside a `.htaccess`-protected hidden directory. Support included to inject standard `.json` backup files directly from the UI.
 * **Google Drive Cloud Sync:** Zero-dependency Service Account OAuth2 integration targeting maximum reliability. Weekly background sync uploads missing local JSON backups to a specified Google Drive folder, dynamically trimming cloud records to strictly mirror the native 5-file retention limit.
 * **Email Fast-Backups:** An accessible, secondary disaster-recovery layer that dispatches the most recent local JSON snapshot natively via `wp_mail` on a fully automated monthly Cron rotation, with manual instant-trigger capabilities.
 * **Performant Form Processing:** Submission handling uses the `admin_post_*` API, completely avoiding generic frontend POST targets that can be exploited or cause cache misses.
+* **Frontend Design Customizer:** Exposes a Backend Settings UI to define background, text, borders, and general styling colors on the frontend inputs, instantly matching the host website's active aesthetic seamlessly directly from the WordPress Database (no CSS knowledge needed).
 
 ## 📦 Installation
 
@@ -44,6 +45,7 @@ The rendered shortcode includes two distinct logical documents:
 * In the **Submissions > Backups** view, administrators can instantaneously review the last 5 days of captured snapshots.
 * Click **Create Manual Backup** to force an emergency local snapshot without waiting for the daily Cron cycle.
 * Click **Restore** next to any record to surgically inject missing submission IDs back into the active environment without blindly wiping existing records (`TRUNCATE TABLE` purposely avoided).
+* Click **Upload Backup JSON** to manually inject an external `.json` backup file. Missing submissions will be intelligently restored.
 
 ### 4. Setting up Google Drive (Cloud Sync)
 * Go to **Submissions > Settings**.
@@ -58,6 +60,12 @@ The rendered shortcode includes two distinct logical documents:
 * Toggle "Enable Email Backups" to schedule a recurring monthly WP-Cron email drop.
 * Enter the fallback receiver email address.
 * Click **Send Backup Now** from this panel at any time to instantly receive the latest JSON payload.
+
+### 6. Frontend Design Customizer
+* Go to **Submissions > Settings** and navigate to the **Design Customization** tab.
+* Toggle "Enable Custom Design" to override any default browser input styles with the internal aesthetic mappings.
+* Adjust target element colors via Hexadecimal (`#ff0000`), RGBA (`rgba(255, 255, 255, 0.5)`) or literal assignments like `transparent`.
+* Your changes will dynamically generate an isolated CSS `<style>` block bound exclusively to the frontend shortcode output, integrating seamlessly with your WordPress theme.
 
 ### 6. Translating the Form
 If you operate a multi-language website, this plugin provides two translation pipelines:
@@ -80,7 +88,7 @@ This project was built strictly adhering to established WordPress Coding Standar
 * `includes/class-udc-list-table.php` - Native implementation of `WP_List_Table` for admin data management.
 * `includes/class-udc-ajax.php` - Secure backend endpoints for "Confirm/Unconfirm" actions.
 * `includes/class-udc-backup.php` - Native JSON export mechanism, backup rotation logic, and secure restoration handler.
-* `includes/class-udc-settings.php` - Configuration API for Google Drive integration keys, UI tabs, and global toggles.
+* `includes/class-udc-settings.php` - Configuration API for Google Drive integration keys, UI tabs, and global styling toggles.
 * `includes/class-udc-gdrive.php` - Authenticated OAuth2 Client using Server-to-Server JWT signatures to push files natively through Google Drive REST v3 API. 
 * `includes/class-udc-email-sync.php` - Standalone robust mailing handler attached to a monthly WP-Cron scheduler with attachment capabilities.
 * `includes/class-udc-i18n.php` - Translation hooks and Polylang dynamic string registration.
