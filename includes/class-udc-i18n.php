@@ -53,44 +53,41 @@ class UDC_i18n
     public static function get_strings()
     {
         return [
-            'msg_success' => 'Thank you! Your submission has been received.',
+            'msg_success' => 'Thank you! Your request has been received.',
             'msg_error' => 'There was an error processing your request. Please try again.',
 
-            'doc_1_title' => 'PRIMER DOCUMENTO: CUESTIONARIO DE SALUD',
-            'label_last_name' => 'Apellido *',
-            'label_first_name' => 'Nombre *',
-            'label_dob' => 'Fecha de nacimiento *',
-            'label_address' => 'Dirección *',
-            'label_city' => 'C.P., Ciudad *',
-            'label_phone' => 'Teléfono *',
+            'title_personal_info' => 'PERSONAL DATA',
+            'label_last_name' => 'Last Name *',
+            'label_first_name' => 'First Name *',
+            'label_dob' => 'Date of Birth *',
+            'label_address' => 'Address *',
+            'label_city' => 'Zip Code, City *',
+            'label_phone' => 'Phone *',
 
-            'subtitle_health' => 'CUESTIONARIO DE SALUD',
-            'health_good' => 'Afirmo que me encuentro actualmente en buen estado de salud.',
-            'health_treatment' => 'Afirmo que sigo un tratamiento médico o dental.',
-            'health_blood' => 'Afirmo que tomo regularmente medicamentos que pueden diluir la sangre, como Sintrom o aspirina (o padezco de ampollas frecuentes).',
-            'health_allergies' => 'Afirmo que soy propenso(a) a alergias, látex u otros.',
-            'health_pregnant' => 'Afirmo que estoy embarazada o en periodo de lactancia.',
+            'title_health' => 'HEALTH QUESTIONNAIRE',
+            'health_good' => 'I am currently in good health.',
+            'health_treatment' => 'I am undergoing medical or dental treatment.',
+            'health_blood' => 'I regularly take blood-thinning medications, such as Sintrom or aspirin (or suffer from frequent blistering).',
+            'health_allergies' => 'I am prone to allergies, latex, or others.',
+            'health_pregnant' => 'I am pregnant or breastfeeding.',
 
-            'subtitle_liability' => 'Cláusula de responsabilidad',
-            'liability_text' => 'Declaro ser consciente de que los menores no pueden realizarse un tatuaje/piercing sin la presencia de un padre. Acepto que Titanium Shop se somete a las reglas de higiene más estrictas: agujas estériles de un solo uso y material de esterilización según las normas y con la aprobación de EYECO.ch. Asumo la entera responsabilidad por la higiene y los cuidados de mi piercing/tatuaje fuera del salón; por lo tanto, eximo al estudio de toda responsabilidad por cualquier consecuencia debida al procedimiento (infección, rechazo, alergia, etc.). Renuncio a todas las acciones legales o penales. Reconozco que si oculto deliberadamente información relativa a mi edad o de naturaleza que ponga en peligro mi salud o la del personal, podrían emprenderse acciones legales en mi contra. *',
+            'title_liability' => 'Liability Clause',
+            'liability_text' => 'I declare I am aware that minors cannot get a tattoo/piercing without the presence of a parent. I accept that Titanium Shop is subject to the strictest hygiene rules: sterile single-use needles and sterilization equipment meeting standards and approved by EYECO.ch. I assume full responsibility for the hygiene and care of my piercing/tattoo outside the shop; therefore, I release the studio from any liability for any consequences following the procedure (infection, rejection, allergy, etc.). I waive all legal or criminal actions. I acknowledge that if I deliberately conceal information regarding my age or nature that endangers my health or that of the staff, legal action could be taken against me. *',
 
-            'doc_2_title' => 'SEGUNDO DOCUMENTO: DESCARGO DE RESPONSABILIDAD Y CUIDADOS',
-            'doc_2_subtitle' => 'TITANIUM - PIERCING LAUSANNE / DESCARGO PIERCING',
-            'label_appt_date' => 'Fecha de la cita *',
-            'label_appt_time' => 'Hora *',
-            'label_location' => 'Ubicación del piercing *',
+            'title_appointment_info' => 'APPOINTMENT DETAILS',
+            'label_appt_date' => 'Date of appointment *',
+            'label_appt_time' => 'Time *',
+            'label_location' => 'Piercing location *',
 
-            'subtitle_care' => 'CUIDADOS DEL PIERCING',
-            'care_1' => 'Limpieza regular: Lavarse siempre bien las manos antes de tocar el piercing.',
-            'care_2' => 'Evitar productos irritantes: No utilizar alcohol ni agua oxigenada. Estos productos son demasiado agresivos y pueden retrasar la curación. No utilizar jabones perfumados; use jabones suaves y sin perfume.',
-            'care_3' => 'Manipulación mínima: Evite tocar el piercing. No gire la joya excepto para limpiarla. Use ropa holgada para no irritar la zona.',
-            'care_4' => 'Higiene diaria: Evite la ropa ajustada para los piercings corporales (ombligo, pezón). Use ropa de algodón para dejar respirar la zona.',
-            'care_5' => 'Vigilancia de signos de infección: Enrojecimiento, dolor, calor, secreciones amarillas o verdes. Si nota estos signos, consulte a un profesional de la salud. Una infección debe ser tratada rápidamente.',
-            'care_6' => 'Tiempo de curación: El tiempo de curación varía según la ubicación del piercing. Los piercings en los lóbulos de las orejas suelen tardar de 6 a 8 semanas, mientras que los piercings en el cartílago, la nariz o el ombligo pueden tardar varios meses.',
+            'subtitle_care' => 'PIERCING CARE INSTRUCTIONS',
+            'care_1' => 'Regular cleaning: Always wash your hands thoroughly before touching the piercing.',
+            'care_2' => 'Avoid irritating products: Do not use alcohol or hydrogen peroxide. These products are too aggressive and can delay healing. Do not use scented soaps; use mild, unscented soaps.',
+            'care_3' => 'Minimal handling: Avoid touching the piercing. Do not rotate the jewelry except to clean it. Wear loose clothing so as not to irritate the area.',
+            'care_4' => 'Daily hygiene: Avoid tight clothing for body piercings (navel, nipple). Wear cotton clothing to let the area breathe.',
+            'care_5' => 'Monitoring for signs of infection: Redness, pain, heat, yellow or green discharge. If you notice these signs, consult a healthcare professional. An infection must be treated quickly.',
+            'care_6' => 'Healing time: Healing time varies depending on the location of the piercing. Earlobe piercings usually take 6 to 8 weeks, while cartilage, nose, or navel piercings can take several months.',
 
-            'care_accepted' => 'He leído y comprendido las indicaciones de cuidado de mi piercing. Entiendo que en caso de no seguir estas pautas rigurosamente, el estudio queda liberado de toda responsabilidad. *',
-
-            'submit_btn' => 'Enviar / Submit'
+            'submit_btn' => 'Submit'
         ];
     }
 }

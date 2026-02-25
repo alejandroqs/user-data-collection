@@ -1,0 +1,65 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: User Data Collection 1.1.0\n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Submissions"
+msgstr "Envíos"
+
+msgid "User Submissions"
+msgstr "Listado de Envíos"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Last Name"
+msgstr "Apellido"
+
+msgid "First Name"
+msgstr "Nombre"
+
+msgid "Date of Birth"
+msgstr "Fecha de Nacimiento"
+
+msgid "Phone"
+msgstr "Teléfono"
+
+msgid "Appt Date"
+msgstr "Fecha Cita"
+
+msgid "Appt Time"
+msgstr "Hora Cita"
+
+msgid "Sub. Date"
+msgstr "Fecha del Envío"
+
+msgid "Status"
+msgstr "Estado"
+
+msgid "Action"
+msgstr "Acción"
+
+msgid "Confirmed"
+msgstr "Confirmado"
+
+msgid "Pending"
+msgstr "Pendiente"
+
+msgid "Confirm"
+msgstr "Confirmar"
+
+msgid "No submissions found."
+msgstr "No se encontraron envíos."
+
+msgid "Confirming..."
+msgstr "Confirmando..."
+
+msgid "An error occurred."
+msgstr "Ocurrió un error."
+
+msgid "Network Error"
+msgstr "Error de red"

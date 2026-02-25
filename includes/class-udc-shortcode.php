@@ -31,7 +31,7 @@ class UDC_Shortcode
             <?php wp_nonce_field('udc_form_action', 'udc_form_nonce'); ?>
             <input type="hidden" name="action" value="udc_submit_form">
 
-            <h3><?php echo esc_html(UDC_i18n::translate('doc_1_title')); ?></h3>
+            <h2><?php echo esc_html(UDC_i18n::translate('title_personal_info')); ?></h2>
 
             <p>
                 <label for="udc_last_name"><?php echo esc_html(UDC_i18n::translate('label_last_name')); ?></label><br>
@@ -58,7 +58,7 @@ class UDC_Shortcode
                 <input type="tel" id="udc_phone" name="udc_phone" required>
             </p>
 
-            <h4><?php echo esc_html(UDC_i18n::translate('subtitle_health')); ?></h4>
+            <h2><?php echo esc_html(UDC_i18n::translate('title_health')); ?></h2>
             <p>
                 <label>
                     <input type="checkbox" name="udc_health_good" value="1">
@@ -90,17 +90,7 @@ class UDC_Shortcode
                 </label>
             </p>
 
-            <h4><?php echo esc_html(UDC_i18n::translate('subtitle_liability')); ?></h4>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_liability_accepted" value="1" required>
-                    <?php echo esc_html(UDC_i18n::translate('liability_text')); ?>
-                </label>
-            </p>
-            <hr>
-
-            <h3><?php echo esc_html(UDC_i18n::translate('doc_2_title')); ?></h3>
-            <h4><?php echo esc_html(UDC_i18n::translate('doc_2_subtitle')); ?></h4>
+            <h2><?php echo esc_html(UDC_i18n::translate('title_appointment_info')); ?></h2>
             <p>
                 <label for="udc_appointment_date"><?php echo esc_html(UDC_i18n::translate('label_appt_date')); ?></label><br>
                 <input type="date" id="udc_appointment_date" name="udc_appointment_date" required>
@@ -114,7 +104,7 @@ class UDC_Shortcode
                 <input type="text" id="udc_piercing_location" name="udc_piercing_location" required>
             </p>
 
-            <h4><?php echo esc_html(UDC_i18n::translate('subtitle_care')); ?></h4>
+            <h2><?php echo esc_html(UDC_i18n::translate('subtitle_care')); ?></h2>
             <div style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;">
                 <ul>
                     <?php
@@ -132,10 +122,12 @@ class UDC_Shortcode
                     ?>
                 </ul>
             </div>
+
+            <h2><?php echo esc_html(UDC_i18n::translate('title_liability')); ?></h2>
             <p>
                 <label>
-                    <input type="checkbox" name="udc_piercing_care_accepted" value="1" required>
-                    <?php echo esc_html(UDC_i18n::translate('care_accepted')); ?>
+                    <input type="checkbox" name="udc_liability_accepted" value="1" required>
+                    <?php echo esc_html(UDC_i18n::translate('liability_text')); ?>
                 </label>
             </p>
 
@@ -175,10 +167,8 @@ class UDC_Shortcode
         $appointment_time = isset($_POST['udc_appointment_time']) ? sanitize_text_field(wp_unslash($_POST['udc_appointment_time'])) : '';
         $piercing_location = isset($_POST['udc_piercing_location']) ? sanitize_text_field(wp_unslash($_POST['udc_piercing_location'])) : '';
 
-        $piercing_care_accepted = isset($_POST['udc_piercing_care_accepted']) ? 1 : 0;
-
         // 3. Validation
-        if (empty($last_name) || empty($first_name) || empty($liability_accepted) || empty($piercing_care_accepted)) {
+        if (empty($last_name) || empty($first_name) || empty($liability_accepted)) {
             $redirect_url = add_query_arg('udc_status', 'error', wp_get_referer());
             wp_safe_redirect($redirect_url);
             exit;
@@ -206,7 +196,6 @@ class UDC_Shortcode
                 'appointment_date' => $appointment_date,
                 'appointment_time' => $appointment_time,
                 'piercing_location' => $piercing_location,
-                'piercing_care_accepted' => $piercing_care_accepted,
                 'is_confirmed' => 0
             ],
             [
@@ -225,10 +214,13 @@ class UDC_Shortcode
                 '%s',
                 '%s',
                 '%s',
-                '%d',
                 '%d'
             ]
         );
+
+        if (false === $inserted) {
+            error_log('UDC Plugin Insert Error: ' . $wpdb->last_error);
+        }
 
         // 5. Redirect based on result
         $status = $inserted ? 'success' : 'error';

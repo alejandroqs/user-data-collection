@@ -25,8 +25,10 @@ When interacting with this project, AI agents should assume the following roles:
    - All database outputs in the admin area must be escaped (`esc_html`, `esc_url`, `esc_attr`, etc.).
    - Include Nonces for form submission and AJAX actions to prevent CSRF.
 5. **Admin Interface:**
-   - Use a clean approach for the admin area.
-   - Provide a basic tabular view of the submissions with an action link/button to mark a submission as "Confirmed" via AJAX.
+   - Use the custom `UDC_List_Table` class extending the native WordPress `WP_List_Table`.
+   - Provide "Row Actions" for viewing submission details.
+   - Use Vanilla JS Fetch API for triggering the `udc_confirm_submission` and `udc_unconfirm_submission` admin ajax hooks without reloading the page until success.
+   - Separate complex details viewing into a clean WordPress metabox-style layout (details card).
 
 ## Project Structure
 ```text
@@ -35,8 +37,10 @@ user-data-collection/
 ├── includes/
 │   ├── class-udc-activator.php    (Database creation logic)
 │   ├── class-udc-shortcode.php    (Frontend form and submission via admin_post)
-│   ├── class-udc-admin.php        (Admin menu and display)
-│   └── class-udc-ajax.php         (Admin AJAX confirmation)
+│   ├── class-udc-admin.php        (Admin menu, views and JS actions)
+│   ├── class-udc-list-table.php   (WP_List_Table implementation for rendering the list)
+│   ├── class-udc-ajax.php         (Admin AJAX confirmation & unconfirmation)
+│   └── class-udc-i18n.php         (Polylang extensions)
 ```
 
 ## Workflows

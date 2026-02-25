@@ -30,7 +30,6 @@ class UDC_Activator
             appointment_date date NOT NULL,
             appointment_time time NOT NULL,
             piercing_location varchar(255) NOT NULL,
-            piercing_care_accepted tinyint(1) DEFAULT 0 NOT NULL,
             is_confirmed tinyint(1) DEFAULT 0 NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id)
@@ -40,5 +39,9 @@ class UDC_Activator
         dbDelta($sql);
 
         update_option('udc_db_version', UDC_DB_VERSION);
+
+        // Schedule Backups & Syncs
+        UDC_Backup::schedule_cron();
+        UDC_GDrive::schedule_cron();
     }
 }
