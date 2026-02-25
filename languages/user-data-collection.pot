@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-25T17:44:33+00:00\n"
+"POT-Creation-Date: 2026-02-25T18:14:01+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: user-data-collection\n"
@@ -47,7 +47,7 @@ msgstr ""
 
 #: includes/class-udc-admin.php:37
 #: includes/class-udc-admin.php:38
-#: includes/class-udc-settings.php:34
+#: includes/class-udc-settings.php:45
 msgid "Settings"
 msgstr ""
 
@@ -214,14 +214,16 @@ msgstr ""
 #: includes/class-udc-admin.php:261
 #: includes/class-udc-backup.php:291
 #: includes/class-udc-backup.php:334
-#: includes/class-udc-settings.php:114
+#: includes/class-udc-settings.php:159
+#: includes/class-udc-settings.php:194
 msgid "An error occurred."
 msgstr ""
 
 #: includes/class-udc-admin.php:267
 #: includes/class-udc-backup.php:297
 #: includes/class-udc-backup.php:340
-#: includes/class-udc-settings.php:120
+#: includes/class-udc-settings.php:165
+#: includes/class-udc-settings.php:200
 msgid "Network Error"
 msgstr ""
 
@@ -239,6 +241,7 @@ msgstr ""
 
 #: includes/class-udc-backup.php:150
 #: includes/class-udc-backup.php:164
+#: includes/class-udc-email-sync.php:91
 #: includes/class-udc-gdrive.php:261
 msgid "Permission denied or invalid security token."
 msgstr ""
@@ -307,6 +310,56 @@ msgstr ""
 
 #: includes/class-udc-backup.php:317
 msgid "Restoring..."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:21
+msgid "Once Monthly"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:51
+msgid "Invalid email address configured for backups."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:59
+msgid "No local backups found to send."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:69
+msgid "Automated Data Backup - User Data Collection"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:71
+msgid "Hello,"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:72
+msgid "Attached is the most recent backup of your database submissions from the User Data Collection system."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:73
+#, php-format
+msgid "Date of backup: %s"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:74
+#, php-format
+msgid "File size: %s"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:75
+msgid "This is an automated message. Please store this file in a secure location."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:84
+msgid "Failed to send email. Check your server mail configuration."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:99
+msgid "Backup emailed successfully to the configured address."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:101
+msgid "Email backups are currently disabled in settings."
 msgstr ""
 
 #: includes/class-udc-gdrive.php:20
@@ -412,50 +465,86 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: includes/class-udc-settings.php:37
+#: includes/class-udc-settings.php:48
 msgid "Google Drive Integration"
 msgstr ""
 
-#: includes/class-udc-settings.php:46
+#: includes/class-udc-settings.php:49
+msgid "Email Backups"
+msgstr ""
+
+#: includes/class-udc-settings.php:59
 msgid "Last Sync Status:"
 msgstr ""
 
-#: includes/class-udc-settings.php:55
+#: includes/class-udc-settings.php:68
 msgid "Enable Cloud Sync"
 msgstr ""
 
-#: includes/class-udc-settings.php:58
+#: includes/class-udc-settings.php:71
 msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
 msgstr ""
 
-#: includes/class-udc-settings.php:62
+#: includes/class-udc-settings.php:75
 msgid "Google Drive Folder ID"
 msgstr ""
 
-#: includes/class-udc-settings.php:65
+#: includes/class-udc-settings.php:78
 msgid "The 33-character ID found in your Google Drive folder URL."
 msgstr ""
 
-#: includes/class-udc-settings.php:69
+#: includes/class-udc-settings.php:82
 msgid "Service Account JSON Key"
 msgstr ""
 
-#: includes/class-udc-settings.php:73
+#: includes/class-udc-settings.php:86
 msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
 msgstr ""
 
-#: includes/class-udc-settings.php:82
+#: includes/class-udc-settings.php:95
 msgid "Manual Sync"
 msgstr ""
 
-#: includes/class-udc-settings.php:83
+#: includes/class-udc-settings.php:96
 msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
 msgstr ""
 
-#: includes/class-udc-settings.php:85
+#: includes/class-udc-settings.php:98
 msgid "Test Connection & Sync Now"
 msgstr ""
 
-#: includes/class-udc-settings.php:98
+#: includes/class-udc-settings.php:107
+msgid "Enable Email Backups"
+msgstr ""
+
+#: includes/class-udc-settings.php:110
+msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
+msgstr ""
+
+#: includes/class-udc-settings.php:114
+msgid "Email Address"
+msgstr ""
+
+#: includes/class-udc-settings.php:117
+msgid "The email address where the automatic backups should be sent."
+msgstr ""
+
+#: includes/class-udc-settings.php:125
+msgid "Send Manual Backup"
+msgstr ""
+
+#: includes/class-udc-settings.php:126
+msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
+msgstr ""
+
+#: includes/class-udc-settings.php:128
+msgid "Send Backup Now"
+msgstr ""
+
+#: includes/class-udc-settings.php:143
 msgid "Synchronizing..."
+msgstr ""
+
+#: includes/class-udc-settings.php:179
+msgid "Sending..."
 msgstr ""

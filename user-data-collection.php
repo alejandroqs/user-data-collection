@@ -27,6 +27,7 @@ require_once UDC_PLUGIN_DIR . 'includes/class-udc-ajax.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-backup.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-settings.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-gdrive.php';
+require_once UDC_PLUGIN_DIR . 'includes/class-udc-email-sync.php';
 
 // Register Activation Hook
 register_activation_hook(__FILE__, ['UDC_Activator', 'activate']);
@@ -36,6 +37,7 @@ function udc_on_deactivate()
 {
     UDC_Backup::clear_cron();
     UDC_GDrive::clear_cron();
+    UDC_Email_Sync::clear_cron();
 }
 register_deactivation_hook(__FILE__, 'udc_on_deactivate');
 
@@ -51,11 +53,14 @@ function udc_init_plugin()
     new UDC_i18n();
     new UDC_Shortcode();
 
+    // Core background services (Required outside is_admin for WP-Cron)
+    new UDC_Backup();
+    new UDC_GDrive();
+    new UDC_Email_Sync();
+
     if (is_admin()) {
         new UDC_Admin();
         new UDC_Ajax();
-        new UDC_Backup();
         new UDC_Settings();
-        new UDC_GDrive();
     }
 }

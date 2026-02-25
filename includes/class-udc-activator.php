@@ -43,5 +43,6 @@ class UDC_Activator
         // Schedule Backups & Syncs
         UDC_Backup::schedule_cron();
         UDC_GDrive::schedule_cron();
+        UDC_Email_Sync::schedule_cron();
     }
 }
