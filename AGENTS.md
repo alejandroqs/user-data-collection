@@ -51,5 +51,6 @@ user-data-collection/
 - Use `npx wp-env run cli wp ...` to interact with WP-CLI inside the container.
 
 ## Reference
+- **[Env Skill](.agents/skills/env/SKILL.md)**: Core knowledge about the local development environment, OS, terminal, and wp-env configuration to ensure correct commands and system interactions.
 - **[WordPress Pro Skill](.agents/skills/wordpress-pro/SKILL.md)**: Use when developing WordPress themes, plugins, customizing Gutenberg blocks, implementing WooCommerce features, or optimizing WordPress performance and security.
 - **[PHP Pro Skill](.agents/skills/php-pro/SKILL.md)**: Use when building PHP applications with modern PHP 8.3+ features, Laravel, or Symfony frameworks. Invoke for strict typing, PHPStan level 9, async patterns with Swoole, PSR standards.
