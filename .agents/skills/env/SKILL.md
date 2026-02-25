@@ -10,7 +10,9 @@ This skill provides crucial context about the user's development machine. Whenev
 ## Operating System & Terminal
 - **OS**: Windows 11.
 - **Terminal Shell**: PowerShell.
-- **Rule**: ALL terminal commands suggested or executed must be natively compatible with **PowerShell** syntax (e.g., using `&&` requires newer PS versions, otherwise prefer separate commands or `;` depending on context). Do NOT use Linux-only bash commands (like `rm -rf`, use `Remove-Item -Recurse -Force` or use cross-platform node scripts) unless executing *inside* the `wp-env` container.
+- **Rule**: ALL terminal commands suggested or executed must be natively compatible with **PowerShell** syntax. 
+  - **CRITICAL**: Do NOT use `&&` to chain commands (e.g., `git add . && git commit`), as it causes syntax errors in this specific environment. Always use `;` to chain commands instead (e.g., `git add . ; git commit`).
+  - Do NOT use Linux-only bash commands (like `rm -rf`, use `Remove-Item -Recurse -Force` or use cross-platform node scripts) unless executing *inside* the `wp-env` container.
 
 ## Local Server Environment (`wp-env`)
 - **Technology**: The project relies on `@wordpress/env` (`wp-env`) which uses Docker Desktop (via WSL2 backend).
