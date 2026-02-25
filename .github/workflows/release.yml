@@ -1,0 +1,44 @@
+name: Generate WordPress Plugin ZIP
+
+# Este workflow se dispara solo cuando creas un Tag que empiece por "v" (ej: v1.0.0)
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    name: Build and Release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout del código
+        uses: actions/checkout@v4
+
+      - name: Preparar y compilar el ZIP
+        run: |
+          # 1. Creamos una carpeta con el slug exacto del plugin
+          mkdir user-data-collection
+          
+          # 2. Copiamos los archivos útiles a esa carpeta (EXCLUYENDO desarrollo y git)
+          rsync -rc --exclude='.git/' \
+                    --exclude='.github/' \
+                    --exclude='.agents/' \
+                    --exclude='node_modules/' \
+                    --exclude='package*.json' \
+                    --exclude='skills-lock.json' \
+                    --exclude='*.md' \
+                    --exclude='.gitignore' \
+                    --exclude='user-data-collection/' \
+                    . user-data-collection/
+          
+          # 3. Comprimimos esa carpeta en un archivo ZIP final
+          zip -r user-data-collection.zip user-data-collection/
+
+      - name: Crear Release en GitHub y subir el ZIP
+        uses: softprops/action-gh-release@v2
+        with:
+          files: user-data-collection.zip
+          generate_release_notes: true
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

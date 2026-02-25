@@ -1,65 +1,548 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: User Data Collection 1.1.0\n"
-"Language: fr_FR\n"
+"Report-Msgid-Bugs-To: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-02-25T18:18:11+00:00\n"
+"PO-Revision-Date: 2026-02-25T18:18:11+00:00\n"
+"Language: fr_FR\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
+#: includes/class-udc-admin.php:17
+#: includes/class-udc-admin.php:18
+#: includes/class-udc-list-table.php:16
 msgid "Submissions"
 msgstr "Soumissions"
 
+#: includes/class-udc-admin.php:66
 msgid "User Submissions"
 msgstr "Soumissions Utilisateurs"
 
+#: includes/class-udc-list-table.php:24
 msgid "ID"
 msgstr "ID"
 
+#: includes/class-udc-admin.php:111
+#: includes/class-udc-list-table.php:25
 msgid "Last Name"
 msgstr "Nom"
 
+#: includes/class-udc-admin.php:107
+#: includes/class-udc-list-table.php:26
 msgid "First Name"
 msgstr "Prénom"
 
+#: includes/class-udc-admin.php:115
+#: includes/class-udc-list-table.php:27
 msgid "Date of Birth"
 msgstr "Date de Naissance"
 
+#: includes/class-udc-admin.php:127
+#: includes/class-udc-list-table.php:28
 msgid "Phone"
 msgstr "Téléphone"
 
+#: includes/class-udc-list-table.php:29
 msgid "Appt Date"
 msgstr "Date de RDV"
 
+#: includes/class-udc-list-table.php:30
 msgid "Appt Time"
 msgstr "Heure de RDV"
 
+#: includes/class-udc-list-table.php:31
 msgid "Sub. Date"
 msgstr "Date de Soum."
 
+#: includes/class-udc-list-table.php:32
 msgid "Status"
 msgstr "Statut"
 
+#: includes/class-udc-backup.php:223
+#: includes/class-udc-list-table.php:33
 msgid "Action"
 msgstr "Action"
 
+#: includes/class-udc-admin.php:175
+#: includes/class-udc-list-table.php:171
 msgid "Confirmed"
 msgstr "Confirmé"
 
+#: includes/class-udc-admin.php:178
+#: includes/class-udc-list-table.php:173
 msgid "Pending"
 msgstr "En attente"
 
+#: includes/class-udc-admin.php:232
+#: includes/class-udc-list-table.php:162
 msgid "Confirm"
 msgstr "Confirmer"
 
-msgid "No submissions found."
-msgstr "Aucune soumission trouvée."
-
+#: includes/class-udc-admin.php:232
 msgid "Confirming..."
 msgstr "Confirmation en cours..."
 
+#: includes/class-udc-admin.php:261
+#: includes/class-udc-backup.php:291
+#: includes/class-udc-backup.php:334
+#: includes/class-udc-settings.php:159
+#: includes/class-udc-settings.php:194
 msgid "An error occurred."
 msgstr "Une erreur s'est produite."
 
+#: includes/class-udc-admin.php:267
+#: includes/class-udc-backup.php:297
+#: includes/class-udc-backup.php:340
+#: includes/class-udc-settings.php:165
+#: includes/class-udc-settings.php:200
 msgid "Network Error"
 msgstr "Erreur de réseau"
+
+#. Plugin Name of the plugin
+#: user-data-collection.php
+msgid "User Data Collection"
+msgstr ""
+
+#. Plugin URI of the plugin
+#: user-data-collection.php
+msgid "https://alejandroqs.github.io"
+msgstr ""
+
+#. Description of the plugin
+#: user-data-collection.php
+msgid "A secure, high-performance plugin to collect user submissions via shortcode and manage them in a custom database table. GDPR compliant."
+msgstr ""
+
+#. Author of the plugin
+#: user-data-collection.php
+msgid "Alejandro Quesada"
+msgstr ""
+
+#: includes/class-udc-admin.php:28
+#: includes/class-udc-admin.php:29
+msgid "Backups"
+msgstr ""
+
+#: includes/class-udc-admin.php:37
+#: includes/class-udc-admin.php:38
+#: includes/class-udc-settings.php:45
+msgid "Settings"
+msgstr ""
+
+#: includes/class-udc-admin.php:86
+msgid "Submission not found."
+msgstr ""
+
+#: includes/class-udc-admin.php:93
+msgid "Submission Details"
+msgstr ""
+
+#: includes/class-udc-admin.php:96
+msgid "Back to List"
+msgstr ""
+
+#: includes/class-udc-admin.php:102
+msgid "Personal Information"
+msgstr ""
+
+#: includes/class-udc-admin.php:119
+msgid "Address"
+msgstr ""
+
+#: includes/class-udc-admin.php:123
+msgid "Zip Code, City"
+msgstr ""
+
+#: includes/class-udc-admin.php:135
+msgid "Health Questionnaire"
+msgstr ""
+
+#: includes/class-udc-admin.php:139
+msgid "Good Health:"
+msgstr ""
+
+#: includes/class-udc-admin.php:140
+#: includes/class-udc-admin.php:143
+#: includes/class-udc-admin.php:146
+#: includes/class-udc-admin.php:149
+#: includes/class-udc-admin.php:152
+msgid "Yes"
+msgstr ""
+
+#: includes/class-udc-admin.php:140
+#: includes/class-udc-admin.php:143
+#: includes/class-udc-admin.php:146
+#: includes/class-udc-admin.php:149
+#: includes/class-udc-admin.php:152
+msgid "No"
+msgstr ""
+
+#: includes/class-udc-admin.php:142
+msgid "Undergoing Treatment:"
+msgstr ""
+
+#: includes/class-udc-admin.php:145
+msgid "Blood Thinners/Sintrom:"
+msgstr ""
+
+#: includes/class-udc-admin.php:148
+msgid "Allergies:"
+msgstr ""
+
+#: includes/class-udc-admin.php:151
+msgid "Pregnant/Breastfeeding:"
+msgstr ""
+
+#: includes/class-udc-admin.php:161
+msgid "Appointment Info"
+msgstr ""
+
+#: includes/class-udc-admin.php:163
+msgid "Date:"
+msgstr ""
+
+#: includes/class-udc-admin.php:165
+msgid "Time:"
+msgstr ""
+
+#: includes/class-udc-admin.php:167
+msgid "Location:"
+msgstr ""
+
+#: includes/class-udc-admin.php:169
+msgid "Submitted:"
+msgstr ""
+
+#: includes/class-udc-admin.php:172
+msgid "Status:"
+msgstr ""
+
+#: includes/class-udc-admin.php:188
+msgid "Confirm Appointment"
+msgstr ""
+
+#: includes/class-udc-admin.php:194
+msgid "Unconfirm Appointment"
+msgstr ""
+
+#: includes/class-udc-admin.php:200
+msgid "Liability Notice"
+msgstr ""
+
+#: includes/class-udc-admin.php:205
+msgid "Terms & conditions and liability waiver accepted by the user."
+msgstr ""
+
+#: includes/class-udc-admin.php:208
+msgid "Not accepted."
+msgstr ""
+
+#: includes/class-udc-admin.php:235
+msgid "Unconfirming..."
+msgstr ""
+
+#: includes/class-udc-admin.php:235
+#: includes/class-udc-list-table.php:155
+msgid "Unconfirm"
+msgstr ""
+
+#: includes/class-udc-backup.php:114
+msgid "Backup file not found or invalid."
+msgstr ""
+
+#: includes/class-udc-backup.php:119
+msgid "Could not read backup file."
+msgstr ""
+
+#: includes/class-udc-backup.php:124
+msgid "Could not parse backup JSON data."
+msgstr ""
+
+#: includes/class-udc-backup.php:150
+#: includes/class-udc-backup.php:164
+#: includes/class-udc-email-sync.php:91
+#: includes/class-udc-gdrive.php:261
+msgid "Permission denied or invalid security token."
+msgstr ""
+
+#: includes/class-udc-backup.php:155
+msgid "Backup created successfully."
+msgstr ""
+
+#: includes/class-udc-backup.php:157
+msgid "Failed to create backup."
+msgstr ""
+
+#: includes/class-udc-backup.php:169
+msgid "Invalid filename."
+msgstr ""
+
+#: includes/class-udc-backup.php:177
+#, php-format
+msgid "Backup processed. %d missing submissions were added."
+msgstr ""
+
+#: includes/class-udc-backup.php:200
+msgid "Data Backups"
+msgstr ""
+
+#: includes/class-udc-backup.php:204
+msgid "Create Manual Backup"
+msgstr ""
+
+#: includes/class-udc-backup.php:207
+msgid "The system automatically creates a daily backup via WP-Cron. It stores a maximum of 5 recent backups securely in the local filesystem."
+msgstr ""
+
+#: includes/class-udc-backup.php:214
+msgid "Filename"
+msgstr ""
+
+#: includes/class-udc-backup.php:217
+msgid "Date"
+msgstr ""
+
+#: includes/class-udc-backup.php:220
+msgid "Size"
+msgstr ""
+
+#: includes/class-udc-backup.php:231
+msgid "No backups available found."
+msgstr ""
+
+#: includes/class-udc-backup.php:254
+msgid "Restore"
+msgstr ""
+
+#: includes/class-udc-backup.php:275
+msgid "Creating..."
+msgstr ""
+
+#: includes/class-udc-backup.php:308
+msgid "Are you sure you want to process this backup? Only missing submissions will be added. Existing data will not be overwritten or deleted."
+msgstr ""
+
+#: includes/class-udc-backup.php:317
+msgid "Restoring..."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:21
+msgid "Once Monthly"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:51
+msgid "Invalid email address configured for backups."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:59
+msgid "No local backups found to send."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:69
+msgid "Automated Data Backup - User Data Collection"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:71
+msgid "Hello,"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:72
+msgid "Attached is the most recent backup of your database submissions from the User Data Collection system."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:73
+#, php-format
+msgid "Date of backup: %s"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:74
+#, php-format
+msgid "File size: %s"
+msgstr ""
+
+#: includes/class-udc-email-sync.php:75
+msgid "This is an automated message. Please store this file in a secure location."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:84
+msgid "Failed to send email. Check your server mail configuration."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:99
+msgid "Backup emailed successfully to the configured address."
+msgstr ""
+
+#: includes/class-udc-email-sync.php:101
+msgid "Email backups are currently disabled in settings."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:20
+msgid "Once Weekly"
+msgstr ""
+
+#: includes/class-udc-gdrive.php:54
+msgid "Google Drive JSON settings are empty."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:60
+msgid "Invalid JSON credentials. Missing client_email or private_key."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:78
+msgid "Error signing JWT. Ensure OpenSSL is configured correctly in server."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:94
+msgid "Network error requesting access token."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:102
+msgid "Google refused access token. Check credentials and scopes."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:118
+msgid "Google Drive Folder ID is missing."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:136
+msgid "Failed to list Cloud files."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:143
+#, php-format
+msgid "Drive API Error: %s"
+msgstr ""
+
+#: includes/class-udc-gdrive.php:203
+msgid "Sync successful. Cloud is already up to date with local files."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:206
+#, php-format
+msgid "Sync successful. Uploaded %d files, removed %d old cloud records."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:219
+msgid "Failed to read local backup for upload."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:242
+msgid "Network error uploading to Drive."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:251
+#, php-format
+msgid "Drive API Upload Error: %s"
+msgstr ""
+
+#: includes/class-udc-gdrive.php:267
+msgid "Cloud Sync must be enabled and saved in settings first."
+msgstr ""
+
+#: includes/class-udc-gdrive.php:276
+msgid "Failed to sync."
+msgstr ""
+
+#: includes/class-udc-list-table.php:15
+msgid "Submission"
+msgstr ""
+
+#: includes/class-udc-list-table.php:65
+msgid "Upcoming"
+msgstr ""
+
+#: includes/class-udc-list-table.php:69
+msgid "Past"
+msgstr ""
+
+#: includes/class-udc-list-table.php:142
+msgid "View Details"
+msgstr ""
+
+#: includes/class-udc-settings.php:48
+msgid "Google Drive Integration"
+msgstr ""
+
+#: includes/class-udc-settings.php:49
+msgid "Email Backups"
+msgstr ""
+
+#: includes/class-udc-settings.php:59
+msgid "Last Sync Status:"
+msgstr ""
+
+#: includes/class-udc-settings.php:68
+msgid "Enable Cloud Sync"
+msgstr ""
+
+#: includes/class-udc-settings.php:71
+msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
+msgstr ""
+
+#: includes/class-udc-settings.php:75
+msgid "Google Drive Folder ID"
+msgstr ""
+
+#: includes/class-udc-settings.php:78
+msgid "The 33-character ID found in your Google Drive folder URL."
+msgstr ""
+
+#: includes/class-udc-settings.php:82
+msgid "Service Account JSON Key"
+msgstr ""
+
+#: includes/class-udc-settings.php:86
+msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
+msgstr ""
+
+#: includes/class-udc-settings.php:95
+msgid "Manual Sync"
+msgstr ""
+
+#: includes/class-udc-settings.php:96
+msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
+msgstr ""
+
+#: includes/class-udc-settings.php:98
+msgid "Test Connection & Sync Now"
+msgstr ""
+
+#: includes/class-udc-settings.php:107
+msgid "Enable Email Backups"
+msgstr ""
+
+#: includes/class-udc-settings.php:110
+msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
+msgstr ""
+
+#: includes/class-udc-settings.php:114
+msgid "Email Address"
+msgstr ""
+
+#: includes/class-udc-settings.php:117
+msgid "The email address where the automatic backups should be sent."
+msgstr ""
+
+#: includes/class-udc-settings.php:125
+msgid "Send Manual Backup"
+msgstr ""
+
+#: includes/class-udc-settings.php:126
+msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
+msgstr ""
+
+#: includes/class-udc-settings.php:128
+msgid "Send Backup Now"
+msgstr ""
+
+#: includes/class-udc-settings.php:143
+msgid "Synchronizing..."
+msgstr ""
+
+#: includes/class-udc-settings.php:179
+msgid "Sending..."
+msgstr ""
