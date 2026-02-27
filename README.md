@@ -13,7 +13,7 @@ A robust, high-performance, and GDPR-compliant WordPress plugin engineered to ha
 * **Fully Internationalized (i18n):** The backend is fully translated using standard WordPress `__()` and `.po`/`.mo` files. The frontend dynamically ties into Polylang's string translation API for ultimate locale flexibility (FR, DE, IT, EN, ES, etc).
 * **Automated Backup System:** Includes a fully native JSON backup engine utilizing `WP-Cron` to automatically capture daily snapshots of the database, keeping strictly the 5 most recent files securely stored inside a `.htaccess`-protected hidden directory. Support included to inject standard `.json` backup files directly from the UI.
 * **Google Drive Cloud Sync:** Zero-dependency Service Account OAuth2 integration targeting maximum reliability. Weekly background sync uploads missing local JSON backups to a specified Google Drive folder, dynamically trimming cloud records to strictly mirror the native 5-file retention limit.
-* **Email Fast-Backups:** An accessible, secondary disaster-recovery layer that dispatches the most recent local JSON snapshot natively via `wp_mail` on a fully automated monthly Cron rotation, with manual instant-trigger capabilities.
+* **Email Fast-Backups:** An accessible, secondary disaster-recovery layer that dispatches the most recent local JSON snapshot natively via `wp_mail` on a fully automated monthly Cron rotation, with manual instant-trigger capabilities. Includes options to customize the "From" Sender Name and Address.
 * **Performant Form Processing:** Submission handling uses the `admin_post_*` API, completely avoiding generic frontend POST targets that can be exploited or cause cache misses.
 * **Frontend Design Customizer:** Exposes a Backend Settings UI to define background, text, borders, and general styling colors on the frontend inputs, instantly matching the host website's active aesthetic seamlessly directly from the WordPress Database (no CSS knowledge needed).
 
@@ -59,6 +59,7 @@ The rendered shortcode includes two distinct logical documents:
 * Go to **Submissions > Settings** and navigate to the **Email Backups** tab.
 * Toggle "Enable Email Backups" to schedule a recurring monthly WP-Cron email drop.
 * Enter the fallback receiver email address.
+* Optionally define a **Sender Email Address** and **Sender Name** to override the default WordPress sender.
 * Click **Send Backup Now** from this panel at any time to instantly receive the latest JSON payload.
 
 ### 6. Frontend Design Customizer
@@ -93,6 +94,12 @@ This project was built strictly adhering to established WordPress Coding Standar
 * `includes/class-udc-email-sync.php` - Standalone robust mailing handler attached to a monthly WP-Cron scheduler with attachment capabilities.
 * `includes/class-udc-i18n.php` - Translation hooks and Polylang dynamic string registration.
 * `languages/` - Contains standard WordPress `.po` and compiled `.mo` translation catalogs.
+
+### Database Updates
+Whenever the database structure needs to change (e.g. adding new columns to `wp_udc_submissions`):
+1. Modify the `CREATE TABLE` query inside `includes/class-udc-activator.php`.
+2. Increment the `UDC_DB_VERSION` constant in the main `user-data-collection.php` file.
+3. The plugin will automatically run `dbDelta` during the `plugins_loaded` hook to apply the schema changes dynamically when users update the plugin.
 
 ### Local Development (`wp-env`)
 To run the WordPress environment locally for testing:

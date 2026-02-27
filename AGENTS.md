@@ -16,6 +16,7 @@ When interacting with this project, AI agents should assume the following roles:
    - Use a custom database table created upon plugin activation using `dbDelta`.
    - **Do NOT** use Custom Post Types.
    - The table must include a boolean/tinyint field for `is_confirmed`.
+   - **CRITICAL:** Every time the database table layout is modified (new columns, changed column names, etc.), you MUST increment the `UDC_DB_VERSION` constant in `user-data-collection.php` and update the `CREATE TABLE` schema in `class-udc-activator.php`. This triggers the auto-update sync via `dbDelta` on the next load.
 3. **Future-Proofing & Longevity:**
    - Strictly use the official WordPress APIs (e.g., `$wpdb->insert`, `$wpdb->prepare`, standard hooks, `admin_post_` or `wp_ajax_` actions).
    - **Do NOT** use external PHP libraries or frameworks.

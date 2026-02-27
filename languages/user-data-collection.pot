@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-26T14:24:08+00:00\n"
+"POT-Creation-Date: 2026-02-27T14:50:17+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: user-data-collection\n"
@@ -91,127 +91,131 @@ msgid "Address"
 msgstr ""
 
 #: includes/class-udc-admin.php:123
-msgid "Zip Code, City"
+msgid "City"
 msgstr ""
 
 #: includes/class-udc-admin.php:127
+msgid "Zip Code"
+msgstr ""
+
+#: includes/class-udc-admin.php:131
 #: includes/class-udc-list-table.php:28
 msgid "Phone"
 msgstr ""
 
-#: includes/class-udc-admin.php:135
+#: includes/class-udc-admin.php:139
 msgid "Health Questionnaire"
 msgstr ""
 
-#: includes/class-udc-admin.php:139
+#: includes/class-udc-admin.php:143
 msgid "Good Health:"
 msgstr ""
 
-#: includes/class-udc-admin.php:140
-#: includes/class-udc-admin.php:143
-#: includes/class-udc-admin.php:146
-#: includes/class-udc-admin.php:149
-#: includes/class-udc-admin.php:152
+#: includes/class-udc-admin.php:144
+#: includes/class-udc-admin.php:147
+#: includes/class-udc-admin.php:150
+#: includes/class-udc-admin.php:153
+#: includes/class-udc-admin.php:156
 msgid "Yes"
 msgstr ""
 
-#: includes/class-udc-admin.php:140
-#: includes/class-udc-admin.php:143
-#: includes/class-udc-admin.php:146
-#: includes/class-udc-admin.php:149
-#: includes/class-udc-admin.php:152
+#: includes/class-udc-admin.php:144
+#: includes/class-udc-admin.php:147
+#: includes/class-udc-admin.php:150
+#: includes/class-udc-admin.php:153
+#: includes/class-udc-admin.php:156
 msgid "No"
 msgstr ""
 
-#: includes/class-udc-admin.php:142
+#: includes/class-udc-admin.php:146
 msgid "Undergoing Treatment:"
 msgstr ""
 
-#: includes/class-udc-admin.php:145
+#: includes/class-udc-admin.php:149
 msgid "Blood Thinners/Sintrom:"
 msgstr ""
 
-#: includes/class-udc-admin.php:148
+#: includes/class-udc-admin.php:152
 msgid "Allergies:"
 msgstr ""
 
-#: includes/class-udc-admin.php:151
+#: includes/class-udc-admin.php:155
 msgid "Pregnant/Breastfeeding:"
 msgstr ""
 
-#: includes/class-udc-admin.php:161
+#: includes/class-udc-admin.php:165
 msgid "Appointment Info"
 msgstr ""
 
-#: includes/class-udc-admin.php:163
+#: includes/class-udc-admin.php:167
 msgid "Date:"
 msgstr ""
 
-#: includes/class-udc-admin.php:165
+#: includes/class-udc-admin.php:169
 msgid "Time:"
 msgstr ""
 
-#: includes/class-udc-admin.php:167
+#: includes/class-udc-admin.php:171
 msgid "Location:"
 msgstr ""
 
-#: includes/class-udc-admin.php:169
+#: includes/class-udc-admin.php:173
 msgid "Submitted:"
 msgstr ""
 
-#: includes/class-udc-admin.php:172
+#: includes/class-udc-admin.php:176
 msgid "Status:"
 msgstr ""
 
-#: includes/class-udc-admin.php:175
+#: includes/class-udc-admin.php:179
 #: includes/class-udc-list-table.php:171
 msgid "Confirmed"
 msgstr ""
 
-#: includes/class-udc-admin.php:178
+#: includes/class-udc-admin.php:182
 #: includes/class-udc-list-table.php:173
 msgid "Pending"
 msgstr ""
 
-#: includes/class-udc-admin.php:188
+#: includes/class-udc-admin.php:192
 msgid "Confirm Appointment"
 msgstr ""
 
-#: includes/class-udc-admin.php:194
+#: includes/class-udc-admin.php:198
 msgid "Unconfirm Appointment"
 msgstr ""
 
-#: includes/class-udc-admin.php:200
+#: includes/class-udc-admin.php:204
 msgid "Liability Notice"
 msgstr ""
 
-#: includes/class-udc-admin.php:205
+#: includes/class-udc-admin.php:209
 msgid "Terms & conditions and liability waiver accepted by the user."
 msgstr ""
 
-#: includes/class-udc-admin.php:208
+#: includes/class-udc-admin.php:212
 msgid "Not accepted."
 msgstr ""
 
-#: includes/class-udc-admin.php:232
+#: includes/class-udc-admin.php:236
 msgid "Confirming..."
 msgstr ""
 
-#: includes/class-udc-admin.php:232
+#: includes/class-udc-admin.php:236
 #: includes/class-udc-list-table.php:162
 msgid "Confirm"
 msgstr ""
 
-#: includes/class-udc-admin.php:235
+#: includes/class-udc-admin.php:239
 msgid "Unconfirming..."
 msgstr ""
 
-#: includes/class-udc-admin.php:235
+#: includes/class-udc-admin.php:239
 #: includes/class-udc-list-table.php:155
 msgid "Unconfirm"
 msgstr ""
 
-#: includes/class-udc-admin.php:261
+#: includes/class-udc-admin.php:265
 #: includes/class-udc-backup.php:347
 #: includes/class-udc-backup.php:393
 #: includes/class-udc-backup.php:438
@@ -221,7 +225,7 @@ msgstr ""
 msgid "An error occurred."
 msgstr ""
 
-#: includes/class-udc-admin.php:267
+#: includes/class-udc-admin.php:271
 #: includes/class-udc-backup.php:353
 #: includes/class-udc-backup.php:400
 #: includes/class-udc-backup.php:444

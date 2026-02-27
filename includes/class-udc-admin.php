@@ -120,8 +120,12 @@ class UDC_Admin
                                         <td><?php echo esc_html($submission->address); ?></td>
                                     </tr>
                                     <tr>
-                                        <th><?php esc_html_e('Zip Code, City', 'user-data-collection'); ?></th>
-                                        <td><?php echo esc_html($submission->zip_city); ?></td>
+                                        <th><?php esc_html_e('City', 'user-data-collection'); ?></th>
+                                        <td><?php echo esc_html($submission->city); ?></td>
+                                    </tr>
+                                    <tr>
+                                        <th><?php esc_html_e('Zip Code', 'user-data-collection'); ?></th>
+                                        <td><?php echo esc_html($submission->zip); ?></td>
                                     </tr>
                                     <tr>
                                         <th><?php esc_html_e('Phone', 'user-data-collection'); ?></th>

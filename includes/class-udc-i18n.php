@@ -61,7 +61,8 @@ class UDC_i18n
             'label_first_name' => 'First Name *',
             'label_dob' => 'Date of Birth *',
             'label_address' => 'Address *',
-            'label_city' => 'Zip Code, City *',
+            'label_city' => 'City *',
+            'label_zip' => 'Zip Code *',
             'label_phone' => 'Phone *',
 
             'title_health' => 'HEALTH QUESTIONNAIRE',
