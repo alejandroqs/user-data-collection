@@ -190,8 +190,12 @@ class UDC_Shortcode
                 <input type="text" id="udc_address" name="udc_address" required>
             </p>
             <p>
-                <label for="udc_zip_city"><?php echo esc_html(UDC_i18n::translate('label_city')); ?></label><br>
-                <input type="text" id="udc_zip_city" name="udc_zip_city" required>
+                <label for="udc_city"><?php echo esc_html(UDC_i18n::translate('label_city')); ?></label><br>
+                <input type="text" id="udc_city" name="udc_city" required>
+            </p>
+            <p>
+                <label for="udc_zip"><?php echo esc_html(UDC_i18n::translate('label_zip')); ?></label><br>
+                <input type="text" id="udc_zip" name="udc_zip" style="max-width: 150px;" required>
             </p>
             <p>
                 <label for="udc_phone"><?php echo esc_html(UDC_i18n::translate('label_phone')); ?></label><br>
@@ -293,7 +297,8 @@ class UDC_Shortcode
         $first_name = isset($_POST['udc_first_name']) ? sanitize_text_field(wp_unslash($_POST['udc_first_name'])) : '';
         $dob = isset($_POST['udc_dob']) ? sanitize_text_field(wp_unslash($_POST['udc_dob'])) : '';
         $address = isset($_POST['udc_address']) ? sanitize_text_field(wp_unslash($_POST['udc_address'])) : '';
-        $zip_city = isset($_POST['udc_zip_city']) ? sanitize_text_field(wp_unslash($_POST['udc_zip_city'])) : '';
+        $city = isset($_POST['udc_city']) ? sanitize_text_field(wp_unslash($_POST['udc_city'])) : '';
+        $zip = isset($_POST['udc_zip']) ? sanitize_text_field(wp_unslash($_POST['udc_zip'])) : '';
         $phone = isset($_POST['udc_phone']) ? sanitize_text_field(wp_unslash($_POST['udc_phone'])) : '';
 
         $health_good = isset($_POST['udc_health_good']) ? 1 : 0;
@@ -326,7 +331,8 @@ class UDC_Shortcode
                 'first_name' => $first_name,
                 'dob' => $dob,
                 'address' => $address,
-                'zip_city' => $zip_city,
+                'city' => $city,
+                'zip' => $zip,
                 'phone' => $phone,
                 'health_good' => $health_good,
                 'health_treatment' => $health_treatment,
@@ -340,6 +346,7 @@ class UDC_Shortcode
                 'is_confirmed' => 0
             ],
             [
+                '%s',
                 '%s',
                 '%s',
                 '%s',

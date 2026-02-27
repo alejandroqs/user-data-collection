@@ -3,7 +3,7 @@
  * Plugin Name: User Data Collection
  * Plugin URI:  https://alejandroqs.github.io
  * Description: A secure, high-performance plugin to collect user submissions via shortcode and manage them in a custom database table. GDPR compliant.
- * Version:     1.2.0
+ * Version:     1.3.0
  * Author:      Alejandro Quesada
  * Author URI:  https://alejandroqs.github.io
  * Text Domain: user-data-collection
