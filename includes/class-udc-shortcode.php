@@ -21,9 +21,9 @@ class UDC_Shortcode
 
         // Check for success or error messages (set via transients or URL parameters)
         if (isset($_GET['udc_status']) && $_GET['udc_status'] === 'success') {
-            echo '<p style="color: green;">' . esc_html(UDC_i18n::translate('msg_success')) . '</p>';
+            echo '<div style="background-color: #b2c7b7; border: 1px solid #7d9482; color: #155724; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#10004; ' . esc_html(UDC_i18n::translate('msg_success')) . '</div>';
         } elseif (isset($_GET['udc_status']) && $_GET['udc_status'] === 'error') {
-            echo '<p style="color: red;">' . esc_html(UDC_i18n::translate('msg_error')) . '</p>';
+            echo '<div style="background-color: #d2b6b9; border: 1px solid #a18185; color: #721c24; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#9888; ' . esc_html(UDC_i18n::translate('msg_error')) . '</div>';
         }
 
         $design_enabled = get_option('udc_design_enabled', '0');
@@ -33,52 +33,135 @@ class UDC_Shortcode
             $input_text = esc_html(get_option('udc_design_input_text', '#ffffff'));
             $care_bg = esc_html(get_option('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)'));
             $care_border = esc_html(get_option('udc_design_care_border', '#ffffff'));
+
+            $cb_bg = esc_html(get_option('udc_design_cb_bg', 'transparent'));
+            $cb_border = esc_html(get_option('udc_design_cb_border', 'rgba(255, 255, 255, 0.5)'));
+            $cb_check = esc_html(get_option('udc_design_cb_check', '#ffffff'));
+            $invert_icons = get_option('udc_design_invert_icons', '1');
             ?>
             <style>
-                .udc-form input[type="text"], 
-                .udc-form input[type="date"], 
-                .udc-form input[type="time"], 
+                .udc-form input[type="text"],
+                .udc-form input[type="date"],
+                .udc-form input[type="time"],
                 .udc-form input[type="tel"] {
-                    background: <?php echo $input_bg; ?>;
-                    border: 1px solid <?php echo $input_border; ?>;
-                    color: <?php echo $input_text; ?>;
+                    background:
+                        <?php echo $input_bg; ?>
+                    ;
+                    border: 1px solid
+                        <?php echo $input_border; ?>
+                    ;
+                    color:
+                        <?php echo $input_text; ?>
+                    ;
                     padding: 8px 12px;
                     width: 100%;
                     max-width: 400px;
                     box-sizing: border-box;
-                    font-family: inherit;
+                    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
                 }
-                .udc-form input[type="text"]:focus, 
-                .udc-form input[type="date"]:focus, 
-                .udc-form input[type="time"]:focus, 
+
+                .udc-form input[type="text"]:focus,
+                .udc-form input[type="date"]:focus,
+                .udc-form input[type="time"]:focus,
                 .udc-form input[type="tel"]:focus {
-                    border-color: <?php echo $input_text; ?>;
+                    border-color:
+                        <?php echo $input_text; ?>
+                    ;
                     outline: none;
                 }
+
                 .udc-form .udc-care-instructions {
-                    background: <?php echo $care_bg; ?>;
+                    background:
+                        <?php echo $care_bg; ?>
+                    ;
                     padding: 15px;
-                    border-left: 4px solid <?php echo $care_border; ?>;
+                    border-left: 4px solid
+                        <?php echo $care_border; ?>
+                    ;
                     margin-bottom: 15px;
-                    color: <?php echo $input_text; ?>;
+                    color:
+                        <?php echo $input_text; ?>
+                    ;
                 }
+
                 .udc-form .udc-care-instructions ul {
                     margin: 0;
                     padding-left: 20px;
                 }
+
                 .udc-form button[type="submit"] {
                     background: transparent;
-                    border: 2px solid <?php echo $input_border; ?>;
-                    color: <?php echo $input_text; ?>;
+                    border: 2px solid
+                        <?php echo $input_border; ?>
+                    ;
+                    color:
+                        <?php echo $input_text; ?>
+                    ;
                     padding: 10px 20px;
                     cursor: pointer;
                     text-transform: uppercase;
                     font-weight: bold;
                 }
+
                 .udc-form button[type="submit"]:hover {
-                    background: <?php echo $input_text; ?>;
+                    background:
+                        <?php echo $input_text; ?>
+                    ;
                     color: #000;
                 }
+
+                /* Custom Checkboxes */
+                .udc-form input[type="checkbox"] {
+                    appearance: none;
+                    -webkit-appearance: none;
+                    background-color:
+                        <?php echo $cb_bg; ?>
+                    ;
+                    margin: 0 8px 0 0;
+                    font: inherit;
+                    color: currentColor;
+                    width: 1.15em;
+                    height: 1.15em;
+                    border: 1px solid
+                        <?php echo $cb_border; ?>
+                    ;
+                    border-radius: 0.15em;
+                    transform: translateY(-0.075em);
+                    display: inline-grid;
+                    place-content: center;
+                    cursor: pointer;
+                }
+
+                .udc-form input[type="checkbox"]::before {
+                    content: "";
+                    width: 0.65em;
+                    height: 0.65em;
+                    transform: scale(0);
+                    transition: 120ms transform ease-in-out;
+                    box-shadow: inset 1em 1em
+                        <?php echo $cb_check; ?>
+                    ;
+                    transform-origin: bottom left;
+                    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+                }
+
+                .udc-form input[type="checkbox"]:checked::before {
+                    transform: scale(1);
+                }
+
+                <?php if ($invert_icons): ?>
+                    /* Invert browser native icons */
+                    .udc-form input[type="date"],
+                    .udc-form input[type="time"] {
+                        color-scheme: light;
+                    }
+
+                    .udc-form input[type="date"]::-webkit-calendar-picker-indicator,
+                    .udc-form input[type="time"]::-webkit-calendar-picker-indicator {
+                        filter: invert(1);
+                    }
+
+                <?php endif; ?>
             </style>
             <?php
         }
@@ -162,7 +245,8 @@ class UDC_Shortcode
             </p>
 
             <h2><?php echo esc_html(UDC_i18n::translate('subtitle_care')); ?></h2>
-            <div class="udc-care-instructions" <?php if (!$design_enabled) echo 'style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;"'; ?>>
+            <div class="udc-care-instructions" <?php if (!$design_enabled)
+                echo 'style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;"'; ?>>
                 <ul>
                     <?php
                     $care_keys = ['care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6'];

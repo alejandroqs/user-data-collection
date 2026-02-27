@@ -74,9 +74,34 @@ class UDC_Email_Sync
         $message .= sprintf(__('File size: %s', 'user-data-collection'), size_format(filesize($latest_backup))) . "\n\n";
         $message .= __('This is an automated message. Please store this file in a secure location.', 'user-data-collection') . "\n";
 
-        $attachments = func_get_args() ? [] : [$latest_backup];
+        $attachments = is_array(func_get_args()) && !empty(func_get_args()) ? [] : [$latest_backup];
+
+        $sender_email = get_option('udc_email_sender_address', '');
+        $sender_name = get_option('udc_email_sender_name', '');
+
+        // Temporarily override mail from features
+        $mail_from_filter = function ($original_email_address) use ($sender_email) {
+            return !empty($sender_email) ? $sender_email : $original_email_address;
+        };
+        $mail_from_name_filter = function ($original_email_from) use ($sender_name) {
+            return !empty($sender_name) ? $sender_name : $original_email_from;
+        };
+
+        if (!empty($sender_email)) {
+            add_filter('wp_mail_from', $mail_from_filter);
+        }
+        if (!empty($sender_name)) {
+            add_filter('wp_mail_from_name', $mail_from_name_filter);
+        }
 
         $sent = wp_mail($email_address, $subject, $message, '', $attachments);
+
+        if (!empty($sender_email)) {
+            remove_filter('wp_mail_from', $mail_from_filter);
+        }
+        if (!empty($sender_name)) {
+            remove_filter('wp_mail_from_name', $mail_from_name_filter);
+        }
 
         if ($sent) {
             return true;

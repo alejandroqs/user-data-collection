@@ -90,8 +90,9 @@ msgstr "Bestätige..."
 #: includes/class-udc-backup.php:347
 #: includes/class-udc-backup.php:393
 #: includes/class-udc-backup.php:438
-#: includes/class-udc-settings.php:225
-#: includes/class-udc-settings.php:260
+#: includes/class-udc-settings.php:332
+#: includes/class-udc-settings.php:367
+#: includes/class-udc-settings.php:407
 msgid "An error occurred."
 msgstr "Ein Fehler ist aufgetreten."
 
@@ -99,8 +100,9 @@ msgstr "Ein Fehler ist aufgetreten."
 #: includes/class-udc-backup.php:353
 #: includes/class-udc-backup.php:400
 #: includes/class-udc-backup.php:444
-#: includes/class-udc-settings.php:231
-#: includes/class-udc-settings.php:266
+#: includes/class-udc-settings.php:338
+#: includes/class-udc-settings.php:373
+#: includes/class-udc-settings.php:413
 msgid "Network Error"
 msgstr "Netzwerkfehler"
 
@@ -131,7 +133,7 @@ msgstr ""
 
 #: includes/class-udc-admin.php:37
 #: includes/class-udc-admin.php:38
-#: includes/class-udc-settings.php:61
+#: includes/class-udc-settings.php:121
 msgid "Settings"
 msgstr ""
 
@@ -267,10 +269,11 @@ msgstr ""
 #: includes/class-udc-backup.php:163
 #: includes/class-udc-backup.php:177
 #: includes/class-udc-backup.php:196
-#: includes/class-udc-email-sync.php:91
+#: includes/class-udc-email-sync.php:116
 #: includes/class-udc-gdrive.php:261
+#: includes/class-udc-settings.php:17
 msgid "Permission denied or invalid security token."
-msgstr ""
+msgstr "Permission denied or invalid security token."
 
 #: includes/class-udc-backup.php:168
 msgid "Backup created successfully."
@@ -371,15 +374,15 @@ msgstr ""
 msgid "This is an automated message. Please store this file in a secure location."
 msgstr ""
 
-#: includes/class-udc-email-sync.php:84
+#: includes/class-udc-email-sync.php:109
 msgid "Failed to send email. Check your server mail configuration."
 msgstr ""
 
-#: includes/class-udc-email-sync.php:99
+#: includes/class-udc-email-sync.php:124
 msgid "Backup emailed successfully to the configured address."
 msgstr ""
 
-#: includes/class-udc-email-sync.php:101
+#: includes/class-udc-email-sync.php:126
 msgid "Email backups are currently disabled in settings."
 msgstr ""
 
@@ -466,87 +469,83 @@ msgstr ""
 msgid "View Details"
 msgstr ""
 
-#: includes/class-udc-settings.php:64
+#: includes/class-udc-settings.php:124
 msgid "Google Drive Integration"
 msgstr ""
 
-#: includes/class-udc-settings.php:65
+#: includes/class-udc-settings.php:125
 msgid "Email Backups"
 msgstr ""
 
-#: includes/class-udc-settings.php:76
+#: includes/class-udc-settings.php:137
 msgid "Last Sync Status:"
 msgstr ""
 
-#: includes/class-udc-settings.php:85
+#: includes/class-udc-settings.php:146
 msgid "Enable Cloud Sync"
 msgstr ""
 
-#: includes/class-udc-settings.php:88
+#: includes/class-udc-settings.php:149
 msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
 msgstr ""
 
-#: includes/class-udc-settings.php:92
+#: includes/class-udc-settings.php:153
 msgid "Google Drive Folder ID"
 msgstr ""
 
-#: includes/class-udc-settings.php:95
+#: includes/class-udc-settings.php:156
 msgid "The 33-character ID found in your Google Drive folder URL."
 msgstr ""
 
-#: includes/class-udc-settings.php:99
+#: includes/class-udc-settings.php:160
 msgid "Service Account JSON Key"
 msgstr ""
 
-#: includes/class-udc-settings.php:103
+#: includes/class-udc-settings.php:164
 msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
 msgstr ""
 
-#: includes/class-udc-settings.php:112
+#: includes/class-udc-settings.php:173
 msgid "Manual Sync"
 msgstr ""
 
-#: includes/class-udc-settings.php:113
+#: includes/class-udc-settings.php:174
 msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
 msgstr ""
 
-#: includes/class-udc-settings.php:115
+#: includes/class-udc-settings.php:176
 msgid "Test Connection & Sync Now"
 msgstr ""
 
-#: includes/class-udc-settings.php:124
+#: includes/class-udc-settings.php:185
 msgid "Enable Email Backups"
 msgstr ""
 
-#: includes/class-udc-settings.php:127
+#: includes/class-udc-settings.php:188
 msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
 msgstr ""
 
-#: includes/class-udc-settings.php:131
-msgid "Email Address"
-msgstr ""
-
-#: includes/class-udc-settings.php:134
+#: includes/class-udc-settings.php:195
 msgid "The email address where the automatic backups should be sent."
 msgstr ""
 
-#: includes/class-udc-settings.php:142
+#: includes/class-udc-settings.php:217
 msgid "Send Manual Backup"
 msgstr ""
 
-#: includes/class-udc-settings.php:143
+#: includes/class-udc-settings.php:218
 msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
 msgstr ""
 
-#: includes/class-udc-settings.php:145
+#: includes/class-udc-settings.php:220
 msgid "Send Backup Now"
 msgstr ""
 
-#: includes/class-udc-settings.php:209
+#: includes/class-udc-settings.php:316
 msgid "Synchronizing..."
 msgstr ""
 
-#: includes/class-udc-settings.php:245
+#: includes/class-udc-settings.php:352
 msgid "Sending..."
 msgstr ""
 
@@ -583,42 +582,110 @@ msgstr "Upload Backup JSON"
 msgid "Uploading..."
 msgstr "Uploading..."
 
-#: includes/class-udc-settings.php:66
+#: includes/class-udc-settings.php:126
 msgid "Design Customization"
 msgstr "Design Customization"
 
-#: includes/class-udc-settings.php:152
+#: includes/class-udc-settings.php:227
 msgid "Customize the frontend form colors to match your dark/red theme seamlessly."
 msgstr "Customize the frontend form colors to match your dark/red theme seamlessly."
 
-#: includes/class-udc-settings.php:156
+#: includes/class-udc-settings.php:231
 msgid "Enable Custom Design"
 msgstr "Enable Custom Design"
 
-#: includes/class-udc-settings.php:159
+#: includes/class-udc-settings.php:234
 msgid "Check to override default browser styles with the custom colors below."
 msgstr "Check to override default browser styles with the custom colors below."
 
-#: includes/class-udc-settings.php:163
+#: includes/class-udc-settings.php:238
 msgid "Input Background Color"
 msgstr "Input Background Color"
 
-#: includes/class-udc-settings.php:166
+#: includes/class-udc-settings.php:241
 msgid "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
 msgstr "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
 
-#: includes/class-udc-settings.php:170
+#: includes/class-udc-settings.php:245
 msgid "Input Border Color"
 msgstr "Input Border Color"
 
-#: includes/class-udc-settings.php:176
+#: includes/class-udc-settings.php:251
 msgid "Input Text Color"
 msgstr "Input Text Color"
 
-#: includes/class-udc-settings.php:182
+#: includes/class-udc-settings.php:257
 msgid "Care Instructions Background"
 msgstr "Care Instructions Background"
 
-#: includes/class-udc-settings.php:188
+#: includes/class-udc-settings.php:263
 msgid "Care Instructions Border"
 msgstr "Care Instructions Border"
+
+#: includes/class-udc-settings.php:269
+msgid "Checkbox Background"
+msgstr "Checkbox Background"
+
+#: includes/class-udc-settings.php:275
+msgid "Checkbox Border"
+msgstr "Checkbox Border"
+
+#: includes/class-udc-settings.php:281
+msgid "Checkbox Checkmark Color"
+msgstr "Checkbox Checkmark Color"
+
+#: includes/class-udc-settings.php:287
+msgid "Invert Date/Time Icons"
+msgstr "Invert Date/Time Icons"
+
+#: includes/class-udc-settings.php:290
+msgid "Check to invert browser native icons to white (works best on dark backgrounds)."
+msgstr "Check to invert browser native icons to white (works best on dark backgrounds)."
+
+#: includes/class-udc-settings.php:57
+msgid "All data has been successfully deleted and settings reset."
+msgstr "All data has been successfully deleted and settings reset."
+
+#: includes/class-udc-settings.php:127
+msgid "Advanced"
+msgstr "Advanced"
+
+#: includes/class-udc-settings.php:298
+msgid "Warning: Irreversible Action"
+msgstr "Warning: Irreversible Action"
+
+#: includes/class-udc-settings.php:299
+msgid "This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values."
+msgstr "This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values."
+
+#: includes/class-udc-settings.php:301
+msgid "Delete All Data"
+msgstr "Delete All Data"
+
+#: includes/class-udc-settings.php:384
+msgid "Are you absolutely sure? This will delete all backups, form submissions, and reset options. This cannot be undone."
+msgstr "Are you absolutely sure? This will delete all backups, form submissions, and reset options. This cannot be undone."
+
+#: includes/class-udc-settings.php:391
+msgid "Deleting..."
+msgstr "Deleting..."
+
+#: includes/class-udc-settings.php:192
+msgid "Destination Email Address"
+msgstr "Destination Email Address"
+
+#: includes/class-udc-settings.php:199
+msgid "Sender Email Address (From)"
+msgstr "Sender Email Address (From)"
+
+#: includes/class-udc-settings.php:202
+msgid "Optional. Set the \"From\" email address. Leaves WP default if empty."
+msgstr ""
+
+#: includes/class-udc-settings.php:206
+msgid "Sender Name (From Name)"
+msgstr "Sender Name (From Name)"
+
+#: includes/class-udc-settings.php:209
+msgid "Optional. Set the \"From\" display name. Leaves WP default if empty."
+msgstr ""
