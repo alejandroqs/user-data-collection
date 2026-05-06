@@ -7,8 +7,10 @@ class UDC_i18n
 {
     public function __construct()
     {
+        // Load textdomain immediately as we are already in plugins_loaded hook from the main file
+        $this->load_textdomain();
+        
         add_action('init', [$this, 'register_strings']);
-        add_action('plugins_loaded', [$this, 'load_textdomain']);
     }
 
     public function load_textdomain()
@@ -16,7 +18,7 @@ class UDC_i18n
         load_plugin_textdomain(
             'user-data-collection',
             false,
-            dirname(dirname(plugin_basename(__FILE__))) . '/languages/'
+            basename(dirname(__FILE__, 2)) . '/languages/'
         );
     }
 

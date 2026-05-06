@@ -1,0 +1,584 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: User Data Collection 1.3.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-05-06 20:25+0100\n"
+"PO-Revision-Date: 2026-05-06 20:25+0100\n"
+"Last-Translator: Alejandro Quesada\n"
+"Language-Team: French\n"
+"Language: fr_FR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.0\n"
+"X-Domain: user-data-collection\n"
+
+msgid "Thank you! Your request has been received."
+msgstr "Merci ! Votre demande a été reçue."
+
+msgid "There was an error processing your request. Please try again."
+msgstr "Une erreur s'est produite lors du traitement de votre demande. Veuillez réessayer."
+
+msgid "PERSONAL DATA"
+msgstr "DONNÉES PERSONNELLES"
+
+msgid "Last Name *"
+msgstr "Nom *"
+
+msgid "First Name *"
+msgstr "Prénom *"
+
+msgid "Date of Birth *"
+msgstr "Date de naissance *"
+
+msgid "Address *"
+msgstr "Adresse *"
+
+msgid "City *"
+msgstr "Ville *"
+
+msgid "Zip Code *"
+msgstr "Code Postal *"
+
+msgid "Phone *"
+msgstr "Téléphone *"
+
+msgid "HEALTH QUESTIONNAIRE"
+msgstr "QUESTIONNAIRE DE SANTÉ"
+
+msgid "I am currently in good health."
+msgstr "Je suis actuellement en bonne santé."
+
+msgid "I am undergoing medical or dental treatment."
+msgstr "Je suis un traitement médical ou dentaire."
+
+msgid "I regularly take blood-thinning medications, such as Sintrom or aspirin (or suffer from frequent blistering)."
+msgstr "Je prends régulièrement des anticoagulants, comme le Sintrom ou l'aspirine (ou je souffre de cloques fréquentes)."
+
+msgid "I am prone to allergies, latex, or others."
+msgstr "Je suis sujet aux allergies, au latex ou autres."
+
+msgid "I am pregnant or breastfeeding."
+msgstr "Je suis enceinte ou j'allaite."
+
+msgid "Liability Clause"
+msgstr "Clause de Responsabilité"
+
+msgid "I declare I am aware that minors cannot get a tattoo/piercing without the presence of a parent. I accept that Titanium Shop is subject to the strictest hygiene rules: sterile single-use needles and sterilization equipment meeting standards and approved by EYECO.ch. I assume full responsibility for the hygiene and care of my piercing/tattoo outside the shop; therefore, I release the studio from any liability for any consequences following the procedure (infection, rejection, allergy, etc.). I waive all legal or criminal actions. I acknowledge that if I deliberately conceal information regarding my age or nature that endangers my health or that of the staff, legal action could be taken against me. *"
+msgstr "Je déclare être conscient que les mineurs ne peuvent pas se faire tatouer/percer sans la présence d'un parent. J'accepte que Titanium Shop soit soumis aux règles d'hygiène les plus strictes : aiguilles stériles à usage unique et matériel de stérilisation répondant aux normes et approuvé par EYECO.ch. J'assume l'entière responsabilité de l'hygiène et des soins de mon piercing/tatouage en dehors de la boutique ; par conséquent, je libère le studio de toute responsabilité pour toute conséquence suite à la procédure (infection, rejet, allergie, etc.). Je renonce à toute action civile ou pénale. Je reconnais que si je cache délibérément des informations concernant mon âge ou ma nature qui mettent en danger ma santé ou celle du personnel, des poursuites judiciaires pourraient être engagées contre moi. *"
+
+msgid "APPOINTMENT DETAILS"
+msgstr "DÉTAILS DU RENDEZ-VOUS"
+
+msgid "Date of appointment *"
+msgstr "Date du rendez-vous *"
+
+msgid "Time *"
+msgstr "Heure *"
+
+msgid "Piercing location *"
+msgstr "Emplacement du piercing *"
+
+msgid "PIERCING CARE INSTRUCTIONS"
+msgstr "CONSIGNES DE SOINS DU PIERCING"
+
+msgid "Regular cleaning: Always wash your hands thoroughly before touching the piercing."
+msgstr "Nettoyage régulier : Lavez-vous toujours soigneusement les mains avant de toucher le piercing."
+
+msgid "Avoid irritating products: Do not use alcohol or hydrogen peroxide. These products are too aggressive and can delay healing. Do not use scented soaps; use mild, unscented soaps."
+msgstr "Évitez les produits irritants : N'utilisez pas d'alcool ni d'eau oxygénée. Ces produits sont trop agressifs et peuvent retarder la cicatrisation. N'utilisez pas de savons parfumés ; utilisez des savons doux et non parfumés."
+
+msgid "Minimal handling: Avoid touching the piercing. Do not rotate the jewelry except to clean it. Wear loose clothing so as not to irritate the area."
+msgstr "Manipulation minimale : Évitez de toucher le piercing. Ne faites pas pivoter le bijou sauf pour le nettoyer. Portez des vêtements amples pour ne pas irriter la zone."
+
+msgid "Daily hygiene: Avoid tight clothing for body piercings (navel, nipple). Wear cotton clothing to let the area breathe."
+msgstr "Hygiène quotidienne : Évitez les vêtements serrés pour les piercings corporels (nombril, téton). Portez des vêtements en coton pour laisser respirer la zone."
+
+msgid "Monitoring for signs of infection: Redness, pain, heat, yellow or green discharge. If you notice these signs, consult a healthcare professional. An infection must be treated quickly."
+msgstr "Surveillance des signes d'infection : Rougeur, douleur, chaleur, écoulement jaune ou vert. Si vous remarquez ces signes, consultez un professionnel de la santé. Une infection doit être traitée rapidement."
+
+msgid "Healing time: Healing time varies depending on the location of the piercing. Earlobe piercings usually take 6 to 8 weeks, while cartilage, nose, or navel piercings can take several months."
+msgstr "Temps de cicatrisation : Le temps de cicatrisation varie selon l'emplacement du piercing. Les piercings au lobe de l'oreille prennent généralement 6 à 8 semaines, tandis que les piercings au cartilage, au nez ou au nombril peuvent prendre plusieurs mois."
+
+msgid "Submit"
+msgstr "Envoyer"
+
+msgid "Submissions"
+msgstr "Soumissions"
+
+msgid "Backups"
+msgstr "Sauvegardes"
+
+msgid "Settings"
+msgstr "Réglages"
+
+msgid "User Submissions"
+msgstr "Soumissions des Utilisateurs"
+
+msgid "Submission Details"
+msgstr "Détails de la Soumission"
+
+msgid "Back to List"
+msgstr "Retour à la Liste"
+
+msgid "Submission not found."
+msgstr "Soumission non trouvée."
+
+msgid "Personal Information"
+msgstr "Informations Personnelles"
+
+msgid "First Name"
+msgstr "Prénom"
+
+msgid "Last Name"
+msgstr "Nom"
+
+msgid "Date of Birth"
+msgstr "Date de Naissance"
+
+msgid "Address"
+msgstr "Adresse"
+
+msgid "City"
+msgstr "Ville"
+
+msgid "Zip Code"
+msgstr "Code Postal"
+
+msgid "Phone"
+msgstr "Téléphone"
+
+msgid "Health Questionnaire"
+msgstr "Questionnaire de Santé"
+
+msgid "Good Health:"
+msgstr "Bonne Santé :"
+
+msgid "Undergoing Treatment:"
+msgstr "Traitement en cours :"
+
+msgid "Blood Thinners/Sintrom:"
+msgstr "Anticoagulants/Sintrom :"
+
+msgid "Allergies:"
+msgstr "Allergies :"
+
+msgid "Pregnant/Breastfeeding:"
+msgstr "Enceinte/Allaitement :"
+
+msgid "Appointment Info"
+msgstr "Infos du RDV"
+
+msgid "Date:"
+msgstr "Date :"
+
+msgid "Time:"
+msgstr "Heure :"
+
+msgid "Location:"
+msgstr "Emplacement :"
+
+msgid "Submitted:"
+msgstr "Soumis le :"
+
+msgid "Status:"
+msgstr "Statut :"
+
+msgid "Confirmed"
+msgstr "Confirmé"
+
+msgid "Pending"
+msgstr "En attente"
+
+msgid "Confirm Appointment"
+msgstr "Confirmer le RDV"
+
+msgid "Unconfirm Appointment"
+msgstr "Annuler la confirmation"
+
+msgid "Liability Notice"
+msgstr "Avis de Responsabilité"
+
+msgid "Terms & conditions and liability waiver accepted by the user."
+msgstr "Conditions générales et décharge de responsabilité acceptées par l'utilisateur."
+
+msgid "Not accepted."
+msgstr "Non accepté."
+
+msgid "Confirming..."
+msgstr "Confirmation..."
+
+msgid "Confirm"
+msgstr "Confirmer"
+
+msgid "Unconfirming..."
+msgstr "Annulation..."
+
+msgid "Unconfirm"
+msgstr "Déconfirmer"
+
+msgid "An error occurred."
+msgstr "Une erreur s'est produite."
+
+msgid "Network Error"
+msgstr "Erreur Réseau"
+
+msgid "Permission denied."
+msgstr "Permission refusée."
+
+msgid "Invalid submission ID."
+msgstr "ID de soumission invalide."
+
+msgid "Security token invalid."
+msgstr "Jeton de sécurité invalide."
+
+msgid "Submission confirmed successfully."
+msgstr "Soumission confirmée avec succès."
+
+msgid "Database update failed."
+msgstr "Échec de la mise à jour de la base de données."
+
+msgid "Submission unconfirmed successfully."
+msgstr "Confirmation annulée avec succès."
+
+msgid "Permission denied or invalid security token."
+msgstr "Permission refusée ou jeton de sécurité invalide."
+
+msgid "All data has been successfully deleted and settings reset."
+msgstr "Toutes les données ont été supprimées et les réglages réinitialisés."
+
+msgid "Google Drive Integration"
+msgstr "Intégration Google Drive"
+
+msgid "Email Backups"
+msgstr "Sauvegardes par Email"
+
+msgid "Design Customization"
+msgstr "Personnalisation du Design"
+
+msgid "Advanced"
+msgstr "Avancé"
+
+msgid "Last Sync Status:"
+msgstr "Statut de la Dernière Sync :"
+
+msgid "Enable Cloud Sync"
+msgstr "Activer la Sync Cloud"
+
+msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
+msgstr "Si activé, une tâche hebdomadaire synchronisera vos sauvegardes locales vers Google Drive."
+
+msgid "Google Drive Folder ID"
+msgstr "ID du Dossier Google Drive"
+
+msgid "The 33-character ID found in your Google Drive folder URL."
+msgstr "L'ID de 33 caractères trouvé dans l'URL de votre dossier Google Drive."
+
+msgid "Service Account JSON Key"
+msgstr "Clé JSON du Compte de Service"
+
+msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
+msgstr "Créez un compte de service dans Google Cloud, générez une clé JSON et collez son contenu ici. Assurez-vous de partager le dossier Google Drive avec l'e-mail du compte de service (rôle Éditeur)."
+
+msgid "Manual Sync"
+msgstr "Sync Manuelle"
+
+msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
+msgstr "Vous pouvez déclencher la synchronisation manuellement pour télécharger immédiatement les sauvegardes manquantes et appliquer la limite de 5 fichiers."
+
+msgid "Test Connection & Sync Now"
+msgstr "Tester la Connexion et Sync"
+
+msgid "Enable Email Backups"
+msgstr "Activer les Sauvegardes par Email"
+
+msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
+msgstr "Si activé, une tâche mensuelle enverra le fichier de sauvegarde le plus récent à l'adresse e-mail configurée."
+
+msgid "Destination Email Address"
+msgstr "Adresse E-mail de Destination"
+
+msgid "The email address where the automatic backups should be sent."
+msgstr "L'adresse e-mail où les sauvegardes automatiques doivent être envoyées."
+
+msgid "Sender Email Address (From)"
+msgstr "Adresse E-mail de l'Expéditeur"
+
+msgid "Optional. Set the \"From\" email address. Leaves WP default if empty."
+msgstr "Optionnel. Définissez l'adresse e-mail de l'expéditeur. Laisse le défaut WP si vide."
+
+msgid "Sender Name (From Name)"
+msgstr "Nom de l'Expéditeur"
+
+msgid "Optional. Set the \"From\" display name. Leaves WP default if empty."
+msgstr "Optionnel. Définissez le nom d'affichage de l'expéditeur. Laisse le défaut WP si vide."
+
+msgid "Send Manual Backup"
+msgstr "Envoyer une Sauvegarde Manuelle"
+
+msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
+msgstr "Vous pouvez déclencher cette action pour envoyer immédiatement par e-mail la sauvegarde locale la plus récente."
+
+msgid "Send Backup Now"
+msgstr "Envoyer la Sauvegarde Maintenant"
+
+msgid "Customize the frontend form colors to match your dark/red theme seamlessly."
+msgstr "Personnalisez les couleurs du formulaire pour correspondre à votre thème sombre/rouge."
+
+msgid "Enable Custom Design"
+msgstr "Activer le Design Personnalisé"
+
+msgid "Check to override default browser styles with the custom colors below."
+msgstr "Cochez pour remplacer les styles du navigateur par les couleurs personnalisées."
+
+msgid "Input Background Color"
+msgstr "Couleur de Fond des Champs"
+
+msgid "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
+msgstr "Ex. transparent, #ffffff, rgba(0,0,0,0.5)"
+
+msgid "Input Border Color"
+msgstr "Couleur de Bordure des Champs"
+
+msgid "Input Text Color"
+msgstr "Couleur de Texte des Champs"
+
+msgid "Care Instructions Background"
+msgstr "Fond des Consignes de Soins"
+
+msgid "Care Instructions Border"
+msgstr "Bordure des Consignes de Soins"
+
+msgid "Checkbox Background"
+msgstr "Fond des Cases à Cocher"
+
+msgid "Checkbox Border"
+msgstr "Bordure des Cases à Cocher"
+
+msgid "Checkbox Checkmark Color"
+msgstr "Couleur de la Coche"
+
+msgid "Invert Date/Time Icons"
+msgstr "Invertir les Icones Date/Heure"
+
+msgid "Check to invert browser native icons to white (works best on dark backgrounds)."
+msgstr "Cochez pour inverser les icônes natives en blanc (idéal sur fond sombre)."
+
+msgid "Warning: Irreversible Action"
+msgstr "Avertissement : Action Irréversible"
+
+msgid "This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values."
+msgstr "Cette action supprimera toutes les soumissions de la base de données, effacera les sauvegardes JSON locales et réinitialisera les options."
+
+msgid "Delete All Data"
+msgstr "Supprimer Toutes les Données"
+
+msgid "Synchronizing..."
+msgstr "Synchronisation..."
+
+msgid "Sending..."
+msgstr "Envoi..."
+
+msgid "Are you absolutely sure? This will delete all backups, form submissions, and reset options. This cannot be undone."
+msgstr "Êtes-vous absolument sûr ? Cela supprimera toutes les sauvegardes et soumissions. Cette action est irréversible."
+
+msgid "Deleting..."
+msgstr "Suppression..."
+
+msgid "Submission"
+msgstr "Soumission"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Appt Date"
+msgstr "Date RDV"
+
+msgid "Appt Time"
+msgstr "Heure RDV"
+
+msgid "Sub. Date"
+msgstr "Date Soum."
+
+msgid "Upcoming"
+msgstr "À venir"
+
+msgid "Past"
+msgstr "Passées"
+
+msgid "View Details"
+msgstr "Voir les Détails"
+
+msgid "Backup file not found or invalid."
+msgstr "Fichier de sauvegarde non trouvé ou invalide."
+
+msgid "Could not read backup file."
+msgstr "Impossible de lire le fichier de sauvegarde."
+
+msgid "Could not parse backup JSON data."
+msgstr "Impossible d'analyser les données JSON de sauvegarde."
+
+msgid "Backup created successfully."
+msgstr "Sauvegarde créée avec succès."
+
+msgid "Failed to create backup."
+msgstr "Échec de la création de la sauvegarde."
+
+msgid "Invalid filename."
+msgstr "Nom de fichier invalide."
+
+msgid "Backup processed. %d missing submissions were added."
+msgstr "Sauvegarde traitée. %d soumissions manquantes ont été ajoutées."
+
+msgid "No file uploaded."
+msgstr "Aucun fichier téléchargé."
+
+msgid "Error uploading file."
+msgstr "Erreur lors du téléchargement du fichier."
+
+msgid "Only JSON files are allowed."
+msgstr "Seuls les fichiers JSON sont autorisés."
+
+msgid "Could not read uploaded file."
+msgstr "Impossible de lire le fichier téléchargé."
+
+msgid "Could not parse uploaded JSON data."
+msgstr "Impossible d'analyser les données JSON téléchargées."
+
+msgid "Uploaded backup processed. %d missing submissions were added."
+msgstr "Sauvegarde téléchargée traitée. %d soumissions ont été ajoutées."
+
+msgid "Data Backups"
+msgstr "Sauvegardes de Données"
+
+msgid "Create Manual Backup"
+msgstr "Créer une Sauvegarde Manuelle"
+
+msgid "Upload Backup JSON"
+msgstr "Charger un JSON de Sauvegarde"
+
+msgid "The system automatically creates a daily backup via WP-Cron. It stores a maximum of 5 recent backups securely in the local filesystem."
+msgstr "Le système crée automatiquement une sauvegarde quotidienne via WP-Cron. Il conserve max 5 sauvegardes locales."
+
+msgid "Filename"
+msgstr "Nom du fichier"
+
+msgid "Date"
+msgstr "Date"
+
+msgid "Size"
+msgstr "Taille"
+
+msgid "No backups available found."
+msgstr "Aucune sauvegarde trouvée."
+
+msgid "Restore"
+msgstr "Restaurer"
+
+msgid "Creating..."
+msgstr "Création..."
+
+msgid "Uploading..."
+msgstr "Chargement..."
+
+msgid "Restoring..."
+msgstr "Restauration..."
+
+msgid "Are you sure you want to process this backup? Only missing submissions will be added. Existing data will not be overwritten or deleted."
+msgstr "Êtes-vous sûr de vouloir traiter cette sauvegarde ? Seules les soumissions manquantes seront ajoutées."
+
+msgid "Once Weekly"
+msgstr "Une fois par semaine"
+
+msgid "Google Drive JSON settings are empty."
+msgstr "Les réglages JSON Google Drive sont vides."
+
+msgid "Invalid JSON credentials. Missing client_email or private_key."
+msgstr "Identifiants JSON invalides. client_email ou private_key manquant."
+
+msgid "Error signing JWT. Ensure OpenSSL is configured correctly in server."
+msgstr "Erreur de signature JWT. Vérifiez OpenSSL sur le serveur."
+
+msgid "Network error requesting access token."
+msgstr "Erreur réseau lors de la demande du jeton d'accès."
+
+msgid "Google refused access token. Check credentials and scopes."
+msgstr "Google a refusé le jeton. Vérifiez les identifiants et les scopes."
+
+msgid "Google Drive Folder ID is missing."
+msgstr "L'ID du dossier Google Drive est manquant."
+
+msgid "Failed to list Cloud files."
+msgstr "Échec du listage des fichiers Cloud."
+
+msgid "Drive API Error: %s"
+msgstr "Erreur API Drive : %s"
+
+msgid "Sync successful. Cloud is already up to date with local files."
+msgstr "Sync réussie. Le Cloud est déjà à jour."
+
+msgid "Sync successful. Uploaded %d files, removed %d old cloud records."
+msgstr "Sync réussie. %d fichiers envoyés, %d anciens supprimés."
+
+msgid "Failed to read local backup for upload."
+msgstr "Échec de lecture de la sauvegarde locale."
+
+msgid "Network error uploading to Drive."
+msgstr "Erreur réseau lors de l'envoi vers Drive."
+
+msgid "Drive API Upload Error: %s"
+msgstr "Erreur d'envoi API Drive : %s"
+
+msgid "Cloud Sync must be enabled and saved in settings first."
+msgstr "La Sync Cloud doit être activée et enregistrée d'abord."
+
+msgid "Failed to sync."
+msgstr "Échec de la synchronisation."
+
+msgid "Once Monthly"
+msgstr "Une fois par mois"
+
+msgid "Invalid email address configured for backups."
+msgstr "Adresse e-mail invalide pour las sauvegardes."
+
+msgid "No local backups found to send."
+msgstr "Aucune sauvegarde locale trouvée."
+
+msgid "Automated Data Backup - User Data Collection"
+msgstr "Sauvegarde Automatique - User Data Collection"
+
+msgid "Hello,"
+msgstr "Bonjour,"
+
+msgid "Attached is the most recent backup of your database submissions from the User Data Collection system."
+msgstr "Veuillez trouver ci-joint la sauvegarde la plus récente de vos soumissions."
+
+msgid "Date of backup: %s"
+msgstr "Date de la sauvegarde : %s"
+
+msgid "File size: %s"
+msgstr "Taille du fichier : %s"
+
+msgid "This is an automated message. Please store this file in a secure location."
+msgstr "Ceci est un message automatique. Veuillez conserver ce fichier en lieu sûr."
+
+msgid "Failed to send email. Check your server mail configuration."
+msgstr "Échec de l'envoi de l'e-mail. Vérifiez la config mail du serveur."
+
+msgid "Backup emailed successfully to the configured address."
+msgstr "Sauvegarde envoyée par e-mail avec succès."
+
+msgid "Email backups are currently disabled in settings."
+msgstr "Les sauvegardes par e-mail sont désactivées dans les réglages."
+
+msgid "Yes"
+msgstr "Oui"
+
+msgid "No"
+msgstr "Non"
+
+msgid "Action"
+msgstr "Action"
+
+msgid "Status"
+msgstr "Statut"
