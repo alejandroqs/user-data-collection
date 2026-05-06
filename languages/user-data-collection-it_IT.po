@@ -1,695 +1,584 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.1.0\n"
+"Project-Id-Version: User Data Collection 1.3.0\n"
 "Report-Msgid-Bugs-To: \n"
-"Last-Translator: \n"
-"Language-Team: \n"
+"POT-Creation-Date: 2026-05-06 20:25+0100\n"
+"PO-Revision-Date: 2026-05-06 20:25+0100\n"
+"Last-Translator: Alejandro Quesada\n"
+"Language-Team: Italian\n"
+"Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-25T18:18:11+00:00\n"
-"PO-Revision-Date: 2026-02-25T18:18:11+00:00\n"
-"Language: it_IT\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 3.0\n"
+"X-Domain: user-data-collection\n"
 
-#: includes/class-udc-admin.php:17
-#: includes/class-udc-admin.php:18
-#: includes/class-udc-list-table.php:16
+msgid "Thank you! Your request has been received."
+msgstr "Grazie! La tua richiesta è stata ricevuta."
+
+msgid "There was an error processing your request. Please try again."
+msgstr "Si è verificato un errore durante l'elaborazione della richiesta. Riprova."
+
+msgid "PERSONAL DATA"
+msgstr "DATI PERSONALI"
+
+msgid "Last Name *"
+msgstr "Cognome *"
+
+msgid "First Name *"
+msgstr "Nome *"
+
+msgid "Date of Birth *"
+msgstr "Data di Nascita *"
+
+msgid "Address *"
+msgstr "Indirizzo *"
+
+msgid "City *"
+msgstr "Città *"
+
+msgid "Zip Code *"
+msgstr "CAP *"
+
+msgid "Phone *"
+msgstr "Telefono *"
+
+msgid "HEALTH QUESTIONNAIRE"
+msgstr "QUESTIONARIO SULLA SALUTE"
+
+msgid "I am currently in good health."
+msgstr "Attualmente sono in buona salute."
+
+msgid "I am undergoing medical or dental treatment."
+msgstr "Sono sottoposto a cure mediche o dentistiche."
+
+msgid "I regularly take blood-thinning medications, such as Sintrom or aspirin (or suffer from frequent blistering)."
+msgstr "Assumo regolarmente farmaci anticoagulanti, come Sintrom o aspirina (o soffro di frequenti vesciche)."
+
+msgid "I am prone to allergies, latex, or others."
+msgstr "Sono incline alle allergie, al lattice o altro."
+
+msgid "I am pregnant or breastfeeding."
+msgstr "Sono incinta o sto allattando."
+
+msgid "Liability Clause"
+msgstr "Clausola di Responsabilità"
+
+msgid "I declare I am aware that minors cannot get a tattoo/piercing without the presence of a parent. I accept that Titanium Shop is subject to the strictest hygiene rules: sterile single-use needles and sterilization equipment meeting standards and approved by EYECO.ch. I assume full responsibility for the hygiene and care of my piercing/tattoo outside the shop; therefore, I release the studio from any liability for any consequences following the procedure (infection, rejection, allergy, etc.). I waive all legal or criminal actions. I acknowledge that if I deliberately conceal information regarding my age or nature that endangers my health or that of the staff, legal action could be taken against me. *"
+msgstr "Dichiaro di essere consapevole che i minori non possono farsi un tatuaggio/piercing senza la presenza di un genitore. Accetto che Titanium Shop sia soggetto alle più severe norme igieniche: aghi sterili monouso e attrezzature per la sterilizzazione conformi agli standard e approvate da EYECO.ch. Mi assumo la piena responsabilità per l'igiene e la cura del mio piercing/tatuaggio al di fuori del negozio; pertanto, esonero lo studio da ogni responsabilità per eventuali conseguenze successive alla procedura (infezione, rigetto, allergia, ecc.). Rinuncio a ogni azione legale o penale. Prendo atto che qualora dovessi occultare deliberatamente informazioni riguardanti la mia età o natura che mettano in pericolo la mia salute o quella del personale, potrebbero essere intraprese azioni legali contro di me. *"
+
+msgid "APPOINTMENT DETAILS"
+msgstr "DETTAGLI APPUNTAMENTO"
+
+msgid "Date of appointment *"
+msgstr "Data dell'appuntamento *"
+
+msgid "Time *"
+msgstr "Ora *"
+
+msgid "Piercing location *"
+msgstr "Posizione del piercing *"
+
+msgid "PIERCING CARE INSTRUCTIONS"
+msgstr "ISTRUZIONI PER LA CURA DEL PIERCING"
+
+msgid "Regular cleaning: Always wash your hands thoroughly before touching the piercing."
+msgstr "Pulizia regolare: lavarsi sempre bene le mani prima di toccare il piercing."
+
+msgid "Avoid irritating products: Do not use alcohol or hydrogen peroxide. These products are too aggressive and can delay healing. Do not use scented soaps; use mild, unscented soaps."
+msgstr "Evitare prodotti irritanti: non utilizzare alcol o acqua ossigenata. Questi prodotti sono troppo aggressivi e possono ritardare la guarigione. Non utilizzare saponi profumati; utilizzare saponi delicati e non profumati."
+
+msgid "Minimal handling: Avoid touching the piercing. Do not rotate the jewelry except to clean it. Wear loose clothing so as not to irritate the area."
+msgstr "Manipolazione minima: evitare di toccare il piercing. Non ruotare il gioiello se non per pulirlo. Indossare abiti larghi per non irritare la zona."
+
+msgid "Daily hygiene: Avoid tight clothing for body piercings (navel, nipple). Wear cotton clothing to let the area breathe."
+msgstr "Igiene quotidiana: evitare abiti stretti per piercing del corpo (ombelico, capezzolo). Indossare indumenti di cotone per far traspirare la zona."
+
+msgid "Monitoring for signs of infection: Redness, pain, heat, yellow or green discharge. If you notice these signs, consult a healthcare professional. An infection must be treated quickly."
+msgstr "Monitoraggio dei segni di infezione: arrossamento, dolore, calore, secrezione gialla o verde. Se noti questi segni, consulta un operatore sanitario. Un'infezione deve essere trattata rapidamente."
+
+msgid "Healing time: Healing time varies depending on the location of the piercing. Earlobe piercings usually take 6 to 8 weeks, while cartilage, nose, or navel piercings can take several months."
+msgstr "Tempi di guarigione: i tempi di guarigione variano a seconda della posizione del piercing. I piercing ai lobi delle orecchie richiedono solitamente dalle 6 alle 8 settimane, mentre i piercing alla cartilagine, al naso o all'ombelico possono richiedere diversi mesi."
+
+msgid "Submit"
+msgstr "Invia"
+
 msgid "Submissions"
 msgstr "Invii"
 
-#: includes/class-udc-admin.php:66
+msgid "Backups"
+msgstr "Backup"
+
+msgid "Settings"
+msgstr "Impostazioni"
+
 msgid "User Submissions"
-msgstr "Invii degli Utenti"
+msgstr "Invii Utente"
 
-#: includes/class-udc-list-table.php:24
-msgid "ID"
-msgstr "ID"
+msgid "Submission Details"
+msgstr "Dettagli Invio"
 
-#: includes/class-udc-admin.php:111
-#: includes/class-udc-list-table.php:25
-msgid "Last Name"
-msgstr "Cognome"
+msgid "Back to List"
+msgstr "Torna alla Lista"
 
-#: includes/class-udc-admin.php:107
-#: includes/class-udc-list-table.php:26
+msgid "Submission not found."
+msgstr "Invio non trovato."
+
+msgid "Personal Information"
+msgstr "Informazioni Personali"
+
 msgid "First Name"
 msgstr "Nome"
 
-#: includes/class-udc-admin.php:115
-#: includes/class-udc-list-table.php:27
+msgid "Last Name"
+msgstr "Cognome"
+
 msgid "Date of Birth"
 msgstr "Data di Nascita"
 
-#: includes/class-udc-admin.php:131
-#: includes/class-udc-list-table.php:28
+msgid "Address"
+msgstr "Indirizzo"
+
+msgid "City"
+msgstr "Città"
+
+msgid "Zip Code"
+msgstr "CAP"
+
 msgid "Phone"
 msgstr "Telefono"
 
-#: includes/class-udc-list-table.php:29
-msgid "Appt Date"
-msgstr "Data Appuntamento"
+msgid "Health Questionnaire"
+msgstr "Questionario Salute"
 
-#: includes/class-udc-list-table.php:30
-msgid "Appt Time"
-msgstr "Ora Appuntamento"
+msgid "Good Health:"
+msgstr "Buona Salute:"
 
-#: includes/class-udc-list-table.php:31
-msgid "Sub. Date"
-msgstr "Data di Invio"
+msgid "Undergoing Treatment:"
+msgstr "In Cura:"
 
-#: includes/class-udc-list-table.php:32
-msgid "Status"
-msgstr "Stato"
+msgid "Blood Thinners/Sintrom:"
+msgstr "Anticoagulanti/Sintrom:"
 
-#: includes/class-udc-backup.php:279
-#: includes/class-udc-list-table.php:33
-msgid "Action"
-msgstr "Azione"
+msgid "Allergies:"
+msgstr "Allergie:"
 
-#: includes/class-udc-admin.php:179
-#: includes/class-udc-list-table.php:171
+msgid "Pregnant/Breastfeeding:"
+msgstr "Incinta/Allattamento:"
+
+msgid "Appointment Info"
+msgstr "Info Appuntamento"
+
+msgid "Date:"
+msgstr "Data:"
+
+msgid "Time:"
+msgstr "Ora:"
+
+msgid "Location:"
+msgstr "Posizione:"
+
+msgid "Submitted:"
+msgstr "Inviato il:"
+
+msgid "Status:"
+msgstr "Stato:"
+
 msgid "Confirmed"
 msgstr "Confermato"
 
-#: includes/class-udc-admin.php:182
-#: includes/class-udc-list-table.php:173
 msgid "Pending"
 msgstr "In attesa"
 
-#: includes/class-udc-admin.php:236
-#: includes/class-udc-list-table.php:162
-msgid "Confirm"
-msgstr "Conferma"
+msgid "Confirm Appointment"
+msgstr "Conferma Appuntamento"
 
-#: includes/class-udc-admin.php:236
+msgid "Unconfirm Appointment"
+msgstr "Annulla Conferma"
+
+msgid "Liability Notice"
+msgstr "Avviso di Responsabilità"
+
+msgid "Terms & conditions and liability waiver accepted by the user."
+msgstr "Termini e condizioni e rinuncia alla responsabilità accettati dall'utente."
+
+msgid "Not accepted."
+msgstr "Non accettato."
+
 msgid "Confirming..."
 msgstr "Conferma in corso..."
 
-#: includes/class-udc-admin.php:265
-#: includes/class-udc-backup.php:347
-#: includes/class-udc-backup.php:393
-#: includes/class-udc-backup.php:438
-#: includes/class-udc-settings.php:332
-#: includes/class-udc-settings.php:367
-#: includes/class-udc-settings.php:407
+msgid "Confirm"
+msgstr "Conferma"
+
+msgid "Unconfirming..."
+msgstr "Annullamento in corso..."
+
+msgid "Unconfirm"
+msgstr "Annulla Conferma"
+
 msgid "An error occurred."
 msgstr "Si è verificato un errore."
 
-#: includes/class-udc-admin.php:271
-#: includes/class-udc-backup.php:353
-#: includes/class-udc-backup.php:400
-#: includes/class-udc-backup.php:444
-#: includes/class-udc-settings.php:338
-#: includes/class-udc-settings.php:373
-#: includes/class-udc-settings.php:413
 msgid "Network Error"
 msgstr "Errore di Rete"
 
-#. Plugin Name of the plugin
-#: user-data-collection.php
-msgid "User Data Collection"
-msgstr ""
+msgid "Permission denied."
+msgstr "Permesso negato."
 
-#. Plugin URI of the plugin
-#: user-data-collection.php
-msgid "https://alejandroqs.github.io"
-msgstr ""
+msgid "Invalid submission ID."
+msgstr "ID invio non valido."
 
-#. Description of the plugin
-#: user-data-collection.php
-msgid "A secure, high-performance plugin to collect user submissions via shortcode and manage them in a custom database table. GDPR compliant."
-msgstr ""
+msgid "Security token invalid."
+msgstr "Token di sicurezza non valido."
 
-#. Author of the plugin
-#: user-data-collection.php
-msgid "Alejandro Quesada"
-msgstr ""
+msgid "Submission confirmed successfully."
+msgstr "Invio confermato con successo."
 
-#: includes/class-udc-admin.php:28
-#: includes/class-udc-admin.php:29
-msgid "Backups"
-msgstr ""
+msgid "Database update failed."
+msgstr "Aggiornamento database fallito."
 
-#: includes/class-udc-admin.php:37
-#: includes/class-udc-admin.php:38
-#: includes/class-udc-settings.php:121
-msgid "Settings"
-msgstr ""
+msgid "Submission unconfirmed successfully."
+msgstr "Invio annullato con successo."
 
-#: includes/class-udc-admin.php:86
-msgid "Submission not found."
-msgstr ""
-
-#: includes/class-udc-admin.php:93
-msgid "Submission Details"
-msgstr ""
-
-#: includes/class-udc-admin.php:96
-msgid "Back to List"
-msgstr ""
-
-#: includes/class-udc-admin.php:102
-msgid "Personal Information"
-msgstr ""
-
-#: includes/class-udc-admin.php:119
-msgid "Address"
-msgstr ""
-
-#: includes/class-udc-admin.php:139
-msgid "Health Questionnaire"
-msgstr ""
-
-#: includes/class-udc-admin.php:143
-msgid "Good Health:"
-msgstr ""
-
-#: includes/class-udc-admin.php:144
-#: includes/class-udc-admin.php:147
-#: includes/class-udc-admin.php:150
-#: includes/class-udc-admin.php:153
-#: includes/class-udc-admin.php:156
-msgid "Yes"
-msgstr ""
-
-#: includes/class-udc-admin.php:144
-#: includes/class-udc-admin.php:147
-#: includes/class-udc-admin.php:150
-#: includes/class-udc-admin.php:153
-#: includes/class-udc-admin.php:156
-msgid "No"
-msgstr ""
-
-#: includes/class-udc-admin.php:146
-msgid "Undergoing Treatment:"
-msgstr ""
-
-#: includes/class-udc-admin.php:149
-msgid "Blood Thinners/Sintrom:"
-msgstr ""
-
-#: includes/class-udc-admin.php:152
-msgid "Allergies:"
-msgstr ""
-
-#: includes/class-udc-admin.php:155
-msgid "Pregnant/Breastfeeding:"
-msgstr ""
-
-#: includes/class-udc-admin.php:165
-msgid "Appointment Info"
-msgstr ""
-
-#: includes/class-udc-admin.php:167
-msgid "Date:"
-msgstr ""
-
-#: includes/class-udc-admin.php:169
-msgid "Time:"
-msgstr ""
-
-#: includes/class-udc-admin.php:171
-msgid "Location:"
-msgstr ""
-
-#: includes/class-udc-admin.php:173
-msgid "Submitted:"
-msgstr ""
-
-#: includes/class-udc-admin.php:176
-msgid "Status:"
-msgstr ""
-
-#: includes/class-udc-admin.php:192
-msgid "Confirm Appointment"
-msgstr ""
-
-#: includes/class-udc-admin.php:198
-msgid "Unconfirm Appointment"
-msgstr ""
-
-#: includes/class-udc-admin.php:204
-msgid "Liability Notice"
-msgstr ""
-
-#: includes/class-udc-admin.php:209
-msgid "Terms & conditions and liability waiver accepted by the user."
-msgstr ""
-
-#: includes/class-udc-admin.php:212
-msgid "Not accepted."
-msgstr ""
-
-#: includes/class-udc-admin.php:239
-msgid "Unconfirming..."
-msgstr ""
-
-#: includes/class-udc-admin.php:239
-#: includes/class-udc-list-table.php:155
-msgid "Unconfirm"
-msgstr ""
-
-#: includes/class-udc-backup.php:115
-msgid "Backup file not found or invalid."
-msgstr ""
-
-#: includes/class-udc-backup.php:120
-msgid "Could not read backup file."
-msgstr ""
-
-#: includes/class-udc-backup.php:125
-msgid "Could not parse backup JSON data."
-msgstr ""
-
-#: includes/class-udc-backup.php:163
-#: includes/class-udc-backup.php:177
-#: includes/class-udc-backup.php:196
-#: includes/class-udc-email-sync.php:116
-#: includes/class-udc-gdrive.php:261
-#: includes/class-udc-settings.php:17
 msgid "Permission denied or invalid security token."
-msgstr "Permission denied or invalid security token."
+msgstr "Permesso negato o token di sicurezza non valido."
 
-#: includes/class-udc-backup.php:168
-msgid "Backup created successfully."
-msgstr ""
-
-#: includes/class-udc-backup.php:170
-msgid "Failed to create backup."
-msgstr ""
-
-#: includes/class-udc-backup.php:182
-msgid "Invalid filename."
-msgstr ""
-
-#: includes/class-udc-backup.php:190
-#, php-format
-msgid "Backup processed. %d missing submissions were added."
-msgstr ""
-
-#: includes/class-udc-backup.php:249
-msgid "Data Backups"
-msgstr ""
-
-#: includes/class-udc-backup.php:253
-msgid "Create Manual Backup"
-msgstr ""
-
-#: includes/class-udc-backup.php:263
-msgid "The system automatically creates a daily backup via WP-Cron. It stores a maximum of 5 recent backups securely in the local filesystem."
-msgstr ""
-
-#: includes/class-udc-backup.php:270
-msgid "Filename"
-msgstr ""
-
-#: includes/class-udc-backup.php:273
-msgid "Date"
-msgstr ""
-
-#: includes/class-udc-backup.php:276
-msgid "Size"
-msgstr ""
-
-#: includes/class-udc-backup.php:287
-msgid "No backups available found."
-msgstr ""
-
-#: includes/class-udc-backup.php:310
-msgid "Restore"
-msgstr ""
-
-#: includes/class-udc-backup.php:331
-msgid "Creating..."
-msgstr ""
-
-#: includes/class-udc-backup.php:412
-msgid "Are you sure you want to process this backup? Only missing submissions will be added. Existing data will not be overwritten or deleted."
-msgstr ""
-
-#: includes/class-udc-backup.php:421
-msgid "Restoring..."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:21
-msgid "Once Monthly"
-msgstr ""
-
-#: includes/class-udc-email-sync.php:51
-msgid "Invalid email address configured for backups."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:59
-msgid "No local backups found to send."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:69
-msgid "Automated Data Backup - User Data Collection"
-msgstr ""
-
-#: includes/class-udc-email-sync.php:71
-msgid "Hello,"
-msgstr ""
-
-#: includes/class-udc-email-sync.php:72
-msgid "Attached is the most recent backup of your database submissions from the User Data Collection system."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:73
-#, php-format
-msgid "Date of backup: %s"
-msgstr ""
-
-#: includes/class-udc-email-sync.php:74
-#, php-format
-msgid "File size: %s"
-msgstr ""
-
-#: includes/class-udc-email-sync.php:75
-msgid "This is an automated message. Please store this file in a secure location."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:109
-msgid "Failed to send email. Check your server mail configuration."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:124
-msgid "Backup emailed successfully to the configured address."
-msgstr ""
-
-#: includes/class-udc-email-sync.php:126
-msgid "Email backups are currently disabled in settings."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:20
-msgid "Once Weekly"
-msgstr ""
-
-#: includes/class-udc-gdrive.php:54
-msgid "Google Drive JSON settings are empty."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:60
-msgid "Invalid JSON credentials. Missing client_email or private_key."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:78
-msgid "Error signing JWT. Ensure OpenSSL is configured correctly in server."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:94
-msgid "Network error requesting access token."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:102
-msgid "Google refused access token. Check credentials and scopes."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:118
-msgid "Google Drive Folder ID is missing."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:136
-msgid "Failed to list Cloud files."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:143
-#, php-format
-msgid "Drive API Error: %s"
-msgstr ""
-
-#: includes/class-udc-gdrive.php:203
-msgid "Sync successful. Cloud is already up to date with local files."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:206
-#, php-format
-msgid "Sync successful. Uploaded %d files, removed %d old cloud records."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:219
-msgid "Failed to read local backup for upload."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:242
-msgid "Network error uploading to Drive."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:251
-#, php-format
-msgid "Drive API Upload Error: %s"
-msgstr ""
-
-#: includes/class-udc-gdrive.php:267
-msgid "Cloud Sync must be enabled and saved in settings first."
-msgstr ""
-
-#: includes/class-udc-gdrive.php:276
-msgid "Failed to sync."
-msgstr ""
-
-#: includes/class-udc-list-table.php:15
-msgid "Submission"
-msgstr ""
-
-#: includes/class-udc-list-table.php:65
-msgid "Upcoming"
-msgstr ""
-
-#: includes/class-udc-list-table.php:69
-msgid "Past"
-msgstr ""
-
-#: includes/class-udc-list-table.php:142
-msgid "View Details"
-msgstr ""
-
-#: includes/class-udc-settings.php:124
-msgid "Google Drive Integration"
-msgstr ""
-
-#: includes/class-udc-settings.php:125
-msgid "Email Backups"
-msgstr ""
-
-#: includes/class-udc-settings.php:137
-msgid "Last Sync Status:"
-msgstr ""
-
-#: includes/class-udc-settings.php:146
-msgid "Enable Cloud Sync"
-msgstr ""
-
-#: includes/class-udc-settings.php:149
-msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
-msgstr ""
-
-#: includes/class-udc-settings.php:153
-msgid "Google Drive Folder ID"
-msgstr ""
-
-#: includes/class-udc-settings.php:156
-msgid "The 33-character ID found in your Google Drive folder URL."
-msgstr ""
-
-#: includes/class-udc-settings.php:160
-msgid "Service Account JSON Key"
-msgstr ""
-
-#: includes/class-udc-settings.php:164
-msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
-msgstr ""
-
-#: includes/class-udc-settings.php:173
-msgid "Manual Sync"
-msgstr ""
-
-#: includes/class-udc-settings.php:174
-msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
-msgstr ""
-
-#: includes/class-udc-settings.php:176
-msgid "Test Connection & Sync Now"
-msgstr ""
-
-#: includes/class-udc-settings.php:185
-msgid "Enable Email Backups"
-msgstr ""
-
-#: includes/class-udc-settings.php:188
-msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
-msgstr ""
-
-#: includes/class-udc-settings.php:195
-msgid "The email address where the automatic backups should be sent."
-msgstr ""
-
-#: includes/class-udc-settings.php:217
-msgid "Send Manual Backup"
-msgstr ""
-
-#: includes/class-udc-settings.php:218
-msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
-msgstr ""
-
-#: includes/class-udc-settings.php:220
-msgid "Send Backup Now"
-msgstr ""
-
-#: includes/class-udc-settings.php:316
-msgid "Synchronizing..."
-msgstr ""
-
-#: includes/class-udc-settings.php:352
-msgid "Sending..."
-msgstr ""
-
-#: includes/class-udc-backup.php:200
-msgid "No file uploaded."
-msgstr "No file uploaded."
-
-#: includes/class-udc-backup.php:206
-msgid "Error uploading file."
-msgstr "Error uploading file."
-
-#: includes/class-udc-backup.php:211
-msgid "Only JSON files are allowed."
-msgstr "Only JSON files are allowed."
-
-#: includes/class-udc-backup.php:216
-msgid "Could not read uploaded file."
-msgstr "Could not read uploaded file."
-
-#: includes/class-udc-backup.php:221
-msgid "Could not parse uploaded JSON data."
-msgstr "Could not parse uploaded JSON data."
-
-#: includes/class-udc-backup.php:226
-#, php-format
-msgid "Uploaded backup processed. %d missing submissions were added."
-msgstr "Uploaded backup processed. %d missing submissions were added."
-
-#: includes/class-udc-backup.php:259
-msgid "Upload Backup JSON"
-msgstr "Upload Backup JSON"
-
-#: includes/class-udc-backup.php:376
-msgid "Uploading..."
-msgstr "Uploading..."
-
-#: includes/class-udc-settings.php:126
-msgid "Design Customization"
-msgstr "Design Customization"
-
-#: includes/class-udc-settings.php:227
-msgid "Customize the frontend form colors to match your dark/red theme seamlessly."
-msgstr "Customize the frontend form colors to match your dark/red theme seamlessly."
-
-#: includes/class-udc-settings.php:231
-msgid "Enable Custom Design"
-msgstr "Enable Custom Design"
-
-#: includes/class-udc-settings.php:234
-msgid "Check to override default browser styles with the custom colors below."
-msgstr "Check to override default browser styles with the custom colors below."
-
-#: includes/class-udc-settings.php:238
-msgid "Input Background Color"
-msgstr "Input Background Color"
-
-#: includes/class-udc-settings.php:241
-msgid "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
-msgstr "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
-
-#: includes/class-udc-settings.php:245
-msgid "Input Border Color"
-msgstr "Input Border Color"
-
-#: includes/class-udc-settings.php:251
-msgid "Input Text Color"
-msgstr "Input Text Color"
-
-#: includes/class-udc-settings.php:257
-msgid "Care Instructions Background"
-msgstr "Care Instructions Background"
-
-#: includes/class-udc-settings.php:263
-msgid "Care Instructions Border"
-msgstr "Care Instructions Border"
-
-#: includes/class-udc-settings.php:269
-msgid "Checkbox Background"
-msgstr "Checkbox Background"
-
-#: includes/class-udc-settings.php:275
-msgid "Checkbox Border"
-msgstr "Checkbox Border"
-
-#: includes/class-udc-settings.php:281
-msgid "Checkbox Checkmark Color"
-msgstr "Checkbox Checkmark Color"
-
-#: includes/class-udc-settings.php:287
-msgid "Invert Date/Time Icons"
-msgstr "Invert Date/Time Icons"
-
-#: includes/class-udc-settings.php:290
-msgid "Check to invert browser native icons to white (works best on dark backgrounds)."
-msgstr "Check to invert browser native icons to white (works best on dark backgrounds)."
-
-#: includes/class-udc-settings.php:57
 msgid "All data has been successfully deleted and settings reset."
-msgstr "All data has been successfully deleted and settings reset."
+msgstr "Tutti i dati sono stati eliminati e le impostazioni ripristinate."
 
-#: includes/class-udc-settings.php:127
+msgid "Google Drive Integration"
+msgstr "Integrazione Google Drive"
+
+msgid "Email Backups"
+msgstr "Backup via Email"
+
+msgid "Design Customization"
+msgstr "Personalizzazione Design"
+
 msgid "Advanced"
-msgstr "Advanced"
+msgstr "Avanzate"
 
-#: includes/class-udc-settings.php:298
-msgid "Warning: Irreversible Action"
-msgstr "Warning: Irreversible Action"
+msgid "Last Sync Status:"
+msgstr "Stato Ultima Sincronizzazione:"
 
-#: includes/class-udc-settings.php:299
-msgid "This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values."
-msgstr "This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values."
+msgid "Enable Cloud Sync"
+msgstr "Abilita Sincronizzazione Cloud"
 
-#: includes/class-udc-settings.php:301
-msgid "Delete All Data"
-msgstr "Delete All Data"
+msgid "If enabled, a weekly task will synchronize your local backups to Google Drive."
+msgstr "Se abilitato, un'attività settimanale sincronizzerà i tuoi backup su Google Drive."
 
-#: includes/class-udc-settings.php:384
-msgid "Are you absolutely sure? This will delete all backups, form submissions, and reset options. This cannot be undone."
-msgstr "Are you absolutely sure? This will delete all backups, form submissions, and reset options. This cannot be undone."
+msgid "Google Drive Folder ID"
+msgstr "ID Cartella Google Drive"
 
-#: includes/class-udc-settings.php:391
-msgid "Deleting..."
-msgstr "Deleting..."
+msgid "The 33-character ID found in your Google Drive folder URL."
+msgstr "L'ID di 33 caratteri che si trova nell'URL della cartella Google Drive."
 
-#: includes/class-udc-settings.php:192
+msgid "Service Account JSON Key"
+msgstr "Chiave JSON Service Account"
+
+msgid "Create a Service Account in Google Cloud, generate a JSON key, and paste its contents here. Make sure to share the Google Drive Folder with the Service Account email (Editor role)."
+msgstr "Crea un Account di Servizio in Google Cloud, genera una chiave JSON e incolla il contenuto qui. Condividi la cartella con l'e-mail dell'Account di Servizio."
+
+msgid "Manual Sync"
+msgstr "Sincronizzazione Manuale"
+
+msgid "You can trigger the synchronization manually to immediately upload missing backups and enforce the 5-file retention limit."
+msgstr "Puoi avviare la sincronizzazione manualmente per caricare i backup mancanti."
+
+msgid "Test Connection & Sync Now"
+msgstr "Test Connessione & Sincronizza Ora"
+
+msgid "Enable Email Backups"
+msgstr "Abilita Backup via Email"
+
+msgid "If enabled, a monthly task will send the most recent backup file to the configured email address."
+msgstr "Se abilitato, un'attività mensile invierà l'ultimo backup all'indirizzo e-mail configurato."
+
 msgid "Destination Email Address"
-msgstr "Destination Email Address"
+msgstr "Indirizzo Email di Destinazione"
 
-#: includes/class-udc-settings.php:199
+msgid "The email address where the automatic backups should be sent."
+msgstr "L'indirizzo email dove inviare i backup automatici."
+
 msgid "Sender Email Address (From)"
-msgstr "Sender Email Address (From)"
+msgstr "Indirizzo Email Mittente"
 
-#: includes/class-udc-settings.php:202
 msgid "Optional. Set the \"From\" email address. Leaves WP default if empty."
-msgstr ""
+msgstr "Opzionale. Imposta l'email del mittente. Lascia vuoto per il default."
 
-#: includes/class-udc-settings.php:206
 msgid "Sender Name (From Name)"
-msgstr "Sender Name (From Name)"
+msgstr "Nome Mittente"
 
-#: includes/class-udc-settings.php:209
 msgid "Optional. Set the \"From\" display name. Leaves WP default if empty."
-msgstr ""
+msgstr "Opzionale. Imposta il nome del mittente. Lascia vuoto per il default."
 
-#: includes/class-udc-admin.php:123
-msgid "City"
-msgstr "City"
+msgid "Send Manual Backup"
+msgstr "Invia Backup Manuale"
 
-#: includes/class-udc-admin.php:127
-msgid "Zip Code"
-msgstr "Zip Code"
+msgid "You can trigger this action to immediately email the most recent local backup to the configured address."
+msgstr "Invia immediatamente l'ultimo backup locale all'indirizzo configurato."
+
+msgid "Send Backup Now"
+msgstr "Invia Backup Ora"
+
+msgid "Customize the frontend form colors to match your dark/red theme seamlessly."
+msgstr "Personalizza i colori del modulo per adattarli al tuo tema."
+
+msgid "Enable Custom Design"
+msgstr "Abilita Design Personalizzato"
+
+msgid "Check to override default browser styles with the custom colors below."
+msgstr "Sostituisci gli stili del browser con i colori personalizzati."
+
+msgid "Input Background Color"
+msgstr "Colore Sfondo Campi"
+
+msgid "E.g. transparent, #ffffff, rgba(0,0,0,0.5)"
+msgstr "Es. transparent, #ffffff, rgba(0,0,0,0.5)"
+
+msgid "Input Border Color"
+msgstr "Colore Bordo Campi"
+
+msgid "Input Text Color"
+msgstr "Colore Testo Campi"
+
+msgid "Care Instructions Background"
+msgstr "Sfondo Istruzioni Cura"
+
+msgid "Care Instructions Border"
+msgstr "Bordo Istruzioni Cura"
+
+msgid "Checkbox Background"
+msgstr "Sfondo Checkbox"
+
+msgid "Checkbox Border"
+msgstr "Bordo Checkbox"
+
+msgid "Checkbox Checkmark Color"
+msgstr "Colore Segno Spunta"
+
+msgid "Invert Date/Time Icons"
+msgstr "Inverti Icone Data/Ora"
+
+msgid "Check to invert browser native icons to white (works best on dark backgrounds)."
+msgstr "Inverti le icone in bianco (ideale per sfondi scuri)."
+
+msgid "Warning: Irreversible Action"
+msgstr "Attenzione: Azione Irreversibile"
+
+msgid "This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values."
+msgstr "Questa azione cancellerà tutti i dati e ripristinerà le impostazioni."
+
+msgid "Delete All Data"
+msgstr "Elimina Tutti i Dati"
+
+msgid "Synchronizing..."
+msgstr "Sincronizzazione..."
+
+msgid "Sending..."
+msgstr "Invio..."
+
+msgid "Are you absolutely sure? This will delete all backups, form submissions, and reset options. This cannot be undone."
+msgstr "Sei assolutamente sicuro? L'azione è irreversibile."
+
+msgid "Deleting..."
+msgstr "Eliminazione..."
+
+msgid "Submission"
+msgstr "Invio"
+
+msgid "ID"
+msgstr "ID"
+
+msgid "Appt Date"
+msgstr "Data Appunt."
+
+msgid "Appt Time"
+msgstr "Ora Appunt."
+
+msgid "Sub. Date"
+msgstr "Data Invio"
+
+msgid "Upcoming"
+msgstr "In arrivo"
+
+msgid "Past"
+msgstr "Passati"
+
+msgid "View Details"
+msgstr "Vedi Dettagli"
+
+msgid "Backup file not found or invalid."
+msgstr "File di backup non trovato o non valido."
+
+msgid "Could not read backup file."
+msgstr "Impossibile leggere il file di backup."
+
+msgid "Could not parse backup JSON data."
+msgstr "Impossibile analizzare i dati JSON di backup."
+
+msgid "Backup created successfully."
+msgstr "Backup creato con successo."
+
+msgid "Failed to create backup."
+msgstr "Creazione backup fallita."
+
+msgid "Invalid filename."
+msgstr "Nome file non valido."
+
+msgid "Backup processed. %d missing submissions were added."
+msgstr "Backup elaborato. Aggiunti %d invii mancanti."
+
+msgid "No file uploaded."
+msgstr "Nessun file caricato."
+
+msgid "Error uploading file."
+msgstr "Errore nel caricamento del file."
+
+msgid "Only JSON files are allowed."
+msgstr "Sono consentiti solo file JSON."
+
+msgid "Could not read uploaded file."
+msgstr "Impossibile leggere il file caricato."
+
+msgid "Could not parse uploaded JSON data."
+msgstr "Impossibile analizzare i dati JSON caricati."
+
+msgid "Uploaded backup processed. %d missing submissions were added."
+msgstr "Backup caricato elaborato. Aggiunti %d invii."
+
+msgid "Data Backups"
+msgstr "Backup dei Dati"
+
+msgid "Create Manual Backup"
+msgstr "Crea Backup Manuale"
+
+msgid "Upload Backup JSON"
+msgstr "Carica JSON di Backup"
+
+msgid "The system automatically creates a daily backup via WP-Cron. It stores a maximum of 5 recent backups securely in the local filesystem."
+msgstr "Il sistema crea automaticamente un backup giornaliero. Conserva max 5 file."
+
+msgid "Filename"
+msgstr "Nome file"
+
+msgid "Date"
+msgstr "Data"
+
+msgid "Size"
+msgstr "Dimensione"
+
+msgid "No backups available found."
+msgstr "Nessun backup trovato."
+
+msgid "Restore"
+msgstr "Ripristina"
+
+msgid "Creating..."
+msgstr "Creazione..."
+
+msgid "Uploading..."
+msgstr "Caricamento..."
+
+msgid "Restoring..."
+msgstr "Ripristino..."
+
+msgid "Are you sure you want to process this backup? Only missing submissions will be added. Existing data will not be overwritten or deleted."
+msgstr "Sei sicuro di voler elaborare questo backup? Verranno aggiunti solo i dati mancanti."
+
+msgid "Once Weekly"
+msgstr "Settimanale"
+
+msgid "Google Drive JSON settings are empty."
+msgstr "Le impostazioni JSON di Google Drive sono vuote."
+
+msgid "Invalid JSON credentials. Missing client_email or private_key."
+msgstr "Credenziali JSON non valide."
+
+msgid "Error signing JWT. Ensure OpenSSL is configured correctly in server."
+msgstr "Errore nella firma del JWT. Controlla OpenSSL sul server."
+
+msgid "Network error requesting access token."
+msgstr "Errore di rete nella richiesta del token."
+
+msgid "Google refused access token. Check credentials and scopes."
+msgstr "Google ha rifiutato il token. Controlla credenziali e permessi."
+
+msgid "Google Drive Folder ID is missing."
+msgstr "ID cartella Google Drive mancante."
+
+msgid "Failed to list Cloud files."
+msgstr "Impossibile elencare i file cloud."
+
+msgid "Drive API Error: %s"
+msgstr "Errore API Drive: %s"
+
+msgid "Sync successful. Cloud is already up to date with local files."
+msgstr "Sincronizzazione riuscita. Il cloud è già aggiornato."
+
+msgid "Sync successful. Uploaded %d files, removed %d old cloud records."
+msgstr "Sincronizzazione riuscita. Caricati %d file, rimossi %d vecchi."
+
+msgid "Failed to read local backup for upload."
+msgstr "Impossibile leggere il backup locale per l'invio."
+
+msgid "Network error uploading to Drive."
+msgstr "Errore di rete durante il caricamento su Drive."
+
+msgid "Drive API Upload Error: %s"
+msgstr "Errore di caricamento API Drive: %s"
+
+msgid "Cloud Sync must be enabled and saved in settings first."
+msgstr "La sincronizzazione cloud deve essere abilitata e salvata."
+
+msgid "Failed to sync."
+msgstr "Sincronizzazione fallita."
+
+msgid "Once Monthly"
+msgstr "Mensile"
+
+msgid "Invalid email address configured for backups."
+msgstr "Indirizzo e-mail non valido per i backup."
+
+msgid "No local backups found to send."
+msgstr "Nessun backup locale trovato da inviare."
+
+msgid "Automated Data Backup - User Data Collection"
+msgstr "Backup Automatico dei Dati - User Data Collection"
+
+msgid "Hello,"
+msgstr "Ciao,"
+
+msgid "Attached is the most recent backup of your database submissions from the User Data Collection system."
+msgstr "In allegato trovi l'ultimo backup dei tuoi dati."
+
+msgid "Date of backup: %s"
+msgstr "Data del backup: %s"
+
+msgid "File size: %s"
+msgstr "Dimensione file: %s"
+
+msgid "This is an automated message. Please store this file in a secure location."
+msgstr "Questo è un messaggio automatico. Conserva il file in un luogo sicuro."
+
+msgid "Failed to send email. Check your server mail configuration."
+msgstr "Invio email fallito. Controlla la configurazione del server."
+
+msgid "Backup emailed successfully to the configured address."
+msgstr "Backup inviato via email con successo."
+
+msgid "Email backups are currently disabled in settings."
+msgstr "I backup via email sono disabilitati."
+
+msgid "Yes"
+msgstr "Sì"
+
+msgid "No"
+msgstr "No"
+
+msgid "Action"
+msgstr "Azione"
+
+msgid "Status"
+msgstr "Stato"

@@ -38,15 +38,17 @@ class UDC_i18n
     public static function translate($string_key)
     {
         $strings = self::get_strings();
-
         $default_string = isset($strings[$string_key]) ? $strings[$string_key] : $string_key;
 
-        // If Polylang function is available, use it to get the translated string
+        // 1. Try Polylang if available (overrides files)
         if (function_exists('pll__')) {
-            return pll__($default_string);
+            $translated = pll__($default_string);
+            if ($translated !== $default_string) {
+                return $translated;
+            }
         }
 
-        // Fallback to standard WordPress translation
+        // 2. Fallback to standard WordPress translation (Gettext / .mo files)
         return __($default_string, 'user-data-collection');
     }
 

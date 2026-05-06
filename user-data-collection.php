@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('UDC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('UDC_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('UDC_DB_VERSION', '1.3.0');
+define('UDC_DB_VERSION', '1.4.0');
 
 // Include required dependencies
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-i18n.php';

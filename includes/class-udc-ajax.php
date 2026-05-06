@@ -16,19 +16,19 @@ class UDC_Ajax
     {
         // 1. Ensure user has capabilities
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Permission denied.');
+            wp_send_json_error(__('Permission denied.', 'user-data-collection'));
         }
 
         // 2. Validate input and ID
         $submission_id = isset($_POST['submission_id']) ? intval($_POST['submission_id']) : 0;
 
         if ($submission_id <= 0) {
-            wp_send_json_error('Invalid submission ID.');
+            wp_send_json_error(__('Invalid submission ID.', 'user-data-collection'));
         }
 
         // 3. Verify Nonce securely
         if (!isset($_POST['security']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['security'])), 'udc_confirm_nonce_' . $submission_id)) {
-            wp_send_json_error('Security token invalid.');
+            wp_send_json_error(__('Security token invalid.', 'user-data-collection'));
         }
 
         // 4. Update the DB
@@ -44,9 +44,9 @@ class UDC_Ajax
         );
 
         if ($updated !== false) {
-            wp_send_json_success('Submission confirmed successfully.');
+            wp_send_json_success(__('Submission confirmed successfully.', 'user-data-collection'));
         } else {
-            wp_send_json_error('Database update failed.');
+            wp_send_json_error(__('Database update failed.', 'user-data-collection'));
         }
     }
 
@@ -54,19 +54,19 @@ class UDC_Ajax
     {
         // 1. Ensure user has capabilities
         if (!current_user_can('manage_options')) {
-            wp_send_json_error('Permission denied.');
+            wp_send_json_error(__('Permission denied.', 'user-data-collection'));
         }
 
         // 2. Validate input and ID
         $submission_id = isset($_POST['submission_id']) ? intval($_POST['submission_id']) : 0;
 
         if ($submission_id <= 0) {
-            wp_send_json_error('Invalid submission ID.');
+            wp_send_json_error(__('Invalid submission ID.', 'user-data-collection'));
         }
 
         // 3. Verify Nonce securely (We can use the same confirmation nonce, or a new unconfirm nonce. Let's use unconfirm_nonce_)
         if (!isset($_POST['security']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['security'])), 'udc_unconfirm_nonce_' . $submission_id)) {
-            wp_send_json_error('Security token invalid.');
+            wp_send_json_error(__('Security token invalid.', 'user-data-collection'));
         }
 
         // 4. Update the DB
@@ -82,9 +82,9 @@ class UDC_Ajax
         );
 
         if ($updated !== false) {
-            wp_send_json_success('Submission unconfirmed successfully.');
+            wp_send_json_success(__('Submission unconfirmed successfully.', 'user-data-collection'));
         } else {
-            wp_send_json_error('Database update failed.');
+            wp_send_json_error(__('Database update failed.', 'user-data-collection'));
         }
     }
 }
