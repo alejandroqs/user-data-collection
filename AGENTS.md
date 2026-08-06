@@ -1,59 +1,57 @@
 # User Data Collection - Agent Instructions
 
-## Project Overview
-**User Data Collection** is a custom WordPress plugin designed to render a multi-field contact form via a shortcode on the frontend, securely save submissions into a custom database table, and provide a backend admin interface for viewing and confirming submissions.
+## Evidence and source hierarchy
 
-## Agent Roles
-When interacting with this project, AI agents should assume the following roles:
-1. **Senior WordPress Plugin Developer**
-2. **Secure PHP Expert**
-3. **LLM Expert**
-4. **Prompt Engineer**
+Use this order when making technical claims:
 
-## Core Requirements & Constraints
-1. **Language:** ALL code, variables, function names, and inline comments MUST be strictly in English.
-2. **Architecture:**
-   - Use a custom database table created upon plugin activation using `dbDelta`.
-   - **Do NOT** use Custom Post Types.
-   - The table must include a boolean/tinyint field for `is_confirmed`.
-   - **CRITICAL:** Every time the database table layout is modified (new columns, changed column names, etc.), you MUST increment the `UDC_DB_VERSION` constant in `user-data-collection.php` and update the `CREATE TABLE` schema in `class-udc-activator.php`. This triggers the auto-update sync via `dbDelta` on the next load.
-3. **Future-Proofing & Longevity:**
-   - Strictly use the official WordPress APIs (e.g., `$wpdb->insert`, `$wpdb->prepare`, standard hooks, `admin_post_` or `wp_ajax_` actions).
-   - **Do NOT** use external PHP libraries or frameworks.
-   - **Do NOT** write raw PHP SQL queries without `$wpdb`.
-4. **Security & GDPR:**
-   - All frontend inputs must be strictly sanitized (`sanitize_text_field`, `sanitize_email`, `sanitize_textarea_field`, etc.).
-   - All database outputs in the admin area must be escaped (`esc_html`, `esc_url`, `esc_attr`, etc.).
-   - Include Nonces for form submission and AJAX actions to prevent CSRF.
-5. **Admin Interface:**
-   - Use the custom `UDC_List_Table` class extending the native WordPress `WP_List_Table`.
-   - Provide "Row Actions" for viewing submission details.
-   - Use Vanilla JS Fetch API for triggering the `udc_confirm_submission` and `udc_unconfirm_submission` admin ajax hooks without reloading the page until success.
-   - Separate complex details viewing into a clean WordPress metabox-style layout (details card).
+1. Active code, database schema, and registered hooks.
+2. Configuration, scripts, workflows, and lockfiles.
+3. Git history and tags.
+4. Documentation.
+5. Comments and inference.
 
-## Project Structure
-```text
-user-data-collection/
-├── user-data-collection.php       (Main plugin file)
-├── includes/
-│   ├── class-udc-activator.php    (Database creation logic)
-│   ├── class-udc-shortcode.php    (Frontend form and submission via admin_post)
-│   ├── class-udc-admin.php        (Admin menu, views and JS actions)
-│   ├── class-udc-list-table.php   (WP_List_Table implementation for rendering the list)
-│   ├── class-udc-ajax.php         (Admin AJAX confirmation & unconfirmation)
-│   ├── class-udc-backup.php       (Backup generator, JSON rotation limiter, and restorer)
-│   ├── class-udc-gdrive.php       (Google Drive via OAuth2 Service Account Integration)
-│   ├── class-udc-settings.php     (Settings interface for cloud sync and design integration)
-│   ├── class-udc-email-sync.php   (Standalone robust mailing handler via WP-Cron)
-│   └── class-udc-i18n.php         (Polylang extensions)
-```
+Label material statements as **Verified**, **Inference**, **Unknown**, or **Requirement**. Do not use line numbers; cite paths and symbols instead. Do not claim that a test, build, browser flow, cron job, email, Drive operation, or runtime behavior passed unless it was actually executed.
 
-## Workflows
-- The project uses `@wordpress/env` for the local development environment.
-- Use `npx wp-env start` to run the environment.
-- Use `npx wp-env run cli wp ...` to interact with WP-CLI inside the container.
+## Codebase discovery
 
-## Reference
-- **[Env Skill](.agents/skills/env/SKILL.md)**: Core knowledge about the local development environment, OS, terminal, and wp-env configuration to ensure correct commands and system interactions.
-- **[WordPress Pro Skill](.agents/skills/wordpress-pro/SKILL.md)**: Use when developing WordPress themes, plugins, customizing Gutenberg blocks, implementing WooCommerce features, or optimizing WordPress performance and security.
-- **[PHP Pro Skill](.agents/skills/php-pro/SKILL.md)**: Use when building PHP applications with modern PHP 8.3+ features, Laravel, or Symfony frameworks. Invoke for strict typing, PHPStan level 9, async patterns with Swoole, PSR standards.
+This repository uses `codebase-memory-mcp` as its primary source of structural code intelligence.
+
+For questions involving architecture, symbols, dependencies, callers, callees, routes, cross-service relationships, execution paths, or change impact:
+
+1. Prefer the `codebase-memory-mcp` graph tools before broad grep, glob, or file-by-file exploration.
+2. Use direct source inspection to verify exact implementation behavior before editing or making high-confidence conclusions.
+3. Do not treat an empty graph result as proof that code, callers, references, or dependencies do not exist.
+4. Account for index freshness, pagination, excluded files, unsupported formats, and coverage gaps before making negative or exhaustive claims.
+5. Use `rg`, glob, direct reads, and ordinary file search for exact text, configuration, documentation, generated files, unsupported files, or gaps not adequately represented by the graph.
+6. Do not invoke destructive or persistent MCP operations unless the task explicitly requires them.
+
+For non-trivial codebase investigation, dependency tracing, change-impact analysis, dead-code analysis, or exhaustive structural claims, use `.agents/skills/codebase-memory-project/SKILL.md`. If the MCP server is unavailable or incomplete, state the limitation and use direct source inspection as the fallback.
+
+## Git and scope preservation
+
+- Inspect `git status --short --branch` and relevant diffs before editing.
+- Preserve unrelated modifications and untracked files. Do not reset, revert, stage, commit, push, tag, or change remote state unless explicitly requested.
+- Keep changes within the user-approved scope. Report any path that could not be edited because it falls outside that scope.
+- Treat generated files and local skills as user-owned unless the request explicitly includes them.
+
+## Language and implementation rules
+
+- All code, variable names, function names, and inline comments must be in English.
+- Use official WordPress APIs and hooks. Use a custom database table created with `dbDelta`; do not introduce Custom Post Types.
+- Use `$wpdb` APIs for database operations and preserve capability checks, nonces, input sanitization, and output escaping.
+- Every database schema change requires an atomic update to `UDC_DB_VERSION` in `user-data-collection.php` and the `CREATE TABLE` schema in `includes/class-udc-activator.php`.
+- Treat identity, contact, health, consent, local backups, external copies, email attachments, and service-account credentials as sensitive. Do not print or copy real secrets or personal data during debugging.
+- Use proportional server-side validation; browser `required` attributes are not server validation.
+- Do not describe the plugin as GDPR compliant, secure, high-performance, maximum-reliability, WPCS compliant, or legally certified without a named gate and current evidence.
+
+## Canonical documentation
+
+Keep one primary explanation for each topic. Use the [documentation index](docs/README.md) to find the canonical file:
+
+- architecture, lifecycle, hooks, and flows: [Architecture](docs/architecture.md);
+- data categories, controls, privacy limits, consent, and deletion: [Data, security, and privacy](docs/data-security-privacy.md);
+- backup, restore, cron, Drive, email, and operational failure modes: [Operations](docs/operations.md);
+- environment, tools, translations, and quality gates: [Development and quality](docs/development-and-quality.md);
+- versions, tags, packaging, and release checks: [Release](docs/release.md).
+
+Do not duplicate detailed architecture or audit tables in `AGENTS.md`. Update the affected canonical document when code, schema, hooks, integrations, commands, translations, versions, or release packaging changes.

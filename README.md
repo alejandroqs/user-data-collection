@@ -1,115 +1,55 @@
-# User Data Collection & Consents for WordPress
+# User Data Collection for WordPress
 
-A robust, high-performance, and GDPR-compliant WordPress plugin engineered to handle custom user data collection, securely gathering sensitive demographic data, health questionnaires, and legal piercing/tattoo consent forms directly into a custom database table.
+User Data Collection renders a multi-field consent form through the `[udc_contact_form]` shortcode and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, confirmation actions, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
 
-## 🚀 Features
+The form processes sensitive personal information, including identity and contact details, date of birth, appointment information, health-related answers, and liability acceptance. Configure access, storage, retention, and external destinations according to the site's own privacy and security requirements. This plugin documentation is not legal advice or a legal certification.
 
-* **Custom Database Architecture:** Uses `dbDelta` upon activation to construct a highly performant and secure standalone table (`wp_udc_submissions`) instead of cluttering the default `wp_posts` table with Custom Post Types.
-* **Security First:** Rigorous backend data sanitization (`sanitize_text_field`, `wp_unslash`) and output escaping (`esc_html`, `esc_attr`). Integrates WordPress Nonces to prevent Cross-Site Request Forgery (CSRF).
-* **GDPR Compliance Support:** By isolating data in a custom table, bulk exports, deletions, and privacy management become inherently easier and structurally sound.
-* **Modern Admin Interface (`WP_List_Table`):** Provides a robust, native WordPress backend table implementing sorting, pagination, and filter views for "Upcoming" and "Past" appointments.
-* **Instant AJAX Actions:** Vanilla Javascript AJAX integration allows you to mark submissions as "Confirmed" or "Unconfirmed" seamlessly without page reloads.
-* **Comprehensive Details View:** A dedicated, custom-designed inspector screen displays the breakdown of all demographic, health data, and legal acceptance clauses.
-* **Fully Internationalized (i18n):** The backend is fully translated using standard WordPress `__()` and `.po`/`.mo` files. The frontend dynamically ties into Polylang's string translation API for ultimate locale flexibility (FR, DE, IT, EN, ES, etc).
-* **Automated Backup System:** Includes a fully native JSON backup engine utilizing `WP-Cron` to automatically capture daily snapshots of the database, keeping strictly the 5 most recent files securely stored inside a `.htaccess`-protected hidden directory. Support included to inject standard `.json` backup files directly from the UI.
-* **Google Drive Cloud Sync:** Zero-dependency Service Account OAuth2 integration targeting maximum reliability. Weekly background sync uploads missing local JSON backups to a specified Google Drive folder, dynamically trimming cloud records to strictly mirror the native 5-file retention limit.
-* **Email Fast-Backups:** An accessible, secondary disaster-recovery layer that dispatches the most recent local JSON snapshot natively via `wp_mail` on a fully automated monthly Cron rotation, with manual instant-trigger capabilities. Includes options to customize the "From" Sender Name and Address.
-* **Performant Form Processing:** Submission handling uses the `admin_post_*` API, completely avoiding generic frontend POST targets that can be exploited or cause cache misses.
-* **Frontend Design Customizer:** Exposes a Backend Settings UI to define background, text, borders, and general styling colors on the frontend inputs, instantly matching the host website's active aesthetic seamlessly directly from the WordPress Database (no CSS knowledge needed).
+## Installation
 
-## 📦 Installation
+1. Copy the `user-data-collection` directory into `wp-content/plugins/`.
+2. Activate the plugin from the WordPress Plugins screen.
+3. Activation creates or updates the custom `{prefix}udc_submissions` table through `dbDelta`.
 
-1. Copy the `user-data-collection` folder into your `/wp-content/plugins/` directory.
-2. Activate the plugin through the **Plugins** menu in WordPress.
-3. Upon activation, the plugin automatically creates the necessary `wp_udc_submissions` custom table.
+## Frontend use
 
-## 💻 Usage
-
-### 1. The Frontend Shortcode
-Insert the following shortcode into any Page, Post, or Widget to render the multi-part consent form:
+Add the shortcode below to a page, post, or widget:
 
 ```text
 [udc_contact_form]
 ```
 
-The rendered shortcode includes two distinct logical documents:
-1. **Health Questionnaire:** Captures demographic details and boolean responses regarding health conditions (medications, allergies, pregnancy, etc.) along with a mandatory Liability Acceptance clause.
-2. **Disclaimer & Piercing Care:** Captures appointment time/location details, displays required post-procedure care instructions, and mandates a final consent confirmation.
+The form collects personal data, health questionnaire answers, appointment details, piercing location, and a required liability acceptance checkbox. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
 
-### 2. Managing Submissions
-* Navigate to the **Submissions** menu located in the left sidebar of the WordPress Admin dashboard.
-* Here you can view a powerful, sortable list of all submitted forms containing Name, Date of Birth, Appointment Details, and Status.
-* **Views:** Use the top tabs to filter between "Upcoming" (sorted closest to today) and "Past" appointments.
-* **Actions:** Use the "Confirm" or "Unconfirm" buttons in the action column.
-### 3. Backups & Disaster Recovery
-* In the **Submissions > Backups** view, administrators can instantaneously review the last 5 days of captured snapshots.
-* Click **Create Manual Backup** to force an emergency local snapshot without waiting for the daily Cron cycle.
-* Click **Restore** next to any record to surgically inject missing submission IDs back into the active environment without blindly wiping existing records (`TRUNCATE TABLE` purposely avoided).
-* Click **Upload Backup JSON** to manually inject an external `.json` backup file. Missing submissions will be intelligently restored.
+## Administration
 
-### 4. Setting up Google Drive (Cloud Sync)
-* Go to **Submissions > Settings**.
-* Check the "Enable Cloud Sync" button to activate the weekly Google Drive push.
-* Paste your target Google Drive Folder ID.
-* Obtain a `Service Account JSON Key` from Google Cloud Console and paste the entire JSON string into the credentials box.
-* Grant `Editor` permission to the Service Account email on your shared Google Drive folder limit.
-* Click **Test Connection & Sync Now** immediately to upload existing local backups.
+Users with the `manage_options` capability can open the **Submissions** menu to:
 
-### 5. Automated Email Backups
-* Go to **Submissions > Settings** and navigate to the **Email Backups** tab.
-* Toggle "Enable Email Backups" to schedule a recurring monthly WP-Cron email drop.
-* Enter the fallback receiver email address.
-* Optionally define a **Sender Email Address** and **Sender Name** to override the default WordPress sender.
-* Click **Send Backup Now** from this panel at any time to instantly receive the latest JSON payload.
+- review upcoming and past appointments;
+- open submission details;
+- confirm or unconfirm submissions through AJAX actions;
+- create, restore, and upload local JSON backups;
+- configure optional Google Drive, email backup, and frontend design settings.
 
-### 6. Frontend Design Customizer
-* Go to **Submissions > Settings** and navigate to the **Design Customization** tab.
-* Toggle "Enable Custom Design" to override any default browser input styles with the internal aesthetic mappings.
-* Adjust target element colors via Hexadecimal (`#ff0000`), RGBA (`rgba(255, 255, 255, 0.5)`) or literal assignments like `transparent`.
-* Your changes will dynamically generate an isolated CSS `<style>` block bound exclusively to the frontend shortcode output, integrating seamlessly with your WordPress theme.
+## Optional integrations
 
-### 6. Translating the Form
-If you operate a multi-language website, this plugin provides two translation pipelines:
-1. **Backend Admin:** Standard `.po/.mo` files located in the `/languages/` folder. Re-compile using `npx wp-env run cli wp i18n make-mo <path>`.
-2. **Frontend (Polylang):**
-   * Navigate to **Languages > String Translations** in the WordPress admin.
-   * Filter by the `"UDC Contact Form"` group.
-   * Provide translations for the labels, questions, and legal clauses.
-   * The form will automatically switch languages based on the active URL locale (e.g., website.com/fr/).
+- **Local JSON backups:** The plugin writes database snapshots under the WordPress uploads directory and rotates local JSON files according to the current implementation. See [Operations](docs/operations.md).
+- **Google Drive:** A service-account integration can upload local JSON files to a configured folder. This sends sensitive data to an external service and requires separate credential and access management.
+- **Email:** The latest local JSON file can be sent as an email attachment to a configured address. Email storage and retention are outside this plugin.
 
-## 🛠 Architecture & Development
+These integrations are optional and depend on WordPress runtime behavior, server configuration, and the availability of the external service. WP-Cron events are not guaranteed to run at their scheduled time merely because they are registered.
 
-This project was built strictly adhering to established WordPress Coding Standards, leveraging `wp-env` for local dockerized development.
+## Database schema changes
 
-### File Structure
-* `user-data-collection.php` - Plugin header, constants, and initialization.
-* `includes/class-udc-activator.php` - Database schema creation.
-* `includes/class-udc-shortcode.php` - Frontend rendering and POST handling API.
-* `includes/class-udc-admin.php` - Backend interface rendering and inline scripts.
-* `includes/class-udc-list-table.php` - Native implementation of `WP_List_Table` for admin data management.
-* `includes/class-udc-ajax.php` - Secure backend endpoints for "Confirm/Unconfirm" actions.
-* `includes/class-udc-backup.php` - Native JSON export mechanism, backup rotation logic, and secure restoration handler.
-* `includes/class-udc-settings.php` - Configuration API for Google Drive integration keys, UI tabs, and global styling toggles.
-* `includes/class-udc-gdrive.php` - Authenticated OAuth2 Client using Server-to-Server JWT signatures to push files natively through Google Drive REST v3 API. 
-* `includes/class-udc-email-sync.php` - Standalone robust mailing handler attached to a monthly WP-Cron scheduler with attachment capabilities.
-* `includes/class-udc-i18n.php` - Translation hooks and Polylang dynamic string registration.
-* `languages/` - Contains standard WordPress `.po` and compiled `.mo` translation catalogs.
+When the table schema changes, update both the `CREATE TABLE` statement in `includes/class-udc-activator.php` and the `UDC_DB_VERSION` constant in `user-data-collection.php`. The plugin compares the stored version during `plugins_loaded` and invokes the activator when the version differs.
 
-### Database Updates
-Whenever the database structure needs to change (e.g. adding new columns to `wp_udc_submissions`):
-1. Modify the `CREATE TABLE` query inside `includes/class-udc-activator.php`.
-2. Increment the `UDC_DB_VERSION` constant in the main `user-data-collection.php` file.
-3. The plugin will automatically run `dbDelta` during the `plugins_loaded` hook to apply the schema changes dynamically when users update the plugin.
+## Documentation
 
-### Local Development (`wp-env`)
-To run the WordPress environment locally for testing:
-```bash
-# Start the local environment
-npx wp-env start
+- [Documentation index](docs/README.md)
+- [Data, security, and privacy](docs/data-security-privacy.md)
+- [Operations](docs/operations.md)
 
-# Interact with WP-CLI inside the container
-npx wp-env run cli wp plugin status
-```
+The technical documentation distinguishes verified behavior, inference, unknowns, and requirements. It does not claim GDPR compliance, security certification, performance certification, or WordPress Coding Standards compliance without a defined and executed gate.
 
-## 📜 License
-This built-for-purpose plugin is private software. Do not redistribute without authorization.
+## License
+
+The repository README describes this as private software. The package metadata currently declares the ISC license; see [Release](docs/release.md) for the version and packaging discrepancies that require an explicit maintainer decision.
