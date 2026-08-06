@@ -3,7 +3,7 @@
  * Plugin Name: User Data Collection
  * Plugin URI:  https://alejandroqs.github.io
  * Description: Collect user submissions via shortcode and manage them in a custom database table.
- * Version:     1.4.2
+ * Version:     1.5.0
  * Author:      Alejandro Quesada
  * Author URI:  https://alejandroqs.github.io
  * Text Domain: user-data-collection
@@ -16,7 +16,7 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('UDC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('UDC_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('UDC_DB_VERSION', '1.4.2');
+define('UDC_DB_VERSION', '1.5.0');
 
 // Include required dependencies
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-i18n.php';
