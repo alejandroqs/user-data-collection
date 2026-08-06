@@ -224,6 +224,7 @@ class UDC_Settings
         ?>
         <div class="wrap">
             <h1><?php esc_html_e('Settings', 'user-data-collection'); ?></h1>
+            <?php settings_errors(); ?>
             
             <h2 class="nav-tab-wrapper">
                 <a href="?page=udc-settings&tab=gdrive" class="nav-tab <?php echo $active_tab == 'gdrive' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Google Drive Integration', 'user-data-collection'); ?></a>

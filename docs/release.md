@@ -2,9 +2,9 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.4.1`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.4.2`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source.
 
-The local Git tags most recently inspected are `1.4.1`, `1.4.0`, and earlier `v1.x` tags. The release workflow is triggered only by tags matching `v*`; the two newest unprefixed tags do not match that trigger. This document does not claim whether a remote release was created for any tag.
+The local Git tags most recently inspected are `1.4.2`, `1.4.1`, `1.4.0`, and earlier `v1.x` tags. The release workflow is triggered only by tags matching `v*`; the three newest unprefixed tags do not match that trigger. This document does not claim whether a remote release was created for any tag.
 
 ## Workflow and package contents
 

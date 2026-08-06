@@ -306,22 +306,17 @@ class UDC_Backup
 
     private function valid_date($value)
     {
-        $date = DateTime::createFromFormat('!Y-m-d', (string) $value);
-        $errors = DateTime::getLastErrors();
-        return $date && $date->format('Y-m-d') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
+        return UDC_Validation::valid_date($value);
     }
 
     private function valid_datetime($value)
     {
-        $date = DateTime::createFromFormat('!Y-m-d H:i:s', (string) $value);
-        $errors = DateTime::getLastErrors();
-        return $date && $date->format('Y-m-d H:i:s') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
+        return UDC_Validation::valid_datetime($value);
     }
 
     private function normalize_time($value)
     {
-        if (preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', (string) $value)) { return $value . ':00'; }
-        return preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/', (string) $value) ? $value : false;
+        return UDC_Validation::normalize_time($value);
     }
 
     private function backup_columns()

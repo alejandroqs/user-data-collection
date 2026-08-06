@@ -421,22 +421,17 @@ class UDC_Shortcode
 
     private function within_length($value, $limit)
     {
-        return strlen($value) <= $limit;
+        return UDC_Validation::within_length($value, $limit);
     }
 
     private function valid_date($value)
     {
-        $date = DateTime::createFromFormat('!Y-m-d', $value);
-        $errors = DateTime::getLastErrors();
-        return $date && $date->format('Y-m-d') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
+        return UDC_Validation::valid_date($value);
     }
 
     private function normalize_time($value)
     {
-        if (preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $value)) {
-            return $value . ':00';
-        }
-        return preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/', $value) ? $value : false;
+        return UDC_Validation::normalize_time($value);
     }
 
     private function consume_submission_attempt()

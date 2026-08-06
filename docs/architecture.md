@@ -18,6 +18,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | --- | --- |
 | `UDC_Activator` | Creates or updates `{prefix}udc_submissions` with `dbDelta`, stores the schema version, and requests scheduled events. |
 | `UDC_Shortcode` | Renders `[udc_contact_form]`, registers public and authenticated `admin_post` handlers, applies the nonce-valid attempt budget, validates submitted fields, and inserts rows. |
+| `UDC_Validation` | Shared static date, datetime, time, and length validators used by the shortcode handler and backup restore. |
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
 | `UDC_Admin` | Creates the Submissions, Backups, and Settings screens; renders list/detail views and inline confirmation JavaScript. |
 | `UDC_Ajax` | Confirms or unconfirms a submission through authenticated AJAX actions. |

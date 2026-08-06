@@ -76,7 +76,7 @@ class UDC_Email_Sync
         $message .= sprintf(__('File size: %s', 'user-data-collection'), size_format(filesize($latest_backup))) . "\n\n";
         $message .= __('This is an automated message. Please store this file in a secure location.', 'user-data-collection') . "\n";
 
-        $attachments = is_array(func_get_args()) && !empty(func_get_args()) ? [] : [$latest_backup];
+        $attachments = [$latest_backup];
 
         $sender_email = get_option('udc_email_sender_address', '');
         $sender_name = get_option('udc_email_sender_name', '');
