@@ -10,10 +10,12 @@ class UDC_Email_Sync
         add_action('wp_ajax_udc_manual_email_backup', [$this, 'ajax_manual_email_backup']);
         add_action('udc_monthly_email_sync_action', [$this, 'send_backup']);
 
-        add_filter('cron_schedules', [$this, 'add_cron_schedule']);
+        if (false === has_filter('cron_schedules', ['UDC_Email_Sync', 'add_cron_schedule'])) {
+            add_filter('cron_schedules', ['UDC_Email_Sync', 'add_cron_schedule']);
+        }
     }
 
-    public function add_cron_schedule($schedules)
+    public static function add_cron_schedule($schedules)
     {
         if (!isset($schedules['udc_monthly'])) {
             $schedules['udc_monthly'] = [
@@ -27,15 +29,15 @@ class UDC_Email_Sync
     public static function schedule_cron()
     {
         if (!wp_next_scheduled('udc_monthly_email_sync_action')) {
-            wp_schedule_event(time(), 'udc_monthly', 'udc_monthly_email_sync_action');
+            return false !== wp_schedule_event(time(), 'udc_monthly', 'udc_monthly_email_sync_action');
         }
+        return true;
     }
 
     public static function clear_cron()
     {
-        $timestamp = wp_next_scheduled('udc_monthly_email_sync_action');
-        if ($timestamp) {
-            wp_unschedule_event($timestamp, 'udc_monthly_email_sync_action');
+        while ($timestamp = wp_next_scheduled('udc_monthly_email_sync_action')) {
+            if (!wp_unschedule_event($timestamp, 'udc_monthly_email_sync_action')) { break; }
         }
     }
 
@@ -78,6 +80,8 @@ class UDC_Email_Sync
 
         $sender_email = get_option('udc_email_sender_address', '');
         $sender_name = get_option('udc_email_sender_name', '');
+        $sender_email = is_scalar($sender_email) && ('' === $sender_email || is_email($sender_email)) ? (string) $sender_email : '';
+        $sender_name = is_scalar($sender_name) ? sanitize_text_field((string) $sender_name) : '';
 
         // Temporarily override mail from features
         $mail_from_filter = function ($original_email_address) use ($sender_email) {

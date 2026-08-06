@@ -33,6 +33,8 @@ Users with the `manage_options` capability can open the **Submissions** menu to:
 ## Optional integrations
 
 - **Local JSON backups:** The plugin writes database snapshots under the WordPress uploads directory and rotates local JSON files according to the current implementation. See [Operations](docs/operations.md).
+- **Public submission controls:** Structurally valid nonce submissions are limited by default to five attempts per ten-minute window per observed `REMOTE_ADDR`; the transient counter is non-atomic and is not a complete anti-abuse system. Required fields, dates, times, lengths, and checkbox values are validated server-side.
+- **Restore limits:** Local and uploaded JSON restores are limited to 10 MiB and 10,000 validated rows and preserve additive duplicate-ID behavior.
 - **Google Drive:** A service-account integration can upload local JSON files to a configured folder. This sends sensitive data to an external service and requires separate credential and access management.
 - **Email:** The latest local JSON file can be sent as an email attachment to a configured address. Email storage and retention are outside this plugin.
 

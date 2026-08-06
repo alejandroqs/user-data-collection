@@ -10,6 +10,13 @@ class UDC_Activator
     {
         global $wpdb;
 
+        if (false === has_filter('cron_schedules', ['UDC_GDrive', 'add_cron_schedule'])) {
+            add_filter('cron_schedules', ['UDC_GDrive', 'add_cron_schedule']);
+        }
+        if (false === has_filter('cron_schedules', ['UDC_Email_Sync', 'add_cron_schedule'])) {
+            add_filter('cron_schedules', ['UDC_Email_Sync', 'add_cron_schedule']);
+        }
+
         $table_name = $wpdb->prefix . 'udc_submissions';
         $charset_collate = $wpdb->get_charset_collate();
 
@@ -42,8 +49,11 @@ class UDC_Activator
         update_option('udc_db_version', UDC_DB_VERSION);
 
         // Schedule Backups & Syncs
-        UDC_Backup::schedule_cron();
-        UDC_GDrive::schedule_cron();
-        UDC_Email_Sync::schedule_cron();
+        $backup_scheduled = UDC_Backup::schedule_cron();
+        $gdrive_scheduled = UDC_GDrive::schedule_cron();
+        $email_scheduled = UDC_Email_Sync::schedule_cron();
+        if (false === $backup_scheduled || false === $gdrive_scheduled || false === $email_scheduled) {
+            error_log('UDC_CRON_SCHEDULE_FAILED');
+        }
     }
 }

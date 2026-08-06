@@ -22,4 +22,4 @@ The `env`, `wordpress-pro`, and `php-pro` skills are guidance, not installed pro
 
 ## Quality status
 
-**Verified:** no automated quality gate is configured in the checkout. **Requirement:** future code changes should define proportionate tests, static analysis, and runtime checks before making claims about correctness, security, performance, or compatibility. No such gate was added by this documentation-only change.
+**Verified:** PHP syntax validation and `git diff --check` are available and were executed for this remediation. The release workflow now runs PHP syntax validation and package-manifest checks in CI. No functional WordPress, database, browser, cron, mail, Drive, Apache, Nginx, IIS, production, PHPUnit, PHPCS, PHPStan, or WPCS gate exists in the checkout. The existing `npm test` script remains an intentionally failing placeholder and is not a quality gate.

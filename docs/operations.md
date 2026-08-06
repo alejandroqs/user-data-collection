@@ -12,9 +12,9 @@ wp-content/uploads/udc-backups/
 
 `UDC_Backup::create_backup()` serializes all rows from the custom table to a timestamped JSON file. `rotate_backups()` sorts all `*.json` files in that directory by modification time and deletes the oldest files until five remain. The same class provides administrative actions for manual creation, restoring a named local file, and uploading a JSON file.
 
-Restore is additive: `insert_backup_data()` checks each supplied `id` and inserts rows that are not already present. It does not overwrite existing rows or wrap the complete operation in a transaction.
+Restore is additive: `insert_backup_data()` validates the complete bounded document, checks each supplied positive `id`, and inserts rows that are not already present. Current-schema rows require a nonempty `zip`. The exact historical schema used by v1.0.0 and v1.1.0, which contains `zip_city` instead of `city` and `zip`, is also supported: the full historical `zip_city` value is copied to `city` and `zip` is set to the empty string. Empty `zip` is permitted only after that exact legacy schema is positively identified; current-schema rows and mixed current/legacy documents are rejected. Imports use a transaction when the table is InnoDB and fail closed otherwise.
 
-**Verified limitations:** file creation return values are not checked; upload handling does not impose a size or schema limit; JSON is parsed before a complete row allowlist or format validation; and local protection uses an `.htaccess` file whose effect depends on the web server.
+**Verified limitations:** the local protection files still depend on web-server behavior, and no functional WordPress or database runtime gate exists in this checkout. Backup creation bounds the full-table snapshot to 10,000 rows, rejects encoded JSON larger than the 10 MiB restore limit, writes through a locked temporary file, and atomically renames it before rotation.
 
 ## Scheduled work
 
@@ -26,15 +26,15 @@ The activator requests these events:
 | `udc_weekly_gdrive_sync_action` | `UDC_GDrive` | `udc_weekly`, 604800 seconds |
 | `udc_monthly_email_sync_action` | `UDC_Email_Sync` | `udc_monthly`, 2592000 seconds |
 
-**Verified scheduling limitation:** `UDC_Activator::activate()` requests the custom weekly and monthly events before the service constructors register their `cron_schedules` filters. The scheduler return values are not checked. The event may therefore fail to register in the intended custom interval. This requires runtime verification and code changes outside this documentation task.
+`UDC_Activator::activate()` registers the custom weekly and monthly schedules before requesting events and checks scheduling results. Deactivation clears every matching timestamp. WP-Cron delivery and runtime execution remain unverified.
 
 WP-Cron is traffic- and configuration-dependent. A registered event is not proof that the task has run, ran on time, or succeeded.
 
 ## Google Drive
 
-When enabled, `UDC_GDrive::sync_backups()` lists every non-trashed file in the configured folder, compares names with local `*.json` files, uploads missing local names, then keeps at most five files by deleting the oldest results from the folder listing.
+When enabled, `UDC_GDrive::sync_backups()` paginates a bounded Drive listing, uploads missing local JSON files with the exact `appProperties.udc_backup = 1` marker, and keeps marked files separate from unmarked strict legacy-name observations. Only marker-owned files are eligible for automatic rotation and deletion. An unmarked historical filename may suppress a duplicate upload but is never automatically deleted. HTTP status, JSON structure, required fields, ownership properties, and successful deletion responses are checked.
 
-**Verified limitation:** the Drive query does not filter by a plugin-specific name or MIME type before rotation. Other files in the configured folder can therefore count toward the five-file limit and can be selected for deletion. A failed HTTP response that is not represented as `WP_Error` can also be counted as a deletion success because the current code does not validate the response status for delete requests.
+**Verified limitation:** Drive API behavior, permissions, pagination, and deletion were not executed against a real or isolated Drive environment.
 
 ## Email backup
 

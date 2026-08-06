@@ -17,7 +17,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | Component | Verified responsibility |
 | --- | --- |
 | `UDC_Activator` | Creates or updates `{prefix}udc_submissions` with `dbDelta`, stores the schema version, and requests scheduled events. |
-| `UDC_Shortcode` | Renders `[udc_contact_form]`, registers public and authenticated `admin_post` handlers, sanitizes submitted fields, performs minimal required-field validation, and inserts rows. |
+| `UDC_Shortcode` | Renders `[udc_contact_form]`, registers public and authenticated `admin_post` handlers, applies the nonce-valid attempt budget, validates submitted fields, and inserts rows. |
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
 | `UDC_Admin` | Creates the Submissions, Backups, and Settings screens; renders list/detail views and inline confirmation JavaScript. |
 | `UDC_Ajax` | Confirms or unconfirms a submission through authenticated AJAX actions. |
@@ -39,8 +39,8 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `udc_daily_backup_action` | `UDC_Backup` | Creates a local JSON snapshot. |
 | `udc_weekly_gdrive_sync_action` | `UDC_GDrive` | Attempts a Drive synchronization when enabled. |
 | `udc_monthly_email_sync_action` | `UDC_Email_Sync` | Attempts an email backup when enabled. |
-| `cron_schedules` | `UDC_GDrive`, `UDC_Email_Sync` | Registers custom weekly and monthly intervals. |
-| `admin_init` | `UDC_Settings` | Registers options without `sanitize_callback` arguments in the current source. |
+| `cron_schedules` | `UDC_Activator`, `UDC_GDrive`, `UDC_Email_Sync` | Registers custom weekly and monthly intervals before scheduling. |
+| `admin_init` | `UDC_Settings` | Registers typed options with defaults and sanitization callbacks. |
 | `init` | `UDC_i18n` | Registers Polylang strings when Polylang is available. |
 
 The public form flows into the custom table. Administrative list/detail views and confirmation actions read or update that table. The table can then flow into local JSON, Google Drive, and email attachments. See [Data, security, and privacy](data-security-privacy.md) and [Operations](operations.md).

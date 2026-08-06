@@ -24,57 +24,102 @@ class UDC_Backup
     public static function schedule_cron()
     {
         if (!wp_next_scheduled('udc_daily_backup_action')) {
-            wp_schedule_event(time(), 'daily', 'udc_daily_backup_action');
+            return false !== wp_schedule_event(time(), 'daily', 'udc_daily_backup_action');
         }
+        return true;
     }
 
     public static function clear_cron()
     {
-        $timestamp = wp_next_scheduled('udc_daily_backup_action');
-        if ($timestamp) {
-            wp_unschedule_event($timestamp, 'udc_daily_backup_action');
+        while ($timestamp = wp_next_scheduled('udc_daily_backup_action')) {
+            if (!wp_unschedule_event($timestamp, 'udc_daily_backup_action')) { break; }
         }
     }
 
     private function secure_directory()
     {
-        if (!file_exists(self::$backup_dir)) {
-            wp_mkdir_p(self::$backup_dir);
+        if (!is_dir(self::$backup_dir)) {
+            if (!wp_mkdir_p(self::$backup_dir)) {
+                return new WP_Error('directory_error', __('Backup storage is unavailable.', 'user-data-collection'));
+            }
         }
 
         $htaccess_file = self::$backup_dir . '.htaccess';
         if (!file_exists($htaccess_file)) {
             $rules = "Order deny,allow\nDeny from all\n";
-            file_put_contents($htaccess_file, $rules);
+            if (false === file_put_contents($htaccess_file, $rules, LOCK_EX)) {
+                return new WP_Error('protection_error', __('Backup storage is unavailable.', 'user-data-collection'));
+            }
+            $this->restrict_file($htaccess_file);
         }
 
         $index_file = self::$backup_dir . 'index.php';
         if (!file_exists($index_file)) {
-            file_put_contents($index_file, "<?php\n// Silence is golden.\n");
+            if (false === file_put_contents($index_file, "<?php\n// Silence is golden.\n", LOCK_EX)) {
+                return new WP_Error('protection_error', __('Backup storage is unavailable.', 'user-data-collection'));
+            }
+            $this->restrict_file($index_file);
         }
+        return true;
     }
 
     public function create_backup()
     {
-        $this->secure_directory();
+        $directory = $this->secure_directory();
+        if (is_wp_error($directory)) {
+            return $directory;
+        }
 
         global $wpdb;
         $table_name = $wpdb->prefix . 'udc_submissions';
 
-        // Fetch all data
-        $results = $wpdb->get_results("SELECT * FROM $table_name", ARRAY_A);
+        // Fetch all data using the same explicit field order accepted by restore.
+        $columns = implode(', ', array_map(function ($column) {
+            return '`' . $column . '`';
+        }, $this->backup_columns()));
+        $results = $wpdb->get_results("SELECT $columns FROM $table_name LIMIT 10001", ARRAY_A);
+        if (!is_array($results) || count($results) > 10000) {
+            return new WP_Error('backup_limit', __('Backup could not be created because the dataset is too large.', 'user-data-collection'));
+        }
 
         $json_data = wp_json_encode($results);
-        if ($json_data === false) {
-            return false;
+        if (false === $json_data) {
+            return new WP_Error('backup_error', __('Backup could not be created.', 'user-data-collection'));
+        }
+        if (strlen($json_data) > 10 * 1024 * 1024) {
+            return new WP_Error('backup_limit', __('Backup could not be created because the encoded data is too large.', 'user-data-collection'));
         }
 
         $filename = 'backup_' . current_time('Ymd_His') . '.json';
         $filepath = self::$backup_dir . $filename;
 
-        file_put_contents($filepath, $json_data);
+        $temporary = tempnam(self::$backup_dir, '.udc-backup-');
+        $written = false === $temporary ? false : file_put_contents($temporary, $json_data, LOCK_EX);
+        if (false === $temporary || false === $written || strlen($json_data) !== $written) {
+            if (false !== $temporary) {
+                unlink($temporary);
+            }
+            return new WP_Error('write_error', __('Backup could not be written.', 'user-data-collection'));
+        }
+        $this->restrict_file($temporary);
+        if (function_exists('fsync')) {
+            $handle = fopen($temporary, 'rb');
+            if (false === $handle || !fsync($handle)) {
+                if (is_resource($handle)) { fclose($handle); }
+                unlink($temporary);
+                return new WP_Error('write_error', __('Backup could not be written.', 'user-data-collection'));
+            }
+            fclose($handle);
+        }
+        if (!rename($temporary, $filepath)) {
+            unlink($temporary);
+            return new WP_Error('write_error', __('Backup could not be written.', 'user-data-collection'));
+        }
 
-        $this->rotate_backups();
+        $rotation = $this->rotate_backups();
+        if (is_wp_error($rotation)) {
+            return $rotation;
+        }
 
         return $filename;
     }
@@ -82,17 +127,17 @@ class UDC_Backup
     private function rotate_backups()
     {
         if (!file_exists(self::$backup_dir)) {
-            return;
+            return new WP_Error('directory_error', __('Backup storage is unavailable.', 'user-data-collection'));
         }
 
         // Get all JSON files sorted by modification time (oldest first)
         $files = glob(self::$backup_dir . '*.json');
         if ($files === false) {
-            return;
+            return new WP_Error('rotation_error', __('Older backups could not be rotated.', 'user-data-collection'));
         }
 
         usort($files, function ($a, $b) {
-            return filemtime($a) - filemtime($b);
+                return (int) filemtime($a) - (int) filemtime($b);
         });
 
         // If we have more than 5, delete the oldest ones
@@ -102,59 +147,191 @@ class UDC_Backup
         if ($total_files > $max_backups) {
             $files_to_delete = array_slice($files, 0, $total_files - $max_backups);
             foreach ($files_to_delete as $file) {
-                @unlink($file);
+                if (!unlink($file)) {
+                    return new WP_Error('rotation_error', __('Older backups could not be rotated.', 'user-data-collection'));
+                }
             }
+        }
+        return true;
+    }
+
+    private function restrict_file($path)
+    {
+        if (function_exists('chmod')) {
+            chmod($path, 0600);
         }
     }
 
     public function restore_backup($filename)
     {
+        if (!is_scalar($filename)) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
         $filepath = self::$backup_dir . basename($filename);
 
-        if (!file_exists($filepath) || pathinfo($filepath, PATHINFO_EXTENSION) !== 'json') {
-            return new WP_Error('not_found', __('Backup file not found or invalid.', 'user-data-collection'));
+        $size = file_exists($filepath) ? filesize($filepath) : false;
+        if (!file_exists($filepath) || pathinfo($filepath, PATHINFO_EXTENSION) !== 'json' || false === $size || $size < 1 || $size > 10 * 1024 * 1024 || !is_readable($filepath)) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }
 
         $json_data = file_get_contents($filepath);
-        if (!$json_data) {
-            return new WP_Error('read_error', __('Could not read backup file.', 'user-data-collection'));
-        }
-
-        $data = json_decode($json_data, true);
-        if ($data === null) {
-            return new WP_Error('parse_error', __('Could not parse backup JSON data.', 'user-data-collection'));
-        }
-
-        return $this->insert_backup_data($data);
+        return false === $json_data ? new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection')) : $this->decode_backup_data($json_data);
     }
 
     private function insert_backup_data($data)
     {
-        if (empty($data) || !is_array($data)) {
-            return 0;
+        $normalized = $this->validate_backup_rows($data);
+        if (is_wp_error($normalized)) {
+            return $normalized;
         }
 
         global $wpdb;
         $table_name = $wpdb->prefix . 'udc_submissions';
-
         $added_count = 0;
+        $engine = $wpdb->get_var($wpdb->prepare('SELECT ENGINE FROM information_schema.TABLES WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s', $table_name));
+        if (!is_string($engine) || 'innodb' !== strtolower($engine) || false === $wpdb->query('START TRANSACTION')) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
 
-        foreach ($data as $row) {
-            if (!isset($row['id'])) {
-                continue;
+        foreach ($normalized as $safe_row) {
+            $exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(id) FROM $table_name WHERE id = %d", $safe_row['id']));
+            if (false === $exists) {
+                $wpdb->query('ROLLBACK');
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
-
-            // Check if the submission already exists
-            $exists = $wpdb->get_var($wpdb->prepare("SELECT COUNT(id) FROM $table_name WHERE id = %d", $row['id']));
-
             if (!$exists) {
-                // Ensure arrays are allowed in insert
-                $wpdb->insert($table_name, $row);
+                if (false === $wpdb->insert($table_name, $safe_row, $this->backup_formats())) {
+                    $wpdb->query('ROLLBACK');
+                    return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+                }
                 $added_count++;
             }
         }
-
+        if (false === $wpdb->query('COMMIT')) {
+            $wpdb->query('ROLLBACK');
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
         return $added_count;
+    }
+
+    private function decode_backup_data($json_data)
+    {
+        if ('' === $json_data) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
+        $data = json_decode($json_data, true, 8);
+        if (JSON_ERROR_NONE !== json_last_error()) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
+        return $this->insert_backup_data($data);
+    }
+
+    private function validate_backup_rows($data)
+    {
+        $data_keys = is_array($data) ? array_keys($data) : [];
+        if (!is_array($data) || (count($data) > 0 && $data_keys !== range(0, count($data) - 1)) || count($data) > 10000) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
+        $current = $this->backup_columns();
+        $legacy = array_values(array_diff($current, ['city','zip']));
+        $legacy[] = 'zip_city';
+        $mode = null;
+        $normalized = [];
+        foreach ($data as $row) {
+            if (!is_array($row) || array_keys($row) === range(0, count($row) - 1)) {
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+            }
+            foreach ($row as $value) {
+                if (!is_scalar($value) && null !== $value) {
+                    return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+                }
+            }
+            $keys = array_keys($row);
+            sort($keys);
+            $current_keys = $current; sort($current_keys);
+            $legacy_keys = $legacy; sort($legacy_keys);
+            $row_mode = $keys === $current_keys ? 'current' : ($keys === $legacy_keys ? 'legacy' : false);
+            if (false === $row_mode || (null !== $mode && $mode !== $row_mode)) {
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+            }
+            $mode = $row_mode;
+            if ('legacy' === $mode) {
+                $row['city'] = (string) $row['zip_city'];
+                $row['zip'] = '';
+                unset($row['zip_city']);
+            }
+            $validated = $this->validate_backup_row($row, 'legacy' === $mode);
+            if (is_wp_error($validated)) {
+                return $validated;
+            }
+            $normalized[] = $validated;
+        }
+        return $normalized;
+    }
+
+    private function validate_backup_row($row, $legacy_schema = false)
+    {
+        $lengths = ['last_name'=>255,'first_name'=>255,'address'=>255,'city'=>255,'zip'=>50,'phone'=>50,'piercing_location'=>255];
+        if (!is_array($row)) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
+        foreach ($this->backup_columns() as $field) {
+            if (!array_key_exists($field, $row)) {
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+            }
+        }
+        if (!isset($row['id']) || filter_var($row['id'], FILTER_VALIDATE_INT, ['options'=>['min_range'=>1]]) === false || !$this->valid_date($row['dob']) || !$this->valid_date($row['appointment_date']) || false === $this->normalize_time($row['appointment_time']) || !$this->valid_datetime($row['created_at'])) {
+            return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+        }
+        foreach ($lengths as $field => $length) {
+            $empty_zip_allowed = $legacy_schema && 'zip' === $field && '' === $row[$field];
+            if (!is_string($row[$field]) || ('' === $row[$field] && !$empty_zip_allowed) || strlen($row[$field]) > $length) {
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+            }
+        }
+        foreach (['health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','is_confirmed'] as $field) {
+            if (!in_array($row[$field], [0, 1, '0', '1'], true)) {
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+            }
+            $row[$field] = (int) $row[$field];
+        }
+        $row['id'] = (int) $row['id'];
+        $row['appointment_time'] = $this->normalize_time($row['appointment_time']);
+        $ordered = [];
+        foreach ($this->backup_columns() as $field) {
+            $ordered[$field] = $row[$field];
+        }
+        return $ordered;
+    }
+
+    private function valid_date($value)
+    {
+        $date = DateTime::createFromFormat('!Y-m-d', (string) $value);
+        $errors = DateTime::getLastErrors();
+        return $date && $date->format('Y-m-d') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
+    }
+
+    private function valid_datetime($value)
+    {
+        $date = DateTime::createFromFormat('!Y-m-d H:i:s', (string) $value);
+        $errors = DateTime::getLastErrors();
+        return $date && $date->format('Y-m-d H:i:s') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
+    }
+
+    private function normalize_time($value)
+    {
+        if (preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', (string) $value)) { return $value . ':00'; }
+        return preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/', (string) $value) ? $value : false;
+    }
+
+    private function backup_columns()
+    {
+        return ['id','last_name','first_name','dob','address','city','zip','phone','health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','appointment_date','appointment_time','piercing_location','is_confirmed','created_at'];
+    }
+
+    private function backup_formats()
+    {
+        return ['%d','%s','%s','%s','%s','%s','%s','%s','%d','%d','%d','%d','%d','%d','%s','%s','%s','%d','%s'];
     }
 
     public function ajax_create_backup()
@@ -164,7 +341,7 @@ class UDC_Backup
         }
 
         $result = $this->create_backup();
-        if ($result) {
+        if (!is_wp_error($result) && false !== $result) {
             wp_send_json_success(['message' => __('Backup created successfully.', 'user-data-collection')]);
         } else {
             wp_send_json_error(__('Failed to create backup.', 'user-data-collection'));
@@ -177,7 +354,7 @@ class UDC_Backup
             wp_send_json_error(__('Permission denied or invalid security token.', 'user-data-collection'));
         }
 
-        $filename = isset($_POST['filename']) ? sanitize_text_field(wp_unslash($_POST['filename'])) : '';
+        $filename = isset($_POST['filename']) && is_scalar($_POST['filename']) ? sanitize_text_field(wp_unslash((string) $_POST['filename'])) : '';
         if (empty($filename)) {
             wp_send_json_error(__('Invalid filename.', 'user-data-collection'));
         }
@@ -196,13 +373,13 @@ class UDC_Backup
             wp_send_json_error(__('Permission denied or invalid security token.', 'user-data-collection'));
         }
 
-        if (empty($_FILES['backup_file']['tmp_name'])) {
+        if (!isset($_FILES['backup_file']) || !is_array($_FILES['backup_file']) || empty($_FILES['backup_file']['tmp_name'])) {
             wp_send_json_error(__('No file uploaded.', 'user-data-collection'));
         }
 
         $file = $_FILES['backup_file'];
 
-        if ($file['error'] !== UPLOAD_ERR_OK) {
+        if (!isset($file['error'], $file['tmp_name'], $file['name'], $file['size']) || !is_scalar($file['error']) || !is_scalar($file['tmp_name']) || !is_scalar($file['name']) || !is_scalar($file['size']) || (int) $file['error'] !== UPLOAD_ERR_OK || !is_uploaded_file($file['tmp_name']) || !is_readable($file['tmp_name']) || (int) $file['size'] < 1 || (int) $file['size'] > 10 * 1024 * 1024) {
             wp_send_json_error(__('Error uploading file.', 'user-data-collection'));
         }
 
@@ -211,17 +388,18 @@ class UDC_Backup
             wp_send_json_error(__('Only JSON files are allowed.', 'user-data-collection'));
         }
 
-        $json_data = file_get_contents($file['tmp_name']);
-        if (!$json_data) {
+        $actual_size = filesize($file['tmp_name']);
+        if (false === $actual_size || $actual_size < 1 || $actual_size > 10 * 1024 * 1024) {
             wp_send_json_error(__('Could not read uploaded file.', 'user-data-collection'));
         }
-
-        $data = json_decode($json_data, true);
-        if ($data === null) {
+        $json_data = file_get_contents($file['tmp_name']);
+        if (false === $json_data) {
             wp_send_json_error(__('Could not parse uploaded JSON data.', 'user-data-collection'));
         }
-
-        $added_count = $this->insert_backup_data($data);
+        $added_count = $this->decode_backup_data($json_data);
+        if (is_wp_error($added_count)) {
+            wp_send_json_error(__('Could not restore the backup.', 'user-data-collection'));
+        }
 
         wp_send_json_success(['message' => sprintf(__('Uploaded backup processed. %d missing submissions were added.', 'user-data-collection'), $added_count)]);
     }
@@ -232,7 +410,11 @@ class UDC_Backup
             return;
         }
 
-        $this->secure_directory();
+        $directory = $this->secure_directory();
+        if (is_wp_error($directory)) {
+            echo '<div class="notice notice-error"><p>' . esc_html__('Backup storage is unavailable.', 'user-data-collection') . '</p></div>';
+            return;
+        }
         $files = glob(self::$backup_dir . '*.json');
         if ($files === false) {
             $files = [];

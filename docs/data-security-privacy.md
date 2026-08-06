@@ -29,13 +29,16 @@ Public form -> custom database table -> local JSON backup -> optional Google Dri
 
 These are source-level controls, not evidence of complete security or privacy compliance.
 
+`UDC_Shortcode::handle_submission()` counts nonce-valid, structurally valid attempts in a filterable ten-minute window per observed `REMOTE_ADDR`, using an HMAC of that address; the raw address is not stored or logged. The default budget is five attempts. The transient counter is non-atomic and is not protection against distributed sources. Counter failures fail closed, and an exceeded budget returns HTTP 429. The handler also validates scalar input, required values, database lengths, dates, times, and checkbox values before insertion.
+
+`UDC_Settings::register_settings()` supplies explicit setting types, defaults, and sanitizers. Email values, Drive folder IDs, service-account JSON structure, and design color tokens are validated before storage. An administrator can clear the configured credentials by submitting an empty or whitespace-only value; while configured, the service-account JSON and private key remain stored in a WordPress option pending an operator decision about secret storage.
+
 ## Known limitations
 
-- `UDC_Shortcode::handle_submission()` sanitizes fields but only requires last name, first name, and liability acceptance on the server. It does not provide complete semantic validation for dates, time, phone, or all other required browser fields.
-- The public form registers an unauthenticated `admin_post_nopriv_*` handler. The source contains no rate limit, honeypot, or other anti-abuse control. A nonce is not an anti-spam mechanism.
+- The public form remains unauthenticated and uses a nonce for request integrity, not authentication. The attempt budget is an abuse-control measure, not proof of identity or a complete anti-spam system.
 - Local JSON backups are stored under `wp-content/uploads/udc-backups/`. `UDC_Backup::secure_directory()` writes an `.htaccess` rule and `index.php`, but `.htaccess` protection depends on the web server and does not by itself establish encryption or controlled access.
-- Restore and upload paths accept JSON after extension and parse checks. They do not enforce a file-size limit, a complete schema, a field allowlist, field formats, or a transaction. `UDC_Backup::insert_backup_data()` inserts rows with an `id` that is not already present and does not validate the whole row before insertion.
-- `UDC_Settings::register_settings()` registers the settings without `sanitize_callback` arguments. Design values are later interpolated into inline CSS, so escaping at output is not equivalent to CSS-value validation.
+- Restore and upload paths are bounded to 10 MiB and 10,000 rows, use an allowlisted schema and field validation, reject mixed current/legacy schemas, and use a transactional additive import when the table is InnoDB. Duplicate positive IDs remain skipped.
+- Design values are restricted to the supported color-token grammar before their escaped inline CSS output is generated.
 - `udc_gdrive_json` stores the service-account JSON and `UDC_GDrive::get_token()` reads its `client_email` and `private_key` from that option. The current plugin does not provide a separate secret-management or encryption-at-rest layer.
 - A source search of the current plugin found no `wp_privacy_*` exporter or eraser registrations. Individual WordPress privacy export and erasure workflows are therefore not established by this plugin.
 - `UDC_Settings::ajax_delete_all_data()` deletes rows from the local table, removes local JSON files, and deletes selected plugin options. It does not delete Google Drive files, email attachments, or copies retained by external systems. It also does not constitute a documented individual-subject erasure process.

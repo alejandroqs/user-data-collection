@@ -28,15 +28,15 @@ class UDC_Shortcode
 
         $design_enabled = get_option('udc_design_enabled', '0');
         if ($design_enabled) {
-            $input_bg = esc_html(get_option('udc_design_input_bg', 'transparent'));
-            $input_border = esc_html(get_option('udc_design_input_border', 'rgba(255, 255, 255, 0.5)'));
-            $input_text = esc_html(get_option('udc_design_input_text', '#ffffff'));
-            $care_bg = esc_html(get_option('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)'));
-            $care_border = esc_html(get_option('udc_design_care_border', '#ffffff'));
+            $input_bg = esc_html(UDC_Settings::get_valid_color('udc_design_input_bg', 'transparent'));
+            $input_border = esc_html(UDC_Settings::get_valid_color('udc_design_input_border', 'rgba(255, 255, 255, 0.5)'));
+            $input_text = esc_html(UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff'));
+            $care_bg = esc_html(UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)'));
+            $care_border = esc_html(UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff'));
 
-            $cb_bg = esc_html(get_option('udc_design_cb_bg', 'transparent'));
-            $cb_border = esc_html(get_option('udc_design_cb_border', 'rgba(255, 255, 255, 0.5)'));
-            $cb_check = esc_html(get_option('udc_design_cb_check', '#ffffff'));
+            $cb_bg = esc_html(UDC_Settings::get_valid_color('udc_design_cb_bg', 'transparent'));
+            $cb_border = esc_html(UDC_Settings::get_valid_color('udc_design_cb_border', 'rgba(255, 255, 255, 0.5)'));
+            $cb_check = esc_html(UDC_Settings::get_valid_color('udc_design_cb_check', '#ffffff'));
             $invert_icons = get_option('udc_design_invert_icons', '1');
             ?>
             <style>
@@ -287,37 +287,68 @@ class UDC_Shortcode
 
     public function handle_submission()
     {
-        // 1. Verify Nonce
-        if (!isset($_POST['udc_form_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['udc_form_nonce'])), 'udc_form_action')) {
+        if (!isset($_POST['udc_form_nonce']) || !is_scalar($_POST['udc_form_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), 'udc_form_action')) {
             wp_die('Security check failed.', 'Error', ['response' => 403]);
         }
 
-        // 2. Extract and Sanitize Inputs
-        $last_name = isset($_POST['udc_last_name']) ? sanitize_text_field(wp_unslash($_POST['udc_last_name'])) : '';
-        $first_name = isset($_POST['udc_first_name']) ? sanitize_text_field(wp_unslash($_POST['udc_first_name'])) : '';
-        $dob = isset($_POST['udc_dob']) ? sanitize_text_field(wp_unslash($_POST['udc_dob'])) : '';
-        $address = isset($_POST['udc_address']) ? sanitize_text_field(wp_unslash($_POST['udc_address'])) : '';
-        $city = isset($_POST['udc_city']) ? sanitize_text_field(wp_unslash($_POST['udc_city'])) : '';
-        $zip = isset($_POST['udc_zip']) ? sanitize_text_field(wp_unslash($_POST['udc_zip'])) : '';
-        $phone = isset($_POST['udc_phone']) ? sanitize_text_field(wp_unslash($_POST['udc_phone'])) : '';
+        $fields = ['last_name', 'first_name', 'dob', 'address', 'city', 'zip', 'phone', 'appointment_date', 'appointment_time', 'piercing_location', 'liability_accepted', 'health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];
+        foreach ($fields as $field) {
+            $key = 'udc_' . $field;
+            if (array_key_exists($key, $_POST) && !is_scalar($_POST[$key])) {
+                $this->redirect_error();
+            }
+        }
 
-        $health_good = isset($_POST['udc_health_good']) ? 1 : 0;
-        $health_treatment = isset($_POST['udc_health_treatment']) ? 1 : 0;
-        $health_blood_thinners = isset($_POST['udc_health_blood_thinners']) ? 1 : 0;
-        $health_allergies = isset($_POST['udc_health_allergies']) ? 1 : 0;
-        $health_pregnant = isset($_POST['udc_health_pregnant']) ? 1 : 0;
+        $last_name = $this->sanitize_request_value('udc_last_name');
+        $first_name = $this->sanitize_request_value('udc_first_name');
+        $dob = $this->sanitize_request_value('udc_dob');
+        $address = $this->sanitize_request_value('udc_address');
+        $city = $this->sanitize_request_value('udc_city');
+        $zip = $this->sanitize_request_value('udc_zip');
+        $phone = $this->sanitize_request_value('udc_phone');
+        $appointment_date = $this->sanitize_request_value('udc_appointment_date');
+        $appointment_time = $this->sanitize_request_value('udc_appointment_time');
+        $piercing_location = $this->sanitize_request_value('udc_piercing_location');
 
-        $liability_accepted = isset($_POST['udc_liability_accepted']) ? 1 : 0;
+        if (!array_key_exists('udc_liability_accepted', $_POST) || !is_string($_POST['udc_liability_accepted']) || '1' !== wp_unslash($_POST['udc_liability_accepted'])) {
+            $this->redirect_error();
+        }
+        $liability_accepted = 1;
 
-        $appointment_date = isset($_POST['udc_appointment_date']) ? sanitize_text_field(wp_unslash($_POST['udc_appointment_date'])) : '';
-        $appointment_time = isset($_POST['udc_appointment_time']) ? sanitize_text_field(wp_unslash($_POST['udc_appointment_time'])) : '';
-        $piercing_location = isset($_POST['udc_piercing_location']) ? sanitize_text_field(wp_unslash($_POST['udc_piercing_location'])) : '';
+        $checkboxes = ['health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];
+        $health_values = [];
+        foreach ($checkboxes as $checkbox) {
+            $key = 'udc_' . $checkbox;
+            if (!array_key_exists($key, $_POST)) {
+                $health_values[$checkbox] = 0;
+                continue;
+            }
 
-        // 3. Validation
-        if (empty($last_name) || empty($first_name) || empty($liability_accepted)) {
+            if (!is_string($_POST[$key]) || '1' !== wp_unslash($_POST[$key])) {
+                $this->redirect_error();
+            }
+            $health_values[$checkbox] = 1;
+        }
+        $health_good = $health_values['health_good'];
+        $health_treatment = $health_values['health_treatment'];
+        $health_blood_thinners = $health_values['health_blood_thinners'];
+        $health_allergies = $health_values['health_allergies'];
+        $health_pregnant = $health_values['health_pregnant'];
+
+        $appointment_time = $this->normalize_time($appointment_time);
+        $required = [$last_name, $first_name, $dob, $address, $city, $zip, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
+        if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($address, 255) || !$this->within_length($city, 255) || !$this->within_length($zip, 50) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
             $redirect_url = add_query_arg('udc_status', 'error', wp_get_referer());
             wp_safe_redirect($redirect_url);
             exit;
+        }
+
+        $attempt = $this->consume_submission_attempt();
+        if (0 === $attempt) {
+            wp_die(esc_html(UDC_i18n::translate('msg_error')), 'Error', ['response' => 429]);
+        }
+        if (false === $attempt) {
+            $this->redirect_error();
         }
 
         // 4. Save to Custom Table
@@ -367,7 +398,7 @@ class UDC_Shortcode
         );
 
         if (false === $inserted) {
-            error_log('UDC Plugin Insert Error: ' . $wpdb->last_error);
+            error_log('UDC_SUBMISSION_INSERT_FAILED');
         }
 
         // 5. Redirect based on result
@@ -375,5 +406,61 @@ class UDC_Shortcode
         $redirect_url = add_query_arg('udc_status', $status, wp_get_referer());
         wp_safe_redirect($redirect_url);
         exit;
+    }
+
+    private function sanitize_request_value($key)
+    {
+        return isset($_POST[$key]) && is_scalar($_POST[$key]) ? sanitize_text_field(wp_unslash((string) $_POST[$key])) : '';
+    }
+
+    private function redirect_error()
+    {
+        wp_safe_redirect(add_query_arg('udc_status', 'error', wp_get_referer()));
+        exit;
+    }
+
+    private function within_length($value, $limit)
+    {
+        return strlen($value) <= $limit;
+    }
+
+    private function valid_date($value)
+    {
+        $date = DateTime::createFromFormat('!Y-m-d', $value);
+        $errors = DateTime::getLastErrors();
+        return $date && $date->format('Y-m-d') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
+    }
+
+    private function normalize_time($value)
+    {
+        if (preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d$/', $value)) {
+            return $value . ':00';
+        }
+        return preg_match('/^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d$/', $value) ? $value : false;
+    }
+
+    private function consume_submission_attempt()
+    {
+        $limit = (int) apply_filters('udc_submission_rate_limit', 5);
+        $window = (int) apply_filters('udc_submission_rate_window', 10 * MINUTE_IN_SECONDS);
+        $address = isset($_SERVER['REMOTE_ADDR']) && is_scalar($_SERVER['REMOTE_ADDR']) ? (string) $_SERVER['REMOTE_ADDR'] : '';
+        if ($limit < 1 || $window < 1 || '' === $address) {
+            return false;
+        }
+
+        $key = 'udc_submission_' . hash_hmac('sha256', $address, wp_salt('auth'));
+        $state = get_transient($key);
+        if (false !== $state && (!is_array($state) || !isset($state['count']) || !is_int($state['count']))) {
+            return false;
+        }
+        $count = false === $state ? 0 : $state['count'];
+        if ($count >= $limit) {
+            return 0;
+        }
+        $new_state = ['count' => $count + 1];
+        if (!set_transient($key, $new_state, $window) || get_transient($key) !== $new_state) {
+            return false;
+        }
+        return 1;
     }
 }

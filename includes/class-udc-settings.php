@@ -60,27 +60,132 @@ class UDC_Settings
     public function register_settings()
     {
         // GDrive Settings
-        register_setting('udc_gdrive_settings', 'udc_gdrive_json');
-        register_setting('udc_gdrive_settings', 'udc_gdrive_folder');
-        register_setting('udc_gdrive_settings', 'udc_gdrive_sync_enabled');
+        register_setting('udc_gdrive_settings', 'udc_gdrive_json', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_gdrive_json']]);
+        register_setting('udc_gdrive_settings', 'udc_gdrive_folder', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_folder_id']]);
+        register_setting('udc_gdrive_settings', 'udc_gdrive_sync_enabled', ['type' => 'integer', 'default' => 0, 'sanitize_callback' => [$this, 'sanitize_checkbox']]);
 
         // Email Settings
-        register_setting('udc_email_settings', 'udc_email_backup_enabled');
-        register_setting('udc_email_settings', 'udc_email_address');
-        register_setting('udc_email_settings', 'udc_email_sender_address');
-        register_setting('udc_email_settings', 'udc_email_sender_name');
+        register_setting('udc_email_settings', 'udc_email_backup_enabled', ['type' => 'integer', 'default' => 0, 'sanitize_callback' => [$this, 'sanitize_checkbox']]);
+        register_setting('udc_email_settings', 'udc_email_address', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_email']]);
+        register_setting('udc_email_settings', 'udc_email_sender_address', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_email']]);
+        register_setting('udc_email_settings', 'udc_email_sender_name', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_plain_text']]);
 
         // Design Settings
-        register_setting('udc_design_settings', 'udc_design_enabled');
-        register_setting('udc_design_settings', 'udc_design_input_bg');
-        register_setting('udc_design_settings', 'udc_design_input_border');
-        register_setting('udc_design_settings', 'udc_design_input_text');
-        register_setting('udc_design_settings', 'udc_design_care_bg');
-        register_setting('udc_design_settings', 'udc_design_care_border');
-        register_setting('udc_design_settings', 'udc_design_cb_bg');
-        register_setting('udc_design_settings', 'udc_design_cb_border');
-        register_setting('udc_design_settings', 'udc_design_cb_check');
-        register_setting('udc_design_settings', 'udc_design_invert_icons');
+        register_setting('udc_design_settings', 'udc_design_enabled', ['type' => 'integer', 'default' => 0, 'sanitize_callback' => [$this, 'sanitize_checkbox']]);
+        $color_defaults = [
+            'udc_design_input_bg' => 'transparent',
+            'udc_design_input_border' => 'rgba(255, 255, 255, 0.5)',
+            'udc_design_input_text' => '#ffffff',
+            'udc_design_care_bg' => 'rgba(255, 255, 255, 0.05)',
+            'udc_design_care_border' => '#ffffff',
+            'udc_design_cb_bg' => 'transparent',
+            'udc_design_cb_border' => 'rgba(255, 255, 255, 0.5)',
+            'udc_design_cb_check' => '#ffffff',
+        ];
+        foreach ($color_defaults as $setting => $default) {
+            register_setting('udc_design_settings', $setting, [
+                'type' => 'string',
+                'default' => $default,
+                'sanitize_callback' => function ($value) use ($setting, $default) {
+                    return $this->sanitize_color($value, $setting, $default);
+                },
+            ]);
+        }
+        register_setting('udc_design_settings', 'udc_design_invert_icons', ['type' => 'integer', 'default' => 1, 'sanitize_callback' => [$this, 'sanitize_checkbox']]);
+    }
+
+    public function sanitize_checkbox($value)
+    {
+        return (int) (is_scalar($value) && in_array((string) $value, ['1', 'true', 'on'], true));
+    }
+
+    public function sanitize_email($value)
+    {
+        $value = is_scalar($value) ? sanitize_email((string) $value) : '';
+        return '' === $value || is_email($value) ? $value : '';
+    }
+
+    public function sanitize_plain_text($value)
+    {
+        return is_scalar($value) ? sanitize_text_field((string) $value) : '';
+    }
+
+    public function sanitize_folder_id($value)
+    {
+        $value = is_scalar($value) ? trim((string) $value) : '';
+        return preg_match('/^[A-Za-z0-9_-]{1,256}$/', $value) ? $value : '';
+    }
+
+    public function sanitize_gdrive_json($value)
+    {
+        $previous = get_option('udc_gdrive_json', '');
+        if (!is_scalar($value)) {
+            add_settings_error('udc_gdrive_json', 'invalid_credentials', __('The Google Drive credentials were not saved because they are invalid.', 'user-data-collection'), 'error');
+            return $previous;
+        }
+
+        $value = trim((string) $value);
+        if ('' === $value) {
+            return '';
+        }
+
+        $credentials = json_decode($value, true);
+        $private_key = is_array($credentials) && isset($credentials['private_key']) && is_string($credentials['private_key']) ? $credentials['private_key'] : '';
+        $valid = is_array($credentials) && isset($credentials['type'], $credentials['client_email']) && 'service_account' === $credentials['type'] && is_string($credentials['client_email']) && is_email($credentials['client_email']) && preg_match('/-----BEGIN (?:PRIVATE KEY|RSA PRIVATE KEY)-----[\s\S]+-----END (?:PRIVATE KEY|RSA PRIVATE KEY)-----/', $private_key);
+        if ($valid) {
+            return $value;
+        }
+        add_settings_error('udc_gdrive_json', 'invalid_credentials', __('The Google Drive credentials were not saved because they are invalid.', 'user-data-collection'), 'error');
+        return $previous;
+    }
+
+    public function sanitize_color($value, $option = '', $default = 'transparent')
+    {
+        $value = is_scalar($value) ? trim((string) $value) : '';
+        if (self::is_valid_color($value)) {
+            return $value;
+        }
+
+        add_settings_error($option ?: 'udc_design_settings', 'invalid_color', __('The design color was not saved because it is invalid.', 'user-data-collection'), 'error');
+        $previous = '' !== $option ? get_option($option, $default) : $default;
+        return self::is_valid_color($previous) ? trim((string) $previous) : $default;
+    }
+
+    public static function get_valid_color($option, $default)
+    {
+        $value = get_option($option, $default);
+        return self::is_valid_color($value) ? trim((string) $value) : $default;
+    }
+
+    public static function is_valid_color($value)
+    {
+        if (!is_scalar($value)) {
+            return false;
+        }
+
+        $value = trim((string) $value);
+        if ('transparent' === $value || preg_match('/^#[0-9a-fA-F]{3}(?:[0-9a-fA-F]{3}|[0-9a-fA-F]{5})?$/', $value)) {
+            return true;
+        }
+
+        $number = '(?:\d{1,3}(?:\.\d+)?|\.\d+)';
+        if (preg_match('/^rgb\(\s*(' . $number . ')\s*,\s*(' . $number . ')\s*,\s*(' . $number . ')\s*\)$/', $value, $matches)) {
+            return self::valid_rgb_components($matches, false);
+        }
+        if (preg_match('/^rgba\(\s*(' . $number . ')\s*,\s*(' . $number . ')\s*,\s*(' . $number . ')\s*,\s*(' . $number . ')\s*\)$/', $value, $matches)) {
+            return self::valid_rgb_components($matches, true);
+        }
+        return false;
+    }
+
+    private static function valid_rgb_components($matches, $alpha)
+    {
+        $count = $alpha ? 4 : 3;
+        for ($i = 1; $i <= $count; $i++) {
+            $max = $alpha && 4 === $i ? 1 : 255;
+            if ((float) $matches[$i] > $max) { return false; }
+        }
+        return true;
     }
 
     public function render_admin_page()
