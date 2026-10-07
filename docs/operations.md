@@ -1,5 +1,15 @@
 # Operations
 
+**Answers:** How backup, restore, scheduled work, Google Drive, email, and destructive administrative cleanup behave and fail.
+
+**Read when:** Operating or changing backup, restore, WP-Cron, Drive, email, rotation, recovery, or Delete All Data behavior.
+
+**Canonical sources:** `UDC_Backup`, `UDC_GDrive`, `UDC_Email_Sync`, `UDC_Activator`, and `UDC_Settings`.
+
+**Update when:** A schedule, limit, file location, external integration, retry, rotation, restore rule, deletion path, or recovery behavior changes.
+
+**Out of scope:** Legal conclusions and development-tool setup; use [Data, security, and privacy](data-security-privacy.md) and [Development and quality](development-and-quality.md).
+
 This document records operational behavior visible in the source. Runtime execution, server configuration, WP-Cron delivery, Google APIs, mail delivery, and web-server access were not verified in this checkout.
 
 ## Local backup

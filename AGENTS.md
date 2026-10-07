@@ -46,12 +46,6 @@ For non-trivial codebase investigation, dependency tracing, change-impact analys
 
 ## Canonical documentation
 
-Keep one primary explanation for each topic. Use the [documentation index](docs/README.md) to find the canonical file:
-
-- architecture, lifecycle, hooks, and flows: [Architecture](docs/architecture.md);
-- data categories, controls, privacy limits, consent, and deletion: [Data, security, and privacy](docs/data-security-privacy.md);
-- backup, restore, cron, Drive, email, and operational failure modes: [Operations](docs/operations.md);
-- environment, tools, translations, and quality gates: [Development and quality](docs/development-and-quality.md);
-- versions, tags, packaging, and release checks: [Release](docs/release.md).
+Keep one primary explanation for each topic. Start with the [documentation index](docs/README.md) and its task-routing table; read only the documents required for the current task. The canonical areas are [Architecture](docs/architecture.md), [Data, security, and privacy](docs/data-security-privacy.md), [Operations](docs/operations.md), [Development and quality](docs/development-and-quality.md), and [Release](docs/release.md).
 
 Do not duplicate detailed architecture or audit tables in `AGENTS.md`. Update the affected canonical document when code, schema, hooks, integrations, commands, translations, versions, or release packaging changes.

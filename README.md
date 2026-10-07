@@ -33,22 +33,20 @@ Users with the `manage_options` capability can open the **Submissions** menu to:
 ## Optional integrations
 
 - **Local JSON backups:** The plugin writes database snapshots under the WordPress uploads directory and rotates local JSON files according to the current implementation. See [Operations](docs/operations.md).
-- **Public submission controls:** Structurally valid nonce submissions are limited by default to five attempts per ten-minute window per observed `REMOTE_ADDR`; the transient counter is non-atomic and is not a complete anti-abuse system. Required fields, dates, times, lengths, and checkbox values are validated server-side.
-- **Restore limits:** Local and uploaded JSON restores are limited to 10 MiB and 10,000 validated rows and preserve additive duplicate-ID behavior.
+- **Public submission controls:** The public handler applies server-side validation and a bounded attempt budget. See [Data, security, and privacy](docs/data-security-privacy.md) for the exact controls and their limitations.
+- **Restore:** Local and uploaded JSON restores are validated and additive. See [Operations](docs/operations.md) for the current limits, legacy compatibility, and failure behavior.
 - **Google Drive:** A service-account integration can upload local JSON files to a configured folder. This sends sensitive data to an external service and requires separate credential and access management.
 - **Email:** The latest local JSON file can be sent as an email attachment to a configured address. Email storage and retention are outside this plugin.
 
 These integrations are optional and depend on WordPress runtime behavior, server configuration, and the availability of the external service. WP-Cron events are not guaranteed to run at their scheduled time merely because they are registered.
-
-## Database schema changes
-
-When the table schema changes, update both the `CREATE TABLE` statement in `includes/class-udc-activator.php` and the `UDC_DB_VERSION` constant in `user-data-collection.php`. The plugin compares the stored version during `plugins_loaded` and invokes the activator when the version differs.
 
 ## Documentation
 
 - [Documentation index](docs/README.md)
 - [Data, security, and privacy](docs/data-security-privacy.md)
 - [Operations](docs/operations.md)
+
+Maintainers and coding agents should start with the [documentation index](docs/README.md), which routes common tasks to the minimum required technical context. Schema-change and release rules are maintained in [AGENTS.md](AGENTS.md) and [Release](docs/release.md).
 
 The technical documentation distinguishes verified behavior, inference, unknowns, and requirements. It does not claim GDPR compliance, security certification, performance certification, or WordPress Coding Standards compliance without a defined and executed gate.
 

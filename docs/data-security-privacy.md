@@ -1,5 +1,15 @@
 # Data, security, and privacy
 
+**Answers:** Which sensitive data is processed, where it goes, which source-level controls exist, and which privacy or security capabilities are absent or unverified.
+
+**Read when:** Changing fields, schema, validation, permissions, consent, credentials, data destinations, retention, export, or deletion.
+
+**Canonical sources:** `UDC_Activator`, `UDC_Shortcode`, `UDC_Validation`, `UDC_Backup`, `UDC_Settings`, `UDC_GDrive`, and `UDC_Email_Sync`.
+
+**Update when:** A data category, destination, validation rule, access rule, consent record, credential, retention rule, or deletion path changes.
+
+**Out of scope:** Operational procedures and release packaging; use [Operations](operations.md) and [Release](release.md).
+
 This document describes current source behavior. It is not a legal assessment and does not certify GDPR compliance or any other regulatory status.
 
 ## Data categories

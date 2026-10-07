@@ -1,14 +1,24 @@
 # Release
 
+**Answers:** How versions, tags, package contents, and release gates relate.
+
+**Read when:** Changing version metadata, database schema version, tag conventions, translation packaging, ZIP contents, or the release workflow.
+
+**Canonical sources:** `user-data-collection.php`, package metadata, translation metadata, Git tags, and `.github/workflows/release.yml`.
+
+**Update when:** A version source, tag convention, package allowlist, release permission, or validation gate changes.
+
+**Out of scope:** Runtime integration success and development environment setup; use [Operations](operations.md) and [Development and quality](development-and-quality.md).
+
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.4.2`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.5.0`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source. Active code is authoritative for the plugin and schema version.
 
-The local Git tags most recently inspected are `1.4.2`, `1.4.1`, `1.4.0`, and earlier `v1.x` tags. The release workflow is triggered only by tags matching `v*`; the three newest unprefixed tags do not match that trigger. This document does not claim whether a remote release was created for any tag.
+The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
 ## Workflow and package contents
 
-`.github/workflows/release.yml` creates an isolated temporary package directory and explicitly copies the plugin entrypoint, PHP files directly under `includes/`, and `.po`, `.mo`, and `.pot` files directly under `languages/`. It creates `user-data-collection.zip`, captures its manifest, permits only the expected root directories, entrypoint, direct PHP include files, and direct translation files, and rejects every other archive entry. The workflow requires all ten `includes/class-udc-*.php` files, validates PHP syntax, checks tag/header and `UDC_DB_VERSION`/header version equality, rejects executable package files, and attaches the ZIP to a GitHub release. It grants only `contents: write`, pins `actions/checkout` to commit `34e114876b0b11c390a56381ad16ebd13914f8d5` (`v4.3.1`) and `softprops/action-gh-release` to commit `5be0e66d93ac7ed76da52eca8bb058f665c3a5fe` (`v2.4.2`).
+`.github/workflows/release.yml` creates an isolated temporary package directory and explicitly copies the plugin entrypoint, PHP files directly under `includes/`, and `.po`, `.mo`, and `.pot` files directly under `languages/`. It creates `user-data-collection.zip`, captures its manifest, permits only the expected root directories, entrypoint, direct PHP include files, and direct translation files, and rejects every other archive entry. The workflow requires all ten `includes/class-udc-*.php` files; `includes/udc-validation.php` is included by the broader PHP copy and manifest allowlist. It validates PHP syntax, checks tag/header and `UDC_DB_VERSION`/header version equality, rejects executable package files, and attaches the ZIP to a GitHub release. It grants `contents: write` and uses commit-pinned release actions. The workflow itself is the canonical source for the current action commits.
 
 ## Maintainer checklist
 

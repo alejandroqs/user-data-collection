@@ -1,12 +1,22 @@
 # Architecture
 
-## Status
+**Answers:** What runs, when it runs, and how the plugin components exchange data.
 
-The component and lifecycle descriptions below are **Verified** from `user-data-collection.php` and the ten `includes/class-udc-*.php` files. The codebase-memory graph is useful for discovery but recognizes only part of the class inventory; direct source is authoritative for this document.
+**Read when:** Changing components, hooks, lifecycle, entry points, administrative actions, or cross-component flows.
+
+**Canonical sources:** `user-data-collection.php`, hook registrations, and PHP files under `includes/`.
+
+**Update when:** A class, responsibility, hook, lifecycle step, dependency, or data flow changes.
+
+**Out of scope:** Field-level privacy controls and operational runbooks; use [Data, security, and privacy](data-security-privacy.md) and [Operations](operations.md).
+
+## Evidence status
+
+The component and lifecycle descriptions below are **Verified** from `user-data-collection.php`, the ten `includes/class-udc-*.php` files, and `includes/udc-validation.php`. Structural tools are discovery aids; active source is authoritative when coverage is incomplete or stale.
 
 ## Entrypoint and lifecycle
 
-`user-data-collection.php` defines plugin constants, manually requires ten classes, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`.
+`user-data-collection.php` defines plugin constants, manually requires eleven classes, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Ten classes are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`.
 
 On activation, `UDC_Activator::activate()` calls `dbDelta`, stores `UDC_DB_VERSION`, and calls the three scheduler methods. On later loads, `udc_init_plugin()` calls the activator when the stored database version differs. It then instantiates `UDC_i18n`, `UDC_Shortcode`, `UDC_Backup`, `UDC_GDrive`, and `UDC_Email_Sync`. In an administrative request it also instantiates `UDC_Admin`, `UDC_Ajax`, and `UDC_Settings`.
 
