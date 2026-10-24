@@ -233,7 +233,8 @@ class UDC_Backup
             return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }
         $current = $this->backup_columns();
-        $legacy = array_values(array_diff($current, ['city','zip']));
+        $previous = array_merge($current, ['is_confirmed']);
+        $legacy = array_values(array_diff($previous, ['city','zip']));
         $legacy[] = 'zip_city';
         $mode = null;
         $normalized = [];
@@ -249,12 +250,19 @@ class UDC_Backup
             $keys = array_keys($row);
             sort($keys);
             $current_keys = $current; sort($current_keys);
+            $previous_keys = $previous; sort($previous_keys);
             $legacy_keys = $legacy; sort($legacy_keys);
-            $row_mode = $keys === $current_keys ? 'current' : ($keys === $legacy_keys ? 'legacy' : false);
+            $row_mode = $keys === $current_keys ? 'current' : ($keys === $previous_keys ? 'previous' : ($keys === $legacy_keys ? 'legacy' : false));
             if (false === $row_mode || (null !== $mode && $mode !== $row_mode)) {
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
             $mode = $row_mode;
+            if (array_key_exists('is_confirmed', $row)) {
+                if (!in_array($row['is_confirmed'], [0, 1, '0', '1'], true)) {
+                    return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+                }
+                unset($row['is_confirmed']);
+            }
             if ('legacy' === $mode) {
                 $row['city'] = (string) $row['zip_city'];
                 $row['zip'] = '';
@@ -289,7 +297,7 @@ class UDC_Backup
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
         }
-        foreach (['health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','is_confirmed'] as $field) {
+        foreach (['health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted'] as $field) {
             if (!in_array($row[$field], [0, 1, '0', '1'], true)) {
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
@@ -321,12 +329,12 @@ class UDC_Backup
 
     private function backup_columns()
     {
-        return ['id','last_name','first_name','dob','address','city','zip','phone','health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','appointment_date','appointment_time','piercing_location','is_confirmed','created_at'];
+        return ['id','last_name','first_name','dob','address','city','zip','phone','health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','appointment_date','appointment_time','piercing_location','created_at'];
     }
 
     private function backup_formats()
     {
-        return ['%d','%s','%s','%s','%s','%s','%s','%s','%d','%d','%d','%d','%d','%d','%s','%s','%s','%d','%s'];
+        return ['%d','%s','%s','%s','%s','%s','%s','%s','%d','%d','%d','%d','%d','%d','%s','%s','%s','%s'];
     }
 
     public function ajax_create_backup()

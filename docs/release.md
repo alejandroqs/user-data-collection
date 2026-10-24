@@ -12,13 +12,21 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.5.0`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source. Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.6.0`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source. Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
+## Upgrade to 1.6.0
+
+**Verified from source:** the schema version and plugin header advance together for removal of appointment approval. Existing installations run the activator on the next plugin load when their stored schema version differs. New installs omit the column; upgrades explicitly drop is_confirmed because [dbDelta](https://developer.wordpress.org/reference/functions/dbdelta/) does not remove omitted columns. The migration preserves submission rows but intentionally discards prior approval values. It records the new schema version only after inspection and any required drop succeed. Old backups are normalized as described in [Operations](operations.md). No tag, remote release, deployment, or live database migration was performed.
+
+## License metadata
+
+**Verified:** package.json and package-lock.json declare ISC. The root README previously described the software as private, but that wording did not establish intended distribution rights. **Unknown:** the intended license and distribution policy. A maintainer decision is pending as META-01 in [Pending work](backlog.md); this documentation review does not change licensing.
+
 ## Workflow and package contents
 
-`.github/workflows/release.yml` creates an isolated temporary package directory and explicitly copies the plugin entrypoint, PHP files directly under `includes/`, and `.po`, `.mo`, and `.pot` files directly under `languages/`. It creates `user-data-collection.zip`, captures its manifest, permits only the expected root directories, entrypoint, direct PHP include files, and direct translation files, and rejects every other archive entry. The workflow requires all ten `includes/class-udc-*.php` files; `includes/udc-validation.php` is included by the broader PHP copy and manifest allowlist. It validates PHP syntax, checks tag/header and `UDC_DB_VERSION`/header version equality, rejects executable package files, and attaches the ZIP to a GitHub release. It grants `contents: write` and uses commit-pinned release actions. The workflow itself is the canonical source for the current action commits.
+`.github/workflows/release.yml` creates an isolated temporary package directory and explicitly copies the plugin entrypoint, PHP files directly under `includes/`, and `.po`, `.mo`, and `.pot` files directly under `languages/`. It creates `user-data-collection.zip`, captures its manifest, permits only the expected root directories, entrypoint, direct PHP include files, and direct translation files, and rejects every other archive entry. The workflow requires all nine `includes/class-udc-*.php` files after removal of UDC_Ajax; `includes/udc-validation.php` is included by the broader PHP copy and manifest allowlist. It validates PHP syntax, checks tag/header and `UDC_DB_VERSION`/header version equality, rejects executable package files, and attaches the ZIP to a GitHub release. It grants `contents: write` and uses commit-pinned release actions. The workflow itself is the canonical source for the current action commits.
 
 ## Maintainer checklist
 

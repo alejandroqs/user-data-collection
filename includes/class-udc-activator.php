@@ -38,13 +38,26 @@ class UDC_Activator
             appointment_date date NOT NULL,
             appointment_time time NOT NULL,
             piercing_location varchar(255) NOT NULL,
-            is_confirmed tinyint(1) DEFAULT 0 NOT NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
 
         require_once(ABSPATH . 'wp-admin/includes/upgrade.php');
         dbDelta($sql);
+
+        // dbDelta does not remove columns omitted from CREATE TABLE.
+        $quoted_table = '`' . str_replace('`', '``', $table_name) . '`';
+        $columns = $wpdb->get_col("SHOW COLUMNS FROM $quoted_table");
+        if (!is_array($columns) || empty($columns) || '' !== $wpdb->last_error) {
+            error_log('UDC_SCHEMA_INSPECTION_FAILED');
+            return;
+        }
+        if (in_array('is_confirmed', $columns, true)) {
+            if (false === $wpdb->query("ALTER TABLE $quoted_table DROP COLUMN `is_confirmed`")) {
+                error_log('UDC_CONFIRMATION_REMOVAL_FAILED');
+                return;
+            }
+        }
 
         update_option('udc_db_version', UDC_DB_VERSION);
 

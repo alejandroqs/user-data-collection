@@ -373,8 +373,7 @@ class UDC_Shortcode
                 'liability_accepted' => $liability_accepted,
                 'appointment_date' => $appointment_date,
                 'appointment_time' => $appointment_time,
-                'piercing_location' => $piercing_location,
-                'is_confirmed' => 0
+                'piercing_location' => $piercing_location
             ],
             [
                 '%s',
@@ -392,8 +391,7 @@ class UDC_Shortcode
                 '%d',
                 '%s',
                 '%s',
-                '%s',
-                '%d'
+                '%s'
             ]
         );
 

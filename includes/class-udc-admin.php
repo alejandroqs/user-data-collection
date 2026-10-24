@@ -72,7 +72,6 @@ class UDC_Admin
                 <?php $list_table->display(); ?>
             </form>
         </div>
-        <?php $this->render_ajax_script(); ?>
     <?php
     }
 
@@ -173,31 +172,6 @@ class UDC_Admin
                                 <p><strong><?php esc_html_e('Submitted:', 'user-data-collection'); ?></strong>
                                     <?php echo esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($submission->created_at))); ?>
                                 </p>
-                                <p><strong><?php esc_html_e('Status:', 'user-data-collection'); ?></strong>
-                                    <?php if ($submission->is_confirmed): ?>
-                                        <span
-                                            style="color: green; font-weight: bold;"><?php esc_html_e('Confirmed', 'user-data-collection'); ?></span>
-                                    <?php else: ?>
-                                        <span
-                                            style="color: orange; font-weight: bold;"><?php esc_html_e('Pending', 'user-data-collection'); ?></span>
-                                    <?php endif; ?>
-                                </p>
-                            </div>
-                            <div class="bottom-actions"
-                                style="padding: 10px; background: #f9f9f9; border-top: 1px solid #dfdfdf; text-align: right;">
-                                <?php if (!$submission->is_confirmed): ?>
-                                    <button class="button button-primary udc-confirm-btn"
-                                        data-id="<?php echo esc_attr($submission->id); ?>"
-                                        data-nonce="<?php echo esc_attr(wp_create_nonce('udc_confirm_nonce_' . $submission->id)); ?>">
-                                        <?php esc_html_e('Confirm Appointment', 'user-data-collection'); ?>
-                                    </button>
-                                <?php else: ?>
-                                    <button class="button button-secondary udc-unconfirm-btn"
-                                        data-id="<?php echo esc_attr($submission->id); ?>"
-                                        data-nonce="<?php echo esc_attr(wp_create_nonce('udc_unconfirm_nonce_' . $submission->id)); ?>">
-                                        <?php esc_html_e('Unconfirm Appointment', 'user-data-collection'); ?>
-                                    </button>
-                                <?php endif; ?>
                             </div>
                         </div>
                         <div class="postbox">
@@ -218,63 +192,6 @@ class UDC_Admin
                 </div>
             </div>
         </div>
-        <?php $this->render_ajax_script(); ?>
     <?php
-    }
-
-    private function render_ajax_script()
-    {
-        ?>
-        <script>
-            document.addEventListener('DOMContentLoaded', function () {
-                document.body.addEventListener('click', function (e) {
-                    const confirmBtn = e.target.closest('.udc-confirm-btn');
-                    const unconfirmBtn = e.target.closest('.udc-unconfirm-btn');
-
-                    if (confirmBtn) {
-                        e.preventDefault();
-                        handleAjaxAction(confirmBtn, 'udc_confirm_submission', '<?php echo esc_js(__('Confirming...', 'user-data-collection')); ?>', '<?php echo esc_js(__('Confirm', 'user-data-collection')); ?>');
-                    } else if (unconfirmBtn) {
-                        e.preventDefault();
-                        handleAjaxAction(unconfirmBtn, 'udc_unconfirm_submission', '<?php echo esc_js(__('Unconfirming...', 'user-data-collection')); ?>', '<?php echo esc_js(__('Unconfirm', 'user-data-collection')); ?>');
-                    }
-                });
-
-                function handleAjaxAction(btn, action, loadingText, originalText) {
-                    const id = btn.getAttribute('data-id');
-                    const nonce = btn.getAttribute('data-nonce');
-
-                    btn.disabled = true;
-                    const oldHtml = btn.innerHTML;
-                    btn.innerHTML = loadingText;
-
-                    const formData = new FormData();
-                    formData.append('action', action);
-                    formData.append('submission_id', id);
-                    formData.append('security', nonce);
-
-                    fetch('<?php echo esc_url(admin_url('admin-ajax.php')); ?>', {
-                        method: 'POST',
-                        body: formData
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            if (data.success) {
-                                window.location.reload();
-                            } else {
-                                alert(data.data || '<?php echo esc_js(__('An error occurred.', 'user-data-collection')); ?>');
-                                btn.disabled = false;
-                                btn.innerHTML = oldHtml;
-                            }
-                        })
-                        .catch(error => {
-                            alert('<?php echo esc_js(__('Network Error', 'user-data-collection')); ?>');
-                            btn.disabled = false;
-                            btn.innerHTML = oldHtml;
-                        });
-                }
-            });
-        </script>
-        <?php
     }
 }

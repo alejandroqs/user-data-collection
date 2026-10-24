@@ -17,6 +17,7 @@ This directory is the canonical map for maintainers and agents. The root [README
 | Data categories, controls, privacy, consent, and deletion | [Data, security, and privacy](data-security-privacy.md) | `UDC_Activator`, `UDC_Shortcode`, `UDC_Backup`, `UDC_Settings` |
 | Backup, restore, cron, Drive, email, and recovery | [Operations](operations.md) | `UDC_Backup`, `UDC_GDrive`, `UDC_Email_Sync`, `UDC_Settings` |
 | Environment, translations, tests, and quality gates | [Development and quality](development-and-quality.md) | Package files, catalogs, skills, and repository inventory |
+| Pending work, unresolved decisions, and completion evidence | [Pending work](backlog.md) | Canonical limitations and source symbols linked from each item |
 | Versioning, tags, workflow, and ZIP contents | [Release](release.md) | Plugin header, package metadata, Git, and workflow |
 
 ## Read by task
@@ -32,6 +33,7 @@ Use the smallest applicable reading set. Follow links from those documents only 
 | Change cron, Google Drive, or email behavior | [Operations](operations.md) |
 | Change the environment, tools, quality gates, or translations | [Development and quality](development-and-quality.md) |
 | Change versions, tags, package contents, or the release workflow | [Release](release.md) |
+| Resume work or choose the next task | [Pending work](backlog.md), then the canonical document linked by the selected item |
 | Investigate without changing code | Read the document for the affected area; do not read every document by default. |
 
 ## Change-to-document map
@@ -43,6 +45,7 @@ Use the smallest applicable reading set. Follow links from those documents only 
 | Cron, backup, restore, retention, Drive, email, or recovery | [Operations](operations.md) |
 | Dependency, command, environment, analysis gate, or translation process | [Development and quality](development-and-quality.md) |
 | Version, tag convention, package allowlist, or release gate | [Release](release.md) |
+| Pending item, unresolved decision, or verification result | [Pending work](backlog.md), plus the affected canonical explanation |
 | Stable cross-cutting instruction for agents | Root [AGENTS.md](../AGENTS.md) |
 
 ## Freshness contract
@@ -63,3 +66,17 @@ For documentation-only changes:
 6. Review the complete diff and run `git diff --check`.
 
 Inspection of source or configuration is not proof that a runtime, integration, test, build, or release passed. Record any validation not performed and the reason; do not use a “last updated” date as a substitute for evidence.
+
+## Source review before approval removal: 2026-10-24
+
+**Verified:** reviewed the plugin entrypoint, eleven included classes, schema declaration, hook registrations, package and lock metadata, POT header, release workflow, local tags, and canonical Markdown. The starting checkout was clean on main at 3da991d. At that review point, the plugin and schema were at 1.5.0. This review corrected schedule-registration attribution, unscheduling failure wording, submission-budget timing, and license wording; it also recorded restore and deletion limitations and centralized pending work.
+
+Discovery level: Verify. The graph reported unusable parsing for UDC_Admin, UDC_Backup, and UDC_Settings, partial parsing for UDC_Shortcode, and excluded documentation. Direct source reads supplied the evidence for those areas; graph traces alone do not represent the complete lifecycle.
+
+**Unknown / not executed:** WordPress and database flows, browser submission, restore round trips, cron delivery, web-server backup protection, Google Drive, email delivery, PHP lint, and the release build. This is a source and documentation review, not runtime acceptance or a complete security audit. Recheck affected source when resuming a task; this dated record does not establish future freshness.
+
+## Appointment approval removal: 2026-10-24
+
+**Verified from source:** version 1.6.0 removes approval controls, table status/action columns, approval AJAX handlers, and the active approval field. See [Architecture](architecture.md), [Data, security, and privacy](data-security-privacy.md), [Operations](operations.md), and [Release](release.md). The standalone regression command and its limits are recorded in [Development and quality](development-and-quality.md).
+
+**Unknown:** live database upgrade and browser behavior in a complete WordPress installation; Docker was unavailable during this change. Existing open items in [Pending work](backlog.md) remain unresolved.

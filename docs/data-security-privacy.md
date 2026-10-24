@@ -19,9 +19,15 @@ This document describes current source behavior. It is not a legal assessment an
 - identity and contact: first name, last name, date of birth, address, city, postal code, and phone;
 - health-related answers: general health, treatment, blood-thinning medication, allergies, and pregnancy or breastfeeding;
 - appointment and service details: appointment date, time, and piercing location;
-- consent and operational state: `liability_accepted`, `is_confirmed`, generated `id`, and `created_at`.
+- consent and operational state: `liability_accepted`, generated `id`, and `created_at`.
 
 The liability field is stored as a boolean/tinyint. The current schema does not store the presented consent text, consent version, or form language alongside the acceptance.
+
+## Retired approval state
+
+**Verified from source:** version 1.6.0 omits is_confirmed from the schema, submissions, new backups, and administrative views. UDC_Activator::activate() inspects the table after dbDelta and drops only that retired column if present. If inspection or deletion fails, the stored schema version is not advanced, allowing a later load to retry. Existing submission rows and all other fields are retained; prior approval values are discarded. Historical backups keep their original contents, but restore validates and discards the retired boolean before insertion. See [Operations](operations.md) for accepted backup schemas.
+
+**Unknown:** this upgrade has not been executed against a live WordPress database.
 
 ## Data destinations
 
@@ -35,11 +41,11 @@ Public form -> custom database table -> local JSON backup -> optional Google Dri
 
 ## Existing controls
 
-**Verified:** the form and administrative AJAX handlers use WordPress nonces. Administrative endpoints check `manage_options`. Database writes use `$wpdb->insert()` or `$wpdb->update()` in the relevant classes, and many administrative outputs use WordPress escaping functions. Sortable list columns are constrained by an allowlist in `UDC_List_Table`.
+**Verified:** the form and administrative AJAX handlers use WordPress nonces. Administrative endpoints check `manage_options`. Submission and restore writes use `$wpdb->insert()`, and many administrative outputs use WordPress escaping functions. Sortable list columns are constrained by an allowlist in `UDC_List_Table`.
 
 These are source-level controls, not evidence of complete security or privacy compliance.
 
-`UDC_Shortcode::handle_submission()` counts nonce-valid, structurally valid attempts in a filterable ten-minute window per observed `REMOTE_ADDR`, using an HMAC of that address; the raw address is not stored or logged. The default budget is five attempts. The transient counter is non-atomic and is not protection against distributed sources. Counter failures fail closed, and an exceeded budget returns HTTP 429. The handler also validates scalar input, required values, database lengths, dates, times, and checkbox values before insertion.
+`UDC_Shortcode::handle_submission()` counts attempts only after nonce, scalar structure, checkbox, required-field, length, date, and time validation, using a filterable transient lifetime of ten minutes per observed `REMOTE_ADDR`. The transient key uses an HMAC of that address; the raw address is not stored or logged. The default budget is five attempts. Each counted attempt resets the transient lifetime; this is an inactivity-based expiry, not a fixed window. Rejected field values do not consume this budget. The transient counter is non-atomic and is not protection against distributed sources. Counter failures fail closed, and an exceeded budget returns HTTP 429.
 
 `UDC_Settings::register_settings()` supplies explicit setting types, defaults, and sanitizers. Email values, Drive folder IDs, service-account JSON structure, and design color tokens are validated before storage. An administrator can clear the configured credentials by submitting an empty or whitespace-only value; while configured, the service-account JSON and private key remain stored in a WordPress option pending an operator decision about secret storage.
 

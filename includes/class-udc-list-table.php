@@ -21,16 +21,14 @@ class UDC_List_Table extends WP_List_Table
     public function get_columns()
     {
         return [
-            'id' => __('ID', 'user-data-collection'),
             'last_name' => __('Last Name', 'user-data-collection'),
             'first_name' => __('First Name', 'user-data-collection'),
+            'id' => __('ID', 'user-data-collection'),
             'dob' => __('Date of Birth', 'user-data-collection'),
             'phone' => __('Phone', 'user-data-collection'),
             'appointment_date' => __('Appt Date', 'user-data-collection'),
             'appointment_time' => __('Appt Time', 'user-data-collection'),
             'created_at' => __('Sub. Date', 'user-data-collection'),
-            'is_confirmed' => __('Status', 'user-data-collection'),
-            'action' => __('Action', 'user-data-collection'),
         ];
     }
 
@@ -42,8 +40,7 @@ class UDC_List_Table extends WP_List_Table
             'first_name' => ['first_name', false],
             'dob' => ['dob', false],
             'appointment_date' => ['appointment_date', false],
-            'created_at' => ['created_at', false],
-            'is_confirmed' => ['is_confirmed', false]
+            'created_at' => ['created_at', false]
         ];
     }
 
@@ -82,7 +79,7 @@ class UDC_List_Table extends WP_List_Table
         $hidden = [];
         $sortable = $this->get_sortable_columns();
 
-        $this->_column_headers = [$columns, $hidden, $sortable];
+        $this->_column_headers = [$columns, $hidden, $sortable, 'last_name'];
 
         $filter = isset($_REQUEST['appt_filter']) ? sanitize_text_field(wp_unslash($_REQUEST['appt_filter'])) : 'upcoming';
         $today = current_time('Y-m-d');
@@ -134,46 +131,19 @@ class UDC_List_Table extends WP_List_Table
         }
     }
 
-    public function column_last_name($item)
+    protected function handle_row_actions($item, $column_name, $primary)
     {
+        if ($column_name !== $primary) {
+            return '';
+        }
+
         $view_url = add_query_arg(['page' => 'udc-submissions', 'action' => 'view', 'id' => $item->id], admin_url('admin.php'));
 
         $actions = [
             'view' => sprintf('<a href="%s">%s</a>', esc_url($view_url), esc_html__('View Details', 'user-data-collection')),
         ];
 
-        return sprintf('%1$s %2$s', esc_html($item->last_name), $this->row_actions($actions));
-    }
-
-    public function column_action($item)
-    {
-        if ($item->is_confirmed) {
-            return sprintf(
-                '<button type="button" class="button button-secondary udc-unconfirm-btn" data-id="%s" data-nonce="%s">%s</button>',
-                esc_attr($item->id),
-                esc_attr(wp_create_nonce('udc_unconfirm_nonce_' . $item->id)),
-                esc_html__('Unconfirm', 'user-data-collection')
-            );
-        } else {
-            return sprintf(
-                '<button type="button" class="button button-primary udc-confirm-btn" data-id="%s" data-nonce="%s">%s</button>',
-                esc_attr($item->id),
-                esc_attr(wp_create_nonce('udc_confirm_nonce_' . $item->id)),
-                esc_html__('Confirm', 'user-data-collection')
-            );
-        }
-    }
-
-    public function column_is_confirmed($item)
-    {
-        $out = '<div class="status-cell">';
-        if ($item->is_confirmed) {
-            $out .= '<span style="color: green; font-weight: bold;">' . esc_html__('Confirmed', 'user-data-collection') . '</span>';
-        } else {
-            $out .= '<span style="color: orange; font-weight: bold;">' . esc_html__('Pending', 'user-data-collection') . '</span>';
-        }
-        $out .= '</div>';
-        return $out;
+        return $this->row_actions($actions);
     }
 
     public function single_row($item)

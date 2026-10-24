@@ -48,4 +48,6 @@ For non-trivial codebase investigation, dependency tracing, change-impact analys
 
 Keep one primary explanation for each topic. Start with the [documentation index](docs/README.md) and its task-routing table; read only the documents required for the current task. The canonical areas are [Architecture](docs/architecture.md), [Data, security, and privacy](docs/data-security-privacy.md), [Operations](docs/operations.md), [Development and quality](docs/development-and-quality.md), and [Release](docs/release.md).
 
+Track pending work, unresolved decisions, and completion evidence in [Pending work](docs/backlog.md). Update the relevant item when work changes status; keep technical explanations in their canonical document.
+
 Do not duplicate detailed architecture or audit tables in `AGENTS.md`. Update the affected canonical document when code, schema, hooks, integrations, commands, translations, versions, or release packaging changes.

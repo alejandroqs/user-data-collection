@@ -1,6 +1,6 @@
 # User Data Collection for WordPress
 
-User Data Collection renders a multi-field consent form through the `[udc_contact_form]` shortcode and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, confirmation actions, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
+User Data Collection renders a multi-field consent form through the `[udc_contact_form]` shortcode and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
 
 The form processes sensitive personal information, including identity and contact details, date of birth, appointment information, health-related answers, and liability acceptance. Configure access, storage, retention, and external destinations according to the site's own privacy and security requirements. This plugin documentation is not legal advice or a legal certification.
 
@@ -26,7 +26,6 @@ Users with the `manage_options` capability can open the **Submissions** menu to:
 
 - review upcoming and past appointments;
 - open submission details;
-- confirm or unconfirm submissions through AJAX actions;
 - create, restore, and upload local JSON backups;
 - configure optional Google Drive, email backup, and frontend design settings.
 
@@ -52,4 +51,4 @@ The technical documentation distinguishes verified behavior, inference, unknowns
 
 ## License
 
-The repository README describes this as private software. The package metadata currently declares the ISC license; see [Release](docs/release.md) for the version and packaging discrepancies that require an explicit maintainer decision.
+**Verified:** the package metadata declares ISC. **Unknown:** the intended licensing and distribution policy; see [Release](docs/release.md) for the discrepancy and pending maintainer decision.

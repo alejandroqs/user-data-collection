@@ -22,7 +22,9 @@ wp-content/uploads/udc-backups/
 
 `UDC_Backup::create_backup()` serializes all rows from the custom table to a timestamped JSON file. `rotate_backups()` sorts all `*.json` files in that directory by modification time and deletes the oldest files until five remain. The same class provides administrative actions for manual creation, restoring a named local file, and uploading a JSON file.
 
-Restore is additive: `insert_backup_data()` validates the complete bounded document, checks each supplied positive `id`, and inserts rows that are not already present. Current-schema rows require a nonempty `zip`. The exact historical schema used by v1.0.0 and v1.1.0, which contains `zip_city` instead of `city` and `zip`, is also supported: the full historical `zip_city` value is copied to `city` and `zip` is set to the empty string. Empty `zip` is permitted only after that exact legacy schema is positively identified; current-schema rows and mixed current/legacy documents are rejected. Imports use a transaction when the table is InnoDB and fail closed otherwise.
+Restore is additive: `insert_backup_data()` validates the complete bounded document, checks each supplied positive `id`, and inserts rows that are not already present. Current-schema rows require a nonempty `zip`. New snapshots omit the retired approval flag. Pre-1.6 current-address snapshots containing `is_confirmed` remain accepted: the retired value must be 0 or 1 (integer or string) and is discarded before insertion. The exact historical schema used by v1.0.0 and v1.1.0, which contains `zip_city` instead of `city` and `zip`, is also supported: the full historical `zip_city` value is copied to `city` and `zip` is set to the empty string. Empty `zip` is permitted only after that exact legacy schema is positively identified; current-schema rows with an empty postal code and documents mixing any accepted schema variants are rejected. Imports use a transaction when the table is InnoDB and fail closed otherwise.
+
+**Inference from source:** a legacy import leaves an empty postal code in the table. A later snapshot uses the current schema, whose restore validator rejects an empty postal code. A legacy import followed by backup and restore can therefore fail validation. This round trip has not been executed; track remediation as BACKUP-01 in [Pending work](backlog.md).
 
 **Verified limitations:** the local protection files still depend on web-server behavior, and no functional WordPress or database runtime gate exists in this checkout. Backup creation bounds the full-table snapshot to 10,000 rows, rejects encoded JSON larger than the 10 MiB restore limit, writes through a locked temporary file, and atomically renames it before rotation.
 
@@ -36,7 +38,7 @@ The activator requests these events:
 | `udc_weekly_gdrive_sync_action` | `UDC_GDrive` | `udc_weekly`, 604800 seconds |
 | `udc_monthly_email_sync_action` | `UDC_Email_Sync` | `udc_monthly`, 2592000 seconds |
 
-`UDC_Activator::activate()` registers the custom weekly and monthly schedules before requesting events and checks scheduling results. Deactivation clears every matching timestamp. WP-Cron delivery and runtime execution remain unverified.
+`UDC_Activator::activate()` registers the custom weekly and monthly schedules before requesting events and checks scheduling results. Deactivation attempts to clear matching timestamps, stopping each loop if an unscheduling call fails. WP-Cron delivery and runtime execution remain unverified.
 
 WP-Cron is traffic- and configuration-dependent. A registered event is not proof that the task has run, ran on time, or succeeded.
 
@@ -53,6 +55,8 @@ When enabled, `UDC_Email_Sync::send_backup()` selects the newest local `*.json` 
 ## Delete All Data
 
 The administrative `UDC_Settings::ajax_delete_all_data()` action checks capability and nonce, deletes local JSON files, deletes all rows from the custom table, and removes the listed Drive, email, design, and status options. It does not remove Drive objects, sent email attachments, or other external copies. It also does not unschedule events or remove every possible WordPress metadata item.
+
+**Verified limitation:** local file deletion uses suppressed, unchecked unlink results, and the database deletion result is not checked before the handler returns success. The response is not proof that local deletion completed. Track remediation as DELETE-01 in [Pending work](backlog.md).
 
 ## No-verification commands
 
