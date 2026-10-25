@@ -1,0 +1,6 @@
+{
+    "name": "udc/pdf-build-tools",
+    "description": "Development-only PDF dependency isolation",
+    "require": {"humbug/php-scoper": "^0.18.17"},
+    "config": {"allow-plugins": {}, "sort-packages": true}
+}

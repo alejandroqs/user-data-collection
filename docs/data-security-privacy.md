@@ -34,13 +34,15 @@ UDC_Piercing_Form::snapshot() captures the rendered consent, information/risk ac
 
 Care draft reference sources: [APP body piercing aftercare](https://safepiercing.org/aftercare/) and [APP oral piercing aftercare](https://safepiercing.org/oral-aftercare/). The draft is not a clinical protocol or a guarantee of healing.
 
+**Verified from source:** care PDF downloads contain public guidance, category, language, document version and the automatic WordPress home URL; no submitted identity, contact, health or consent data is included. PDFs are generated on demand without adding records or persistent PDF files. Request-specific engine/font artifacts use the WordPress temporary directory and are removed in a finally block. Hosting controls over that directory remain an operator responsibility. The public provider registry must not be used for personal submission exports; those need a separate authorized controller and the stored versioned evidence. The shared renderer can be reused by that future private controller.
+
 ## Validation and result review
 
 **Verified:** new submissions reject impossible/future birth dates, dates outside the MySQL DATE range, and birth after the procedure date. Both browser birth-date fields have matching lower/current-date bounds. Text length is checked in Unicode characters rather than UTF-8 bytes, and restore uses the same character limits for identity/contact/location fields. Evidence/metadata byte limits are retained. Existing records are not retroactively edited.
 
 Public result messages now require a short-lived HMAC receipt from the handler. Receipts contain only the service-specific status and expiry; no identity, health, record ID or contact values are placed in the URL. A copied valid receipt can be replayed within its five-minute lifetime; it is UI feedback, not identity or authorization evidence. Nonces, capabilities and the submission budget are retained.
 
-The new form's website/review URLs must have an absolute HTTP(S) scheme and host. Clearing or invalidating the website option falls back to the site homepage; invalid review URLs are omitted.
+The piercing form no longer exposes website/review destination settings or promotional links. The PDF footer derives its URL from WordPress home_url('/'); legacy option values cannot override it. The shared renderer still escapes and restricts any document provider's website link to HTTP(S).
 
 ## Retired approval state
 

@@ -50,21 +50,24 @@ const { spawn } = require('node:child_process');
             console.log('PASS: ' + width + 'px layout, labels, explicit answers and keyboard disclosures');
         }
         const careResponse = await page.request.get(origin + '/download?action=udc_piercing_care&category=oral&language=fr_FR');
-        if (careResponse.status() !== 200 || !careResponse.headers()['content-disposition']?.includes('piercing-care-oral.html') || careResponse.headers()['x-content-type-options'] !== 'nosniff') throw new Error('Care download headers/status failed');
-        if (!(await careResponse.text()).startsWith('<!doctype html>')) throw new Error('Care endpoint emitted unexpected output');
+        if (careResponse.status() !== 200 || !careResponse.headers()['content-disposition']?.includes('piercing-care-oral-fr_FR.pdf') || careResponse.headers()['content-type'] !== 'application/pdf' || careResponse.headers()['x-content-type-options'] !== 'nosniff') throw new Error('Care download headers/status failed');
+        if (!(await careResponse.body()).subarray(0, 5).equals(Buffer.from('%PDF-'))) throw new Error('Care endpoint emitted unexpected output');
+        const generic = await page.request.get(origin + '/download?action=udc_download_document&document=piercing-care&category=oral&language=fr_FR');
+        if (generic.status() !== 200 || generic.headers()['content-type'] !== 'application/pdf') throw new Error('Reusable document endpoint failed');
+        if ((await page.request.get(origin + '/download?action=udc_download_document&document=unknown&language=fr_FR')).status() !== 400) throw new Error('Unknown public provider accepted');
         for (const query of ['category=invalid&language=fr_FR', 'category=oral&language=invalid']) {
             if ((await page.request.get(origin + '/download?' + query)).status() !== 400) throw new Error('Invalid download request was not rejected');
         }
         const localized = await page.request.get(origin + '/download?category=oral&language=en&simulate_polylang=1');
-        if (localized.status() !== 200 || !(await localized.text()).includes('CARE IN ENGLISH')) throw new Error('Download gettext fallback did not use requested Polylang locale');
+        if (localized.status() !== 200 || !localized.headers()['content-disposition']?.includes('piercing-care-oral-en.pdf') || !(await localized.body()).subarray(0, 5).equals(Buffer.from('%PDF-'))) throw new Error('Localized PDF download failed');
         console.log('PASS: Care download maps a Polylang slug to the requested gettext locale (synthetic)');
-        console.log('PASS: Synthetic PHP download endpoint returns attachment HTML and rejects invalid category/language');
+        console.log('PASS: Synthetic PHP download endpoint returns attachment PDF and rejects invalid category/language');
         const downloadEvent = page.waitForEvent('download');
         await page.locator('.udc-piercing-form details').first().evaluate(el => el.open = true);
         await page.locator('.udc-piercing-form details a').first().click();
         const download = await downloadEvent;
-        if (download.suggestedFilename() !== 'piercing-care-lobe.html') throw new Error('Unexpected download filename');
-        await download.saveAs(path.join(os.tmpdir(), 'udc-downloaded-care.html'));
+        if (download.suggestedFilename() !== 'piercing-care-lobe-fr_FR.pdf') throw new Error('Unexpected download filename');
+        await download.saveAs(path.join(os.tmpdir(), 'udc-downloaded-care.pdf'));
         console.log('PASS: Browser downloads the selected standalone care document');
         const newForm = page.locator('.udc-piercing-form');
         for (const [name, value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',address:'Test address',city:'Test city',zip:'1000',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic oral piercing'})) {

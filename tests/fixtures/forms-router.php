@@ -13,7 +13,11 @@ if (isset($download_request['simulate_polylang'])) {
     $GLOBALS['gettext']['en_US'][$source] = 'CARE IN ENGLISH';
 }
 try {
-    (new UDC_Piercing_Form())->download_care();
+    if (($_GET['action'] ?? '') === 'udc_download_document') {
+        (new UDC_Document_Download())->handle();
+    } else {
+        (new UDC_Piercing_Form())->download_care();
+    }
 } catch (RuntimeException $error) {
     http_response_code(str_starts_with($error->getMessage(), 'wp_die:400') ? 400 : 500);
     echo 'Synthetic request rejected.';

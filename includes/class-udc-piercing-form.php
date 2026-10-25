@@ -11,12 +11,12 @@ class UDC_Piercing_Form extends UDC_Shortcode
 
     public function __construct()
     {
+        UDC_Document_Download::register('piercing-care', new UDC_Piercing_Care_Document());
         add_shortcode('udc_piercing_form', [$this, 'render_form']);
         add_action('admin_post_udc_submit_piercing', [$this, 'handle_submission']);
         add_action('admin_post_nopriv_udc_submit_piercing', [$this, 'handle_submission']);
         add_action('admin_post_udc_piercing_care', [$this, 'download_care']);
         add_action('admin_post_nopriv_udc_piercing_care', [$this, 'download_care']);
-        add_action('admin_init', [$this, 'register_settings']);
         add_action('init', [$this, 'register_strings']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_styles']);
     }
@@ -53,7 +53,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
             'submit_btn' => 'Envoyer mon consentement',
             'msg_success' => 'Merci, votre formulaire a été enregistré. Le professionnel vérifiera les informations avec vous avant la séance.',
             'msg_error' => 'Le formulaire n’a pas pu être enregistré. Vérifiez les champs et les réponses, puis réessayez. Si la page est ancienne, rechargez-la.',
-            'download' => 'Télécharger les soins', 'review' => 'Laisser un avis', 'website' => 'Nous découvrir', 'version' => 'Version',
+            'download' => 'Télécharger les soins', 'version' => 'Version',
             'lobe' => 'Oreille : lobe', 'cartilage' => 'Oreille : cartilage',
             'face' => 'Visage : nez, septum, sourcil', 'oral' => 'Bouche : langue, lèvre',
             'body' => 'Corps : nombril, téton',
@@ -160,17 +160,23 @@ class UDC_Piercing_Form extends UDC_Shortcode
         $text = $enabled ? UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff') : '#222222';
         $background = $enabled ? UDC_Settings::get_valid_color('udc_design_input_bg', 'transparent') : '#ffffff';
         $border = $enabled ? UDC_Settings::get_valid_color('udc_design_input_border', 'rgba(255,255,255,0.5)') : '#767676';
+        $select_text = $enabled ? $text : 'inherit';
+        $arrow_color = $enabled ? $text : '#767676';
+        $arrow = 'data:image/svg+xml,' . rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="' . esc_attr($arrow_color) . '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        $scheme = $enabled && get_option('udc_design_invert_icons', '1') ? 'dark' : 'light';
+        $control_css = 'form.udc-piercing-form select[name]{appearance:none;-webkit-appearance:none;color:' . $select_text . '!important;-webkit-text-fill-color:' . $select_text . '!important;background-image:url("' . $arrow . '");background-repeat:no-repeat;background-position:right 12px center;background-size:16px 16px;padding-right:40px}';
+        $control_css .= 'form.udc-piercing-form select[name] option{background:#fff;color:#111!important;-webkit-text-fill-color:#111!important}';
+        $control_css .= 'form.udc-piercing-form select[name] option:checked{background:Highlight;color:HighlightText!important;-webkit-text-fill-color:HighlightText!important}';
+        $control_css .= '.udc-piercing-form input[type="date"],.udc-piercing-form input[type="time"]{color-scheme:' . $scheme . '}';
         wp_register_style('udc-piercing', false, [], '1.8.0');
         wp_enqueue_style('udc-piercing');
-        wp_add_inline_style('udc-piercing', '.udc-piercing-form{max-width:760px;overflow-wrap:anywhere}.udc-piercing-form input:not([type=checkbox]):not([type=hidden]),.udc-piercing-form select{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px;font:inherit;background:' . $background . ';color:' . $text . ';border:1px solid ' . $border . '}.udc-piercing-form select option{background:#fff;color:#111}.udc-piercing-form :focus-visible{outline:2px solid currentColor;outline-offset:3px}.udc-piercing-form details{padding:12px 0;border-bottom:1px solid currentColor}.udc-piercing-form summary{cursor:pointer;min-height:32px}.udc-piercing-form .udc-resources{display:flex;flex-wrap:wrap;gap:16px}.udc-piercing-form button{min-height:44px;padding:10px 18px;font:inherit;cursor:pointer}.udc-piercing-form input[type=checkbox]{width:1.1em;height:1.1em;vertical-align:middle}');
+        wp_add_inline_style('udc-piercing', '.udc-piercing-form{max-width:760px;overflow-wrap:anywhere}.udc-piercing-form input:not([type=checkbox]):not([type=hidden]),.udc-piercing-form select{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px;font:inherit;background:' . $background . ';color:' . $text . ';border:1px solid ' . $border . '}.udc-piercing-form select option{background:#fff;color:#111}.udc-piercing-form :focus-visible{outline:2px solid currentColor;outline-offset:3px}.udc-piercing-form details{padding:12px 0;border-bottom:1px solid currentColor}.udc-piercing-form summary{cursor:pointer;min-height:32px}.udc-piercing-form .udc-resources{display:flex;flex-wrap:wrap;gap:16px}.udc-piercing-form button{min-height:44px;padding:10px 18px;font:inherit;cursor:pointer}.udc-piercing-form input[type=checkbox]{width:1.1em;height:1.1em;vertical-align:middle}' . $control_css);
     }
 
     public function render_form()
     {
         $prefix = wp_unique_id('udc-piercing-');
         $status = self::result_status(true);
-        $website_url = self::website_url();
-        $review_url = self::sanitize_url(get_option('udc_piercing_review_url', ''));
         $snapshot = self::snapshot();
         $json = wp_json_encode($snapshot);
         ob_start();
@@ -222,12 +228,6 @@ class UDC_Piercing_Form extends UDC_Shortcode
                 <p><a href="<?php echo esc_url(get_privacy_policy_url()); ?>"><?php echo esc_html(self::translate('privacy_link')); ?></a></p>
             <?php endif; ?>
             <p><button type="submit"><?php echo esc_html(self::translate('submit_btn')); ?></button></p>
-            <p class="udc-resources">
-                <a href="<?php echo esc_url($website_url); ?>"><?php echo esc_html(self::translate('website')); ?></a>
-                <?php if ('' !== $review_url): ?>
-                    <a href="<?php echo esc_url($review_url); ?>"><?php echo esc_html(self::translate('review')); ?></a>
-                <?php endif; ?>
-            </p>
         </form>
         <?php
         return ob_get_clean();
@@ -238,71 +238,47 @@ class UDC_Piercing_Form extends UDC_Shortcode
         $this->save_submission(true);
     }
 
+    /** Shared plain-text content for web previews and PDF providers. */
+    public static function care_data($category, $language = '')
+    {
+        if (!is_string($category) || !in_array($category, ['lobe', 'cartilage', 'face', 'oral', 'body'], true)) { return false; }
+        $previous = self::$download_language;
+        self::$download_language = $language;
+        try {
+            $snapshot = self::snapshot();
+            $sections = [];
+            foreach (['base', $category, 'alert'] as $key) {
+                $sections[] = ['text' => $snapshot['care'][$key], 'alert' => 'alert' === $key];
+            }
+            return [
+                'title' => self::translate('subtitle_care') . ' — ' . self::categories()[$category],
+                'language' => $snapshot['language'],
+                'filename' => 'piercing-care-' . $category . '-' . $snapshot['language'] . '.pdf',
+                'version' => self::translate('version') . ' ' . $snapshot['version'],
+                'sections' => $sections,
+                'website_label' => '',
+                'website_url' => home_url('/'),
+            ];
+        } finally {
+            self::$download_language = $previous;
+        }
+    }
+
+    /** Retained HTML preview API; download endpoints exclusively deliver PDF. */
     public static function care_document($category)
     {
-        if (!array_key_exists($category, self::categories())) { return false; }
-        $data = self::snapshot();
-        $title = self::translate('subtitle_care') . ' — ' . self::categories()[$category];
+        $data = self::care_data($category);
+        if (false === $data) { return false; }
+        $title = $data['title'];
         $html = '<!doctype html><html lang="' . esc_attr(str_replace('_', '-', $data['language'])) . '"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>' . esc_html($title) . '</title><style>body{max-width:760px;margin:32px auto;padding:0 20px;font:18px/1.6 system-ui;color:#222}h1{font-size:1.6em}</style><body><h1>' . esc_html($title) . '</h1>';
-        foreach (['base', $category, 'alert'] as $key) { $html .= '<p>' . esc_html($data['care'][$key]) . '</p>'; }
-        return $html . '<p>' . esc_html(self::translate('version') . ' ' . $data['version']) . '</p><p><a href="' . esc_url(home_url('/')) . '">' . esc_html(self::translate('website')) . '</a></p></body></html>';
+        foreach ($data['sections'] as $section) { $html .= '<p>' . esc_html($section['text']) . '</p>'; }
+        return $html . '<p>' . esc_html($data['version']) . '</p><p><a href="' . esc_url($data['website_url']) . '">' . esc_html($data['website_url']) . '</a></p></body></html>';
     }
 
     public function download_care()
     {
-        $category = isset($_GET['category']) && is_string($_GET['category']) ? wp_unslash($_GET['category']) : '';
-        $language = isset($_GET['language']) && is_string($_GET['language']) ? wp_unslash($_GET['language']) : '';
-        $languages = function_exists('pll_languages_list') ? pll_languages_list(['fields' => 'slug']) : array_merge(['en_US', get_locale()], get_available_languages());
-        if (!is_array($languages) || !in_array($language, $languages, true)) { wp_die('Invalid language.', 'Error', ['response' => 400]); }
-        self::$download_language = $language;
-        $locale = $language;
-        if (function_exists('pll_languages_list')) {
-            $slugs = pll_languages_list(['fields' => 'slug']);
-            $locales = pll_languages_list(['fields' => 'locale']);
-            $index = is_array($slugs) ? array_search($language, $slugs, true) : false;
-            if (false !== $index && is_array($locales) && isset($locales[$index])) { $locale = $locales[$index]; }
-        }
-        switch_to_locale($locale);
-        $document = self::care_document($category);
-        if (false === $document) { wp_die('Invalid category.', 'Error', ['response' => 400]); }
-        nocache_headers();
-        header('Content-Type: text/html; charset=UTF-8');
-        header('X-Content-Type-Options: nosniff');
-        header('Content-Disposition: attachment; filename="piercing-care-' . $category . '.html"');
-        echo $document;
-        exit;
+        // Preserve links already rendered in pages and caches.
+        UDC_Document_Download::send('piercing-care', $_GET);
     }
 
-    public function register_settings()
-    {
-        foreach (['udc_piercing_website_url', 'udc_piercing_review_url'] as $key) {
-            register_setting('udc_piercing_settings', $key, ['type' => 'string', 'sanitize_callback' => [self::class, 'sanitize_url'], 'default' => 'udc_piercing_website_url' === $key ? home_url('/') : '']);
-        }
-    }
-
-    public static function sanitize_url($value)
-    {
-        if (!is_string($value) || !preg_match('~^https?://~i', trim($value))) { return ''; }
-        $url = esc_url_raw(trim($value), ['http', 'https']);
-        $parts = wp_parse_url($url);
-        return is_array($parts) && !empty($parts['host']) ? $url : '';
-    }
-
-    public static function website_url()
-    {
-        return self::sanitize_url(get_option('udc_piercing_website_url', '')) ?: home_url('/');
-    }
-
-    public static function render_settings()
-    {
-        if (!current_user_can('manage_options')) { return; }
-        echo '<p><code>[udc_piercing_form]</code></p><details><summary>' . esc_html__('Piercing links', 'user-data-collection') . '</summary>';
-        echo '<form method="post" action="' . esc_url(admin_url('options.php')) . '">';
-        settings_fields('udc_piercing_settings');
-        foreach (['udc_piercing_website_url' => 'Website URL', 'udc_piercing_review_url' => 'Review URL (optional)'] as $key => $label) {
-            echo '<p><label for="' . esc_attr($key) . '">' . esc_html__($label, 'user-data-collection') . '</label><br><input class="regular-text" type="url" id="' . esc_attr($key) . '" name="' . esc_attr($key) . '" value="' . esc_attr(get_option($key, 'udc_piercing_website_url' === $key ? home_url('/') : '')) . '"></p>';
-        }
-        submit_button();
-        echo '</form></details>';
-    }
 }

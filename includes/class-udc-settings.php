@@ -35,6 +35,7 @@ class UDC_Settings
         $wpdb->query("DELETE FROM $table_name"); 
 
         // 3. Clear Options
+        // Remove retired link options when resetting legacy installations.
         delete_option('udc_piercing_website_url');
         delete_option('udc_piercing_review_url');
         delete_option('udc_gdrive_json');

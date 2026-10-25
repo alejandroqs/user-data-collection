@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: User Data Collection 1.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 22:25+0000\n"
+"POT-Creation-Date: 2026-10-25 23:34+0000\n"
 "PO-Revision-Date: 2026-05-06 20:25+0100\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: \n"
@@ -888,4 +888,14 @@ msgstr ""
 #. Default form translation; client wording review remains separate.
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Review URL (optional)"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-document-download.php
+msgid "Invalid document request."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-document-download.php
+msgid "PDF temporarily unavailable. Please try again later."
 msgstr ""

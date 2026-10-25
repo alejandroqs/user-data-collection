@@ -118,7 +118,10 @@ class UDC_Shortcode
 
                 .udc-form input[type]:focus-visible,
                 .udc-form select:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
-                .udc-form select option { background: #fff; color: #111; }
+                .udc-form select[name] { color: <?php echo $input_text; ?> !important; -webkit-text-fill-color: <?php echo $input_text; ?> !important; }
+                .udc-form select option { background: #fff; color: #111 !important; -webkit-text-fill-color: #111 !important; }
+
+                .udc-form select option:checked { background: Highlight; color: HighlightText !important; -webkit-text-fill-color: HighlightText !important; }
 
                 /* Custom Checkboxes */
                 .udc-form input[type="checkbox"] {

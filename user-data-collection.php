@@ -4,6 +4,7 @@
  * Plugin URI:  https://alejandroqs.github.io
  * Description: Collect user submissions via shortcode and manage them in a custom database table.
  * Version:     1.8.0
+ * Requires PHP: 7.4
  * Author:      Alejandro Quesada
  * Author URI:  https://alejandroqs.github.io
  * Text Domain: user-data-collection
@@ -23,6 +24,10 @@ require_once UDC_PLUGIN_DIR . 'includes/class-udc-i18n.php';
 require_once UDC_PLUGIN_DIR . 'includes/udc-validation.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-activator.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-shortcode.php';
+require_once UDC_PLUGIN_DIR . 'includes/class-udc-document.php';
+require_once UDC_PLUGIN_DIR . 'includes/class-udc-pdf-renderer.php';
+require_once UDC_PLUGIN_DIR . 'includes/class-udc-document-download.php';
+require_once UDC_PLUGIN_DIR . 'includes/class-udc-piercing-care-document.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-piercing-form.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-list-table.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-admin.php';
@@ -54,6 +59,7 @@ function udc_init_plugin()
 
     new UDC_i18n();
     new UDC_Shortcode();
+    new UDC_Document_Download();
     new UDC_Piercing_Form();
 
     // Core background services (Required outside is_admin for WP-Cron)

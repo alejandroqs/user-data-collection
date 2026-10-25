@@ -6,7 +6,7 @@ The form processes sensitive personal information, including identity and contac
 
 ## Installation
 
-1. Copy the `user-data-collection` directory into `wp-content/plugins/`.
+1. Install the built `user-data-collection.zip` (it includes the PDF library and fonts), or copy its `user-data-collection` directory into `wp-content/plugins/`.
 2. Activate the plugin from the WordPress Plugins screen.
 3. Activation creates or updates the custom `{prefix}udc_submissions` table through `dbDelta`.
 
@@ -26,7 +26,9 @@ For the new piercing form, use:
 [udc_piercing_form]
 ```
 
-The piercing form has French source copy and bundled default translations for the existing Spanish, British English, French, German and Italian locale variants, registers its own Polylang strings, offers five care categories with standalone printable HTML downloads, and records the accepted consent/care text and interface language. It uses one care category per submission; multiple perforations in that category can be described in the location field. Review its content with the studio before publication.
+The piercing form has French source copy and bundled default translations for the existing Spanish, British English, French, German and Italian locale variants, registers its own Polylang strings, offers five care categories with PDF downloads, and records the accepted consent/care text and interface language. It uses one care category per submission; multiple perforations in that category can be described in the location field. Review its content with the studio before publication.
+
+PDF downloads require PHP 7.4+, DOM, mbstring and a writable temporary directory. Source checkouts need the [PDF build steps](docs/development-and-quality.md#pdf-build-and-validation); Composer is not needed on the production host when installing the built ZIP.
 
 The existing form collects personal data, health questionnaire answers, appointment details, piercing location, and a required liability acceptance checkbox. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
 
@@ -36,11 +38,11 @@ Users with the `manage_options` capability can open the **Submissions** menu to:
 
 - review upcoming and past appointments;
 - open submission details;
-- open the separate **Piercings** submenu, copy its shortcode, and configure website/review links under **Piercing links**;
+- open the separate **Piercings** submenu and copy its shortcode;
 - create, restore, and upload local JSON backups;
 - configure optional Google Drive, email backup, and frontend design settings.
 
-The website link defaults to the site homepage, including when its setting is cleared. The optional review link appears only after an HTTP(S) destination is saved. Existing records remain in the original section without being retrospectively classified as tattoos.
+The piercing form has no promotional website or review links. Care PDFs use the WordPress home URL automatically, without an editable URL field. Existing records remain in the original section without being retrospectively classified as tattoos.
 
 Both forms reject future birth dates and use character limits that preserve accented names. Result messages require a short-lived handler receipt. With JavaScript enabled, repeated browser submits are blocked while an earlier submission is pending; controls are restored when returning with the Back button.
 

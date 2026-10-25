@@ -83,7 +83,7 @@ class UDC_Admin
         <div class="wrap">
             <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Submissions' : 'User Submissions', 'user-data-collection'); ?></h1>
 
-            <?php if ($this->is_piercing) { UDC_Piercing_Form::render_settings(); } ?>
+            <?php if ($this->is_piercing): ?><p><code>[udc_piercing_form]</code></p><?php endif; ?>
             <form id="udc-filter" method="get">
                 <input type="hidden" name="page"
                     value="<?php echo $this->is_piercing ? 'udc-piercings' : 'udc-submissions'; ?>" />

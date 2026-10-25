@@ -61,9 +61,10 @@ foreach ([false, true] as $is_piercing) {
 }
 check(!UDC_Validation::within_length("\xff", 255), 'Invalid UTF-8 cannot pass character-length validation');
 $GLOBALS['options']['udc_piercing_website_url'] = '';
-check(UDC_Piercing_Form::website_url() === home_url('/') && !str_contains($piercing->render_form(), 'href=""'), 'Clearing the website setting preserves a working home link');
-foreach (['/relative', '//example.test', 'https://', 'javascript:alert(1)', ['array']] as $url) {
-    check(UDC_Piercing_Form::sanitize_url($url) === '', 'Link settings require an absolute HTTP(S) destination with a host');
+check(UDC_Piercing_Form::care_data('oral')['website_url'] === home_url('/') && !str_contains($piercing->render_form(), 'href=""'), 'PDF website is derived automatically from WordPress');
+foreach (['/relative', '//example.test', 'https://', 'https://legacy.example.test/', ['array']] as $url) {
+    $GLOBALS['options']['udc_piercing_website_url'] = $url;
+    check(UDC_Piercing_Form::care_data('oral')['website_url'] === home_url('/'), 'Legacy website values cannot override the automatic PDF URL');
 }
 $GLOBALS['options']['udc_piercing_review_url'] = 'javascript:alert(1)';
 check(!str_contains($piercing->render_form(), 'Laisser un avis'), 'An invalid stored review destination is not rendered');

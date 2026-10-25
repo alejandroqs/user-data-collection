@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25 22:25+0000\n"
-"PO-Revision-Date: 2026-10-25 22:25+0000\n"
+"POT-Creation-Date: 2026-10-25 23:34+0000\n"
+"PO-Revision-Date: 2026-10-25 23:34+0000\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: scripts/update-translations.py\n"
@@ -999,3 +999,13 @@ msgstr "Website URL"
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Review URL (optional)"
 msgstr "Review URL (optional)"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-document-download.php
+msgid "Invalid document request."
+msgstr "Invalid document request."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-document-download.php
+msgid "PDF temporarily unavailable. Please try again later."
+msgstr "PDF temporarily unavailable. Please try again later."

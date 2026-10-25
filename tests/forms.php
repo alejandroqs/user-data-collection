@@ -17,6 +17,8 @@ function add_submenu_page(...$args) { $GLOBALS['submenus'][] = $args; }
 function register_setting($group, $key, $args) { $GLOBALS['registered_settings'][$key] = $args; }
 function get_available_languages() { return ['fr_FR']; }
 function switch_to_locale($language) { $GLOBALS['locale'] = $language; return true; }
+function restore_previous_locale() { $GLOBALS['locale'] = 'fr_FR'; return true; }
+function get_temp_dir() { return sys_get_temp_dir() . '/'; }
 function nocache_headers() { $GLOBALS['nocache_calls'] = ($GLOBALS['nocache_calls'] ?? 0) + 1; }
 function wp_register_script(...$args) {}
 function wp_enqueue_script(...$args) {}
@@ -39,9 +41,9 @@ check(substr_count($tattoo_html, 'value="2"') === 5 && substr_count($tattoo_html
 $piercing_html = $piercing->render_form();
 check(str_contains($piercing_html, 'value="udc_submit_piercing"') && substr_count($piercing_html, 'type="checkbox"') === 4, 'Piercing form has its own action and four explicit acknowledgements');
 check(substr_count($piercing_html, '<details>') === 5 && substr_count($piercing_html, 'udc_piercing_care') === 5, 'Five care categories have accessible disclosures and downloads');
-check(!str_contains($piercing_html, 'Laisser un avis'), 'Review link stays absent until a destination is configured');
+check(!str_contains($piercing_html, 'Laisser un avis') && !str_contains($piercing_html, 'Nous découvrir'), 'Piercing form has no website or review calls to action');
 $GLOBALS['options']['udc_piercing_review_url'] = 'https://example.test/review';
-check(str_contains($piercing->render_form(), 'Laisser un avis'), 'Configured review link is optional and visible');
+check(!str_contains($piercing->render_form(), 'https://example.test/review'), 'Legacy review settings cannot restore the removed link');
 check(isset($GLOBALS['shortcodes']['udc_contact_form'], $GLOBALS['shortcodes']['udc_piercing_form']), 'Both independent shortcodes are registered');
 check(isset($GLOBALS['hooks']['admin_post_nopriv_udc_submit_piercing'], $GLOBALS['hooks']['admin_post_nopriv_udc_piercing_care']), 'Public piercing submission and care download hooks are registered');
 
@@ -131,14 +133,13 @@ foreach (array_keys(UDC_Piercing_Form::categories()) as $key) {
     check(str_contains($document, '<meta charset="utf-8">') && !str_contains($document, 'Synthetic') && !str_contains($document, '<script'), 'Care download is a standalone document without personal data or scripts');
 }
 check(UDC_Piercing_Form::care_document('../invalid') === false, 'Download rejects unsupported paths/categories');
-check(UDC_Piercing_Form::sanitize_url('javascript:alert(1)') === '' && UDC_Piercing_Form::sanitize_url(['invalid']) === '', 'Link settings reject unsafe schemes and arrays');
+check(UDC_Piercing_Form::care_data('oral')['website_label'] === '', 'Care footer has no promotional website label');
 
 $admin = new UDC_Admin();
 $admin->add_admin_menu();
 $menu = array_values(array_filter($GLOBALS['submenus'], fn($args) => $args[4] === 'udc-piercings'));
 check(count($menu) === 1 && $menu[0][3] === 'manage_options', 'Piercing submenu uses the existing administrative capability');
-$piercing->register_settings();
-check(isset($GLOBALS['registered_settings']['udc_piercing_review_url']['sanitize_callback']), 'Piercing links use registered settings sanitization');
+check(!method_exists($piercing, 'register_settings') && !isset($GLOBALS['registered_settings']['udc_piercing_review_url']), 'Removed piercing links have no registered settings');
 $GLOBALS['can_manage'] = false;
 ob_start(); $admin->render_piercing_page(); $denied = ob_get_clean();
 check($denied === '', 'Unauthorized users cannot render piercing administration');

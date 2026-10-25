@@ -14,7 +14,7 @@
 
 The supplied project skills describe Windows and PowerShell as the local agent environment. That is local tooling context, not a universal runtime requirement for the WordPress plugin.
 
-The repository does not declare minimum PHP or WordPress versions. It does not include Composer, PHPUnit, PHPCS, PHPStan, a general automated test framework, or a `.wp-env.json`. `package.json` has no dependencies and its `test` script exits with the message that no test is specified. The package metadata is not a plugin quality gate.
+The plugin header and PDF runtime require PHP 7.4+. The repository does not declare a minimum WordPress version. Composer lockfiles now define PDF runtime and isolated build-tool dependencies; PHPUnit, PHPCS, PHPStan, a general automated test framework and `.wp-env.json` remain absent. `package.json` has no dependencies and its `test` script exits with the message that no test is specified. The npm metadata is not a plugin quality gate.
 
 `@wordpress/env` is not declared or pinned in the current package files, and the repository provides no versioned `wp-env` configuration. A reproducible local WordPress environment is therefore **Unknown**, not a verified checkout property. Example `npx wp-env` commands in [Operations](operations.md) are explicitly unverified.
 
@@ -59,7 +59,34 @@ This temporary preview is not a complete WordPress browser acceptance test, a de
 
 For an isolated visual fixture, run php tests/forms.php --preview, then node tests/forms-browser.cjs with Playwright resolvable in the environment and Edge installed. Playwright is optional local tooling, not a new project dependency. The harness starts and stops a loopback-only PHP fixture server on port 18761; tests/fixtures/forms-router.php uses synthetic WordPress/database functions and is excluded from release packaging.
 
-**Verified, executed:** Edge/Chromium checks pass at 320, 390, 782 and 1280 pixels, including no horizontal overflow, associated labels, explicit dropdown values, keyboard-operated care disclosures, and browser validation of a completed synthetic piercing form. The synthetic PHP endpoint returns attachment HTML and nosniff headers, rejects invalid category/language, and the browser downloads a care document. The standalone document also renders at 320 pixels. Screenshots use fictitious content and are generated under the system temporary directory.
+**Verified, executed:** Edge/Chromium checks pass at 320, 390, 782 and 1280 pixels, including no horizontal overflow, associated labels, explicit dropdown values, keyboard-operated care disclosures, and browser validation of a completed synthetic piercing form. The synthetic PHP endpoint now returns attachment PDF and nosniff headers, rejects invalid category/language or unknown provider, and the browser downloads a care document through the preserved links. The HTML preview helper also renders at 320 pixels. Screenshots use fictitious content and are generated under the system temporary directory.
+
+## PDF build and validation
+
+**Verified from configuration:** root composer.json/composer.lock lock Dompdf and its runtime dependencies; tools/pdf-build/composer.json/composer.lock lock PHP-Scoper and development tools separately. Build tools require PHP 8.2+; the generated runtime targets PHP 7.4+ with DOM and mbstring. Production hosting needs a writable WordPress temporary directory, not Composer or Python. The namespace isolation rules in tools/pdf-build/scoper.inc.php include explicit patches for upstream dynamic class names and font-type lookup. Do not remove those adaptations without executing real rendering tests.
+
+From the repository root (PowerShell; Python 3.9+ and PHP/Composer on PATH):
+
+```powershell
+composer install --no-dev --no-interaction --prefer-dist
+composer --working-dir=tools/pdf-build install --no-dev --no-interaction --prefer-dist
+php scripts/build-pdf-runtime.php
+python -m pip install -r tests/requirements-pdf.txt
+python tests/pdf-documents.py
+php tests/forms-review.php
+python scripts/update-translations.py
+python scripts/build-package.py --tag v1.8.0
+```
+
+The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
+
+**Verified, executed:** PHP 8.3.28 generated all five categories in all nine bundled locales. pypdf 6.10.0 parsed 46 PDFs (45 care documents plus a second provider), verifying complete text, titles, embedded Unicode fonts, A4 dimensions, page numbering and multipage output. Provider failures and invalid parameters restore the locale; explicit Polylang translation and gettext fallback are tested with doubles. Spanish, German and an interior multipage rendering were inspected using Poppler. Edge checked both document endpoints, PDF MIME/attachment/nosniff headers, invalid inputs, and the downloaded filename, alongside the form regressions. All nine catalog/PHP locale checks and the 141 existing PHP form assertions passed. Composer audit reported no runtime advisories at execution; composer validate reports the existing unresolved project-license metadata.
+
+**Evidence boundary:** synthetic tests do not establish real Polylang behavior, production hosting compatibility or client content approval. Native WordPress/package results are recorded in [Release](release.md); production checks remain pending.
+
+The PDF module adds two translated download-error messages to all nine catalogs (61 required IDs per locale after removal of the five active website/review strings). The builder preserves every existing nonempty translation; tattoo and piercing care/consent copy are unchanged. The two new messages use the normal gettext fallback.
+
+**Verified after link removal:** form regressions and PDF integration tests now assert that old review settings cannot restore promotional links and old website settings cannot override the WordPress home URL. All care PDF footers contain that URL exactly once. Removed UI strings remain as inactive catalog entries to preserve existing translations; they are no longer registered by the piercing form or required by its default-string manifest. No URL setting is added to another admin tab because the document URL is automatic.
 
 **Unknown / unexecuted:** complete WordPress acceptance, live schema migration, real backup-file round trips, and translation behavior with a real Polylang installation. Docker Desktop's engine was unavailable. French piercing source copy, legal/medical wording, and minors/signature procedures await studio review as FORM-01.
 
@@ -70,6 +97,12 @@ For an isolated visual fixture, run php tests/forms.php --preview, then node tes
 Generate the browser fixtures with php tests/forms-review.php --preview, then run node tests/forms-browser.cjs with Playwright resolvable. The extended isolated browser checks cover both forms' complete synthetic POST bodies, duplicate-submit prevention, Back restoration, requested-language downloads with a Polylang/gettext double, styled repeated original forms, visible keyboard focus, and birth-date bounds. PHP syntax and git diff --check are separate gates. Screenshots were inspected; this does not establish live WordPress, real Polylang or real database behavior.
 
 The Polylang locale/slug and explicit translation contracts were checked against its [official function reference](https://polylang.pro/documentation/support/developers/function-reference/). Existing original-form strings remain protected by the baseline hash test. No content changes to that form were made during this review.
+
+## Dark-background control contrast
+
+**Verified, executed 2026-10-25:** the piercing form now applies the configured input text color to closed selects despite competing black theme rules, uses a matching SVG chevron and honors the existing light-icon setting through native date/time color-scheme. Popup options keep a readable light surface and system Highlight/HighlightText selection colors. The original form receives the same text-fill protection for selects without changing its copy.
+
+An isolated Edge preview used a #550000 background, #ead8c3 configured text and a simulated theme rule forcing black select text. Computed text/text-fill, custom arrow and dark native control scheme passed; the inspected screenshot shows light calendar/clock icons. A 390px viewport had no horizontal overflow. Existing 141 synthetic form checks and PHP syntax checks passed. This has not been deployed to the live site or added to the published v1.8.0 ZIP.
 
 ## Quality status
 

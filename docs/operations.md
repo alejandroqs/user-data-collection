@@ -56,7 +56,7 @@ When enabled, `UDC_Email_Sync::send_backup()` selects the newest local `*.json` 
 
 ## Delete All Data
 
-The administrative `UDC_Settings::ajax_delete_all_data()` action checks capability and nonce, deletes local JSON files, deletes all rows from the custom table, and removes the listed Drive, email, design, status, and piercing website/review-link options. It does not remove Drive objects, sent email attachments, or other external copies. It also does not unschedule events or remove every possible WordPress metadata item.
+The administrative `UDC_Settings::ajax_delete_all_data()` action checks capability and nonce, deletes local JSON files, deletes all rows from the custom table, and removes the listed Drive, email, design, status, and retired piercing website/review-link options (legacy cleanup only). It does not remove Drive objects, sent email attachments, or other external copies. It also does not unschedule events or remove every possible WordPress metadata item.
 
 **Verified limitation:** local file deletion uses suppressed, unchecked unlink results, and the database deletion result is not checked before the handler returns success. The response is not proof that local deletion completed. Track remediation as DELETE-01 in [Pending work](backlog.md).
 

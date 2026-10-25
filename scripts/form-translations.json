@@ -38,8 +38,6 @@
       "msg_success": "Thank you, your form has been saved. The professional will check the information with you before the session.",
       "msg_error": "Your form could not be saved. Check the fields and answers, then try again. If the page has been open for a long time, reload it.",
       "download": "Download aftercare",
-      "review": "Leave a review",
-      "website": "Get to know us",
       "version": "Version",
       "lobe": "Ear: lobe",
       "cartilage": "Ear: cartilage",
@@ -65,10 +63,11 @@
       "Piercing Submissions": "Piercing submissions",
       "Accepted document": "Accepted document",
       "Document evidence is unavailable.": "Document evidence is unavailable.",
-      "Piercing consent accepted by the user.": "Piercing consent accepted by the user.",
-      "Piercing links": "Piercing links",
-      "Website URL": "Website URL",
-      "Review URL (optional)": "Review URL (optional)"
+      "Piercing consent accepted by the user.": "Piercing consent accepted by the user."
+    },
+    "download": {
+      "invalid_request": "Invalid document request.",
+      "unavailable": "PDF temporarily unavailable. Please try again later."
     }
   },
   "es": {
@@ -110,8 +109,6 @@
       "msg_success": "Gracias, su formulario se ha guardado. El profesional revisará la información con usted antes de la sesión.",
       "msg_error": "No se ha podido guardar el formulario. Revise los campos y las respuestas y vuelva a intentarlo. Si la página lleva mucho tiempo abierta, recárguela.",
       "download": "Descargar cuidados",
-      "review": "Dejar una reseña",
-      "website": "Conózcanos",
       "version": "Versión",
       "lobe": "Oreja: lóbulo",
       "cartilage": "Oreja: cartílago",
@@ -137,10 +134,11 @@
       "Piercing Submissions": "Formularios de piercings",
       "Accepted document": "Documento aceptado",
       "Document evidence is unavailable.": "No está disponible la evidencia del documento.",
-      "Piercing consent accepted by the user.": "El usuario ha aceptado el consentimiento para el piercing.",
-      "Piercing links": "Enlaces de piercings",
-      "Website URL": "URL del sitio web",
-      "Review URL (optional)": "URL para reseñas (opcional)"
+      "Piercing consent accepted by the user.": "El usuario ha aceptado el consentimiento para el piercing."
+    },
+    "download": {
+      "invalid_request": "Solicitud de documento no válida.",
+      "unavailable": "El PDF no está disponible temporalmente. Inténtelo de nuevo más tarde."
     }
   },
   "de": {
@@ -182,8 +180,6 @@
       "msg_success": "Vielen Dank, Ihr Formular wurde gespeichert. Die Fachperson wird die Angaben vor dem Termin mit Ihnen überprüfen.",
       "msg_error": "Das Formular konnte nicht gespeichert werden. Überprüfen Sie die Felder und Antworten und versuchen Sie es erneut. Laden Sie die Seite neu, wenn sie schon lange geöffnet ist.",
       "download": "Pflegehinweise herunterladen",
-      "review": "Bewertung abgeben",
-      "website": "Lernen Sie uns kennen",
       "version": "Version",
       "lobe": "Ohr: Ohrläppchen",
       "cartilage": "Ohr: Knorpel",
@@ -209,10 +205,11 @@
       "Piercing Submissions": "Piercing-Formulare",
       "Accepted document": "Akzeptiertes Dokument",
       "Document evidence is unavailable.": "Der Dokumentnachweis ist nicht verfügbar.",
-      "Piercing consent accepted by the user.": "Die Einwilligung zum Piercing wurde von der Person akzeptiert.",
-      "Piercing links": "Piercing-Links",
-      "Website URL": "Website-URL",
-      "Review URL (optional)": "URL für Bewertungen (optional)"
+      "Piercing consent accepted by the user.": "Die Einwilligung zum Piercing wurde von der Person akzeptiert."
+    },
+    "download": {
+      "invalid_request": "Ungültige Dokumentanfrage.",
+      "unavailable": "Das PDF ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
     }
   },
   "it": {
@@ -254,8 +251,6 @@
       "msg_success": "Grazie, il Suo modulo è stato salvato. Il professionista verificherà le informazioni con Lei prima della seduta.",
       "msg_error": "Non è stato possibile salvare il modulo. Controlli i campi e le risposte e riprovi. Se la pagina è aperta da molto tempo, la ricarichi.",
       "download": "Scaricare le cure",
-      "review": "Lasciare una recensione",
-      "website": "Chi siamo",
       "version": "Versione",
       "lobe": "Orecchio: lobo",
       "cartilage": "Orecchio: cartilagine",
@@ -281,10 +276,11 @@
       "Piercing Submissions": "Moduli per piercing",
       "Accepted document": "Documento accettato",
       "Document evidence is unavailable.": "La documentazione del consenso non è disponibile.",
-      "Piercing consent accepted by the user.": "L’utente ha accettato il consenso per il piercing.",
-      "Piercing links": "Link per i piercing",
-      "Website URL": "URL del sito web",
-      "Review URL (optional)": "URL per le recensioni (facoltativo)"
+      "Piercing consent accepted by the user.": "L’utente ha accettato il consenso per il piercing."
+    },
+    "download": {
+      "invalid_request": "Richiesta di documento non valida.",
+      "unavailable": "Il PDF è temporaneamente non disponibile. Riprovi più tardi."
     }
   },
   "fr": {
@@ -299,10 +295,11 @@
       "Piercing Submissions": "Formulaires de piercing",
       "Accepted document": "Document accepté",
       "Document evidence is unavailable.": "La preuve documentaire n’est pas disponible.",
-      "Piercing consent accepted by the user.": "Le consentement au piercing a été accepté par la personne.",
-      "Piercing links": "Liens pour les piercings",
-      "Website URL": "URL du site web",
-      "Review URL (optional)": "URL pour les avis (facultatif)"
+      "Piercing consent accepted by the user.": "Le consentement au piercing a été accepté par la personne."
+    },
+    "download": {
+      "invalid_request": "Demande de document non valide.",
+      "unavailable": "Le PDF est temporairement indisponible. Veuillez réessayer plus tard."
     }
   }
 }

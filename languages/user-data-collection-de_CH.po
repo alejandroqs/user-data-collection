@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: User Data Collection 1.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 22:25+0000\n"
-"PO-Revision-Date: 2026-10-25 22:25+0000\n"
+"POT-Creation-Date: 2026-10-25 23:34+0000\n"
+"PO-Revision-Date: 2026-10-25 23:34+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: German\n"
 "Language: de_CH\n"
@@ -893,3 +893,13 @@ msgstr "Website-URL"
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Review URL (optional)"
 msgstr "URL für Bewertungen (optional)"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-document-download.php
+msgid "Invalid document request."
+msgstr "Ungültige Dokumentanfrage."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-document-download.php
+msgid "PDF temporarily unavailable. Please try again later."
+msgstr "Das PDF ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
