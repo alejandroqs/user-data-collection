@@ -57,6 +57,10 @@ class UDC_i18n
     public static function get_strings()
     {
         return [
+            'answer_choose' => 'Select an answer',
+            'answer_yes' => 'Yes',
+            'answer_no' => 'No',
+            'answer_discuss' => 'Not sure / discuss in person',
             'msg_success' => 'Thank you! Your request has been received.',
             'msg_error' => 'There was an error processing your request. Please try again.',
 

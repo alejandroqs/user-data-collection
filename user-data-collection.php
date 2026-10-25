@@ -3,7 +3,7 @@
  * Plugin Name: User Data Collection
  * Plugin URI:  https://alejandroqs.github.io
  * Description: Collect user submissions via shortcode and manage them in a custom database table.
- * Version:     1.6.0
+ * Version:     1.8.0
  * Author:      Alejandro Quesada
  * Author URI:  https://alejandroqs.github.io
  * Text Domain: user-data-collection
@@ -16,13 +16,14 @@ if (!defined('ABSPATH')) {
 // Define plugin constants
 define('UDC_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('UDC_PLUGIN_URL', plugin_dir_url(__FILE__));
-define('UDC_DB_VERSION', '1.6.0');
+define('UDC_DB_VERSION', '1.8.0');
 
 // Include required dependencies
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-i18n.php';
 require_once UDC_PLUGIN_DIR . 'includes/udc-validation.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-activator.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-shortcode.php';
+require_once UDC_PLUGIN_DIR . 'includes/class-udc-piercing-form.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-list-table.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-admin.php';
 require_once UDC_PLUGIN_DIR . 'includes/class-udc-backup.php';
@@ -53,6 +54,7 @@ function udc_init_plugin()
 
     new UDC_i18n();
     new UDC_Shortcode();
+    new UDC_Piercing_Form();
 
     // Core background services (Required outside is_admin for WP-Cron)
     new UDC_Backup();

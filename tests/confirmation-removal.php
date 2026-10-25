@@ -11,7 +11,7 @@ $GLOBALS['options'] = [];
 $GLOBALS['hooks'] = [];
 $GLOBALS['transients'] = [];
 function add_action($hook, $callback) { $GLOBALS['hooks'][$hook][] = $callback; }
-function add_shortcode($tag, $callback) {}
+function add_shortcode($tag, $callback) { $GLOBALS['shortcodes'][$tag] = $callback; }
 function add_filter($hook, $callback, $priority = 10) {}
 function has_filter($hook, $callback) { return false; }
 function register_activation_hook($file, $callback) {}
@@ -24,7 +24,7 @@ function is_admin() { return true; }
 function load_plugin_textdomain(...$args) {}
 function wp_upload_dir() { return ['basedir' => sys_get_temp_dir() . '/udc-synthetic-tests']; }
 function wp_next_scheduled($hook) { return 123; }
-function __($value, $domain = '') { return $value; }
+function __($value, $domain = '') { return $GLOBALS['gettext'][$GLOBALS['locale'] ?? 'fr_FR'][$value] ?? $GLOBALS['gettext'][$value] ?? $value; }
 function esc_html($value) { return htmlspecialchars((string) $value, ENT_QUOTES, 'UTF-8'); }
 function esc_attr($value) { return esc_html($value); }
 function esc_url($value) { return esc_html($value); }
@@ -33,22 +33,29 @@ function esc_html_e($value, $domain = '') { echo esc_html($value); }
 function admin_url($path) { return 'https://example.test/wp-admin/' . $path; }
 function add_query_arg($args, $value = '', $url = '') {
     if (is_array($args)) { $url = $value; } else { $args = [$args => $value]; }
-    return $url . '?' . http_build_query($args);
+    $fragment = ''; $parts = explode('#', $url, 2);
+    if (isset($parts[1])) { $fragment = '#' . $parts[1]; }
+    $parts = explode('?', $parts[0], 2); $query = [];
+    if (isset($parts[1])) { parse_str($parts[1], $query); }
+    foreach ($args as $key => $value) { if (false === $value) { unset($query[$key]); } else { $query[$key] = $value; } }
+    return $parts[0] . ($query ? '?' . http_build_query($query) : '') . $fragment;
 }
-function current_user_can($capability) { return true; }
+function remove_query_arg($keys, $url) { return add_query_arg(array_fill_keys((array) $keys, false), $url); }
+function wp_parse_url($url) { return parse_url($url); }
+function current_user_can($capability) { return $GLOBALS['can_manage'] ?? true; }
 function current_time($format) { return $format === 'Y-m-d' ? '2026-10-24' : '2026-10-24 12:00:00'; }
 function date_i18n($format, $timestamp) { return date($format ?: 'Y-m-d', $timestamp); }
 function sanitize_text_field($value) { return trim(strip_tags((string) $value)); }
 function wp_unslash($value) { return stripslashes($value); }
 function esc_sql($value) { return $value; }
-function wp_verify_nonce($value, $action) { return $value === 'synthetic-nonce'; }
+function wp_verify_nonce($value, $action) { return $value === 'synthetic-nonce' && (!isset($GLOBALS['expected_nonce_action']) || $action === $GLOBALS['expected_nonce_action']); }
 function apply_filters($hook, $value) { return $value; }
 function wp_salt($scheme) { return 'synthetic-test-salt'; }
 function get_transient($key) { return $GLOBALS['transients'][$key] ?? false; }
 function set_transient($key, $value, $expiry) { $GLOBALS['transients'][$key] = $value; return true; }
-function wp_get_referer() { return 'https://example.test/form'; }
+function wp_get_referer() { return array_key_exists('referer', $GLOBALS) ? $GLOBALS['referer'] : 'https://example.test/form'; }
 class RedirectCaptured extends RuntimeException {}
-function wp_safe_redirect($url) { throw new RedirectCaptured($url); }
+function wp_safe_redirect($url, $status = 302) { $GLOBALS['redirect_status'] = $status; throw new RedirectCaptured($url); }
 class WP_Error {
     public function __construct(public $code, public $message) {}
 }
@@ -65,7 +72,7 @@ class WP_List_Table {
 class SyntheticDatabase {
     public $prefix = 'synthetic_';
     public $last_error = '';
-    public $columns = ['id', 'first_name', 'is_confirmed'];
+    public $columns = ['id', 'first_name', 'is_confirmed', 'form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'];
     public $failInspection = false;
     public $failDrop = false;
     public $queries = [];
@@ -92,6 +99,7 @@ class SyntheticDatabase {
     public function get_results($sql, $format = null) { $this->queries[] = $sql; return []; }
     public function get_var($sql) { return str_contains($sql, 'ENGINE') ? 'InnoDB' : 0; }
     public function insert($table, $data, $formats) {
+        if (!empty($GLOBALS['fail_insert'])) { return false; }
         $this->inserts[] = [$table, $data, $formats];
         return 1;
     }
@@ -188,7 +196,7 @@ check(str_contains($html, 'Appointment Info') && str_contains($html, 'Liability 
 $wpdb = new SyntheticDatabase();
 $_POST = ['udc_form_nonce' => 'synthetic-nonce'];
 foreach ($current as $field => $value) { $_POST['udc_' . $field] = (string) $value; }
-foreach (['health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'] as $field) { unset($_POST['udc_' . $field]); }
+// Health dropdowns require an explicit answer, including No (0).
 $_SERVER['REMOTE_ADDR'] = '192.0.2.1';
 try { (new UDC_Shortcode())->handle_submission(); } catch (RedirectCaptured $redirect) {
     check(str_contains($redirect->getMessage(), 'udc_status=success'), 'Public submission still redirects to success');

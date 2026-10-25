@@ -32,6 +32,6 @@ final class UDC_Validation
 
     public static function within_length($value, $limit)
     {
-        return strlen((string) $value) <= $limit;
+        return preg_match('/^.{0,' . (int) $limit . '}$/usD', (string) $value) === 1;
     }
 }

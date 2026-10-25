@@ -9,6 +9,8 @@ class UDC_Shortcode
     public function __construct()
     {
         add_shortcode('udc_contact_form', [$this, 'render_form']);
+        add_action('template_redirect', [$this, 'prevent_result_cache']);
+        add_action('wp_enqueue_scripts', [$this, 'enqueue_form_behavior']);
 
         // Handle form submission (logged in and logged out users)
         add_action('admin_post_udc_submit_form', [$this, 'handle_submission']);
@@ -17,12 +19,14 @@ class UDC_Shortcode
 
     public function render_form()
     {
+        $prefix = wp_unique_id('udc-tattoo-');
+        $status = self::result_status();
         ob_start();
 
-        // Check for success or error messages (set via transients or URL parameters)
-        if (isset($_GET['udc_status']) && $_GET['udc_status'] === 'success') {
+        // Only display a result authenticated by the submission handler.
+        if ('success' === $status) {
             echo '<div style="background-color: #b2c7b7; border: 1px solid #7d9482; color: #155724; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#10004; ' . esc_html(UDC_i18n::translate('msg_success')) . '</div>';
-        } elseif (isset($_GET['udc_status']) && $_GET['udc_status'] === 'error') {
+        } elseif ('error' === $status) {
             echo '<div style="background-color: #d2b6b9; border: 1px solid #a18185; color: #721c24; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#9888; ' . esc_html(UDC_i18n::translate('msg_error')) . '</div>';
         }
 
@@ -43,7 +47,8 @@ class UDC_Shortcode
                 .udc-form input[type="text"],
                 .udc-form input[type="date"],
                 .udc-form input[type="time"],
-                .udc-form input[type="tel"] {
+                .udc-form input[type="tel"],
+                .udc-form select {
                     background:
                         <?php echo $input_bg; ?>
                     ;
@@ -63,7 +68,8 @@ class UDC_Shortcode
                 .udc-form input[type="text"]:focus,
                 .udc-form input[type="date"]:focus,
                 .udc-form input[type="time"]:focus,
-                .udc-form input[type="tel"]:focus {
+                .udc-form input[type="tel"]:focus,
+                .udc-form select:focus {
                     border-color:
                         <?php echo $input_text; ?>
                     ;
@@ -109,6 +115,10 @@ class UDC_Shortcode
                     ;
                     color: #000;
                 }
+
+                .udc-form input[type]:focus-visible,
+                .udc-form select:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
+                .udc-form select option { background: #fff; color: #111; }
 
                 /* Custom Checkboxes */
                 .udc-form input[type="checkbox"] {
@@ -168,84 +178,55 @@ class UDC_Shortcode
         ?>
 
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form">
-            <?php wp_nonce_field('udc_form_action', 'udc_form_nonce'); ?>
+            <?php self::render_nonce('udc_form_action', $prefix); ?>
             <input type="hidden" name="action" value="udc_submit_form">
 
             <h2><?php echo esc_html(UDC_i18n::translate('title_personal_info')); ?></h2>
 
             <p>
-                <label for="udc_last_name"><?php echo esc_html(UDC_i18n::translate('label_last_name')); ?></label><br>
-                <input type="text" id="udc_last_name" name="udc_last_name" required>
+                <label for="<?php echo esc_attr($prefix); ?>last_name"><?php echo esc_html(UDC_i18n::translate('label_last_name')); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>last_name" name="udc_last_name" maxlength="255" required>
             </p>
             <p>
-                <label for="udc_first_name"><?php echo esc_html(UDC_i18n::translate('label_first_name')); ?></label><br>
-                <input type="text" id="udc_first_name" name="udc_first_name" required>
+                <label for="<?php echo esc_attr($prefix); ?>first_name"><?php echo esc_html(UDC_i18n::translate('label_first_name')); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>first_name" name="udc_first_name" maxlength="255" required>
             </p>
             <p>
-                <label for="udc_dob"><?php echo esc_html(UDC_i18n::translate('label_dob')); ?></label><br>
-                <input type="date" id="udc_dob" name="udc_dob" required>
+                <label for="<?php echo esc_attr($prefix); ?>dob"><?php echo esc_html(UDC_i18n::translate('label_dob')); ?></label><br>
+                <input type="date" id="<?php echo esc_attr($prefix); ?>dob" name="udc_dob" min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>" required>
             </p>
             <p>
-                <label for="udc_address"><?php echo esc_html(UDC_i18n::translate('label_address')); ?></label><br>
-                <input type="text" id="udc_address" name="udc_address" required>
+                <label for="<?php echo esc_attr($prefix); ?>address"><?php echo esc_html(UDC_i18n::translate('label_address')); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>address" name="udc_address" maxlength="255" required>
             </p>
             <p>
-                <label for="udc_city"><?php echo esc_html(UDC_i18n::translate('label_city')); ?></label><br>
-                <input type="text" id="udc_city" name="udc_city" required>
+                <label for="<?php echo esc_attr($prefix); ?>city"><?php echo esc_html(UDC_i18n::translate('label_city')); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>city" name="udc_city" maxlength="255" required>
             </p>
             <p>
-                <label for="udc_zip"><?php echo esc_html(UDC_i18n::translate('label_zip')); ?></label><br>
-                <input type="text" id="udc_zip" name="udc_zip" style="max-width: 150px;" required>
+                <label for="<?php echo esc_attr($prefix); ?>zip"><?php echo esc_html(UDC_i18n::translate('label_zip')); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>zip" name="udc_zip" maxlength="50" style="max-width: 150px;" required>
             </p>
             <p>
-                <label for="udc_phone"><?php echo esc_html(UDC_i18n::translate('label_phone')); ?></label><br>
-                <input type="tel" id="udc_phone" name="udc_phone" required>
+                <label for="<?php echo esc_attr($prefix); ?>phone"><?php echo esc_html(UDC_i18n::translate('label_phone')); ?></label><br>
+                <input type="tel" id="<?php echo esc_attr($prefix); ?>phone" name="udc_phone" maxlength="50" required>
             </p>
 
             <h2><?php echo esc_html(UDC_i18n::translate('title_health')); ?></h2>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_health_good" value="1">
-                    <?php echo esc_html(UDC_i18n::translate('health_good')); ?>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_health_treatment" value="1">
-                    <?php echo esc_html(UDC_i18n::translate('health_treatment')); ?>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_health_blood_thinners" value="1">
-                    <?php echo esc_html(UDC_i18n::translate('health_blood')); ?>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_health_allergies" value="1">
-                    <?php echo esc_html(UDC_i18n::translate('health_allergies')); ?>
-                </label>
-            </p>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_health_pregnant" value="1">
-                    <?php echo esc_html(UDC_i18n::translate('health_pregnant')); ?>
-                </label>
-            </p>
+            <?php self::render_health_fields(['UDC_i18n', 'translate'], $prefix); ?>
 
             <h2><?php echo esc_html(UDC_i18n::translate('title_appointment_info')); ?></h2>
             <p>
-                <label for="udc_appointment_date"><?php echo esc_html(UDC_i18n::translate('label_appt_date')); ?></label><br>
-                <input type="date" id="udc_appointment_date" name="udc_appointment_date" required>
+                <label for="<?php echo esc_attr($prefix); ?>appointment_date"><?php echo esc_html(UDC_i18n::translate('label_appt_date')); ?></label><br>
+                <input type="date" id="<?php echo esc_attr($prefix); ?>appointment_date" name="udc_appointment_date" required>
             </p>
             <p>
-                <label for="udc_appointment_time"><?php echo esc_html(UDC_i18n::translate('label_appt_time')); ?></label><br>
-                <input type="time" id="udc_appointment_time" name="udc_appointment_time" required>
+                <label for="<?php echo esc_attr($prefix); ?>appointment_time"><?php echo esc_html(UDC_i18n::translate('label_appt_time')); ?></label><br>
+                <input type="time" id="<?php echo esc_attr($prefix); ?>appointment_time" name="udc_appointment_time" required>
             </p>
             <p>
-                <label for="udc_piercing_location"><?php echo esc_html(UDC_i18n::translate('label_location')); ?></label><br>
-                <input type="text" id="udc_piercing_location" name="udc_piercing_location" required>
+                <label for="<?php echo esc_attr($prefix); ?>piercing_location"><?php echo esc_html(UDC_i18n::translate('label_location')); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>piercing_location" name="udc_piercing_location" maxlength="255" required>
             </p>
 
             <h2><?php echo esc_html(UDC_i18n::translate('subtitle_care')); ?></h2>
@@ -285,9 +266,104 @@ class UDC_Shortcode
         return ob_get_clean();
     }
 
+    public function prevent_result_cache()
+    {
+        if (isset($_GET['udc_result'])) { nocache_headers(); }
+    }
+
+    public function enqueue_form_behavior()
+    {
+        wp_register_script('udc-forms', false, [], '1.8.0', true);
+        wp_enqueue_script('udc-forms');
+        wp_add_inline_script('udc-forms', <<<'JS'
+document.addEventListener('submit', function (event) {
+    var form = event.target;
+    if (!(form instanceof HTMLFormElement) || !form.matches('.udc-form, .udc-piercing-form') || event.defaultPrevented) return;
+    if (form.dataset.udcSubmitting === '1') { event.preventDefault(); return; }
+    form.dataset.udcSubmitting = '1';
+    form.setAttribute('aria-busy', 'true');
+    form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (button) { button.disabled = true; });
+});
+window.addEventListener('pageshow', function () {
+    document.querySelectorAll('form[data-udc-submitting="1"]').forEach(function (form) {
+        delete form.dataset.udcSubmitting;
+        form.removeAttribute('aria-busy');
+        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (button) { button.disabled = false; });
+    });
+});
+JS
+        );
+    }
+
+    public static function render_nonce($action, $prefix)
+    {
+        $html = wp_nonce_field($action, 'udc_form_nonce', true, false);
+        echo str_replace(
+            ['id="udc_form_nonce"', 'id="_wp_http_referer"'],
+            ['id="' . esc_attr($prefix . 'nonce') . '"', 'id="' . esc_attr($prefix . 'referer') . '"'],
+            $html
+        );
+    }
+
+    public static function result_status($is_piercing = false)
+    {
+        $key = $is_piercing ? 'udc_piercing_status' : 'udc_status';
+        $status = isset($_GET[$key]) && is_string($_GET[$key]) ? wp_unslash($_GET[$key]) : '';
+        $receipt = isset($_GET['udc_result']) && is_string($_GET['udc_result']) ? wp_unslash($_GET['udc_result']) : '';
+        if (!in_array($status, ['success', 'error'], true) || !preg_match('/^([0-9]{10})\.([a-f0-9]{64})$/D', $receipt, $parts)) {
+            return '';
+        }
+        $expires = (int) $parts[1];
+        if ($expires < time() || $expires > time() + 5 * MINUTE_IN_SECONDS) {
+            return '';
+        }
+        $signature = hash_hmac('sha256', $key . '|' . $status . '|' . $expires, wp_salt('auth'));
+        return hash_equals($signature, $parts[2]) ? $status : '';
+    }
+
+    private function redirect_result($status, $is_piercing)
+    {
+        $key = $is_piercing ? 'udc_piercing_status' : 'udc_status';
+        $expires = time() + 5 * MINUTE_IN_SECONDS;
+        $signature = hash_hmac('sha256', $key . '|' . $status . '|' . $expires, wp_salt('auth'));
+        $referer = wp_get_referer();
+        $url = is_string($referer) && '' !== $referer ? $referer : home_url('/');
+        $url = remove_query_arg(['udc_status', 'udc_piercing_status', 'udc_result'], $url);
+        wp_safe_redirect(add_query_arg([$key => $status, 'udc_result' => $expires . '.' . $signature], $url), 303);
+        exit;
+    }
+
+    public static function health_fields()
+    {
+        return ['health_good' => 'health_good', 'health_treatment' => 'health_treatment', 'health_blood_thinners' => 'health_blood', 'health_allergies' => 'health_allergies', 'health_pregnant' => 'health_pregnant'];
+    }
+
+    public static function render_health_fields($translate, $prefix = 'udc_')
+    {
+        foreach (self::health_fields() as $field => $label) {
+            echo '<p><label for="' . esc_attr($prefix . $field) . '">' . esc_html($translate($label)) . '</label><br>';
+            echo '<select id="' . esc_attr($prefix . $field) . '" name="udc_' . esc_attr($field) . '" required>';
+            foreach (['' => 'answer_choose', '1' => 'answer_yes', '0' => 'answer_no', '2' => 'answer_discuss'] as $value => $key) {
+                echo '<option value="' . esc_attr($value) . '">' . esc_html($translate($key)) . '</option>';
+            }
+            echo '</select></p>';
+        }
+    }
+
+    public static function health_answer($value)
+    {
+        return UDC_i18n::translate('1' === (string) $value ? 'answer_yes' : ('0' === (string) $value ? 'answer_no' : 'answer_discuss'));
+    }
+
     public function handle_submission()
     {
-        if (!isset($_POST['udc_form_nonce']) || !is_scalar($_POST['udc_form_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), 'udc_form_action')) {
+        $this->save_submission(false);
+    }
+
+    protected function save_submission($is_piercing)
+    {
+        $nonce_action = $is_piercing ? 'udc_piercing_action' : 'udc_form_action';
+        if (!isset($_POST['udc_form_nonce']) || !is_scalar($_POST['udc_form_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), $nonce_action)) {
             wp_die('Security check failed.', 'Error', ['response' => 403]);
         }
 
@@ -295,7 +371,7 @@ class UDC_Shortcode
         foreach ($fields as $field) {
             $key = 'udc_' . $field;
             if (array_key_exists($key, $_POST) && !is_scalar($_POST[$key])) {
-                $this->redirect_error();
+                $this->redirect_error($is_piercing);
             }
         }
 
@@ -311,23 +387,17 @@ class UDC_Shortcode
         $piercing_location = $this->sanitize_request_value('udc_piercing_location');
 
         if (!array_key_exists('udc_liability_accepted', $_POST) || !is_string($_POST['udc_liability_accepted']) || '1' !== wp_unslash($_POST['udc_liability_accepted'])) {
-            $this->redirect_error();
+            $this->redirect_error($is_piercing);
         }
         $liability_accepted = 1;
 
-        $checkboxes = ['health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];
         $health_values = [];
-        foreach ($checkboxes as $checkbox) {
-            $key = 'udc_' . $checkbox;
-            if (!array_key_exists($key, $_POST)) {
-                $health_values[$checkbox] = 0;
-                continue;
+        foreach (array_keys(self::health_fields()) as $field) {
+            $key = 'udc_' . $field;
+            if (!isset($_POST[$key]) || !is_string($_POST[$key]) || !in_array(wp_unslash($_POST[$key]), ['0', '1', '2'], true)) {
+                $this->redirect_error($is_piercing);
             }
-
-            if (!is_string($_POST[$key]) || '1' !== wp_unslash($_POST[$key])) {
-                $this->redirect_error();
-            }
-            $health_values[$checkbox] = 1;
+            $health_values[$field] = (int) wp_unslash($_POST[$key]);
         }
         $health_good = $health_values['health_good'];
         $health_treatment = $health_values['health_treatment'];
@@ -337,18 +407,24 @@ class UDC_Shortcode
 
         $appointment_time = $this->normalize_time($appointment_time);
         $required = [$last_name, $first_name, $dob, $address, $city, $zip, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
-        if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($address, 255) || !$this->within_length($city, 255) || !$this->within_length($zip, 50) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
-            $redirect_url = add_query_arg('udc_status', 'error', wp_get_referer());
-            wp_safe_redirect($redirect_url);
-            exit;
+        if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || $dob < '1000-01-01' || $appointment_date < '1000-01-01' || $dob > current_time('Y-m-d') || $dob > $appointment_date || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($address, 255) || !$this->within_length($city, 255) || !$this->within_length($zip, 50) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
+            $this->redirect_error($is_piercing);
+        }
+
+        $extra = ['form_type' => 'tattoo', 'piercing_category' => '', 'form_language' => '', 'form_version' => '', 'form_evidence' => ''];
+        if ($is_piercing) {
+            $extra = UDC_Piercing_Form::submission_evidence();
+            if (is_wp_error($extra)) {
+                $this->redirect_error(true);
+            }
         }
 
         $attempt = $this->consume_submission_attempt();
         if (0 === $attempt) {
-            wp_die(esc_html(UDC_i18n::translate('msg_error')), 'Error', ['response' => 429]);
+            wp_die(esc_html($is_piercing ? UDC_Piercing_Form::translate('msg_error') : UDC_i18n::translate('msg_error')), 'Error', ['response' => 429]);
         }
         if (false === $attempt) {
-            $this->redirect_error();
+            $this->redirect_error($is_piercing);
         }
 
         // 4. Save to Custom Table
@@ -374,7 +450,7 @@ class UDC_Shortcode
                 'appointment_date' => $appointment_date,
                 'appointment_time' => $appointment_time,
                 'piercing_location' => $piercing_location
-            ],
+            ] + $extra,
             [
                 '%s',
                 '%s',
@@ -391,7 +467,7 @@ class UDC_Shortcode
                 '%d',
                 '%s',
                 '%s',
-                '%s'
+                '%s', '%s', '%s', '%s', '%s', '%s'
             ]
         );
 
@@ -401,9 +477,7 @@ class UDC_Shortcode
 
         // 5. Redirect based on result
         $status = $inserted ? 'success' : 'error';
-        $redirect_url = add_query_arg('udc_status', $status, wp_get_referer());
-        wp_safe_redirect($redirect_url);
-        exit;
+        $this->redirect_result($status, $is_piercing);
     }
 
     private function sanitize_request_value($key)
@@ -411,10 +485,9 @@ class UDC_Shortcode
         return isset($_POST[$key]) && is_scalar($_POST[$key]) ? sanitize_text_field(wp_unslash((string) $_POST[$key])) : '';
     }
 
-    private function redirect_error()
+    private function redirect_error($is_piercing = false)
     {
-        wp_safe_redirect(add_query_arg('udc_status', 'error', wp_get_referer()));
-        exit;
+        $this->redirect_result('error', $is_piercing);
     }
 
     private function within_length($value, $limit)

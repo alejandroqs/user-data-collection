@@ -1,6 +1,6 @@
 # User Data Collection for WordPress
 
-User Data Collection renders a multi-field consent form through the `[udc_contact_form]` shortcode and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
+User Data Collection renders separate consent forms through `[udc_contact_form]` and `[udc_piercing_form]` and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
 
 The form processes sensitive personal information, including identity and contact details, date of birth, appointment information, health-related answers, and liability acceptance. Configure access, storage, retention, and external destinations according to the site's own privacy and security requirements. This plugin documentation is not legal advice or a legal certification.
 
@@ -18,7 +18,17 @@ Add the shortcode below to a page, post, or widget:
 [udc_contact_form]
 ```
 
-The form collects personal data, health questionnaire answers, appointment details, piercing location, and a required liability acceptance checkbox. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
+The existing form keeps its original copy. Its five health questions now require an explicit Yes, No, or Not sure / discuss in person answer.
+
+For the new piercing form, use:
+
+```text
+[udc_piercing_form]
+```
+
+The piercing form has French source copy and bundled default translations for the existing Spanish, British English, French, German and Italian locale variants, registers its own Polylang strings, offers five care categories with standalone printable HTML downloads, and records the accepted consent/care text and interface language. It uses one care category per submission; multiple perforations in that category can be described in the location field. Review its content with the studio before publication.
+
+The existing form collects personal data, health questionnaire answers, appointment details, piercing location, and a required liability acceptance checkbox. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
 
 ## Administration
 
@@ -26,8 +36,13 @@ Users with the `manage_options` capability can open the **Submissions** menu to:
 
 - review upcoming and past appointments;
 - open submission details;
+- open the separate **Piercings** submenu, copy its shortcode, and configure website/review links under **Piercing links**;
 - create, restore, and upload local JSON backups;
 - configure optional Google Drive, email backup, and frontend design settings.
+
+The website link defaults to the site homepage, including when its setting is cleared. The optional review link appears only after an HTTP(S) destination is saved. Existing records remain in the original section without being retrospectively classified as tattoos.
+
+Both forms reject future birth dates and use character limits that preserve accented names. Result messages require a short-lived handler receipt. With JavaScript enabled, repeated browser submits are blocked while an earlier submission is pending; controls are restored when returning with the Back button.
 
 ## Optional integrations
 

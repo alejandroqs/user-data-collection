@@ -19,9 +19,28 @@ This document describes current source behavior. It is not a legal assessment an
 - identity and contact: first name, last name, date of birth, address, city, postal code, and phone;
 - health-related answers: general health, treatment, blood-thinning medication, allergies, and pregnancy or breastfeeding;
 - appointment and service details: appointment date, time, and piercing location;
-- consent and operational state: `liability_accepted`, generated `id`, and `created_at`.
+- consent and operational state: `liability_accepted`, generated `id`, and `created_at`;
+- form metadata: `form_type`, `piercing_category`, `form_language`, `form_version`, and `form_evidence`.
 
-The liability field is stored as a boolean/tinyint. The current schema does not store the presented consent text, consent version, or form language alongside the acceptance.
+The liability field is stored as a boolean/tinyint. The original form and historical rows do not store presented consent text/version/language. The new piercing form stores those alongside the selected care category.
+
+## Explicit health answers and piercing evidence
+
+**Verified from source:** both forms require each health answer to be exactly 0 (No), 1 (Yes), or 2 (Not sure / discuss in person). Missing, empty, array and other values are rejected before insertion. Existing 0/1 records retain their original meaning; this migration does not recover previously omitted answers. Detail views render 2 as a discussion response, not as Yes.
+
+UDC_Piercing_Form::snapshot() captures the rendered consent, information/risk acknowledgement, care acknowledgement, data-processing notice, care text, document version, and interface language. A server HMAC authenticates that hidden payload on submission; all four acknowledgements and an allowlisted category are required. The stored snapshot preserves the text even if translations later change. This HMAC prevents client edits to the rendered text; it is not a client identity check or electronic signature. The insertion timestamp records receipt, not proof that care was read or that professional review occurred. The source copy is French; bundled defaults for the existing locales are described in [Development and quality](development-and-quality.md). Client wording review remains pending.
+
+**Requirement / pending client review:** approve the new consent/care wording, health questions, minor/representative procedure, signature requirements, and the site's privacy notice before publication. No automatic medical eligibility decision or waiver of statutory rights is inferred from acceptance. Existing tattoo wording has been preserved at the user's request.
+
+Care draft reference sources: [APP body piercing aftercare](https://safepiercing.org/aftercare/) and [APP oral piercing aftercare](https://safepiercing.org/oral-aftercare/). The draft is not a clinical protocol or a guarantee of healing.
+
+## Validation and result review
+
+**Verified:** new submissions reject impossible/future birth dates, dates outside the MySQL DATE range, and birth after the procedure date. Both browser birth-date fields have matching lower/current-date bounds. Text length is checked in Unicode characters rather than UTF-8 bytes, and restore uses the same character limits for identity/contact/location fields. Evidence/metadata byte limits are retained. Existing records are not retroactively edited.
+
+Public result messages now require a short-lived HMAC receipt from the handler. Receipts contain only the service-specific status and expiry; no identity, health, record ID or contact values are placed in the URL. A copied valid receipt can be replayed within its five-minute lifetime; it is UI feedback, not identity or authorization evidence. Nonces, capabilities and the submission budget are retained.
+
+The new form's website/review URLs must have an absolute HTTP(S) scheme and host. Clearing or invalidating the website option falls back to the site homepage; invalid review URLs are omitted.
 
 ## Retired approval state
 
@@ -45,7 +64,7 @@ Public form -> custom database table -> local JSON backup -> optional Google Dri
 
 These are source-level controls, not evidence of complete security or privacy compliance.
 
-`UDC_Shortcode::handle_submission()` counts attempts only after nonce, scalar structure, checkbox, required-field, length, date, and time validation, using a filterable transient lifetime of ten minutes per observed `REMOTE_ADDR`. The transient key uses an HMAC of that address; the raw address is not stored or logged. The default budget is five attempts. Each counted attempt resets the transient lifetime; this is an inactivity-based expiry, not a fixed window. Rejected field values do not consume this budget. The transient counter is non-atomic and is not protection against distributed sources. Counter failures fail closed, and an exceeded budget returns HTTP 429.
+`UDC_Shortcode::handle_submission()` counts attempts only after nonce, scalar structure, health-answer/acknowledgement, required-field, length, date, and time validation, using a filterable transient lifetime of ten minutes per observed `REMOTE_ADDR`. The transient key uses an HMAC of that address; the raw address is not stored or logged. The default budget is five attempts. Each counted attempt resets the transient lifetime; this is an inactivity-based expiry, not a fixed window. Rejected field values do not consume this budget. The transient counter is non-atomic and is not protection against distributed sources. Counter failures fail closed, and an exceeded budget returns HTTP 429.
 
 `UDC_Settings::register_settings()` supplies explicit setting types, defaults, and sanitizers. Email values, Drive folder IDs, service-account JSON structure, and design color tokens are validated before storage. An administrator can clear the configured credentials by submitting an empty or whitespace-only value; while configured, the service-account JSON and private key remain stored in a WordPress option pending an operator decision about secret storage.
 

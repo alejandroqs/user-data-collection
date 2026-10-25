@@ -1,17 +1,18 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.3.0\n"
+"Project-Id-Version: User Data Collection 1.8.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-06 20:25+0100\n"
-"PO-Revision-Date: 2026-05-06 20:25+0100\n"
+"POT-Creation-Date: 2026-10-25 22:25+0000\n"
+"PO-Revision-Date: 2026-10-25 22:25+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: Italian\n"
 "Language: it_IT\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 3.0\n"
+"X-Generator: scripts/update-translations.py\n"
 "X-Domain: user-data-collection\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "Thank you! Your request has been received."
 msgstr "Grazie! La tua richiesta è stata ricevuta."
@@ -582,3 +583,313 @@ msgstr "Azione"
 
 msgid "Status"
 msgstr "Stato"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Consentement pour un piercing"
+msgstr "Consenso per un piercing"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Tous les champs et toutes les réponses sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
+msgstr "Tutti i campi e tutte le risposte sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con Lei prima della procedura. Le risposte incerte devono essere discusse di persona."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "DONNÉES PERSONNELLES"
+msgstr "DATI PERSONALI"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Nom *"
+msgstr "Cognome *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Prénom *"
+msgstr "Nome *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Date de naissance *"
+msgstr "Data di nascita *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Adresse *"
+msgstr "Indirizzo *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Ville *"
+msgstr "Città *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Code postal *"
+msgstr "Codice postale *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Téléphone *"
+msgstr "Telefono *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "QUESTIONNAIRE DE SANTÉ"
+msgstr "QUESTIONARIO SANITARIO"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je suis actuellement en bonne santé."
+msgstr "Attualmente sono in buona salute."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je suis un traitement médical ou dentaire."
+msgstr "Sto seguendo un trattamento medico o odontoiatrico."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je prends un traitement qui fluidifie le sang."
+msgstr "Assumo farmaci che fluidificano il sangue."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je présente des allergies connues, notamment aux métaux ou au latex."
+msgstr "Ho allergie note, in particolare ai metalli o al lattice."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je suis enceinte ou j’allaite."
+msgstr "Sono incinta o sto allattando."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Choisissez une réponse"
+msgstr "Selezioni una risposta"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Oui"
+msgstr "Sì"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Non"
+msgstr "No"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je ne sais pas / à discuter sur place"
+msgstr "Non lo so / preferisco parlarne di persona"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "DÉTAILS DU PIERCING"
+msgstr "DETTAGLI DEL PIERCING"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Date de la séance *"
+msgstr "Data della seduta *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Heure *"
+msgstr "Ora *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Catégorie de soins *"
+msgstr "Categoria di cure *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Emplacement exact et côté (précisez chaque perforation) *"
+msgstr "Posizione esatta e lato (specificare ogni perforazione) *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "SOINS APRÈS LE PIERCING"
+msgstr "CURE DOPO IL PIERCING"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Consultez et téléchargez la fiche de la catégorie choisie. Pour plusieurs catégories, remplissez un formulaire par catégorie. Le professionnel précisera les soins et le suivi adaptés à votre situation."
+msgstr "Consulti e scarichi la scheda della categoria selezionata. Per più categorie, compili un modulo per categoria. Il professionista Le indicherà le cure e i controlli adatti alla Sua situazione."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "INFORMATION ET CONSENTEMENT"
+msgstr "INFORMAZIONI E CONSENSO"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Je demande et j’autorise la réalisation du piercing indiqué. Je déclare avoir répondu sincèrement et je signalerai toute information à vérifier avec le professionnel avant le geste."
+msgstr "Richiedo e autorizzo la realizzazione del piercing indicato. Dichiaro di aver risposto sinceramente e segnalerò ogni informazione da verificare con il professionista prima della procedura."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "J’ai reçu des informations sur le geste, ses risques (infection, allergie, saignement, cicatrice, migration ou rejet ; lésions dentaires ou gingivales pour un piercing oral) et j’ai pu poser mes questions."
+msgstr "Ho ricevuto informazioni sulla procedura e sui suoi rischi (infezione, allergia, sanguinamento, cicatrice, migrazione o rigetto; lesioni ai denti o alle gengive in caso di piercing orale) e ho potuto porre le mie domande."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "J’ai lu les soins de la catégorie choisie et je sais comment les télécharger. Je comprends que la cicatrisation varie et qu’un suivi peut être nécessaire."
+msgstr "Ho letto le cure della categoria selezionata e so come scaricarle. Comprendo che la guarigione varia e che potrebbero essere necessari controlli."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "J’ai pris connaissance du fait que ce formulaire transmet au studio mes données d’identité, de contact et mes réponses de santé pour préparer et documenter la prestation. Je peux contacter le studio pour toute question sur leur traitement."
+msgstr "Sono stato informato che questo modulo trasmette allo studio i miei dati identificativi e di contatto e le mie risposte sulla salute per preparare e documentare la prestazione. Posso contattare lo studio per qualsiasi domanda sul trattamento di questi dati."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Consulter la politique de confidentialité"
+msgstr "Consultare l’informativa sulla privacy"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Envoyer mon consentement"
+msgstr "Inviare il mio consenso"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Merci, votre formulaire a été enregistré. Le professionnel vérifiera les informations avec vous avant la séance."
+msgstr "Grazie, il Suo modulo è stato salvato. Il professionista verificherà le informazioni con Lei prima della seduta."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Le formulaire n’a pas pu être enregistré. Vérifiez les champs et les réponses, puis réessayez. Si la page est ancienne, rechargez-la."
+msgstr "Non è stato possibile salvare il modulo. Controlli i campi e le risposte e riprovi. Se la pagina è aperta da molto tempo, la ricarichi."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Télécharger les soins"
+msgstr "Scaricare le cure"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Laisser un avis"
+msgstr "Lasciare una recensione"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Nous découvrir"
+msgstr "Chi siamo"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Version"
+msgstr "Versione"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Oreille : lobe"
+msgstr "Orecchio: lobo"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Oreille : cartilage"
+msgstr "Orecchio: cartilagine"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Visage : nez, septum, sourcil"
+msgstr "Viso: naso, setto, sopracciglio"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Bouche : langue, lèvre"
+msgstr "Bocca: lingua, labbro"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Corps : nombril, téton"
+msgstr "Corpo: ombelico, capezzolo"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Lavez-vous les mains avant tout contact. Pour les parties externes, utilisez une solution saline stérile à 0,9 % destinée au lavage des plaies, sans additif. Séchez doucement avec une compresse propre à usage unique. Ne tournez pas le bijou et ne forcez pas le retrait des croûtes. Évitez les produits agressifs, le nettoyage excessif, les frottements et l’immersion pendant la cicatrisation. Demandez au professionnel les modalités de suivi et de changement de bijou."
+msgstr "Si lavi le mani prima di qualsiasi contatto. Per le zone esterne, utilizzi una soluzione salina sterile allo 0,9 % destinata al lavaggio delle ferite, senza additivi. Asciughi delicatamente con una garza pulita monouso. Non ruoti il gioiello e non rimuova le croste con forza. Eviti prodotti aggressivi, pulizia eccessiva, sfregamenti e immersioni durante la guarigione. Chieda al professionista indicazioni sui controlli e sui cambi del gioiello."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Gardez les taies d’oreiller propres, évitez les accrochages et les pressions sur le bijou. Ne changez pas le bijou sans l’avis du professionnel pendant la cicatrisation."
+msgstr "Mantenga pulite le federe ed eviti che il gioiello si impigli o subisca pressioni. Non cambi il gioiello durante la guarigione senza il parere del professionista."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Évitez de dormir sur l’oreille percée et les pressions des casques ou écouteurs. Nettoyez les objets en contact avec l’oreille. Le confort en surface ne signifie pas que la cicatrisation est terminée."
+msgstr "Eviti di dormire sull’orecchio perforato e la pressione di cuffie o auricolari. Pulisca gli oggetti a contatto con l’orecchio. L’assenza di fastidio in superficie non significa che la guarigione sia terminata."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Évitez le maquillage et les cosmétiques sur la zone. Faites attention aux lunettes, aux vêtements et aux serviettes pour ne pas accrocher le bijou."
+msgstr "Eviti trucco e cosmetici sulla zona. Faccia attenzione a occhiali, vestiti e asciugamani affinché non si impiglino nel gioiello."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "À l’intérieur de la bouche, maintenez une bonne hygiène dentaire et rincez à l’eau après les repas. Si vous utilisez un bain de bouche, choisissez-le sans alcool ni eau oxygénée et évitez les usages excessifs. La solution saline pour plaies est réservée à la partie externe. Ne jouez pas avec le bijou. Faites contrôler sa longueur par le professionnel pour limiter les lésions des dents et des gencives."
+msgstr "All’interno della bocca, mantenga una buona igiene dentale e si sciacqui con acqua dopo i pasti. Se utilizza un collutorio, ne scelga uno senza alcol né acqua ossigenata ed eviti un uso eccessivo. La soluzione salina per le ferite è riservata alla parte esterna. Non giochi con il gioiello. Faccia controllare la sua lunghezza dal professionista per limitare le lesioni ai denti e alle gengive."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Évitez les vêtements et les activités qui accrochent ou compriment la zone. Adaptez la protection avec le professionnel selon l’emplacement et votre activité."
+msgstr "Eviti vestiti e attività che impiglino o comprimano la zona. Adatti la protezione con il professionista in base alla posizione e alla Sua attività."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "En cas de suspicion d’infection, de douleur ou de gonflement qui s’aggrave, consultez un professionnel de santé. Une difficulté à respirer ou à avaler nécessite une prise en charge urgente. Ne retirez pas vous-même le bijou en cas de suspicion d’infection ; demandez un avis médical."
+msgstr "In caso di sospetta infezione o se il dolore o il gonfiore peggiorano, consulti un professionista sanitario. La difficoltà a respirare o a deglutire richiede assistenza urgente. In caso di sospetta infezione, non rimuova il gioiello da solo; chieda un parere medico."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Select an answer"
+msgstr "Selezioni una risposta"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Not sure / discuss in person"
+msgstr "Non lo so / preferisco parlarne di persona"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercings"
+msgstr "Piercing"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing Submissions"
+msgstr "Moduli per piercing"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Accepted document"
+msgstr "Documento accettato"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Document evidence is unavailable."
+msgstr "La documentazione del consenso non è disponibile."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing consent accepted by the user."
+msgstr "L’utente ha accettato il consenso per il piercing."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing links"
+msgstr "Link per i piercing"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Website URL"
+msgstr "URL del sito web"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Review URL (optional)"
+msgstr "URL per le recensioni (facoltativo)"

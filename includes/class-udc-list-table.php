@@ -9,13 +9,21 @@ if (!class_exists('WP_List_Table')) {
 
 class UDC_List_Table extends WP_List_Table
 {
-    public function __construct()
+    private $is_piercing;
+
+    public function __construct($is_piercing = false)
     {
+        $this->is_piercing = (bool) $is_piercing;
         parent::__construct([
             'singular' => __('Submission', 'user-data-collection'),
             'plural' => __('Submissions', 'user-data-collection'),
             'ajax' => false
         ]);
+    }
+
+    private function type_filter()
+    {
+        return $this->is_piercing ? "form_type = 'piercing'" : "form_type IN ('legacy', 'tattoo')";
     }
 
     public function get_columns()
@@ -54,8 +62,9 @@ class UDC_List_Table extends WP_List_Table
         $table_name = $wpdb->prefix . 'udc_submissions';
         $today = current_time('Y-m-d');
 
-        $upcoming_count = $wpdb->get_var("SELECT COUNT(id) FROM $table_name WHERE appointment_date >= '$today'");
-        $past_count = $wpdb->get_var("SELECT COUNT(id) FROM $table_name WHERE appointment_date < '$today'");
+        $type_filter = $this->type_filter();
+        $upcoming_count = $wpdb->get_var("SELECT COUNT(id) FROM $table_name WHERE appointment_date >= '$today' AND $type_filter");
+        $past_count = $wpdb->get_var("SELECT COUNT(id) FROM $table_name WHERE appointment_date < '$today' AND $type_filter");
 
         $class = ($current == 'upcoming') ? ' class="current"' : '';
         $upcoming_url = add_query_arg('appt_filter', 'upcoming');
@@ -84,13 +93,14 @@ class UDC_List_Table extends WP_List_Table
         $filter = isset($_REQUEST['appt_filter']) ? sanitize_text_field(wp_unslash($_REQUEST['appt_filter'])) : 'upcoming';
         $today = current_time('Y-m-d');
 
+        $type_filter = $this->type_filter();
         $where = "";
         if ($filter === 'upcoming') {
-            $where = "WHERE appointment_date >= '$today'";
+            $where = "WHERE appointment_date >= '$today' AND $type_filter";
             $default_orderby = 'appointment_date';
             $default_order = 'ASC';
         } else {
-            $where = "WHERE appointment_date < '$today'";
+            $where = "WHERE appointment_date < '$today' AND $type_filter";
             $default_orderby = 'created_at';
             $default_order = 'DESC';
         }
@@ -137,7 +147,7 @@ class UDC_List_Table extends WP_List_Table
             return '';
         }
 
-        $view_url = add_query_arg(['page' => 'udc-submissions', 'action' => 'view', 'id' => $item->id], admin_url('admin.php'));
+        $view_url = add_query_arg(['page' => $this->is_piercing ? 'udc-piercings' : 'udc-submissions', 'action' => 'view', 'id' => $item->id], admin_url('admin.php'));
 
         $actions = [
             'view' => sprintf('<a href="%s">%s</a>', esc_url($view_url), esc_html__('View Details', 'user-data-collection')),

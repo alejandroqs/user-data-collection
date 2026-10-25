@@ -38,6 +38,11 @@ class UDC_Activator
             appointment_date date NOT NULL,
             appointment_time time NOT NULL,
             piercing_location varchar(255) NOT NULL,
+            form_type varchar(20) DEFAULT 'legacy' NOT NULL,
+            piercing_category varchar(32) DEFAULT '' NOT NULL,
+            form_language varchar(32) DEFAULT '' NOT NULL,
+            form_version varchar(20) DEFAULT '' NOT NULL,
+            form_evidence longtext NULL,
             created_at datetime DEFAULT CURRENT_TIMESTAMP NOT NULL,
             PRIMARY KEY  (id)
         ) $charset_collate;";
@@ -50,6 +55,10 @@ class UDC_Activator
         $columns = $wpdb->get_col("SHOW COLUMNS FROM $quoted_table");
         if (!is_array($columns) || empty($columns) || '' !== $wpdb->last_error) {
             error_log('UDC_SCHEMA_INSPECTION_FAILED');
+            return;
+        }
+        if (array_diff(['form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'], $columns)) {
+            error_log('UDC_FORM_SCHEMA_UPGRADE_FAILED');
             return;
         }
         if (in_array('is_confirmed', $columns, true)) {

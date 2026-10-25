@@ -38,7 +38,7 @@ jobs:
           test "$tag_version" = "$header_version"
           test -f "$package_dir/user-data-collection.php"
           class_files=(includes/class-udc-*.php)
-          test "${#class_files[@]}" -eq 9
+          test "${#class_files[@]}" -eq 10
           for class_file in "${class_files[@]}"; do test -f "$package_dir/$class_file"; done
           executable_files="$(find "$package_dir" -type f -perm /111 -print)"
           test -z "$executable_files"

@@ -12,9 +12,15 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.6.0`. `package.json` and `package-lock.json` report `1.0.0`. The POT metadata reports `1.3.0`. These are separate metadata sources and their synchronization policy is not documented in the source. Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.0`. `package.json` and `package-lock.json` also report `1.8.0`. POT and PO project metadata report `1.8.0` after the form-catalog update. Plugin, schema, npm and translation versions are synchronized for this release. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
+
+## Upgrade to 1.8.0
+
+**Verified from source:** plugin/schema versions advance together for typed forms and piercing evidence. dbDelta adds the five metadata/evidence columns, defaulting historical rows to legacy. The activator verifies that those columns exist before recording the new version. It retains the retired approval migration for older installations. No history is relabelled as tattoo and no existing consent text is rewritten. The release package includes UDC_Piercing_Form and the class-file gate now expects ten class files.
+
+**Unknown:** live WordPress/database migration. The maintainer has authorized the v1.8.0 tag publication to trigger the ZIP workflow; CI/release success must be checked separately.
 
 ## Upgrade to 1.6.0
 
@@ -26,7 +32,7 @@ The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefi
 
 ## Workflow and package contents
 
-`.github/workflows/release.yml` creates an isolated temporary package directory and explicitly copies the plugin entrypoint, PHP files directly under `includes/`, and `.po`, `.mo`, and `.pot` files directly under `languages/`. It creates `user-data-collection.zip`, captures its manifest, permits only the expected root directories, entrypoint, direct PHP include files, and direct translation files, and rejects every other archive entry. The workflow requires all nine `includes/class-udc-*.php` files after removal of UDC_Ajax; `includes/udc-validation.php` is included by the broader PHP copy and manifest allowlist. It validates PHP syntax, checks tag/header and `UDC_DB_VERSION`/header version equality, rejects executable package files, and attaches the ZIP to a GitHub release. It grants `contents: write` and uses commit-pinned release actions. The workflow itself is the canonical source for the current action commits.
+`.github/workflows/release.yml` creates an isolated temporary package directory and explicitly copies the plugin entrypoint, PHP files directly under `includes/`, and `.po`, `.mo`, and `.pot` files directly under `languages/`. It creates `user-data-collection.zip`, captures its manifest, permits only the expected root directories, entrypoint, direct PHP include files, and direct translation files, and rejects every other archive entry. The workflow requires all ten `includes/class-udc-*.php` files after removal of UDC_Ajax; `includes/udc-validation.php` is included by the broader PHP copy and manifest allowlist. It validates PHP syntax, checks tag/header and `UDC_DB_VERSION`/header version equality, rejects executable package files, and attaches the ZIP to a GitHub release. It grants `contents: write` and uses commit-pinned release actions. The workflow itself is the canonical source for the current action commits.
 
 ## Maintainer checklist
 
