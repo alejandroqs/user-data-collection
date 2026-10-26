@@ -12,9 +12,15 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.2`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.8.2`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.3`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.8.3`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
+
+## Upgrade to 1.8.3
+
+**Verified from source:** tattoo accepted-document snapshots with independent form/care versions and language, historical text in admin details and backup/restore consistency. The canonical shortcode is udc_tattoo_form; udc_contact_form remains an alias. Existing table columns are reused and no historical snapshots are invented. Plugin/schema marker, asset, npm and translation metadata are synchronized at 1.8.3. No Git commit, tag or remote publication was created for this update.
+
+**Verified, local release gates:** 196 PHP assertions, nine catalogs/PHP locales, Edge forms and a native WordPress 1.8.2→1.8.3 package/submission/SQL-restore/detail check passed. The final local ZIP is validated before publication; the remote workflow has not run for this version.
 
 ## Upgrade to 1.8.2
 

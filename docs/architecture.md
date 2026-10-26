@@ -27,7 +27,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | Component | Verified responsibility |
 | --- | --- |
 | `UDC_Activator` | Creates or updates `{prefix}udc_submissions` with `dbDelta`, stores the schema version, and requests scheduled events. |
-| `UDC_Shortcode` | Renders `[udc_contact_form]`, registers public and authenticated `admin_post` handlers, applies the nonce-valid attempt budget, validates explicit 0/1/2 health responses, and inserts rows through shared `save_submission()`. The endpoint fixes the service type on the server. |
+| `UDC_Shortcode` | Renders `[udc_tattoo_form]` (legacy alias `[udc_contact_form]`), registers public and authenticated `admin_post` handlers, applies the nonce-valid attempt budget, validates explicit 0/1/2 health responses, and inserts rows through shared `save_submission()`. The endpoint fixes the service type on the server. |
 | `UDC_Piercing_Form` | Extends the shared submission handler with `[udc_piercing_form]`, French source copy, categorized care downloads, signed rendered-text evidence and Polylang strings. |
 | `UDC_Document` / `UDC_Document_Provider` | Plain-text document contract and public-content provider interface. |
 | `UDC_Piercing_Care_Document` | Builds a care document from the same translated text as the form snapshot. |
@@ -99,3 +99,13 @@ The plugin depends on WordPress APIs, the WordPress database abstraction, filesy
 **Verified from source:** both list views keep eight columns with ID first and primary. Detail actions move with the primary ID cell so native mobile expansion remains singular. Admin styles are enqueued only on the two service pages; the birth-date heading stays on one line on desktop and the ID column accommodates its detail action. Care category and exact body location are shown in piercing details, alongside the existing health choices and accepted-text evidence; category is not added to the index.
 
 UDC_Shortcode::field_label() normalizes required markers for both forms without rewriting existing consent strings. Address and postal code have no required marker or browser required attribute. Shared submission validation accepts blank or omitted address/postal values while keeping scalar, character-length, nonce, consent and other required-field checks. The schema is unchanged.
+
+## Tattoo document evidence (1.8.3)
+
+**Verified from source:** UDC_Shortcode::snapshot() captures the rendered tattoo heading, introduction, liability text and all six care paragraphs, with form version, care version and interface language. render_form() renders those captured values and embeds the JSON and its server HMAC. submission_evidence() validates the bounded shape, current form/care versions and signature before save_submission() writes the exact JSON and metadata. The handler also requires the existing liability checkbox.
+
+The canonical shortcode is udc_tattoo_form; udc_contact_form remains an alias. The admin legend and README use the canonical identifier. Routes, nonce actions and service isolation are unchanged.
+
+Both admin detail views show Accepted document. Tattoo details display the stored versions/language and saved text, never a reconstruction using current translations. Missing or inconsistent evidence is marked unavailable; historical records are not relabelled or given fabricated snapshots. The existing form_language/form_version/form_evidence columns are reused without a schema change. UDC_Backup validates tattoo evidence consistency while accepting older tattoo rows with entirely empty evidence metadata.
+
+Version policy: UDC_Shortcode::FORM_VERSION starts at 1.0 and identifies the tattoo consent document. Increment it for future changes to accepted consent wording/structure. UDC_Tattoo_Care_Document::VERSION independently identifies care text. Current form submissions require both current versions; historical detail and restore accept valid older versioned snapshots. Plugin release version 1.8.3 is independent of those document versions.

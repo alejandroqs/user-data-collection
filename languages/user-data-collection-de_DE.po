@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.2\n"
+"Project-Id-Version: User Data Collection 1.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 12:55+0000\n"
-"PO-Revision-Date: 2026-10-26 12:55+0000\n"
+"POT-Creation-Date: 2026-10-26 13:26+0000\n"
+"PO-Revision-Date: 2026-10-26 13:26+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -978,3 +978,18 @@ msgstr "Mit einem Sternchen (*) gekennzeichnete Felder und Antworten sind Pflich
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Care category"
 msgstr "Pflegekategorie"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Document version"
+msgstr "Dokumentversion"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Form language"
+msgstr "Formularsprache"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Care document version"
+msgstr "Version der Pflegehinweise"

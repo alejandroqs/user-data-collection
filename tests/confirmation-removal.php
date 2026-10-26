@@ -12,6 +12,8 @@ $GLOBALS['hooks'] = [];
 $GLOBALS['transients'] = [];
 function add_action($hook, $callback) { $GLOBALS['hooks'][$hook][] = $callback; }
 function add_shortcode($tag, $callback) { $GLOBALS['shortcodes'][$tag] = $callback; }
+function get_locale() { return $GLOBALS['locale'] ?? 'fr_FR'; }
+function wp_json_encode($value) { return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); }
 function add_filter($hook, $callback, $priority = 10) {}
 function has_filter($hook, $callback) { return false; }
 function register_activation_hook($file, $callback) {}
@@ -196,6 +198,9 @@ check(str_contains($html, 'Appointment Info') && str_contains($html, 'Liability 
 $wpdb = new SyntheticDatabase();
 $_POST = ['udc_form_nonce' => 'synthetic-nonce'];
 foreach ($current as $field => $value) { $_POST['udc_' . $field] = (string) $value; }
+$tattoo_evidence = wp_json_encode(UDC_Shortcode::snapshot());
+$_POST['udc_evidence'] = addslashes($tattoo_evidence);
+$_POST['udc_evidence_signature'] = hash_hmac('sha256', $tattoo_evidence, wp_salt('nonce'));
 // Health dropdowns require an explicit answer, including No (0).
 $_SERVER['REMOTE_ADDR'] = '192.0.2.1';
 try { (new UDC_Shortcode())->handle_submission(); } catch (RedirectCaptured $redirect) {

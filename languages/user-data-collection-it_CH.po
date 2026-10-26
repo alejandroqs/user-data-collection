@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.2\n"
+"Project-Id-Version: User Data Collection 1.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 12:55+0000\n"
-"PO-Revision-Date: 2026-10-26 12:55+0000\n"
+"POT-Creation-Date: 2026-10-26 13:26+0000\n"
+"PO-Revision-Date: 2026-10-26 13:26+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: Italian\n"
 "Language: it_CH\n"
@@ -978,3 +978,18 @@ msgstr "I campi e le risposte contrassegnati da un asterisco (*) sono obbligator
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Care category"
 msgstr "Categoria di cura"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Document version"
+msgstr "Versione del documento"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Form language"
+msgstr "Lingua del modulo"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Care document version"
+msgstr "Versione delle istruzioni di cura"

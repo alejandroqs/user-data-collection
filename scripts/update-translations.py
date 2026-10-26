@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
 DOMAIN = 'user-data-collection'
-ADMIN = ['Care category', 'Waivers', 'Tattoos', 'Piercings', 'Piercing Submissions', 'Accepted document', 'Document evidence is unavailable.', 'Piercing consent accepted by the user.']
+ADMIN = ['Document version', 'Form language', 'Care document version', 'Care category', 'Waivers', 'Tattoos', 'Piercings', 'Piercing Submissions', 'Accepted document', 'Document evidence is unavailable.', 'Piercing consent accepted by the user.']
 
 def sources():
     php = """<?php define('ABSPATH', __DIR__); require 'includes/class-udc-i18n.php'; require 'includes/class-udc-shortcode.php'; require 'includes/class-udc-piercing-form.php'; require 'includes/class-udc-document-download.php'; require 'includes/class-udc-document.php'; require 'includes/class-udc-tattoo-care-document.php'; echo json_encode(['tattoo_intro'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['title_tattoo','intro_tattoo'])),'tattoo_care'=>UDC_Tattoo_Care_Document::get_strings(),'download'=>UDC_Document_Download::get_strings(),'piercing'=>UDC_Piercing_Form::get_strings(),'health'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['answer_choose','answer_yes','answer_no','answer_discuss']))], JSON_UNESCAPED_UNICODE);"""
@@ -171,6 +171,8 @@ def validate_php_fallback(catalogs):
         foreach (UDC_Document_Download::get_strings() as $source) {
             if (__($source, 'user-data-collection') !== $catalog[$source]) { throw new RuntimeException($locale . ': PDF message fallback mismatch'); }
         }
+        $tattoo = UDC_Shortcode::snapshot();
+        if ($tattoo['language'] !== $locale || !UDC_Shortcode::valid_evidence(json_encode($tattoo)) || $tattoo['document']['title'] !== $catalog[UDC_i18n::get_strings()['title_tattoo']]) { throw new RuntimeException($locale . ': tattoo evidence translation mismatch'); }
         $snapshot = UDC_Piercing_Form::snapshot();
         if ($snapshot['language'] !== $locale || !UDC_Piercing_Form::valid_evidence(json_encode($snapshot))) { throw new RuntimeException($locale . ': translated evidence invalid'); }
         $document = UDC_Piercing_Form::care_document('oral');

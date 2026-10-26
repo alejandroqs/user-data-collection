@@ -1,8 +1,6 @@
 <?php
 /** Synthetic behavior checks. Run: php tests/forms.php */
 require __DIR__ . '/confirmation-removal.php';
-function get_locale() { return $GLOBALS['locale'] ?? 'fr_FR'; }
-function wp_json_encode($value) { return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); }
 function home_url($path = '') { return 'https://example.test' . $path; }
 function get_privacy_policy_url() { return 'https://example.test/privacy'; }
 function wp_unique_id($prefix = '') { static $id = 0; return $prefix . ++$id; }
@@ -46,16 +44,17 @@ check(substr_count($piercing_html, '<details>') === 5 && substr_count($piercing_
 check(!str_contains($piercing_html, 'Laisser un avis') && !str_contains($piercing_html, 'Nous découvrir'), 'Piercing form has no website or review calls to action');
 $GLOBALS['options']['udc_piercing_review_url'] = 'https://example.test/review';
 check(!str_contains($piercing->render_form(), 'https://example.test/review'), 'Legacy review settings cannot restore the removed link');
-check(isset($GLOBALS['shortcodes']['udc_contact_form'], $GLOBALS['shortcodes']['udc_piercing_form']), 'Both independent shortcodes are registered');
+check(isset($GLOBALS['shortcodes']['udc_tattoo_form'], $GLOBALS['shortcodes']['udc_contact_form'], $GLOBALS['shortcodes']['udc_piercing_form']), 'Canonical tattoo and piercing shortcodes plus the compatibility alias are registered');
 check(isset($GLOBALS['hooks']['admin_post_nopriv_udc_submit_piercing'], $GLOBALS['hooks']['admin_post_nopriv_udc_piercing_care']), 'Public piercing submission and care download hooks are registered');
 
 function form_post($piercing = false) {
     $post = ['udc_form_nonce' => 'synthetic-nonce'];
     foreach (synthetic_row() as $field => $value) { $post['udc_' . $field] = (string) $value; }
     $post['udc_health_allergies'] = '2';
+    $json = wp_json_encode($piercing ? UDC_Piercing_Form::snapshot() : UDC_Shortcode::snapshot());
+    $post += ['udc_evidence' => addslashes($json), 'udc_evidence_signature' => hash_hmac('sha256', $json, wp_salt('nonce'))];
     if ($piercing) {
-        $json = wp_json_encode(UDC_Piercing_Form::snapshot());
-        $post += ['udc_piercing_category' => 'oral', 'udc_evidence' => addslashes($json), 'udc_evidence_signature' => hash_hmac('sha256', $json, wp_salt('nonce')), 'udc_risk_text' => '1', 'udc_care_ack' => '1', 'udc_privacy_text' => '1'];
+        $post += ['udc_piercing_category' => 'oral', 'udc_risk_text' => '1', 'udc_care_ack' => '1', 'udc_privacy_text' => '1'];
     }
     return $post;
 }

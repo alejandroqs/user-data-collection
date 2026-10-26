@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.8.2
+python scripts/build-package.py --tag v1.8.3
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -137,3 +137,11 @@ These checks use the real PDF engine and compiled catalogs with synthetic WordPr
 An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 installation accepted the same-version ZIP replacement and preserved synthetic data/settings. Its native WP_List_Table HTML, Spanish plugin catalog, core CSS, core common.js and assets were then rendered in Edge for both services at 320, 390, 782, 1024, 1280 and 1600px. Checks verified ID first, a single mobile expansion control, working native expansion, no horizontal overflow and a single-line desktop birth-date heading. Desktop/mobile screenshots were inspected; the final CSS also prevents the ID detail action from wrapping. This uses a temporary extension of the upgrade harness, with a NULL-field preservation assertion corrected only in that temporary copy. No production data or credentials were used.
 
 These results do not prove real Polylang settings, production theme behavior or a real backup-file/database restore round trip. The field-validation/restore assertions use doubles; the native SQL test covers installation/update and table rendering. No release or version bump is part of this adjustment.
+
+## Tattoo accepted-document evidence in 1.8.3
+
+**Verified, executed:** 196 PHP assertions cover signed tattoo documents, missing/array/edited payloads, cross-service rejection, current-version submission gates, immutable historical rendering, separate form/care versions, inconsistent metadata and historical rows without evidence. All nine catalogs and PHP locale checks pass with 77 required IDs, including the new metadata labels and tattoo snapshots in every locale. Edge verifies that both completed forms post their document data, and the original responsive/download/duplicate-submit checks remain passing.
+
+An isolated native WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded v1.8.2 to the local v1.8.3 ZIP, retained previous data/settings, registered the canonical shortcode and alias, rendered signed fields, submitted a real tattoo form with blank optional fields, checked the exact stored JSON, restored a cloned tattoo record through the real InnoDB transaction path, and rendered the native historical/current admin details. A tampered document was rejected without another row. This reused a temporary extension of the upgrade harness, with its NULL-field preservation assertion corrected only in the temporary copy. The normal UI tests still use doubles.
+
+The schema is unchanged; existing metadata columns carry the snapshot. Real Polylang and production behavior remain separate acceptance boundaries. Structural graph tooling was unavailable (transport closed), so affected code and callers were verified by direct source reads, targeted text searches and executed tests. PDF tests and package gates remain part of the release workflow. No remote publication is performed by these checks.

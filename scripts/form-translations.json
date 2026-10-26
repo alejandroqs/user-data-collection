@@ -66,7 +66,10 @@
       "Piercing consent accepted by the user.": "Piercing consent accepted by the user.",
       "Waivers": "Waivers",
       "Tattoos": "Tattoos",
-      "Care category": "Care category"
+      "Care category": "Care category",
+      "Document version": "Document version",
+      "Form language": "Form language",
+      "Care document version": "Care document version"
     },
     "download": {
       "invalid_request": "Invalid document request.",
@@ -155,7 +158,10 @@
       "Piercing consent accepted by the user.": "El usuario ha aceptado el consentimiento para el piercing.",
       "Waivers": "Descargos",
       "Tattoos": "Tatuajes",
-      "Care category": "Categoría de cuidados"
+      "Care category": "Categoría de cuidados",
+      "Document version": "Versión del documento",
+      "Form language": "Idioma del formulario",
+      "Care document version": "Versión de los cuidados"
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
@@ -244,7 +250,10 @@
       "Piercing consent accepted by the user.": "Die Einwilligung zum Piercing wurde von der Person akzeptiert.",
       "Waivers": "Haftungsausschlüsse",
       "Tattoos": "Tattoos",
-      "Care category": "Pflegekategorie"
+      "Care category": "Pflegekategorie",
+      "Document version": "Dokumentversion",
+      "Form language": "Formularsprache",
+      "Care document version": "Version der Pflegehinweise"
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
@@ -333,7 +342,10 @@
       "Piercing consent accepted by the user.": "L’utente ha accettato il consenso per il piercing.",
       "Waivers": "Liberatorie",
       "Tattoos": "Tatuaggi",
-      "Care category": "Categoria di cura"
+      "Care category": "Categoria di cura",
+      "Document version": "Versione del documento",
+      "Form language": "Lingua del modulo",
+      "Care document version": "Versione delle istruzioni di cura"
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
@@ -370,7 +382,10 @@
       "Piercing consent accepted by the user.": "Le consentement au piercing a été accepté par la personne.",
       "Waivers": "Décharges",
       "Tattoos": "Tatouages",
-      "Care category": "Catégorie de soins"
+      "Care category": "Catégorie de soins",
+      "Document version": "Version du document",
+      "Form language": "Langue du formulaire",
+      "Care document version": "Version des soins"
     },
     "download": {
       "invalid_request": "Demande de document non valide.",

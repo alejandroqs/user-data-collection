@@ -1,6 +1,6 @@
 # User Data Collection for WordPress
 
-User Data Collection renders separate consent forms through `[udc_contact_form]` and `[udc_piercing_form]` and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
+User Data Collection renders separate consent forms through `[udc_tattoo_form]` and `[udc_piercing_form]` and stores submissions in a custom database table. The administrative interface provides a sortable submission list, detail views, backup tools, optional Google Drive synchronization, optional email backups, and frontend color settings.
 
 The form processes sensitive personal information, including identity and contact details, date of birth, appointment information, health-related answers, and liability acceptance. Configure access, storage, retention, and external destinations according to the site's own privacy and security requirements. This plugin documentation is not legal advice or a legal certification.
 
@@ -15,8 +15,10 @@ The form processes sensitive personal information, including identity and contac
 Add the shortcode below to a page, post, or widget:
 
 ```text
-[udc_contact_form]
+[udc_tattoo_form]
 ```
+
+The previous `[udc_contact_form]` shortcode remains a compatibility alias. New tattoo submissions retain the exact accepted text, language, form version and care version for the administrative detail view. Older records without a saved document are explicitly marked unavailable.
 
 The existing form keeps its personal-data, health and consent wording. Its five health questions require an explicit Yes, No, or Not sure / discuss in person answer. Its care section now provides tattoo-specific instructions and a translated PDF download using the same text and the automatic site URL.
 

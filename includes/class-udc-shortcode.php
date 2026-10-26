@@ -5,12 +5,14 @@ if (!defined('ABSPATH')) {
 
 class UDC_Shortcode
 {
+    const FORM_VERSION = '1.0';
 
     public function __construct()
     {
         UDC_Document_Download::register('tattoo-care', new UDC_Tattoo_Care_Document());
         add_action('init', ['UDC_Tattoo_Care_Document', 'register_strings']);
-        add_shortcode('udc_contact_form', [$this, 'render_form']);
+        add_shortcode('udc_tattoo_form', [$this, 'render_form']);
+        add_shortcode('udc_contact_form', [$this, 'render_form']); // Compatibility for existing pages.
         add_action('template_redirect', [$this, 'prevent_result_cache']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_form_behavior']);
 
@@ -19,10 +21,58 @@ class UDC_Shortcode
         add_action('admin_post_nopriv_udc_submit_form', [$this, 'handle_submission']);
     }
 
+    /** Capture exactly the document text rendered for this tattoo form. */
+    public static function snapshot()
+    {
+        $care = ['version' => UDC_Tattoo_Care_Document::VERSION, 'title' => UDC_Tattoo_Care_Document::translate('title')];
+        foreach (range(1, 6) as $number) { $care['care_' . $number] = UDC_Tattoo_Care_Document::translate('care_' . $number); }
+        return [
+            'version' => self::FORM_VERSION,
+            'language' => UDC_Tattoo_Care_Document::language(),
+            'document' => [
+                'title' => UDC_i18n::translate('title_tattoo'),
+                'intro' => UDC_i18n::translate('intro_tattoo'),
+                'liability_text' => self::field_label(UDC_i18n::translate('liability_text')),
+            ],
+            'care' => $care,
+        ];
+    }
+
+    public static function valid_evidence($json)
+    {
+        if (!is_string($json) || strlen($json) > 32000) { return false; }
+        $data = json_decode($json, true, 5);
+        if (!is_array($data) || array_keys($data) !== ['version', 'language', 'document', 'care'] ||
+            !is_string($data['version']) || !preg_match('/^[0-9]+\.[0-9]+$/D', $data['version']) ||
+            !is_string($data['language']) || !preg_match('/^[A-Za-z0-9_@-]{1,32}$/D', $data['language'])) { return false; }
+        foreach (['document' => ['title', 'intro', 'liability_text'], 'care' => ['version', 'title', 'care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6']] as $group => $keys) {
+            if (!is_array($data[$group]) || array_keys($data[$group]) !== $keys) { return false; }
+            foreach ($data[$group] as $text) {
+                if (!is_string($text) || '' === trim($text) || strlen($text) > 6000) { return false; }
+            }
+        }
+        if (!preg_match('/^[0-9]+\.[0-9]+$/D', $data['care']['version'])) { return false; }
+        return $data;
+    }
+
+    public static function submission_evidence()
+    {
+        $json = isset($_POST['udc_evidence']) && is_string($_POST['udc_evidence']) ? wp_unslash($_POST['udc_evidence']) : '';
+        $signature = isset($_POST['udc_evidence_signature']) && is_string($_POST['udc_evidence_signature']) ? wp_unslash($_POST['udc_evidence_signature']) : '';
+        $data = self::valid_evidence($json);
+        if (!$data || self::FORM_VERSION !== $data['version'] || UDC_Tattoo_Care_Document::VERSION !== $data['care']['version'] ||
+            !hash_equals(hash_hmac('sha256', $json, wp_salt('nonce')), $signature)) {
+            return new WP_Error('invalid_evidence', 'Invalid tattoo form version or evidence.');
+        }
+        return ['form_type' => 'tattoo', 'piercing_category' => '', 'form_language' => $data['language'], 'form_version' => $data['version'], 'form_evidence' => $json];
+    }
+
     public function render_form()
     {
         $prefix = wp_unique_id('udc-tattoo-');
         $status = self::result_status();
+        $document = self::snapshot();
+        $json = wp_json_encode($document);
         ob_start();
 
         // Only display a result authenticated by the submission handler.
@@ -183,10 +233,12 @@ class UDC_Shortcode
         ?>
 
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form">
-            <h2><?php echo esc_html(UDC_i18n::translate('title_tattoo')); ?></h2>
-            <p><?php echo esc_html(UDC_i18n::translate('intro_tattoo')); ?></p>
+            <h2><?php echo esc_html($document['document']['title']); ?></h2>
+            <p><?php echo esc_html($document['document']['intro']); ?></p>
             <?php self::render_nonce('udc_form_action', $prefix); ?>
             <input type="hidden" name="action" value="udc_submit_form">
+            <input type="hidden" name="udc_evidence" value="<?php echo esc_attr($json); ?>">
+            <input type="hidden" name="udc_evidence_signature" value="<?php echo esc_attr(hash_hmac('sha256', $json, wp_salt('nonce'))); ?>">
 
             <h2><?php echo esc_html(UDC_i18n::translate('title_personal_info')); ?></h2>
 
@@ -236,14 +288,14 @@ class UDC_Shortcode
                 <input type="text" id="<?php echo esc_attr($prefix); ?>piercing_location" name="udc_piercing_location" maxlength="255" required>
             </p>
 
-            <h2><?php echo esc_html(UDC_Tattoo_Care_Document::translate('title')); ?></h2>
+            <h2><?php echo esc_html($document['care']['title']); ?></h2>
             <div class="udc-care-instructions" <?php if (!$design_enabled)
                 echo 'style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;"'; ?>>
                 <ul>
                     <?php
                     $care_keys = ['care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6'];
                     foreach ($care_keys as $key) {
-                        $care_text = UDC_Tattoo_Care_Document::translate($key);
+                        $care_text = $document['care'][$key];
                         // Make text before colon bold
                         $parts = explode(':', $care_text, 2);
                         if (count($parts) === 2) {
@@ -261,7 +313,7 @@ class UDC_Shortcode
             <p>
                 <label>
                     <input type="checkbox" name="udc_liability_accepted" value="1" required>
-                    <?php echo esc_html(self::field_label(UDC_i18n::translate('liability_text'))); ?>
+                    <?php echo esc_html($document['document']['liability_text']); ?>
                 </label>
             </p>
 
@@ -281,7 +333,7 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.8.2', true);
+        wp_register_script('udc-forms', false, [], '1.8.3', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {
@@ -425,13 +477,8 @@ JS
             $this->redirect_error($is_piercing);
         }
 
-        $extra = ['form_type' => 'tattoo', 'piercing_category' => '', 'form_language' => '', 'form_version' => '', 'form_evidence' => ''];
-        if ($is_piercing) {
-            $extra = UDC_Piercing_Form::submission_evidence();
-            if (is_wp_error($extra)) {
-                $this->redirect_error(true);
-            }
-        }
+        $extra = $is_piercing ? UDC_Piercing_Form::submission_evidence() : self::submission_evidence();
+        if (is_wp_error($extra)) { $this->redirect_error($is_piercing); }
 
         $attempt = $this->consume_submission_attempt();
         if (0 === $attempt) {

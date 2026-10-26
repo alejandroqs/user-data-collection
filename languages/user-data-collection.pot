@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.2\n"
+"Project-Id-Version: User Data Collection 1.8.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 12:55+0000\n"
+"POT-Creation-Date: 2026-10-26 13:26+0000\n"
 "PO-Revision-Date: 2026-05-06 20:25+0100\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: \n"
@@ -973,4 +973,19 @@ msgstr ""
 #. Default form translation; client wording review remains separate.
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Care category"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Document version"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Form language"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Care document version"
 msgstr ""

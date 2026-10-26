@@ -321,6 +321,11 @@ class UDC_Backup
             if (!$evidence || 1 !== $row['liability_accepted'] || !array_key_exists($row['piercing_category'], UDC_Piercing_Form::categories()) || $evidence['language'] !== $row['form_language'] || $evidence['version'] !== $row['form_version']) {
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
+        } elseif ('tattoo' === $row['form_type'] && '' !== $row['form_evidence']) {
+            $evidence = UDC_Shortcode::valid_evidence($row['form_evidence']);
+            if (!$evidence || 1 !== $row['liability_accepted'] || '' !== $row['piercing_category'] || $evidence['language'] !== $row['form_language'] || $evidence['version'] !== $row['form_version']) {
+                return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
+            }
         } elseif ('' !== $row['piercing_category'] || '' !== $row['form_language'] || '' !== $row['form_version'] || '' !== $row['form_evidence']) {
             return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }

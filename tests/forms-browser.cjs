@@ -113,6 +113,10 @@ const { spawn } = require('node:child_process');
                 posts++;
                 const body = new URLSearchParams(route.request().postData());
                 if (body.get('udc_health_allergies') !== '2') throw new Error('Explicit health value was not submitted');
+                if (body.get('action') === 'udc_submit_form') {
+                    const document = JSON.parse(body.get('udc_evidence'));
+                    if (!document.document?.liability_text || !document.care?.care_6 || !document.version || !body.get('udc_evidence_signature')) throw new Error('Tattoo POST omitted its versioned accepted document');
+                }
                 await route.fulfill({status:200,contentType:'text/html',body:'<p>Synthetic browser submission received</p>'});
             } else await route.continue();
         });

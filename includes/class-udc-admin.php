@@ -17,7 +17,7 @@ class UDC_Admin
     {
         $page = isset($_GET['page']) && is_string($_GET['page']) ? wp_unslash($_GET['page']) : '';
         if (!current_user_can('manage_options') || !in_array($page, ['udc-submissions', 'udc-piercings'], true)) { return; }
-        wp_register_style('udc-admin', false, [], '1.8.2');
+        wp_register_style('udc-admin', false, [], '1.8.3');
         wp_enqueue_style('udc-admin');
         wp_add_inline_style('udc-admin', '@media(min-width:783px){#udc-filter .column-id{width:9em}#udc-filter .column-id .row-actions{white-space:nowrap}#udc-filter .column-dob{width:13em;white-space:nowrap}#udc-filter th.column-dob a{display:flex;align-items:center;gap:4px}#udc-filter th.column-dob .sorting-indicators{flex-shrink:0}}');
     }
@@ -94,7 +94,7 @@ class UDC_Admin
         <div class="wrap">
             <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Submissions' : 'Tattoos', 'user-data-collection'); ?></h1>
 
-            <p><code><?php echo esc_html($this->is_piercing ? '[udc_piercing_form]' : '[udc_contact_form]'); ?></code></p>
+            <p><code><?php echo esc_html($this->is_piercing ? '[udc_piercing_form]' : '[udc_tattoo_form]'); ?></code></p>
             <form id="udc-filter" method="get">
                 <input type="hidden" name="page"
                     value="<?php echo $this->is_piercing ? 'udc-piercings' : 'udc-submissions'; ?>" />
@@ -125,17 +125,33 @@ class UDC_Admin
             <a href="<?php echo esc_url($back_url); ?>"
                 class="page-title-action"><?php esc_html_e('Back to List', 'user-data-collection'); ?></a>
 
-            <?php if ($this->is_piercing): ?>
-                <div class="postbox"><div class="inside">
-                    <h2><?php esc_html_e('Accepted document', 'user-data-collection'); ?></h2>
-                    <p><?php echo esc_html(($submission->form_language ?? '') . ' | ' . ($submission->form_version ?? '')); ?></p>
-                    <?php $evidence = UDC_Piercing_Form::valid_evidence($submission->form_evidence ?? ''); ?>
-                    <?php if ($evidence): ?>
+            <?php
+            $evidence = false;
+            if ('piercing' === ($submission->form_type ?? '')) {
+                $evidence = UDC_Piercing_Form::valid_evidence($submission->form_evidence ?? '');
+            } elseif ('tattoo' === ($submission->form_type ?? '')) {
+                $evidence = UDC_Shortcode::valid_evidence($submission->form_evidence ?? '');
+            }
+            if ($evidence && (1 !== (int) $submission->liability_accepted || ($submission->form_version ?? '') !== $evidence['version'] || ($submission->form_language ?? '') !== $evidence['language'])) { $evidence = false; }
+            ?>
+            <div class="postbox"><div class="inside">
+                <h2><?php esc_html_e('Accepted document', 'user-data-collection'); ?></h2>
+                <?php if ($evidence): ?>
+                    <p><strong><?php esc_html_e('Document version', 'user-data-collection'); ?>:</strong> <?php echo esc_html($evidence['version']); ?></p>
+                    <p><strong><?php esc_html_e('Form language', 'user-data-collection'); ?>:</strong> <?php echo esc_html($evidence['language']); ?></p>
+                    <?php if ($this->is_piercing): ?>
                         <?php foreach ($evidence['consent'] as $text): ?><p><?php echo esc_html($text); ?></p><?php endforeach; ?>
                         <?php foreach (['base', $submission->piercing_category, 'alert'] as $key): ?><p><?php echo esc_html($evidence['care'][$key] ?? ''); ?></p><?php endforeach; ?>
-                    <?php else: ?><p><?php esc_html_e('Document evidence is unavailable.', 'user-data-collection'); ?></p><?php endif; ?>
-                </div></div>
-            <?php endif; ?>
+                    <?php else: ?>
+                        <h3><?php echo esc_html($evidence['document']['title']); ?></h3>
+                        <p><?php echo esc_html($evidence['document']['intro']); ?></p>
+                        <h3><?php echo esc_html($evidence['care']['title']); ?></h3>
+                        <p><strong><?php esc_html_e('Care document version', 'user-data-collection'); ?>:</strong> <?php echo esc_html($evidence['care']['version']); ?></p>
+                        <?php foreach (range(1, 6) as $number): ?><p><?php echo esc_html($evidence['care']['care_' . $number]); ?></p><?php endforeach; ?>
+                        <p><?php echo esc_html($evidence['document']['liability_text']); ?></p>
+                    <?php endif; ?>
+                <?php else: ?><p><?php esc_html_e('Document evidence is unavailable.', 'user-data-collection'); ?></p><?php endif; ?>
+            </div></div>
             <div id="poststuff">
                 <div id="post-body" class="metabox-holder columns-2">
                     <div id="post-body-content">
