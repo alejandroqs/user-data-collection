@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 
 ROOT = Path(__file__).resolve().parents[1]
 DOMAIN = 'user-data-collection'
-ADMIN = ['Waivers', 'Tattoos', 'Piercings', 'Piercing Submissions', 'Accepted document', 'Document evidence is unavailable.', 'Piercing consent accepted by the user.']
+ADMIN = ['Care category', 'Waivers', 'Tattoos', 'Piercings', 'Piercing Submissions', 'Accepted document', 'Document evidence is unavailable.', 'Piercing consent accepted by the user.']
 
 def sources():
     php = """<?php define('ABSPATH', __DIR__); require 'includes/class-udc-i18n.php'; require 'includes/class-udc-shortcode.php'; require 'includes/class-udc-piercing-form.php'; require 'includes/class-udc-document-download.php'; require 'includes/class-udc-document.php'; require 'includes/class-udc-tattoo-care-document.php'; echo json_encode(['tattoo_intro'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['title_tattoo','intro_tattoo'])),'tattoo_care'=>UDC_Tattoo_Care_Document::get_strings(),'download'=>UDC_Document_Download::get_strings(),'piercing'=>UDC_Piercing_Form::get_strings(),'health'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['answer_choose','answer_yes','answer_no','answer_discuss']))], JSON_UNESCAPED_UNICODE);"""

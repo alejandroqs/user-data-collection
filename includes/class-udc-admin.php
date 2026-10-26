@@ -10,6 +10,16 @@ class UDC_Admin
     public function __construct()
     {
         add_action('admin_menu', [$this, 'add_admin_menu']);
+        add_action('admin_enqueue_scripts', [$this, 'enqueue_styles']);
+    }
+
+    public function enqueue_styles()
+    {
+        $page = isset($_GET['page']) && is_string($_GET['page']) ? wp_unslash($_GET['page']) : '';
+        if (!current_user_can('manage_options') || !in_array($page, ['udc-submissions', 'udc-piercings'], true)) { return; }
+        wp_register_style('udc-admin', false, [], '1.8.2');
+        wp_enqueue_style('udc-admin');
+        wp_add_inline_style('udc-admin', '@media(min-width:783px){#udc-filter .column-id{width:9em}#udc-filter .column-id .row-actions{white-space:nowrap}#udc-filter .column-dob{width:13em;white-space:nowrap}#udc-filter th.column-dob a{display:flex;align-items:center;gap:4px}#udc-filter th.column-dob .sorting-indicators{flex-shrink:0}}');
     }
 
     public function add_admin_menu()
@@ -118,7 +128,7 @@ class UDC_Admin
             <?php if ($this->is_piercing): ?>
                 <div class="postbox"><div class="inside">
                     <h2><?php esc_html_e('Accepted document', 'user-data-collection'); ?></h2>
-                    <p><?php echo esc_html(($submission->piercing_category ?? '') . ' | ' . ($submission->form_language ?? '') . ' | ' . ($submission->form_version ?? '')); ?></p>
+                    <p><?php echo esc_html(($submission->form_language ?? '') . ' | ' . ($submission->form_version ?? '')); ?></p>
                     <?php $evidence = UDC_Piercing_Form::valid_evidence($submission->form_evidence ?? ''); ?>
                     <?php if ($evidence): ?>
                         <?php foreach ($evidence['consent'] as $text): ?><p><?php echo esc_html($text); ?></p><?php endforeach; ?>
@@ -199,6 +209,10 @@ class UDC_Admin
                                     <?php echo esc_html($submission->appointment_date); ?></p>
                                 <p><strong><?php esc_html_e('Time:', 'user-data-collection'); ?></strong>
                                     <?php echo esc_html($submission->appointment_time); ?></p>
+                                <?php if ($this->is_piercing && !empty($submission->piercing_category)): ?>
+                                    <p><strong><?php esc_html_e('Care category', 'user-data-collection'); ?>:</strong>
+                                        <?php echo esc_html(UDC_Piercing_Form::categories()[$submission->piercing_category] ?? $submission->piercing_category); ?></p>
+                                <?php endif; ?>
                                 <p><strong><?php esc_html_e('Location:', 'user-data-collection'); ?></strong>
                                     <?php echo esc_html($submission->piercing_location); ?></p>
                                 <p><strong><?php esc_html_e('Submitted:', 'user-data-collection'); ?></strong>

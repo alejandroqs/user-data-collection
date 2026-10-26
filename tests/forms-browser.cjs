@@ -46,6 +46,16 @@ const { spawn } = require('node:child_process');
             }
             const unlabelled = await page.locator('input:not([type=hidden]),select,button').evaluateAll(elements => elements.filter(el => el.tagName !== 'BUTTON' && !el.labels?.length).length);
             if (unlabelled) throw new Error('Found unlabelled controls');
+            const markerErrors = await page.locator('input:not([type=hidden]),select').evaluateAll(elements => elements.filter(el => {
+                const label = Array.from(el.labels || []).map(item => item.textContent.trim()).join(' ');
+                return el.required ? !label.endsWith('*') : label.endsWith('*');
+            }).map(el => el.name));
+            if (markerErrors.length) throw new Error('Required/optional markers disagree: ' + markerErrors.join(', '));
+            for (const form of await page.locator('.udc-form,.udc-piercing-form').all()) {
+                for (const field of ['address','zip']) {
+                    if (await form.locator('[name=udc_'+field+']').evaluate(el => el.required)) throw new Error('Optional field is required: '+field);
+                }
+            }
             await page.screenshot({ path: path.join(os.tmpdir(), 'udc-forms-' + width + '.png'), fullPage: true });
             console.log('PASS: ' + width + 'px layout, labels, explicit answers and keyboard disclosures');
         }
@@ -82,6 +92,8 @@ const { spawn } = require('node:child_process');
         await newForm.locator('[name=udc_dob]').fill('2999-01-01');
         if (!(await newForm.locator('[name=udc_dob]').evaluate(el => el.validity.rangeOverflow))) throw new Error('Piercing DOB lacks its upper bound');
         await newForm.locator('[name=udc_dob]').fill('1990-01-01');
+        await newForm.locator('[name=udc_address]').fill('');
+        await newForm.locator('[name=udc_zip]').fill('');
         for (const select of await newForm.locator('select[name^=udc_health_]').all()) await select.selectOption('2');
         await newForm.locator('[name=udc_piercing_category]').selectOption('oral');
         for (const checkbox of await newForm.locator('input[type=checkbox]').all()) await checkbox.check();
@@ -114,6 +126,8 @@ const { spawn } = require('node:child_process');
         const original = page.locator('.udc-form');
         for (const [name,value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',address:'Test address',city:'Test city',zip:'1000',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic service'})) await original.locator('[name=udc_'+name+']').fill(value);
         for (const select of await original.locator('select').all()) await select.selectOption('2');
+        await original.locator('[name=udc_address]').fill('');
+        await original.locator('[name=udc_zip]').fill('');
         await original.locator('input[type=checkbox]').check();
         if (!(await original.evaluate(form => form.checkValidity()))) throw new Error('Complete original form fails browser validation');
         await original.locator('[name=udc_dob]').fill('2999-01-01');

@@ -112,7 +112,7 @@ foreach (['form_type' => 'invalid', 'form_evidence' => '{}', 'form_language' => 
     check(is_wp_error(invoke_private($backup, 'validate_backup_rows', [$bad])), 'Backup rejects invalid ' . $field);
 }
 $bad = synthetic_row(); $bad['zip'] = '';
-check(is_wp_error(invoke_private($backup, 'validate_backup_rows', [$bad])), 'Untyped historical current-address backups still require a postal code');
+check(!is_wp_error(invoke_private($backup, 'validate_backup_rows', [$bad])), 'Historical current-address backups accept an optional empty postal code');
 $current_tattoo = invoke_private($backup, 'validate_backup_rows', [synthetic_row()]);
 check(!is_wp_error(invoke_private($backup, 'validate_backup_rows', [$saved_piercing, $current_tattoo[0]])), 'A new-format snapshot supports both service types');
 $wpdb = new SyntheticDatabase();
@@ -123,7 +123,7 @@ foreach ([false, true] as $is_piercing) {
     $table = new UDC_List_Table($is_piercing); $_GET = []; $_REQUEST = ['appt_filter' => 'upcoming'];
     $table->prepare_items();
     check(str_contains(end($wpdb->queries), $is_piercing ? "form_type = 'piercing'" : "form_type IN ('legacy', 'tattoo')"), 'List SQL isolates the selected service');
-    $link = invoke_private($table, 'handle_row_actions', (object) synthetic_row(), 'last_name', 'last_name');
+    $link = invoke_private($table, 'handle_row_actions', (object) synthetic_row(), 'id', 'id');
     check(str_contains($link, $is_piercing ? 'udc-piercings' : 'udc-submissions'), 'Detail links retain the correct service section');
 }
 $wpdb->columns = ['id']; $GLOBALS['options']['udc_db_version'] = '1.6.0';

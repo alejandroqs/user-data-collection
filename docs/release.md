@@ -12,9 +12,13 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.8.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.2`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.8.2`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
+
+## Upgrade to 1.8.2
+
+**Verified from source:** patch version for ID-first admin tables, desktop birth-date heading layout, optional address/postal code in both services and backup restore, consistent required markers, translated introductions and explicit care category in details. Plugin/schema marker, asset versions, npm and gettext metadata are synchronized. No database columns or care-document versions change. Release tag v1.8.2 and remote publication have not been created by this version update.
 
 ## Upgrade to 1.8.1
 

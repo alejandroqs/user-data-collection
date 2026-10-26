@@ -2,7 +2,7 @@
   "en": {
     "piercing": {
       "title": "Consent for a piercing",
-      "intro": "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person.",
+      "intro": "Fields and answers marked with an asterisk (*) are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person.",
       "title_personal_info": "PERSONAL DETAILS",
       "label_last_name": "Surname *",
       "label_first_name": "First name *",
@@ -65,7 +65,8 @@
       "Document evidence is unavailable.": "Document evidence is unavailable.",
       "Piercing consent accepted by the user.": "Piercing consent accepted by the user.",
       "Waivers": "Waivers",
-      "Tattoos": "Tattoos"
+      "Tattoos": "Tattoos",
+      "Care category": "Care category"
     },
     "download": {
       "invalid_request": "Invalid document request.",
@@ -84,13 +85,13 @@
     },
     "tattoo_intro": {
       "title_tattoo": "Consent for a tattoo",
-      "intro_tattoo": "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
+      "intro_tattoo": "Fields and answers marked with an asterisk (*) are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
     }
   },
   "es": {
     "piercing": {
       "title": "Consentimiento para un piercing",
-      "intro": "Todos los campos y todas las respuestas son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente.",
+      "intro": "Los campos y las respuestas marcados con un asterisco (*) son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente.",
       "title_personal_info": "DATOS PERSONALES",
       "label_last_name": "Apellidos *",
       "label_first_name": "Nombre *",
@@ -153,7 +154,8 @@
       "Document evidence is unavailable.": "No está disponible la evidencia del documento.",
       "Piercing consent accepted by the user.": "El usuario ha aceptado el consentimiento para el piercing.",
       "Waivers": "Descargos",
-      "Tattoos": "Tatuajes"
+      "Tattoos": "Tatuajes",
+      "Care category": "Categoría de cuidados"
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
@@ -172,13 +174,13 @@
     },
     "tattoo_intro": {
       "title_tattoo": "Consentimiento para un tatuaje",
-      "intro_tattoo": "Todos los campos y todas las respuestas son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
+      "intro_tattoo": "Los campos y las respuestas marcados con un asterisco (*) son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
     }
   },
   "de": {
     "piercing": {
       "title": "Einwilligung in ein Piercing",
-      "intro": "Alle Felder und Antworten sind verpflichtend. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen überprüfen. Unsichere Antworten müssen vor Ort besprochen werden.",
+      "intro": "Mit einem Sternchen (*) gekennzeichnete Felder und Antworten sind Pflichtangaben. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen prüfen. Unsichere Antworten müssen vor Ort besprochen werden.",
       "title_personal_info": "PERSÖNLICHE DATEN",
       "label_last_name": "Nachname *",
       "label_first_name": "Vorname *",
@@ -241,7 +243,8 @@
       "Document evidence is unavailable.": "Der Dokumentnachweis ist nicht verfügbar.",
       "Piercing consent accepted by the user.": "Die Einwilligung zum Piercing wurde von der Person akzeptiert.",
       "Waivers": "Haftungsausschlüsse",
-      "Tattoos": "Tattoos"
+      "Tattoos": "Tattoos",
+      "Care category": "Pflegekategorie"
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
@@ -260,13 +263,13 @@
     },
     "tattoo_intro": {
       "title_tattoo": "Einwilligung für ein Tattoo",
-      "intro_tattoo": "Alle Felder und Antworten sind verpflichtend. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen überprüfen. Unsichere Antworten müssen vor Ort besprochen werden."
+      "intro_tattoo": "Mit einem Sternchen (*) gekennzeichnete Felder und Antworten sind Pflichtangaben. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen prüfen. Unsichere Antworten müssen vor Ort besprochen werden."
     }
   },
   "it": {
     "piercing": {
       "title": "Consenso per un piercing",
-      "intro": "Tutti i campi e tutte le risposte sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con Lei prima della procedura. Le risposte incerte devono essere discusse di persona.",
+      "intro": "I campi e le risposte contrassegnati da un asterisco (*) sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con lei prima della procedura. Le risposte incerte devono essere discusse di persona.",
       "title_personal_info": "DATI PERSONALI",
       "label_last_name": "Cognome *",
       "label_first_name": "Nome *",
@@ -329,7 +332,8 @@
       "Document evidence is unavailable.": "La documentazione del consenso non è disponibile.",
       "Piercing consent accepted by the user.": "L’utente ha accettato il consenso per il piercing.",
       "Waivers": "Liberatorie",
-      "Tattoos": "Tatuaggi"
+      "Tattoos": "Tatuaggi",
+      "Care category": "Categoria di cura"
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
@@ -348,7 +352,7 @@
     },
     "tattoo_intro": {
       "title_tattoo": "Consenso per un tatuaggio",
-      "intro_tattoo": "Tutti i campi e tutte le risposte sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con Lei prima della procedura. Le risposte incerte devono essere discusse di persona."
+      "intro_tattoo": "I campi e le risposte contrassegnati da un asterisco (*) sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con lei prima della procedura. Le risposte incerte devono essere discusse di persona."
     }
   },
   "fr": {
@@ -365,7 +369,8 @@
       "Document evidence is unavailable.": "La preuve documentaire n’est pas disponible.",
       "Piercing consent accepted by the user.": "Le consentement au piercing a été accepté par la personne.",
       "Waivers": "Décharges",
-      "Tattoos": "Tatouages"
+      "Tattoos": "Tatouages",
+      "Care category": "Catégorie de soins"
     },
     "download": {
       "invalid_request": "Demande de document non valide.",
@@ -384,7 +389,7 @@
     },
     "tattoo_intro": {
       "title_tattoo": "Consentement pour un tatouage",
-      "intro_tattoo": "Tous les champs et toutes les réponses sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
+      "intro_tattoo": "Les champs et les réponses marqués d’un astérisque (*) sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
     }
   }
 }

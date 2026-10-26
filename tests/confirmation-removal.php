@@ -176,10 +176,10 @@ check(count($columns) === 8 && !isset($columns['is_confirmed']) && !isset($colum
 $query = end($wpdb->queries);
 check(str_contains($query, 'ORDER BY appointment_date ASC LIMIT 20 OFFSET 20'), 'Old status sort URL falls back while retaining pagination');
 $headers = (new ReflectionProperty(WP_List_Table::class, '_column_headers'))->getValue($table);
-check($headers[3] === 'last_name', 'Responsive primary column retains the surname and detail action');
+check($headers[3] === 'id', 'Responsive primary column uses the first ID column and retains the detail action');
 check(array_key_first($columns) === $headers[3], 'Primary column comes first so mobile CSS hides every secondary column');
-check(invoke_private($table, 'handle_row_actions', (object) $current, 'id', 'last_name') === '', 'Secondary columns do not emit detail actions or extra expansion controls');
-check(str_contains(invoke_private($table, 'handle_row_actions', (object) $current, 'last_name', 'last_name'), 'action=view') && str_contains(invoke_private($table, 'handle_row_actions', (object) $current, 'last_name', 'last_name'), 'View Details'), 'Detail link remains available');
+check(invoke_private($table, 'handle_row_actions', (object) $current, 'last_name', 'id') === '', 'Secondary columns do not emit detail actions or extra expansion controls');
+check(str_contains(invoke_private($table, 'handle_row_actions', (object) $current, 'id', 'id'), 'action=view') && str_contains(invoke_private($table, 'handle_row_actions', (object) $current, 'id', 'id'), 'View Details'), 'Detail link remains available');
 $_GET = [];
 $_REQUEST = ['appt_filter' => 'past'];
 $table->prepare_items();

@@ -88,4 +88,41 @@ foreach ([['1'], '-1', '1garbage', '0'] as $id) {
     check(!$wpdb->queries && str_contains($html, 'Submission not found.'), 'Malformed administrative IDs cannot select another record');
 }
 $_GET = [];
+
+foreach ([false, true] as $is_piercing) {
+    $object = $is_piercing ? $piercing : $tattoo;
+    foreach (['blank', 'omitted'] as $mode) {
+        $post = form_post($is_piercing);
+        foreach (['udc_address', 'udc_zip'] as $field) {
+            if ('blank' === $mode) { $post[$field] = ''; } else { unset($post[$field]); }
+        }
+        [$url, $inserts] = submit_form($object, $post);
+        check(count($inserts) === 1 && $inserts[0][1]['address'] === '' && $inserts[0][1]['zip'] === '', 'Both handlers accept blank or omitted optional address/postal code');
+        $row = $inserts[0][1] + ['id' => 91, 'created_at' => '2026-10-26 12:00:00'];
+        $normalized = invoke_private($backup, 'validate_backup_rows', [$row]);
+        check(!is_wp_error($normalized) && $normalized[0]['address'] === '' && $normalized[0]['zip'] === '', 'Optional data survives backup normalization');
+        $wpdb = new SyntheticDatabase();
+        check(invoke_private($backup, 'insert_backup_data', $normalized) === 1 && $wpdb->inserts[0][1]['address'] === '' && $wpdb->inserts[0][1]['zip'] === '', 'Restore preserves empty optional fields');
+    }
+    foreach (['udc_address' => [str_repeat('a', 256), ['array']], 'udc_zip' => [str_repeat('1', 51), ['array']]] as $field => $values) {
+        foreach ($values as $value) {
+            $post = form_post($is_piercing); $post[$field] = $value;
+            check(!submit_form($object, $post)[1], 'Optional values still reject excessive lengths and arrays');
+        }
+    }
+    $post = form_post($is_piercing); $post['udc_city'] = '';
+    check(!submit_form($object, $post)[1], 'City remains required in both handlers');
+}
+$wpdb = new EvidenceDatabase(); $wpdb->record = $saved_piercing;
+$admin = new UDC_Admin();
+(new ReflectionProperty($admin, 'is_piercing'))->setValue($admin, true);
+ob_start(); invoke_private($admin, 'render_details_page', 9); $detail = ob_get_clean();
+check(str_contains($detail, '<strong>Care category:</strong>') && str_contains($detail, esc_html(UDC_Piercing_Form::categories()['oral'])), 'Piercing detail explicitly labels the translated selected care category');
+check(str_contains($detail, esc_html($saved_piercing['piercing_location'])) && str_contains($detail, 'Not sure / discuss in person'), 'Exact body location and selected health answers remain in details');
+foreach (['udc-submissions', 'udc-piercings'] as $page) {
+    $_GET = ['page' => $page]; $admin->enqueue_styles();
+    check(str_contains($GLOBALS['form_css'], 'column-dob') && str_contains($GLOBALS['form_css'], 'white-space:nowrap'), 'Both admin tables receive nonwrapping date-heading styles');
+}
+$_GET = [];
+
 echo "All review checks passed (synthetic WordPress/database doubles).\n";

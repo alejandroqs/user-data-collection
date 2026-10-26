@@ -297,8 +297,8 @@ class UDC_Backup
             return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }
         foreach ($lengths as $field => $length) {
-            $empty_zip_allowed = $legacy_schema && 'zip' === $field && '' === $row[$field];
-            if (!is_string($row[$field]) || ('' === $row[$field] && !$empty_zip_allowed) || !UDC_Validation::within_length($row[$field], $length)) {
+            $optional = in_array($field, ['address', 'zip'], true);
+            if (!is_string($row[$field]) || ('' === $row[$field] && !$optional) || !UDC_Validation::within_length($row[$field], $length)) {
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
         }

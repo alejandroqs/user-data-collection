@@ -30,6 +30,8 @@ The piercing form has French source copy and bundled default translations for th
 
 PDF downloads require PHP 7.4+, DOM, mbstring and a writable temporary directory. Source checkouts need the [PDF build steps](docs/development-and-quality.md#pdf-build-and-validation); Composer is not needed on the production host when installing the built ZIP.
 
+Both forms mark required fields and answers with an asterisk (*). Address and postal code are optional; city remains required.
+
 The existing form collects personal data, health questionnaire answers, appointment details, piercing location, and a required liability acceptance checkbox. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
 
 ## Administration

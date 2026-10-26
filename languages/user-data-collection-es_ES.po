@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.1\n"
+"Project-Id-Version: User Data Collection 1.8.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 00:10+0000\n"
-"PO-Revision-Date: 2026-10-26 00:10+0000\n"
+"POT-Creation-Date: 2026-10-26 12:55+0000\n"
+"PO-Revision-Date: 2026-10-26 12:55+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -963,3 +963,18 @@ msgstr "Consentimiento para un tatuaje"
 #: includes/class-udc-i18n.php
 msgid "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
 msgstr "Todos los campos y todas las respuestas son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-piercing-form.php
+msgid "Les champs et les réponses marqués d’un astérisque (*) sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
+msgstr "Los campos y las respuestas marcados con un asterisco (*) son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Fields and answers marked with an asterisk (*) are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
+msgstr "Los campos y las respuestas marcados con un asterisco (*) son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Care category"
+msgstr "Categoría de cuidados"

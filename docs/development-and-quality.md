@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.8.1
+python scripts/build-package.py --tag v1.8.2
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -129,3 +129,11 @@ An isolated Edge preview used a #550000 background, #ead8c3 configured text and 
 These checks use the real PDF engine and compiled catalogs with synthetic WordPress functions. Real Polylang and production acceptance, and studio approval of tattoo-aftercare wording, remain pending. Clinical reference sources and scope are canonical in [Data, security, and privacy](data-security-privacy.md).
 
 **Verified, tattoo introduction:** tattoo_intro adds two required message IDs (73 current required IDs per locale). All nine PO/MO variants and the PHP fallback checks pass, including the tattoo title and intro. The 143 form regressions pass; the preservation check excludes these two authorized new entries while continuing to protect the legacy dictionary.
+
+## Unreleased optional fields and admin tables
+
+**Verified, executed:** 169 PHP assertions cover both handlers with blank/omitted address and postal code, length/array rejection, required city, backup normalization/restore, ID-first primary-column contracts and translated category/body-location details. All nine catalog/PHP locale checks pass with 74 required IDs, including updated asterisk wording and the new Care category label. Edge form checks pass at 320, 390, 782 and 1280px; required labels end with an asterisk and optional controls do not, and completed forms remain valid with blank address/postal code.
+
+An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 installation accepted the same-version ZIP replacement and preserved synthetic data/settings. Its native WP_List_Table HTML, Spanish plugin catalog, core CSS, core common.js and assets were then rendered in Edge for both services at 320, 390, 782, 1024, 1280 and 1600px. Checks verified ID first, a single mobile expansion control, working native expansion, no horizontal overflow and a single-line desktop birth-date heading. Desktop/mobile screenshots were inspected; the final CSS also prevents the ID detail action from wrapping. This uses a temporary extension of the upgrade harness, with a NULL-field preservation assertion corrected only in that temporary copy. No production data or credentials were used.
+
+These results do not prove real Polylang settings, production theme behavior or a real backup-file/database restore round trip. The field-validation/restore assertions use doubles; the native SQL test covers installation/update and table rendering. No release or version bump is part of this adjustment.

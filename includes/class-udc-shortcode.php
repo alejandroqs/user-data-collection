@@ -191,31 +191,31 @@ class UDC_Shortcode
             <h2><?php echo esc_html(UDC_i18n::translate('title_personal_info')); ?></h2>
 
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>last_name"><?php echo esc_html(UDC_i18n::translate('label_last_name')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>last_name"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_last_name'))); ?></label><br>
                 <input type="text" id="<?php echo esc_attr($prefix); ?>last_name" name="udc_last_name" maxlength="255" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>first_name"><?php echo esc_html(UDC_i18n::translate('label_first_name')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>first_name"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_first_name'))); ?></label><br>
                 <input type="text" id="<?php echo esc_attr($prefix); ?>first_name" name="udc_first_name" maxlength="255" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>dob"><?php echo esc_html(UDC_i18n::translate('label_dob')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>dob"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_dob'))); ?></label><br>
                 <input type="date" id="<?php echo esc_attr($prefix); ?>dob" name="udc_dob" min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>address"><?php echo esc_html(UDC_i18n::translate('label_address')); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>address" name="udc_address" maxlength="255" required>
+                <label for="<?php echo esc_attr($prefix); ?>address"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_address'), false)); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>address" name="udc_address" maxlength="255">
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>city"><?php echo esc_html(UDC_i18n::translate('label_city')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>city"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_city'))); ?></label><br>
                 <input type="text" id="<?php echo esc_attr($prefix); ?>city" name="udc_city" maxlength="255" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>zip"><?php echo esc_html(UDC_i18n::translate('label_zip')); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>zip" name="udc_zip" maxlength="50" style="max-width: 150px;" required>
+                <label for="<?php echo esc_attr($prefix); ?>zip"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_zip'), false)); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>zip" name="udc_zip" maxlength="50" style="max-width: 150px;">
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>phone"><?php echo esc_html(UDC_i18n::translate('label_phone')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>phone"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_phone'))); ?></label><br>
                 <input type="tel" id="<?php echo esc_attr($prefix); ?>phone" name="udc_phone" maxlength="50" required>
             </p>
 
@@ -224,15 +224,15 @@ class UDC_Shortcode
 
             <h2><?php echo esc_html(UDC_i18n::translate('title_appointment_info')); ?></h2>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>appointment_date"><?php echo esc_html(UDC_i18n::translate('label_appt_date')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>appointment_date"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_appt_date'))); ?></label><br>
                 <input type="date" id="<?php echo esc_attr($prefix); ?>appointment_date" name="udc_appointment_date" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>appointment_time"><?php echo esc_html(UDC_i18n::translate('label_appt_time')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>appointment_time"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_appt_time'))); ?></label><br>
                 <input type="time" id="<?php echo esc_attr($prefix); ?>appointment_time" name="udc_appointment_time" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>piercing_location"><?php echo esc_html(UDC_i18n::translate('label_location')); ?></label><br>
+                <label for="<?php echo esc_attr($prefix); ?>piercing_location"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_location'))); ?></label><br>
                 <input type="text" id="<?php echo esc_attr($prefix); ?>piercing_location" name="udc_piercing_location" maxlength="255" required>
             </p>
 
@@ -261,7 +261,7 @@ class UDC_Shortcode
             <p>
                 <label>
                     <input type="checkbox" name="udc_liability_accepted" value="1" required>
-                    <?php echo esc_html(UDC_i18n::translate('liability_text')); ?>
+                    <?php echo esc_html(self::field_label(UDC_i18n::translate('liability_text'))); ?>
                 </label>
             </p>
 
@@ -281,7 +281,7 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.8.0', true);
+        wp_register_script('udc-forms', false, [], '1.8.2', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {
@@ -349,7 +349,7 @@ JS
     public static function render_health_fields($translate, $prefix = 'udc_')
     {
         foreach (self::health_fields() as $field => $label) {
-            echo '<p><label for="' . esc_attr($prefix . $field) . '">' . esc_html($translate($label)) . '</label><br>';
+            echo '<p><label for="' . esc_attr($prefix . $field) . '">' . esc_html(self::field_label($translate($label))) . '</label><br>';
             echo '<select id="' . esc_attr($prefix . $field) . '" name="udc_' . esc_attr($field) . '" required>';
             foreach (['' => 'answer_choose', '1' => 'answer_yes', '0' => 'answer_no', '2' => 'answer_discuss'] as $value => $key) {
                 echo '<option value="' . esc_attr($value) . '">' . esc_html($translate($key)) . '</option>';
@@ -361,6 +361,12 @@ JS
     public static function health_answer($value)
     {
         return UDC_i18n::translate('1' === (string) $value ? 'answer_yes' : ('0' === (string) $value ? 'answer_no' : 'answer_discuss'));
+    }
+
+    /** Normalize the visible required marker independently of existing translated wording. */
+    public static function field_label($text, $required = true)
+    {
+        return rtrim(trim($text), "* \t\n\r\0\x0B") . ($required ? ' *' : '');
     }
 
     public function handle_submission()
@@ -414,7 +420,7 @@ JS
         $health_pregnant = $health_values['health_pregnant'];
 
         $appointment_time = $this->normalize_time($appointment_time);
-        $required = [$last_name, $first_name, $dob, $address, $city, $zip, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
+        $required = [$last_name, $first_name, $dob, $city, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
         if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || $dob < '1000-01-01' || $appointment_date < '1000-01-01' || $dob > current_time('Y-m-d') || $dob > $appointment_date || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($address, 255) || !$this->within_length($city, 255) || !$this->within_length($zip, 50) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
             $this->redirect_error($is_piercing);
         }

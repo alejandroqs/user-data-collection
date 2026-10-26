@@ -36,7 +36,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `UDC_Document_Download` | Registers public providers, validates requests, restores locale context and streams complete PDF responses. |
 | `UDC_Validation` | Shared static date, datetime, time, and length validators used by the shortcode handler and backup restore. |
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
-| `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Tattoos, Piercings, Backups and Settings views; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the surname detail link; the surname is the responsive primary column. |
+| `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Tattoos, Piercings, Backups and Settings views; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the ID detail link; ID is the first and responsive primary column. |
 | `UDC_Backup` | Creates local JSON snapshots, rotates local files, restores missing rows, accepts uploaded JSON, and exposes administrative AJAX actions. |
 | `UDC_Settings` | Registers integration and design options and exposes the global Delete All Data action. |
 | `UDC_GDrive` | Creates JWT credentials from the configured service-account JSON, uploads local JSON files, lists Drive files, and rotates the configured folder. |
@@ -86,10 +86,16 @@ The shared wp_enqueue_scripts callback adds submit locking for both forms. It di
 
 ## Dependencies and current implementation characteristics
 
-The plugin depends on WordPress APIs, the WordPress database abstraction, filesystem access to the uploads directory, WP-Cron, `wp_mail`, OpenSSL for JWT signing, and optional Polylang and Google Drive HTTP endpoints. It does not bundle a PHP library.
+The plugin depends on WordPress APIs, the WordPress database abstraction, filesystem access to the uploads directory, WP-Cron, `wp_mail`, OpenSSL for JWT signing, and optional Polylang and Google Drive HTTP endpoints. PDF generation uses the isolated bundled Dompdf runtime described above.
 
 **Verified limitation:** `UDC_Backup` and `UDC_Settings` are instantiated during plugin initialization and again from `UDC_Admin::add_admin_menu()`. Their constructors register hooks, so administrative requests can register duplicate effects.
 
 **Verified limitation:** The form, admin actions, and settings pages emit inline CSS or JavaScript. This increases coupling to the rendered page and makes a strict content-security-policy and independent asset testing harder.
 
 **Verified, tattoo introduction:** the original form now starts with the translatable title_tattoo and intro_tattoo entries in UDC_i18n, mirroring the piercing introduction. They state required fields, completion before the session and in-person review of uncertain answers. They are registered through the existing original-form Polylang group. No validation, consent or submission behavior changes accompany this copy addition.
+
+## Unreleased table and optional-field adjustments
+
+**Verified from source:** both list views keep eight columns with ID first and primary. Detail actions move with the primary ID cell so native mobile expansion remains singular. Admin styles are enqueued only on the two service pages; the birth-date heading stays on one line on desktop and the ID column accommodates its detail action. Care category and exact body location are shown in piercing details, alongside the existing health choices and accepted-text evidence; category is not added to the index.
+
+UDC_Shortcode::field_label() normalizes required markers for both forms without rewriting existing consent strings. Address and postal code have no required marker or browser required attribute. Shared submission validation accepts blank or omitted address/postal values while keeping scalar, character-length, nonce, consent and other required-field checks. The schema is unchanged.

@@ -29,9 +29,9 @@ class UDC_List_Table extends WP_List_Table
     public function get_columns()
     {
         return [
+            'id' => __('ID', 'user-data-collection'),
             'last_name' => __('Last Name', 'user-data-collection'),
             'first_name' => __('First Name', 'user-data-collection'),
-            'id' => __('ID', 'user-data-collection'),
             'dob' => __('Date of Birth', 'user-data-collection'),
             'phone' => __('Phone', 'user-data-collection'),
             'appointment_date' => __('Appt Date', 'user-data-collection'),
@@ -88,7 +88,7 @@ class UDC_List_Table extends WP_List_Table
         $hidden = [];
         $sortable = $this->get_sortable_columns();
 
-        $this->_column_headers = [$columns, $hidden, $sortable, 'last_name'];
+        $this->_column_headers = [$columns, $hidden, $sortable, 'id'];
 
         $filter = isset($_REQUEST['appt_filter']) ? sanitize_text_field(wp_unslash($_REQUEST['appt_filter'])) : 'upcoming';
         $today = current_time('Y-m-d');
