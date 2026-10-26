@@ -12,9 +12,13 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.9.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.9.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.9.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.9.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
+
+## Upgrade to 1.9.1
+
+**Verified from source:** patch release correcting the tattoo body-location label to Tattoo location, with translations in all nine supported catalogs. The separate piercing label, request field and database column names remain unchanged. Plugin/schema marker, assets, npm and gettext metadata agree on 1.9.1. No schema, document-version or consent-text changes are introduced; no tag or remote release was created by this update.
 
 ## Upgrade to 1.9.0
 

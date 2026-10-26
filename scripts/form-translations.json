@@ -89,6 +89,9 @@
     "tattoo_intro": {
       "title_tattoo": "Consent for a tattoo",
       "intro_tattoo": "Fields and answers marked with an asterisk (*) are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
+    },
+    "tattoo_labels": {
+      "label_location": "Tattoo location *"
     }
   },
   "es": {
@@ -181,6 +184,9 @@
     "tattoo_intro": {
       "title_tattoo": "Consentimiento para un tatuaje",
       "intro_tattoo": "Los campos y las respuestas marcados con un asterisco (*) son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
+    },
+    "tattoo_labels": {
+      "label_location": "Ubicación del tatuaje *"
     }
   },
   "de": {
@@ -273,6 +279,9 @@
     "tattoo_intro": {
       "title_tattoo": "Einwilligung für ein Tattoo",
       "intro_tattoo": "Mit einem Sternchen (*) gekennzeichnete Felder und Antworten sind Pflichtangaben. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen prüfen. Unsichere Antworten müssen vor Ort besprochen werden."
+    },
+    "tattoo_labels": {
+      "label_location": "Position des Tattoos *"
     }
   },
   "it": {
@@ -365,6 +374,9 @@
     "tattoo_intro": {
       "title_tattoo": "Consenso per un tatuaggio",
       "intro_tattoo": "I campi e le risposte contrassegnati da un asterisco (*) sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con lei prima della procedura. Le risposte incerte devono essere discusse di persona."
+    },
+    "tattoo_labels": {
+      "label_location": "Posizione del tatuaggio *"
     }
   },
   "fr": {
@@ -405,6 +417,9 @@
     "tattoo_intro": {
       "title_tattoo": "Consentement pour un tatouage",
       "intro_tattoo": "Les champs et les réponses marqués d’un astérisque (*) sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
+    },
+    "tattoo_labels": {
+      "label_location": "Emplacement du tatouage *"
     }
   }
 }

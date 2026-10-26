@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.9.0\n"
+"Project-Id-Version: User Data Collection 1.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 15:29+0000\n"
-"PO-Revision-Date: 2026-10-26 15:29+0000\n"
+"POT-Creation-Date: 2026-10-26 15:49+0000\n"
+"PO-Revision-Date: 2026-10-26 15:49+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -993,3 +993,8 @@ msgstr "Formularsprache"
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Care document version"
 msgstr "Version der Pflegehinweise"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Tattoo location *"
+msgstr "Position des Tattoos *"

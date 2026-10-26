@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.9.0
+python scripts/build-package.py --tag v1.9.1
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -151,3 +151,7 @@ The schema is unchanged; existing metadata columns carry the snapshot. Real Poly
 **Verified, executed:** 200 PHP assertions cover blank/omitted address/city/postal code in both handlers, backup normalization/restore, malformed types and maximum lengths. All nine catalog/PHP locale checks pass with synchronized 1.9.0 metadata. Edge checks at 320, 390, 782 and 1280px confirm that city is optional, has no required marker, and completed forms remain valid with all three optional contact fields empty.
 
 An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded the HEAD baseline (1.8.3) to the local 1.9.0 ZIP and preserved synthetic data/settings. It verified the existing city varchar(255) NOT NULL column, then exercised tattoo and piercing submissions with city blank and omitted. All four cases stored an empty string with their exact document evidence, and real SQL restore preserved that value. No schema alteration was needed. The temporary harness used get_row() to distinguish an empty database string because wpdb::get_var() normalizes it to null; its existing NULL-field preservation check was also corrected only in the temporary copy. This does not establish production hosting or real Polylang behavior.
+
+## Tattoo location label in 1.9.1
+
+**Verified, executed:** tattoo_labels adds the corrected label_location source and defaults for en_GB, es_ES, fr/fr_FR/fr_CH, de_DE/de_CH and it_IT/it_CH (78 required IDs per locale). PO/MO compilation and all nine PHP fallback checks pass. The 200 form regressions pass. The legacy-copy hash invariant now excludes only the explicitly authorized location-label change, with its remaining baseline derived from the previous committed source. No input/column rename is part of this wording correction.

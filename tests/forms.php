@@ -28,8 +28,8 @@ function esc_url_raw($value, $protocols = []) { return preg_match('~^https?://~i
 function wp_die($message, $title = '', $args = []) { throw new RuntimeException('wp_die:' . ($args['response'] ?? 0)); }
 
 $strings = UDC_i18n::get_strings();
-foreach (['title_tattoo', 'intro_tattoo', 'answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
-check(hash('sha256', serialize($strings)) === 'd92f05d6f65a14b66819aa3ea2905eb4e0def1f689cdd9a02938ae62e3a88cea', 'Legacy dictionary and consent wording remain unchanged; tattoo aftercare uses its own provider');
+foreach (['label_location', 'title_tattoo', 'intro_tattoo', 'answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
+check(hash('sha256', serialize($strings)) === '06caaf3b25960e746282a68eae3dd159ecc1805addf9b0761ec23cd82cd3a070', 'Other legacy wording and consent remain unchanged after the authorized tattoo label correction');
 $tattoo = new UDC_Shortcode();
 $piercing = new UDC_Piercing_Form();
 $_GET = [];

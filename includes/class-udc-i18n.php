@@ -88,7 +88,7 @@ class UDC_i18n
             'title_appointment_info' => 'APPOINTMENT DETAILS',
             'label_appt_date' => 'Date of appointment *',
             'label_appt_time' => 'Time *',
-            'label_location' => 'Piercing location *',
+            'label_location' => 'Tattoo location *',
 
             'subtitle_care' => 'PIERCING CARE INSTRUCTIONS',
             'care_1' => 'Regular cleaning: Always wash your hands thoroughly before touching the piercing.',

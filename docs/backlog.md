@@ -54,6 +54,10 @@ Initial triage: 2026-10-24. Items under Open items are **Open**; no owner or dea
 
 **Done (source, isolated and native SQL checks):** city is optional in both forms, shared server validation and backup restore. Empty/missing values are stored as empty strings in the unchanged varchar(255) NOT NULL column. Required markers are removed in every translated form. Executed: 200 PHP assertions, nine catalogs/locales, Edge forms and native WordPress/MySQL upgrade/submission/restore for both services with blank and omitted city. See Development and quality and Release. Production acceptance and publication remain pending.
 
+## TATTOO-LOCATION-01 - Corrected tattoo label (1.9.1)
+
+**Done (source and isolated checks):** corrected the inherited piercing-location label in the tattoo form and added defaults in all nine catalogs. Version metadata is 1.9.1. Nine catalog/PHP locale checks, 200 form regressions and PHP syntax checks passed. Request/database fields and piercing copy are preserved. Publication and production Polylang checks remain pending.
+
 ## Adding and closing items
 
 **Requirement:** add only source-backed findings, explicit requirements, or clearly labelled hypotheses. Include a path and symbol for source findings, the relevant canonical document, and a testable completion criterion. Do not store personal data, credentials, production backup contents, or unverified success claims.
