@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.8.3
+python scripts/build-package.py --tag v1.9.0
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -145,3 +145,9 @@ These results do not prove real Polylang settings, production theme behavior or 
 An isolated native WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded v1.8.2 to the local v1.8.3 ZIP, retained previous data/settings, registered the canonical shortcode and alias, rendered signed fields, submitted a real tattoo form with blank optional fields, checked the exact stored JSON, restored a cloned tattoo record through the real InnoDB transaction path, and rendered the native historical/current admin details. A tampered document was rejected without another row. This reused a temporary extension of the upgrade harness, with its NULL-field preservation assertion corrected only in the temporary copy. The normal UI tests still use doubles.
 
 The schema is unchanged; existing metadata columns carry the snapshot. Real Polylang and production behavior remain separate acceptance boundaries. Structural graph tooling was unavailable (transport closed), so affected code and callers were verified by direct source reads, targeted text searches and executed tests. PDF tests and package gates remain part of the release workflow. No remote publication is performed by these checks.
+
+## Optional city in 1.9.0
+
+**Verified, executed:** 200 PHP assertions cover blank/omitted address/city/postal code in both handlers, backup normalization/restore, malformed types and maximum lengths. All nine catalog/PHP locale checks pass with synchronized 1.9.0 metadata. Edge checks at 320, 390, 782 and 1280px confirm that city is optional, has no required marker, and completed forms remain valid with all three optional contact fields empty.
+
+An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded the HEAD baseline (1.8.3) to the local 1.9.0 ZIP and preserved synthetic data/settings. It verified the existing city varchar(255) NOT NULL column, then exercised tattoo and piercing submissions with city blank and omitted. All four cases stored an empty string with their exact document evidence, and real SQL restore preserved that value. No schema alteration was needed. The temporary harness used get_row() to distinguish an empty database string because wpdb::get_var() normalizes it to null; its existing NULL-field preservation check was also corrected only in the temporary copy. This does not establish production hosting or real Polylang behavior.

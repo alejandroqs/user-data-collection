@@ -12,9 +12,15 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.3`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.8.3`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.9.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.9.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
+
+## Upgrade to 1.9.0
+
+**Verified from source:** minor version update for optional city in tattoo and piercing forms, shared submission validation and backup restoration. City is stored as an empty string when omitted; the existing varchar(255) NOT NULL column supports this without a schema alteration. Plugin/schema marker, asset, npm and gettext metadata agree on 1.9.0. Form/care document versions are unchanged. No Git commit, tag or remote release was created by this update.
+
+**Verified, local 1.9.0 gates:** 200 PHP assertions, nine catalog/PHP locale checks, Edge forms, package lint/hash/ZIP integrity and native WordPress/MySQL upgrade, empty-city submission and SQL restore checks passed. No remote workflow was triggered.
 
 ## Upgrade to 1.8.3
 

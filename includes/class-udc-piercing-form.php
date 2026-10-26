@@ -168,7 +168,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
         $control_css .= 'form.udc-piercing-form select[name] option{background:#fff;color:#111!important;-webkit-text-fill-color:#111!important}';
         $control_css .= 'form.udc-piercing-form select[name] option:checked{background:Highlight;color:HighlightText!important;-webkit-text-fill-color:HighlightText!important}';
         $control_css .= '.udc-piercing-form input[type="date"],.udc-piercing-form input[type="time"]{color-scheme:' . $scheme . '}';
-        wp_register_style('udc-piercing', false, [], '1.8.3');
+        wp_register_style('udc-piercing', false, [], '1.9.0');
         wp_enqueue_style('udc-piercing');
         wp_add_inline_style('udc-piercing', '.udc-piercing-form{max-width:760px;overflow-wrap:anywhere}.udc-piercing-form input:not([type=checkbox]):not([type=hidden]),.udc-piercing-form select{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px;font:inherit;background:' . $background . ';color:' . $text . ';border:1px solid ' . $border . '}.udc-piercing-form select option{background:#fff;color:#111}.udc-piercing-form :focus-visible{outline:2px solid currentColor;outline-offset:3px}.udc-piercing-form details{padding:12px 0;border-bottom:1px solid currentColor}.udc-piercing-form summary{cursor:pointer;min-height:32px}.udc-piercing-form .udc-resources{display:flex;flex-wrap:wrap;gap:16px}.udc-piercing-form button{min-height:44px;padding:10px 18px;font:inherit;cursor:pointer}.udc-piercing-form input[type=checkbox]{width:1.1em;height:1.1em;vertical-align:middle}' . $control_css);
     }
@@ -193,8 +193,8 @@ class UDC_Piercing_Form extends UDC_Shortcode
             <input type="hidden" name="udc_evidence_signature" value="<?php echo esc_attr(hash_hmac('sha256', $json, wp_salt('nonce'))); ?>">
             <h3><?php echo esc_html(self::translate('title_personal_info')); ?></h3>
             <?php foreach (['last_name' => 'text', 'first_name' => 'text', 'dob' => 'date', 'address' => 'text', 'city' => 'text', 'zip' => 'text', 'phone' => 'tel'] as $field => $type): ?>
-                <p><label for="<?php echo esc_attr($prefix . $field); ?>"><?php echo esc_html(self::field_label(self::translate('label_' . $field), !in_array($field, ['address', 'zip'], true))); ?></label>
-                <input id="<?php echo esc_attr($prefix . $field); ?>" type="<?php echo esc_attr($type); ?>" name="udc_<?php echo esc_attr($field); ?>" maxlength="<?php echo in_array($field, ['zip', 'phone'], true) ? '50' : '255'; ?>" <?php if ('dob' === $field): ?> min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>"<?php endif; ?> <?php if (!in_array($field, ['address', 'zip'], true)): ?>required<?php endif; ?>></p>
+                <p><label for="<?php echo esc_attr($prefix . $field); ?>"><?php echo esc_html(self::field_label(self::translate('label_' . $field), !in_array($field, ['address', 'city', 'zip'], true))); ?></label>
+                <input id="<?php echo esc_attr($prefix . $field); ?>" type="<?php echo esc_attr($type); ?>" name="udc_<?php echo esc_attr($field); ?>" maxlength="<?php echo in_array($field, ['zip', 'phone'], true) ? '50' : '255'; ?>" <?php if ('dob' === $field): ?> min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>"<?php endif; ?> <?php if (!in_array($field, ['address', 'city', 'zip'], true)): ?>required<?php endif; ?>></p>
             <?php endforeach; ?>
             <h3><?php echo esc_html(self::translate('title_health')); ?></h3>
             <?php self::render_health_fields([self::class, 'translate'], $prefix); ?>

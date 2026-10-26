@@ -259,8 +259,8 @@ class UDC_Shortcode
                 <input type="text" id="<?php echo esc_attr($prefix); ?>address" name="udc_address" maxlength="255">
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>city"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_city'))); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>city" name="udc_city" maxlength="255" required>
+                <label for="<?php echo esc_attr($prefix); ?>city"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_city'), false)); ?></label><br>
+                <input type="text" id="<?php echo esc_attr($prefix); ?>city" name="udc_city" maxlength="255">
             </p>
             <p>
                 <label for="<?php echo esc_attr($prefix); ?>zip"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_zip'), false)); ?></label><br>
@@ -333,7 +333,7 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.8.3', true);
+        wp_register_script('udc-forms', false, [], '1.9.0', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {
@@ -472,7 +472,7 @@ JS
         $health_pregnant = $health_values['health_pregnant'];
 
         $appointment_time = $this->normalize_time($appointment_time);
-        $required = [$last_name, $first_name, $dob, $city, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
+        $required = [$last_name, $first_name, $dob, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
         if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || $dob < '1000-01-01' || $appointment_date < '1000-01-01' || $dob > current_time('Y-m-d') || $dob > $appointment_date || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($address, 255) || !$this->within_length($city, 255) || !$this->within_length($zip, 50) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
             $this->redirect_error($is_piercing);
         }

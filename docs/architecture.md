@@ -98,7 +98,7 @@ The plugin depends on WordPress APIs, the WordPress database abstraction, filesy
 
 **Verified from source:** both list views keep eight columns with ID first and primary. Detail actions move with the primary ID cell so native mobile expansion remains singular. Admin styles are enqueued only on the two service pages; the birth-date heading stays on one line on desktop and the ID column accommodates its detail action. Care category and exact body location are shown in piercing details, alongside the existing health choices and accepted-text evidence; category is not added to the index.
 
-UDC_Shortcode::field_label() normalizes required markers for both forms without rewriting existing consent strings. Address and postal code have no required marker or browser required attribute. Shared submission validation accepts blank or omitted address/postal values while keeping scalar, character-length, nonce, consent and other required-field checks. The schema is unchanged.
+UDC_Shortcode::field_label() normalizes required markers for both forms without rewriting existing consent strings. Address, city and postal code have no required marker or browser required attribute. Shared submission validation accepts blank or omitted address/city/postal values while keeping scalar, character-length, nonce, consent and other required-field checks. The schema is unchanged.
 
 ## Tattoo document evidence (1.8.3)
 
@@ -109,3 +109,5 @@ The canonical shortcode is udc_tattoo_form; udc_contact_form remains an alias. T
 Both admin detail views show Accepted document. Tattoo details display the stored versions/language and saved text, never a reconstruction using current translations. Missing or inconsistent evidence is marked unavailable; historical records are not relabelled or given fabricated snapshots. The existing form_language/form_version/form_evidence columns are reused without a schema change. UDC_Backup validates tattoo evidence consistency while accepting older tattoo rows with entirely empty evidence metadata.
 
 Version policy: UDC_Shortcode::FORM_VERSION starts at 1.0 and identifies the tattoo consent document. Increment it for future changes to accepted consent wording/structure. UDC_Tattoo_Care_Document::VERSION independently identifies care text. Current form submissions require both current versions; historical detail and restore accept valid older versioned snapshots. Plugin release version 1.8.3 is independent of those document versions.
+
+**Verified, optional city in 1.9.0:** city remains varchar(255) NOT NULL, and optionality is represented as an empty string rather than SQL NULL, matching address/postal code. No CREATE TABLE or ALTER TABLE change is required. Browser and server requirements are relaxed for both services; scalar/character-length limits and evidence validation remain unchanged. Restore accepts an empty city in all supported backup schemas while requiring the city key and string type.

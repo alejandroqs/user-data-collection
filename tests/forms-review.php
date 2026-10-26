@@ -93,25 +93,25 @@ foreach ([false, true] as $is_piercing) {
     $object = $is_piercing ? $piercing : $tattoo;
     foreach (['blank', 'omitted'] as $mode) {
         $post = form_post($is_piercing);
-        foreach (['udc_address', 'udc_zip'] as $field) {
+        foreach (['udc_address', 'udc_city', 'udc_zip'] as $field) {
             if ('blank' === $mode) { $post[$field] = ''; } else { unset($post[$field]); }
         }
         [$url, $inserts] = submit_form($object, $post);
-        check(count($inserts) === 1 && $inserts[0][1]['address'] === '' && $inserts[0][1]['zip'] === '', 'Both handlers accept blank or omitted optional address/postal code');
+        check(count($inserts) === 1 && $inserts[0][1]['address'] === '' && $inserts[0][1]['city'] === '' && $inserts[0][1]['zip'] === '', 'Both handlers accept blank or omitted optional address/city/postal code');
         $row = $inserts[0][1] + ['id' => 91, 'created_at' => '2026-10-26 12:00:00'];
         $normalized = invoke_private($backup, 'validate_backup_rows', [$row]);
-        check(!is_wp_error($normalized) && $normalized[0]['address'] === '' && $normalized[0]['zip'] === '', 'Optional data survives backup normalization');
+        check(!is_wp_error($normalized) && $normalized[0]['address'] === '' && $normalized[0]['city'] === '' && $normalized[0]['zip'] === '', 'Optional data survives backup normalization');
         $wpdb = new SyntheticDatabase();
-        check(invoke_private($backup, 'insert_backup_data', $normalized) === 1 && $wpdb->inserts[0][1]['address'] === '' && $wpdb->inserts[0][1]['zip'] === '', 'Restore preserves empty optional fields');
+        check(invoke_private($backup, 'insert_backup_data', $normalized) === 1 && $wpdb->inserts[0][1]['address'] === '' && $wpdb->inserts[0][1]['city'] === '' && $wpdb->inserts[0][1]['zip'] === '', 'Restore preserves empty optional fields');
     }
-    foreach (['udc_address' => [str_repeat('a', 256), ['array']], 'udc_zip' => [str_repeat('1', 51), ['array']]] as $field => $values) {
+    foreach (['udc_address' => [str_repeat('a', 256), ['array']], 'udc_city' => [str_repeat('a', 256), ['array']], 'udc_zip' => [str_repeat('1', 51), ['array']]] as $field => $values) {
         foreach ($values as $value) {
             $post = form_post($is_piercing); $post[$field] = $value;
             check(!submit_form($object, $post)[1], 'Optional values still reject excessive lengths and arrays');
         }
     }
     $post = form_post($is_piercing); $post['udc_city'] = '';
-    check(!submit_form($object, $post)[1], 'City remains required in both handlers');
+    check(count(submit_form($object, $post)[1]) === 1, 'City can be blank in both handlers');
 }
 $wpdb = new EvidenceDatabase(); $wpdb->record = $saved_piercing;
 $admin = new UDC_Admin();

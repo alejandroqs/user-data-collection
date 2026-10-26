@@ -50,6 +50,10 @@ Initial triage: 2026-10-24. Items under Open items are **Open**; no owner or dea
 
 **Done (1.8.3 source and isolated checks):** new tattoo submissions capture signed accepted text, document/care versions and language. Detail and restore preserve historical snapshots and explicitly report missing evidence. Canonical shortcode is udc_tattoo_form with the old identifier retained as an alias. Translated version labels cover all nine catalogs. See Architecture, Data/security/privacy and Development and quality for gates and evidence boundaries. Production acceptance and publication remain pending.
 
+## CITY-OPTIONAL-01 - Optional city (1.9.0)
+
+**Done (source, isolated and native SQL checks):** city is optional in both forms, shared server validation and backup restore. Empty/missing values are stored as empty strings in the unchanged varchar(255) NOT NULL column. Required markers are removed in every translated form. Executed: 200 PHP assertions, nine catalogs/locales, Edge forms and native WordPress/MySQL upgrade/submission/restore for both services with blank and omitted city. See Development and quality and Release. Production acceptance and publication remain pending.
+
 ## Adding and closing items
 
 **Requirement:** add only source-backed findings, explicit requirements, or clearly labelled hypotheses. Include a path and symbol for source findings, the relevant canonical document, and a testable completion criterion. Do not store personal data, credentials, production backup contents, or unverified success claims.

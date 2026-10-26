@@ -40,7 +40,7 @@ Care draft reference sources: [APP body piercing aftercare](https://safepiercing
 
 ## Validation and result review
 
-**Verified from source:** address and postal code are optional in both services and are stored as empty strings when omitted. City and the remaining required controls stay required. Every required control has an asterisk in its translated label, including health dropdowns and acknowledgements. The introductions state that asterisk-marked fields/answers are required. Optional fields still reject arrays and excessive lengths. This changes validation only, not schema or historical records.
+**Verified from source:** address, city and postal code are optional in both services and are stored as empty strings when omitted. The remaining required controls stay required. Every required control has an asterisk in its translated label, including health dropdowns and acknowledgements. The introductions state that asterisk-marked fields/answers are required. Optional fields still reject arrays and excessive lengths. This changes validation only, not schema or historical records.
 
 **Verified:** new submissions reject impossible/future birth dates, dates outside the MySQL DATE range, and birth after the procedure date. Both browser birth-date fields have matching lower/current-date bounds. Text length is checked in Unicode characters rather than UTF-8 bytes, and restore uses the same character limits for identity/contact/location fields. Evidence/metadata byte limits are retained. Existing records are not retroactively edited.
 

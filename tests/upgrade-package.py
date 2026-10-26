@@ -131,7 +131,7 @@ def main():
             $before=json_decode(file_get_contents(__DIR__.'/before.json'),true);
             $table=$wpdb->prefix.'udc_submissions';
             $after=$wpdb->get_row("SELECT * FROM $table",ARRAY_A);
-            ensure(UDC_DB_VERSION === '1.8.3' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.8.3');
+            ensure(UDC_DB_VERSION === '1.9.0' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.9.0');
             ensure((int)$wpdb->get_var("SELECT COUNT(*) FROM $table") === 1, 'Existing record count is preserved');
             foreach($before['row'] as $key=>$value) {
                 if ($key === 'is_confirmed') continue;
