@@ -12,7 +12,7 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.10.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.10.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.10.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.10.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
@@ -86,3 +86,7 @@ Changing the tag convention or adding release gates requires a separate change t
 ## Upgrade to 1.10.0
 
 **Verified from source:** minor release introducing four separate tattoo acknowledgements and document version 2.0, translated into all nine locale catalogs. The existing table and evidence columns are reused; no CREATE TABLE change is needed. Plugin/schema marker, npm, assets and gettext metadata are synchronized to 1.10.0. No old-format migration is included because the maintainer cleared the development data. No commit, tag or push is performed by this change. The target annotated release tag is v1.10.0.
+
+## Upgrade to 1.10.1
+
+**Verified from source:** patch release for shared tattoo/piercing styles, configurable tattoo-care background defaulting to rgba(0, 0, 0, 0.15), and the former tattoo custom checkbox design on both forms. Plugin/schema marker, npm, asset and catalog metadata are synchronized. No database structure or consent-document version change is required. Target tag: v1.10.1; no commit, tag or push performed by this update.

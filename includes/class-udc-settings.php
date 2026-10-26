@@ -79,7 +79,7 @@ class UDC_Settings
             'udc_design_input_bg' => 'transparent',
             'udc_design_input_border' => 'rgba(255, 255, 255, 0.5)',
             'udc_design_input_text' => '#ffffff',
-            'udc_design_care_bg' => 'rgba(255, 255, 255, 0.05)',
+            'udc_design_care_bg' => 'rgba(0, 0, 0, 0.15)',
             'udc_design_care_border' => '#ffffff',
             'udc_design_cb_bg' => 'transparent',
             'udc_design_cb_border' => 'rgba(255, 255, 255, 0.5)',
@@ -145,6 +145,9 @@ class UDC_Settings
     public function sanitize_color($value, $option = '', $default = 'transparent')
     {
         $value = is_scalar($value) ? trim((string) $value) : '';
+        if ('udc_design_care_bg' === $option && '' === $value) {
+            return $default;
+        }
         if (self::is_valid_color($value)) {
             return $value;
         }
@@ -216,7 +219,7 @@ class UDC_Settings
         $input_bg = get_option('udc_design_input_bg', 'transparent');
         $input_border = get_option('udc_design_input_border', 'rgba(255, 255, 255, 0.5)');
         $input_text = get_option('udc_design_input_text', '#ffffff');
-        $care_bg = get_option('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)');
+        $care_bg = self::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)');
         $care_border = get_option('udc_design_care_border', '#ffffff');
         
         $cb_bg = get_option('udc_design_cb_bg', 'transparent');

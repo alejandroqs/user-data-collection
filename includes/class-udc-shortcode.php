@@ -75,6 +75,32 @@ class UDC_Shortcode
         return ['form_type' => 'tattoo', 'piercing_category' => '', 'form_language' => $data['language'], 'form_version' => $data['version'], 'form_evidence' => $json];
     }
 
+    /** Keep the two public forms visually consistent with the same scoped rules. */
+    protected static function form_styles($piercing = false)
+    {
+        $enabled = get_option('udc_design_enabled', '0');
+        $text = $enabled ? UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff') : '#222222';
+        $background = $enabled ? UDC_Settings::get_valid_color('udc_design_input_bg', 'transparent') : '#ffffff';
+        $border = $enabled ? UDC_Settings::get_valid_color('udc_design_input_border', 'rgba(255,255,255,0.5)') : '#767676';
+        $select_text = $enabled ? $text : 'inherit';
+        $arrow_color = $enabled ? $text : '#767676';
+        $arrow = 'data:image/svg+xml,' . rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="' . esc_attr($arrow_color) . '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
+        $scheme = $enabled && get_option('udc_design_invert_icons', '1') ? 'dark' : 'light';
+        $control_css = 'form.udc-piercing-form select[name]{appearance:none;-webkit-appearance:none;color:' . $select_text . '!important;-webkit-text-fill-color:' . $select_text . '!important;background-image:url("' . $arrow . '");background-repeat:no-repeat;background-position:right 12px center;background-size:16px 16px;padding-right:40px}';
+        $control_css .= 'form.udc-piercing-form select[name] option{background:#fff;color:#111!important;-webkit-text-fill-color:#111!important}';
+        $control_css .= 'form.udc-piercing-form select[name] option:checked{background:Highlight;color:HighlightText!important;-webkit-text-fill-color:HighlightText!important}';
+        $control_css .= '.udc-piercing-form input[type="date"],.udc-piercing-form input[type="time"]{color-scheme:' . $scheme . '}';
+        $css = '.udc-piercing-form{max-width:760px;overflow-wrap:anywhere}.udc-piercing-form input:not([type=checkbox]):not([type=hidden]),.udc-piercing-form select{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px;font:inherit;background:' . $background . ';color:' . $text . ';border:1px solid ' . $border . '}.udc-piercing-form select option{background:#fff;color:#111}.udc-piercing-form :focus-visible{outline:2px solid currentColor;outline-offset:3px}.udc-piercing-form details{padding:12px 0;border-bottom:1px solid currentColor}.udc-piercing-form summary{cursor:pointer;min-height:32px}.udc-piercing-form .udc-resources{display:flex;flex-wrap:wrap;gap:16px}.udc-piercing-form button{min-height:44px;padding:10px 18px;font:inherit;cursor:pointer}.udc-piercing-form input[type=checkbox]{width:1.1em;height:1.1em;vertical-align:middle}' . $control_css;
+        $checkbox_background = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_bg', 'transparent') : 'transparent';
+        $checkbox_border = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_border', 'rgba(255, 255, 255, 0.5)') : '#767676';
+        $checkbox_check = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_check', '#ffffff') : '#222222';
+        $css .= '.udc-piercing-form input[type=checkbox]{appearance:none;-webkit-appearance:none;background-color:' . $checkbox_background . ';margin:0 8px 0 0;font:inherit;color:currentColor;width:1.15em;height:1.15em;box-sizing:border-box;border:1px solid ' . $checkbox_border . ';border-radius:0.15em;transform:translateY(-0.075em);display:inline-grid;place-content:center;cursor:pointer}';
+        $css .= '.udc-piercing-form input[type=checkbox]::before{content:"";width:0.65em;height:0.65em;transform:scale(0);transition:120ms transform ease-in-out;box-shadow:inset 1em 1em ' . $checkbox_check . ';transform-origin:bottom left;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%)}';
+        $css .= '.udc-piercing-form input[type=checkbox]:checked::before{transform:scale(1)}';
+        $css .= '@media(prefers-reduced-motion:reduce){.udc-piercing-form input[type=checkbox]::before{transition:none}}';
+        return $piercing ? $css : str_replace('.udc-piercing-form', '.udc-form', $css);
+    }
+
     public function render_form()
     {
         $prefix = wp_unique_id('udc-tattoo-');
@@ -91,154 +117,14 @@ class UDC_Shortcode
         }
 
         $design_enabled = get_option('udc_design_enabled', '0');
-        if ($design_enabled) {
-            $input_bg = esc_html(UDC_Settings::get_valid_color('udc_design_input_bg', 'transparent'));
-            $input_border = esc_html(UDC_Settings::get_valid_color('udc_design_input_border', 'rgba(255, 255, 255, 0.5)'));
-            $input_text = esc_html(UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff'));
-            $care_bg = esc_html(UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(255, 255, 255, 0.05)'));
-            $care_border = esc_html(UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff'));
-
-            $cb_bg = esc_html(UDC_Settings::get_valid_color('udc_design_cb_bg', 'transparent'));
-            $cb_border = esc_html(UDC_Settings::get_valid_color('udc_design_cb_border', 'rgba(255, 255, 255, 0.5)'));
-            $cb_check = esc_html(UDC_Settings::get_valid_color('udc_design_cb_check', '#ffffff'));
-            $invert_icons = get_option('udc_design_invert_icons', '1');
-            ?>
-            <style>
-                .udc-form input[type="text"],
-                .udc-form input[type="date"],
-                .udc-form input[type="time"],
-                .udc-form input[type="tel"],
-                .udc-form select {
-                    background:
-                        <?php echo $input_bg; ?>
-                    ;
-                    border: 1px solid
-                        <?php echo $input_border; ?>
-                    ;
-                    color:
-                        <?php echo $input_text; ?>
-                    ;
-                    padding: 8px 12px;
-                    width: 100%;
-                    max-width: 400px;
-                    box-sizing: border-box;
-                    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-                }
-
-                .udc-form input[type="text"]:focus,
-                .udc-form input[type="date"]:focus,
-                .udc-form input[type="time"]:focus,
-                .udc-form input[type="tel"]:focus,
-                .udc-form select:focus {
-                    border-color:
-                        <?php echo $input_text; ?>
-                    ;
-                    outline: none;
-                }
-
-                .udc-form .udc-care-instructions {
-                    background:
-                        <?php echo $care_bg; ?>
-                    ;
-                    padding: 15px;
-                    border-left: 4px solid
-                        <?php echo $care_border; ?>
-                    ;
-                    margin-bottom: 15px;
-                    color:
-                        <?php echo $input_text; ?>
-                    ;
-                }
-
-                .udc-form .udc-care-instructions ul {
-                    margin: 0;
-                    padding-left: 20px;
-                }
-
-                .udc-form button[type="submit"] {
-                    background: transparent;
-                    border: 2px solid
-                        <?php echo $input_border; ?>
-                    ;
-                    color:
-                        <?php echo $input_text; ?>
-                    ;
-                    padding: 10px 20px;
-                    cursor: pointer;
-                    text-transform: uppercase;
-                    font-weight: bold;
-                }
-
-                .udc-form button[type="submit"]:hover {
-                    background:
-                        <?php echo $input_text; ?>
-                    ;
-                    color: #000;
-                }
-
-                .udc-form input[type]:focus-visible,
-                .udc-form select:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }
-                .udc-form select[name] { color: <?php echo $input_text; ?> !important; -webkit-text-fill-color: <?php echo $input_text; ?> !important; }
-                .udc-form select option { background: #fff; color: #111 !important; -webkit-text-fill-color: #111 !important; }
-
-                .udc-form select option:checked { background: Highlight; color: HighlightText !important; -webkit-text-fill-color: HighlightText !important; }
-
-                /* Custom Checkboxes */
-                .udc-form input[type="checkbox"] {
-                    appearance: none;
-                    -webkit-appearance: none;
-                    background-color:
-                        <?php echo $cb_bg; ?>
-                    ;
-                    margin: 0 8px 0 0;
-                    font: inherit;
-                    color: currentColor;
-                    width: 1.15em;
-                    height: 1.15em;
-                    border: 1px solid
-                        <?php echo $cb_border; ?>
-                    ;
-                    border-radius: 0.15em;
-                    transform: translateY(-0.075em);
-                    display: inline-grid;
-                    place-content: center;
-                    cursor: pointer;
-                }
-
-                .udc-form input[type="checkbox"]::before {
-                    content: "";
-                    width: 0.65em;
-                    height: 0.65em;
-                    transform: scale(0);
-                    transition: 120ms transform ease-in-out;
-                    box-shadow: inset 1em 1em
-                        <?php echo $cb_check; ?>
-                    ;
-                    transform-origin: bottom left;
-                    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
-                }
-
-                .udc-form input[type="checkbox"]:checked::before {
-                    transform: scale(1);
-                }
-
-                <?php if ($invert_icons): ?>
-                    /* Invert browser native icons */
-                    .udc-form input[type="date"],
-                    .udc-form input[type="time"] {
-                        color-scheme: light;
-                    }
-
-                    .udc-form input[type="date"]::-webkit-calendar-picker-indicator,
-                    .udc-form input[type="time"]::-webkit-calendar-picker-indicator {
-                        filter: invert(1);
-                    }
-
-                <?php endif; ?>
-            </style>
-            <?php
-        }
+        $care_bg = $design_enabled ? UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') : 'rgba(0, 0, 0, 0.15)';
+        $care_border = $design_enabled ? UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff') : '#ccc';
         ?>
+        <style>
+            <?php echo self::form_styles(); // Colors are validated; selectors are fixed internally. ?>
+            .udc-form .udc-care-instructions {background:<?php echo esc_html($care_bg); ?>;padding:15px;border-left:4px solid <?php echo esc_html($care_border); ?>;margin-bottom:15px}
+            .udc-form .udc-care-instructions ul {margin:0;padding-left:20px}
+        </style>
 
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form">
             <h2><?php echo esc_html($document['document']['title']); ?></h2>
@@ -248,7 +134,7 @@ class UDC_Shortcode
             <input type="hidden" name="udc_evidence" value="<?php echo esc_attr($json); ?>">
             <input type="hidden" name="udc_evidence_signature" value="<?php echo esc_attr(hash_hmac('sha256', $json, wp_salt('nonce'))); ?>">
 
-            <h2><?php echo esc_html(UDC_i18n::translate('title_personal_info')); ?></h2>
+            <h3><?php echo esc_html(UDC_i18n::translate('title_personal_info')); ?></h3>
 
             <p>
                 <label for="<?php echo esc_attr($prefix); ?>last_name"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_last_name'))); ?></label><br>
@@ -272,17 +158,17 @@ class UDC_Shortcode
             </p>
             <p>
                 <label for="<?php echo esc_attr($prefix); ?>zip"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_zip'), false)); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>zip" name="udc_zip" maxlength="50" style="max-width: 150px;">
+                <input type="text" id="<?php echo esc_attr($prefix); ?>zip" name="udc_zip" maxlength="50">
             </p>
             <p>
                 <label for="<?php echo esc_attr($prefix); ?>phone"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_phone'))); ?></label><br>
                 <input type="tel" id="<?php echo esc_attr($prefix); ?>phone" name="udc_phone" maxlength="50" required>
             </p>
 
-            <h2><?php echo esc_html(UDC_i18n::translate('title_health')); ?></h2>
+            <h3><?php echo esc_html(UDC_i18n::translate('title_health')); ?></h3>
             <?php self::render_health_fields(['UDC_i18n', 'translate'], $prefix); ?>
 
-            <h2><?php echo esc_html(UDC_i18n::translate('title_appointment_info')); ?></h2>
+            <h3><?php echo esc_html(UDC_i18n::translate('title_appointment_info')); ?></h3>
             <p>
                 <label for="<?php echo esc_attr($prefix); ?>appointment_date"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_appt_date'))); ?></label><br>
                 <input type="date" id="<?php echo esc_attr($prefix); ?>appointment_date" name="udc_appointment_date" required>
@@ -296,9 +182,8 @@ class UDC_Shortcode
                 <input type="text" id="<?php echo esc_attr($prefix); ?>piercing_location" name="udc_piercing_location" maxlength="255" required>
             </p>
 
-            <h2><?php echo esc_html($document['care']['title']); ?></h2>
-            <div class="udc-care-instructions" <?php if (!$design_enabled)
-                echo 'style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;"'; ?>>
+            <h3><?php echo esc_html($document['care']['title']); ?></h3>
+            <div class="udc-care-instructions">
                 <ul>
                     <?php
                     $care_keys = ['care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6'];
@@ -317,7 +202,7 @@ class UDC_Shortcode
                 <p><a href="<?php echo esc_url(add_query_arg(['action' => 'udc_download_document', 'document' => 'tattoo-care', 'language' => UDC_Tattoo_Care_Document::language()], admin_url('admin-post.php'))); ?>"><?php echo esc_html(UDC_Tattoo_Care_Document::translate('download')); ?></a></p>
             </div>
 
-            <h2><?php echo esc_html(UDC_i18n::translate('tattoo_consent_title')); ?></h2>
+            <h3><?php echo esc_html(UDC_i18n::translate('tattoo_consent_title')); ?></h3>
             <?php foreach (['liability_text', 'risk_text', 'care_ack', 'privacy_text'] as $key): $field = 'liability_text' === $key ? 'liability_accepted' : $key; ?>
                 <p><label><input type="checkbox" name="udc_<?php echo esc_attr($field); ?>" value="1" required> <?php echo esc_html(self::field_label($document['document'][$key])); ?></label></p>
             <?php endforeach; ?>
@@ -341,7 +226,7 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.10.0', true);
+        wp_register_script('udc-forms', false, [], '1.10.1', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {

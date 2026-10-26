@@ -156,21 +156,9 @@ class UDC_Piercing_Form extends UDC_Shortcode
 
     public function enqueue_styles()
     {
-        $enabled = get_option('udc_design_enabled', '0');
-        $text = $enabled ? UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff') : '#222222';
-        $background = $enabled ? UDC_Settings::get_valid_color('udc_design_input_bg', 'transparent') : '#ffffff';
-        $border = $enabled ? UDC_Settings::get_valid_color('udc_design_input_border', 'rgba(255,255,255,0.5)') : '#767676';
-        $select_text = $enabled ? $text : 'inherit';
-        $arrow_color = $enabled ? $text : '#767676';
-        $arrow = 'data:image/svg+xml,' . rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="' . esc_attr($arrow_color) . '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
-        $scheme = $enabled && get_option('udc_design_invert_icons', '1') ? 'dark' : 'light';
-        $control_css = 'form.udc-piercing-form select[name]{appearance:none;-webkit-appearance:none;color:' . $select_text . '!important;-webkit-text-fill-color:' . $select_text . '!important;background-image:url("' . $arrow . '");background-repeat:no-repeat;background-position:right 12px center;background-size:16px 16px;padding-right:40px}';
-        $control_css .= 'form.udc-piercing-form select[name] option{background:#fff;color:#111!important;-webkit-text-fill-color:#111!important}';
-        $control_css .= 'form.udc-piercing-form select[name] option:checked{background:Highlight;color:HighlightText!important;-webkit-text-fill-color:HighlightText!important}';
-        $control_css .= '.udc-piercing-form input[type="date"],.udc-piercing-form input[type="time"]{color-scheme:' . $scheme . '}';
-        wp_register_style('udc-piercing', false, [], '1.10.0');
+        wp_register_style('udc-piercing', false, [], '1.10.1');
         wp_enqueue_style('udc-piercing');
-        wp_add_inline_style('udc-piercing', '.udc-piercing-form{max-width:760px;overflow-wrap:anywhere}.udc-piercing-form input:not([type=checkbox]):not([type=hidden]),.udc-piercing-form select{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px;font:inherit;background:' . $background . ';color:' . $text . ';border:1px solid ' . $border . '}.udc-piercing-form select option{background:#fff;color:#111}.udc-piercing-form :focus-visible{outline:2px solid currentColor;outline-offset:3px}.udc-piercing-form details{padding:12px 0;border-bottom:1px solid currentColor}.udc-piercing-form summary{cursor:pointer;min-height:32px}.udc-piercing-form .udc-resources{display:flex;flex-wrap:wrap;gap:16px}.udc-piercing-form button{min-height:44px;padding:10px 18px;font:inherit;cursor:pointer}.udc-piercing-form input[type=checkbox]{width:1.1em;height:1.1em;vertical-align:middle}' . $control_css);
+        wp_add_inline_style('udc-piercing', self::form_styles(true));
     }
 
     public function render_form()

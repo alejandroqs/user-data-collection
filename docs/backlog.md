@@ -69,3 +69,9 @@ Move completed items to a Closed items section with the completion date, change 
 **Implemented:** separate procedure/truthfulness, risk, care and data-processing acceptances; server validation, document version 2.0, exact stored text in admin, translations and plugin minor version 1.10.0. The maintainer reports clearing the development database and explicitly excludes historical-record work. No automatic acceptance or destructive cleanup was implemented. Studio review of wording and actual pre-procedure information remains separate from technical verification. See Architecture and Data, security, and privacy for the implementation contract.
 
 **Verification:** 229 synthetic PHP checks, nine catalog/PHP locale checks, Edge form checks and local 351-file ZIP/lint/hash/integrity gates passed. Native installation and production wording acceptance remain unverified.
+
+## FORM-STYLES-01 — Match tattoo styles to piercing
+
+**Implemented and verified locally:** shared scoped CSS for both forms; tattoo care background remains configurable and defaults to rgba(0, 0, 0, 0.15) when design is disabled or the value is unspecified/invalid. Settings registration, display fallback and clearing behavior agree. PHP regressions, Edge responsive/focus checks, computed-style comparison and option checks pass. No version bump or remote publication requested for this adjustment.
+
+**Verified, checkbox styling:** both forms reuse the former tattoo checkbox shape and animated checkmark, with the existing background/border/check color options when design is enabled and visible neutral defaults otherwise. Reduced-motion preferences disable the transition. Native checked/required behavior and keyboard focus remain intact.
