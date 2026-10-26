@@ -19,7 +19,7 @@ def normalize(text):
     return ' '.join(text.split())
 
 
-for path in sorted((ROOT / 'tmp/pdfs').glob('piercing-care-*.pdf')):
+for path in sorted((ROOT / 'tmp/pdfs').glob('*-care-*.pdf')):
     data = json.loads(path.with_suffix('.pdf.json').read_text(encoding='utf-8'))
     reader = PdfReader(path, strict=True)
     extracted = '\n'.join(page.extract_text() for page in reader.pages)
@@ -39,4 +39,4 @@ reader = PdfReader(ROOT / 'tmp/pdfs/synthetic-document.pdf', strict=True)
 extracted = '\n'.join(page.extract_text() for page in reader.pages)
 assert 'Section 17' in extracted and 'Été, español, Straße' in extracted and '<script>alert(1)</script>' in extracted
 assert len(reader.pages) > 1, 'Second provider did not exercise multiple pages'
-print('PASS: 46 PDFs parsed; care text, Unicode fonts, metadata, A4, page numbers and multipage content verified.')
+print('PASS: 55 PDFs parsed; tattoo/piercing care text, Unicode fonts, metadata, A4, page numbers and multipage content verified.')

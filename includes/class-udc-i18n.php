@@ -57,6 +57,8 @@ class UDC_i18n
     public static function get_strings()
     {
         return [
+            'title_tattoo' => 'Consent for a tattoo',
+            'intro_tattoo' => 'All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person.',
             'answer_choose' => 'Select an answer',
             'answer_yes' => 'Yes',
             'answer_no' => 'No',

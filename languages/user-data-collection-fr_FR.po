@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.0\n"
+"Project-Id-Version: User Data Collection 1.8.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 23:34+0000\n"
-"PO-Revision-Date: 2026-10-25 23:34+0000\n"
+"POT-Creation-Date: 2026-10-26 00:10+0000\n"
+"PO-Revision-Date: 2026-10-26 00:10+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -903,3 +903,63 @@ msgstr "Demande de document non valide."
 #: includes/class-udc-document-download.php
 msgid "PDF temporarily unavailable. Please try again later."
 msgstr "Le PDF est temporairement indisponible. Veuillez réessayer plus tard."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Waivers"
+msgstr "Décharges"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoos"
+msgstr "Tatouages"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "TATTOO AFTERCARE INSTRUCTIONS"
+msgstr "SOINS APRÈS LE TATOUAGE"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Dressing: Follow your tattoo artist’s instructions for the type of dressing used and when to remove or replace it. Wash your hands before handling it."
+msgstr "Pansement : Suivez les consignes de votre tatoueur selon le type de pansement utilisé et le moment où le retirer ou le changer. Lavez-vous les mains avant de le manipuler."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Cleaning: Gently wash the tattoo with water and mild, fragrance-free soap, then rinse and pat dry with clean disposable paper. Do not scrub."
+msgstr "Nettoyage : Lavez délicatement le tatouage avec de l’eau et un savon doux sans parfum, puis rincez et séchez par petits tapotements avec du papier jetable propre. Ne frottez pas."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Skin care: After removing the dressing, use a thin layer of fragrance-free aftercare moisturiser as advised by your tattoo artist. Do not scratch or pick scabs. Do not use disinfectants or antibiotic creams unless prescribed by a healthcare professional."
+msgstr "Soin de la peau : Après le retrait du pansement, appliquez une fine couche de soin hydratant sans parfum selon les conseils de votre tatoueur. Ne grattez pas et n’arrachez pas les croûtes. N’utilisez pas de désinfectant ni de crème antibiotique sans prescription d’un professionnel de santé."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "While healing: Wear clean, loose clothing and avoid rubbing, swimming, soaking, saunas and direct sun until the skin has healed. Showering is fine."
+msgstr "Pendant la cicatrisation : Portez des vêtements propres et amples. Évitez les frottements, la natation, l’immersion, le sauna et le soleil direct jusqu’à cicatrisation de la peau. Vous pouvez vous doucher."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Warning signs: Seek prompt medical advice for increasing redness, pain, warmth, swelling or pus. Seek urgent medical care for fever, rapidly spreading redness or feeling unwell."
+msgstr "Signes d’alerte : Consultez rapidement un professionnel de santé si la rougeur, la douleur, la chaleur ou le gonflement augmentent, ou si du pus apparaît. Consultez en urgence en cas de fièvre, de rougeur qui s’étend rapidement ou de malaise général."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Follow-up and sun protection: Healing varies. Ask your tattoo artist about follow-up. Once healed, protect exposed tattooed skin with broad-spectrum SPF 30 or higher sunscreen."
+msgstr "Suivi et protection solaire : La cicatrisation varie. Demandez à votre tatoueur les modalités de suivi. Une fois la peau cicatrisée, protégez la zone tatouée exposée avec un écran solaire à large spectre d’indice SPF 30 ou plus."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Download tattoo aftercare (PDF)"
+msgstr "Télécharger les soins du tatouage (PDF)"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Consent for a tattoo"
+msgstr "Consentement pour un tatouage"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
+msgstr "Tous les champs et toutes les réponses sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."

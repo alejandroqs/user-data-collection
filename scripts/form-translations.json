@@ -63,11 +63,28 @@
       "Piercing Submissions": "Piercing submissions",
       "Accepted document": "Accepted document",
       "Document evidence is unavailable.": "Document evidence is unavailable.",
-      "Piercing consent accepted by the user.": "Piercing consent accepted by the user."
+      "Piercing consent accepted by the user.": "Piercing consent accepted by the user.",
+      "Waivers": "Waivers",
+      "Tattoos": "Tattoos"
     },
     "download": {
       "invalid_request": "Invalid document request.",
       "unavailable": "PDF temporarily unavailable. Please try again later."
+    },
+    "tattoo_care": {
+      "title": "TATTOO AFTERCARE INSTRUCTIONS",
+      "care_1": "Dressing: Follow your tattoo artist’s instructions for the type of dressing used and when to remove or replace it. Wash your hands before handling it.",
+      "care_2": "Cleaning: Gently wash the tattoo with water and mild, fragrance-free soap, then rinse and pat dry with clean disposable paper. Do not scrub.",
+      "care_3": "Skin care: After removing the dressing, use a thin layer of fragrance-free aftercare moisturiser as advised by your tattoo artist. Do not scratch or pick scabs. Do not use disinfectants or antibiotic creams unless prescribed by a healthcare professional.",
+      "care_4": "While healing: Wear clean, loose clothing and avoid rubbing, swimming, soaking, saunas and direct sun until the skin has healed. Showering is fine.",
+      "care_5": "Warning signs: Seek prompt medical advice for increasing redness, pain, warmth, swelling or pus. Seek urgent medical care for fever, rapidly spreading redness or feeling unwell.",
+      "care_6": "Follow-up and sun protection: Healing varies. Ask your tattoo artist about follow-up. Once healed, protect exposed tattooed skin with broad-spectrum SPF 30 or higher sunscreen.",
+      "download": "Download tattoo aftercare (PDF)",
+      "version": "Version"
+    },
+    "tattoo_intro": {
+      "title_tattoo": "Consent for a tattoo",
+      "intro_tattoo": "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
     }
   },
   "es": {
@@ -134,11 +151,28 @@
       "Piercing Submissions": "Formularios de piercings",
       "Accepted document": "Documento aceptado",
       "Document evidence is unavailable.": "No está disponible la evidencia del documento.",
-      "Piercing consent accepted by the user.": "El usuario ha aceptado el consentimiento para el piercing."
+      "Piercing consent accepted by the user.": "El usuario ha aceptado el consentimiento para el piercing.",
+      "Waivers": "Descargos",
+      "Tattoos": "Tatuajes"
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
       "unavailable": "El PDF no está disponible temporalmente. Inténtelo de nuevo más tarde."
+    },
+    "tattoo_care": {
+      "title": "INSTRUCCIONES DE CUIDADO DEL TATUAJE",
+      "care_1": "Apósito: Siga las indicaciones de su tatuador para el tipo de apósito utilizado y cuándo retirarlo o cambiarlo. Lávese las manos antes de manipularlo.",
+      "care_2": "Limpieza: Lave suavemente el tatuaje con agua y jabón suave sin perfume; aclare y seque con pequeños toques de papel desechable limpio. No frote.",
+      "care_3": "Cuidado de la piel: Tras retirar el apósito, aplique una capa fina de crema hidratante sin perfume según indique su tatuador. No se rasque ni arranque las costras. No utilice desinfectantes ni cremas antibióticas salvo prescripción de un profesional sanitario.",
+      "care_4": "Durante la cicatrización: Use ropa limpia y holgada; evite los roces, nadar, sumergirse en agua, las saunas y el sol directo hasta que la piel haya cicatrizado. Puede ducharse.",
+      "care_5": "Señales de alarma: Consulte pronto a un profesional sanitario si aumentan el enrojecimiento, el dolor, el calor o la hinchazón, o aparece pus. Busque atención médica urgente si tiene fiebre, enrojecimiento que se extiende rápidamente o malestar general.",
+      "care_6": "Seguimiento y protección solar: La cicatrización varía. Consulte con su tatuador sobre el seguimiento. Una vez cicatrizado, proteja la piel tatuada expuesta con un protector solar de amplio espectro y FPS 30 o superior.",
+      "download": "Descargar cuidados del tatuaje (PDF)",
+      "version": "Versión"
+    },
+    "tattoo_intro": {
+      "title_tattoo": "Consentimiento para un tatuaje",
+      "intro_tattoo": "Todos los campos y todas las respuestas son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
     }
   },
   "de": {
@@ -205,11 +239,28 @@
       "Piercing Submissions": "Piercing-Formulare",
       "Accepted document": "Akzeptiertes Dokument",
       "Document evidence is unavailable.": "Der Dokumentnachweis ist nicht verfügbar.",
-      "Piercing consent accepted by the user.": "Die Einwilligung zum Piercing wurde von der Person akzeptiert."
+      "Piercing consent accepted by the user.": "Die Einwilligung zum Piercing wurde von der Person akzeptiert.",
+      "Waivers": "Haftungsausschlüsse",
+      "Tattoos": "Tattoos"
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
       "unavailable": "Das PDF ist vorübergehend nicht verfügbar. Bitte versuchen Sie es später erneut."
+    },
+    "tattoo_care": {
+      "title": "PFLEGE NACH DEM TÄTOWIEREN",
+      "care_1": "Verband: Befolgen Sie die Hinweise Ihres Tätowierers zur verwendeten Verbandart und dazu, wann der Verband entfernt oder gewechselt werden soll. Waschen Sie sich vorher die Hände.",
+      "care_2": "Reinigung: Waschen Sie das Tattoo vorsichtig mit Wasser und milder, unparfümierter Seife. Spülen Sie es ab und tupfen Sie es mit sauberem Einwegpapier trocken. Nicht reiben.",
+      "care_3": "Hautpflege: Tragen Sie nach dem Entfernen des Verbands nach Anweisung Ihres Tätowierers eine dünne Schicht unparfümierter Pflegecreme auf. Nicht kratzen oder Krusten abziehen. Verwenden Sie Desinfektionsmittel oder antibiotische Cremes nur nach ärztlicher Verordnung.",
+      "care_4": "Während der Heilung: Tragen Sie saubere, lockere Kleidung. Vermeiden Sie Reibung, Schwimmen, Einweichen, Sauna und direkte Sonne, bis die Haut verheilt ist. Duschen ist möglich.",
+      "care_5": "Warnzeichen: Holen Sie zeitnah medizinischen Rat ein, wenn Rötung, Schmerzen, Wärme oder Schwellung zunehmen oder Eiter auftritt. Bei Fieber, sich rasch ausbreitender Rötung oder allgemeinem Unwohlsein suchen Sie dringend ärztliche Hilfe.",
+      "care_6": "Nachkontrolle und Sonnenschutz: Die Heilung verläuft unterschiedlich. Fragen Sie Ihren Tätowierer nach der Nachkontrolle. Schützen Sie die freiliegende tätowierte Haut nach vollständiger Heilung mit einem Breitband-Sonnenschutz mit LSF 30 oder höher.",
+      "download": "Tattoo-Pflege als PDF herunterladen",
+      "version": "Version"
+    },
+    "tattoo_intro": {
+      "title_tattoo": "Einwilligung für ein Tattoo",
+      "intro_tattoo": "Alle Felder und Antworten sind verpflichtend. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen überprüfen. Unsichere Antworten müssen vor Ort besprochen werden."
     }
   },
   "it": {
@@ -276,11 +327,28 @@
       "Piercing Submissions": "Moduli per piercing",
       "Accepted document": "Documento accettato",
       "Document evidence is unavailable.": "La documentazione del consenso non è disponibile.",
-      "Piercing consent accepted by the user.": "L’utente ha accettato il consenso per il piercing."
+      "Piercing consent accepted by the user.": "L’utente ha accettato il consenso per il piercing.",
+      "Waivers": "Liberatorie",
+      "Tattoos": "Tatuaggi"
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
       "unavailable": "Il PDF è temporaneamente non disponibile. Riprovi più tardi."
+    },
+    "tattoo_care": {
+      "title": "CURA DEL TATUAGGIO",
+      "care_1": "Medicazione: Segua le indicazioni del tatuatore sul tipo di medicazione utilizzato e su quando rimuoverla o cambiarla. Si lavi le mani prima di toccarla.",
+      "care_2": "Pulizia: Lavi delicatamente il tatuaggio con acqua e sapone delicato senza profumo, poi risciacqui e asciughi tamponando con carta monouso pulita. Non strofini.",
+      "care_3": "Cura della pelle: Dopo aver rimosso la medicazione, applichi un sottile strato di crema idratante senza profumo secondo le indicazioni del tatuatore. Non si gratti e non rimuova le croste. Non usi disinfettanti o creme antibiotiche senza prescrizione di un professionista sanitario.",
+      "care_4": "Durante la guarigione: Indossi abiti puliti e comodi. Eviti sfregamenti, nuoto, immersioni, saune e sole diretto finché la pelle non è guarita. Può fare la doccia.",
+      "care_5": "Segnali di allarme: Consulti tempestivamente un professionista sanitario se aumentano rossore, dolore, calore o gonfiore, oppure compare pus. Richieda assistenza medica urgente in caso di febbre, rossore che si estende rapidamente o malessere generale.",
+      "care_6": "Controlli e protezione solare: La guarigione varia. Chieda al tatuatore informazioni sui controlli. Una volta guarita, protegga la pelle tatuata esposta con una crema solare ad ampio spettro con SPF 30 o superiore.",
+      "download": "Scarica le istruzioni per la cura del tatuaggio (PDF)",
+      "version": "Versione"
+    },
+    "tattoo_intro": {
+      "title_tattoo": "Consenso per un tatuaggio",
+      "intro_tattoo": "Tutti i campi e tutte le risposte sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con Lei prima della procedura. Le risposte incerte devono essere discusse di persona."
     }
   },
   "fr": {
@@ -295,11 +363,28 @@
       "Piercing Submissions": "Formulaires de piercing",
       "Accepted document": "Document accepté",
       "Document evidence is unavailable.": "La preuve documentaire n’est pas disponible.",
-      "Piercing consent accepted by the user.": "Le consentement au piercing a été accepté par la personne."
+      "Piercing consent accepted by the user.": "Le consentement au piercing a été accepté par la personne.",
+      "Waivers": "Décharges",
+      "Tattoos": "Tatouages"
     },
     "download": {
       "invalid_request": "Demande de document non valide.",
       "unavailable": "Le PDF est temporairement indisponible. Veuillez réessayer plus tard."
+    },
+    "tattoo_care": {
+      "title": "SOINS APRÈS LE TATOUAGE",
+      "care_1": "Pansement : Suivez les consignes de votre tatoueur selon le type de pansement utilisé et le moment où le retirer ou le changer. Lavez-vous les mains avant de le manipuler.",
+      "care_2": "Nettoyage : Lavez délicatement le tatouage avec de l’eau et un savon doux sans parfum, puis rincez et séchez par petits tapotements avec du papier jetable propre. Ne frottez pas.",
+      "care_3": "Soin de la peau : Après le retrait du pansement, appliquez une fine couche de soin hydratant sans parfum selon les conseils de votre tatoueur. Ne grattez pas et n’arrachez pas les croûtes. N’utilisez pas de désinfectant ni de crème antibiotique sans prescription d’un professionnel de santé.",
+      "care_4": "Pendant la cicatrisation : Portez des vêtements propres et amples. Évitez les frottements, la natation, l’immersion, le sauna et le soleil direct jusqu’à cicatrisation de la peau. Vous pouvez vous doucher.",
+      "care_5": "Signes d’alerte : Consultez rapidement un professionnel de santé si la rougeur, la douleur, la chaleur ou le gonflement augmentent, ou si du pus apparaît. Consultez en urgence en cas de fièvre, de rougeur qui s’étend rapidement ou de malaise général.",
+      "care_6": "Suivi et protection solaire : La cicatrisation varie. Demandez à votre tatoueur les modalités de suivi. Une fois la peau cicatrisée, protégez la zone tatouée exposée avec un écran solaire à large spectre d’indice SPF 30 ou plus.",
+      "download": "Télécharger les soins du tatouage (PDF)",
+      "version": "Version"
+    },
+    "tattoo_intro": {
+      "title_tattoo": "Consentement pour un tatouage",
+      "intro_tattoo": "Tous les champs et toutes les réponses sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
     }
   }
 }

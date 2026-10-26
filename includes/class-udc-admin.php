@@ -15,8 +15,8 @@ class UDC_Admin
     public function add_admin_menu()
     {
         add_menu_page(
-            __('Submissions', 'user-data-collection'),
-            __('Submissions', 'user-data-collection'),
+            __('Tattoos', 'user-data-collection'),
+            __('Waivers', 'user-data-collection'),
             'manage_options',
             'udc-submissions',
             [$this, 'render_admin_page'],
@@ -24,6 +24,7 @@ class UDC_Admin
             30
         );
 
+        add_submenu_page('udc-submissions', __('Tattoos', 'user-data-collection'), __('Tattoos', 'user-data-collection'), 'manage_options', 'udc-submissions', [$this, 'render_admin_page']);
         add_submenu_page('udc-submissions', __('Piercings', 'user-data-collection'), __('Piercings', 'user-data-collection'), 'manage_options', 'udc-piercings', [$this, 'render_piercing_page']);
 
         add_submenu_page(
@@ -81,9 +82,9 @@ class UDC_Admin
         $list_table->prepare_items();
         ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Submissions' : 'User Submissions', 'user-data-collection'); ?></h1>
+            <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Submissions' : 'Tattoos', 'user-data-collection'); ?></h1>
 
-            <?php if ($this->is_piercing): ?><p><code>[udc_piercing_form]</code></p><?php endif; ?>
+            <p><code><?php echo esc_html($this->is_piercing ? '[udc_piercing_form]' : '[udc_contact_form]'); ?></code></p>
             <form id="udc-filter" method="get">
                 <input type="hidden" name="page"
                     value="<?php echo $this->is_piercing ? 'udc-piercings' : 'udc-submissions'; ?>" />

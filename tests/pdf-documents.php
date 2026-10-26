@@ -26,14 +26,26 @@ function wp_unslash($text) { return stripslashes($text); }
 function add_action(...$args) {}
 function add_shortcode(...$args) {}
 function wp_die($message, $title = '', $args = []) { throw new RuntimeException('HTTP ' . ($args['response'] ?? 0)); }
-foreach (['document', 'pdf-renderer', 'document-download', 'shortcode', 'piercing-form', 'piercing-care-document'] as $file) {
+foreach (['document', 'pdf-renderer', 'document-download', 'tattoo-care-document', 'shortcode', 'piercing-form', 'piercing-care-document'] as $file) {
     require UDC_PLUGIN_DIR . 'includes/class-udc-' . $file . '.php';
 }
 function verify($condition, $message) { if (!$condition) { throw new RuntimeException($message); } }
 UDC_Document_Download::register('piercing-care', new UDC_Piercing_Care_Document());
+UDC_Document_Download::register('tattoo-care', new UDC_Tattoo_Care_Document());
 $output = UDC_PLUGIN_DIR . 'tmp/pdfs';
 if (!is_dir($output)) { mkdir($output, 0700, true); }
 foreach (array_keys($catalogs) as $requested_locale) {
+    $response = UDC_Document_Download::prepare('tattoo-care', ['language' => $requested_locale]);
+    verify(0 === strpos($response['body'], '%PDF-') && $response['filename'] === 'tattoo-care-' . $requested_locale . '.pdf', 'Tattoo PDF response is invalid');
+    verify(get_locale() === 'fr_FR' && !$GLOBALS['locales'], 'Tattoo download leaked locale');
+    $switched = switch_to_locale($requested_locale);
+    $tattoo_document = (new UDC_Tattoo_Care_Document())->build(['language' => $requested_locale])->data();
+    foreach (range(1, 6) as $number) {
+        verify($tattoo_document['sections'][$number - 1]['text'] === UDC_Tattoo_Care_Document::translate('care_' . $number), 'Tattoo PDF differs from displayed care');
+    }
+    if ($switched) { restore_previous_locale(); }
+    file_put_contents($output . '/' . $response['filename'], $response['body']);
+    file_put_contents($output . '/' . $response['filename'] . '.json', json_encode($tattoo_document, JSON_UNESCAPED_UNICODE));
     foreach (['lobe', 'cartilage', 'face', 'oral', 'body'] as $category) {
         $response = UDC_Document_Download::prepare('piercing-care', ['language' => $requested_locale, 'category' => $category]);
         verify(0 === strpos($response['body'], '%PDF-'), 'Missing PDF signature');
@@ -89,6 +101,7 @@ verify(get_locale() === 'fr_FR' && !$GLOBALS['locales'], 'Locale leaked after fa
 if (true) {
     function pll_languages_list($args) { return $args['fields'] === 'locale' ? ['fr_FR', 'es_ES'] : ['fr', 'es']; }
     function pll_translate_string($text, $language) {
+        if ('es' === $language && $text === UDC_Tattoo_Care_Document::get_strings()['title']) { return 'TATTOO POLYLANG TEST'; }
         return 'es' === $language && $text === UDC_Piercing_Form::get_strings()['subtitle_care'] ? 'SOINS POLYLANG TEST' : $text;
     }
 }
@@ -100,4 +113,11 @@ if ($switched) { restore_previous_locale(); }
 verify(0 === strpos($data['title'], 'SOINS POLYLANG TEST'), 'Explicit Polylang override was ignored');
 verify($data['sections'][0]['text'] === $catalogs['es_ES'][UDC_Piercing_Form::get_strings()['care_base']], 'Requested-locale gettext fallback failed');
 verify(UDC_Piercing_Form::snapshot()['language'] === 'fr_FR', 'Explicit download language leaked');
-echo 'PASS: 45 translated care PDFs, second provider, escaping, locale restoration and controlled failures.' . PHP_EOL;
+$response = UDC_Document_Download::prepare('tattoo-care', ['language' => 'es']);
+verify($response['filename'] === 'tattoo-care-es.pdf' && get_locale() === 'fr_FR', 'Tattoo Polylang slug mapping or locale restoration failed');
+$switched = switch_to_locale('es_ES');
+$data = (new UDC_Tattoo_Care_Document())->build(['language' => 'es'])->data();
+if ($switched) { restore_previous_locale(); }
+verify($data['title'] === 'TATTOO POLYLANG TEST', 'Tattoo Polylang override ignored');
+verify($data['sections'][0]['text'] === $catalogs['es_ES'][UDC_Tattoo_Care_Document::get_strings()['care_1']], 'Tattoo gettext fallback ignored');
+echo 'PASS: 54 translated care PDFs, multipage provider, escaping, locale restoration and controlled failures.' . PHP_EOL;

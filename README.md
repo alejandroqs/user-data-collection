@@ -18,7 +18,7 @@ Add the shortcode below to a page, post, or widget:
 [udc_contact_form]
 ```
 
-The existing form keeps its original copy. Its five health questions now require an explicit Yes, No, or Not sure / discuss in person answer.
+The existing form keeps its personal-data, health and consent wording. Its five health questions require an explicit Yes, No, or Not sure / discuss in person answer. Its care section now provides tattoo-specific instructions and a translated PDF download using the same text and the automatic site URL.
 
 For the new piercing form, use:
 
@@ -34,11 +34,11 @@ The existing form collects personal data, health questionnaire answers, appointm
 
 ## Administration
 
-Users with the `manage_options` capability can open the **Submissions** menu to:
+Users with the `manage_options` capability can open the **Waivers** menu (**Descargos** in Spanish) to:
 
 - review upcoming and past appointments;
 - open submission details;
-- open the separate **Piercings** submenu and copy its shortcode;
+- open **Tattoos** or **Piercings** and copy the corresponding shortcode shown above each list;
 - create, restore, and upload local JSON backups;
 - configure optional Google Drive, email backup, and frontend design settings.
 

@@ -69,6 +69,12 @@ const { spawn } = require('node:child_process');
         if (download.suggestedFilename() !== 'piercing-care-lobe-fr_FR.pdf') throw new Error('Unexpected download filename');
         await download.saveAs(path.join(os.tmpdir(), 'udc-downloaded-care.pdf'));
         console.log('PASS: Browser downloads the selected standalone care document');
+        const tattooDownloadEvent = page.waitForEvent('download');
+        await page.locator('.udc-form .udc-care-instructions a').click();
+        const tattooDownload = await tattooDownloadEvent;
+        if (tattooDownload.suggestedFilename() !== 'tattoo-care-fr_FR.pdf') throw new Error('Unexpected tattoo download filename');
+        await tattooDownload.saveAs(path.join(os.tmpdir(), 'udc-downloaded-tattoo-care.pdf'));
+        console.log('PASS: Browser downloads tattoo care from the original form');
         const newForm = page.locator('.udc-piercing-form');
         for (const [name, value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',address:'Test address',city:'Test city',zip:'1000',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic oral piercing'})) {
             await newForm.locator('[name=udc_' + name + ']').fill(value);

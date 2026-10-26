@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.0\n"
+"Project-Id-Version: User Data Collection 1.8.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-25 23:34+0000\n"
+"POT-Creation-Date: 2026-10-26 00:10+0000\n"
 "PO-Revision-Date: 2026-05-06 20:25+0100\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: \n"
@@ -898,4 +898,64 @@ msgstr ""
 #. Default form translation; client wording review remains separate.
 #: includes/class-udc-document-download.php
 msgid "PDF temporarily unavailable. Please try again later."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Waivers"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoos"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "TATTOO AFTERCARE INSTRUCTIONS"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Dressing: Follow your tattoo artist’s instructions for the type of dressing used and when to remove or replace it. Wash your hands before handling it."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Cleaning: Gently wash the tattoo with water and mild, fragrance-free soap, then rinse and pat dry with clean disposable paper. Do not scrub."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Skin care: After removing the dressing, use a thin layer of fragrance-free aftercare moisturiser as advised by your tattoo artist. Do not scratch or pick scabs. Do not use disinfectants or antibiotic creams unless prescribed by a healthcare professional."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "While healing: Wear clean, loose clothing and avoid rubbing, swimming, soaking, saunas and direct sun until the skin has healed. Showering is fine."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Warning signs: Seek prompt medical advice for increasing redness, pain, warmth, swelling or pus. Seek urgent medical care for fever, rapidly spreading redness or feeling unwell."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Follow-up and sun protection: Healing varies. Ask your tattoo artist about follow-up. Once healed, protect exposed tattooed skin with broad-spectrum SPF 30 or higher sunscreen."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Download tattoo aftercare (PDF)"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Consent for a tattoo"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
 msgstr ""

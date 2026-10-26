@@ -12,9 +12,15 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.0`. `package.json` and `package-lock.json` also report `1.8.0`. POT and PO project metadata report `1.8.0` after the form-catalog update. Plugin, schema, npm and translation versions are synchronized for this release. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.8.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.8.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
+
+## Upgrade to 1.8.1
+
+**Verified from source:** patch release for administrative naming and shortcode legends. Waivers (Descargos in Spanish) is the main menu; the explicit first submenu and original list title are Tattoos. Existing admin slugs, capability checks, service filters and consent wording are retained. Tattoo aftercare and its PDF are described in Architecture. Both lists display their own shortcode. The two new labels have defaults in all nine PO/MO catalogs. No database columns or consent document versions change; the existing idempotent activation path runs when the synchronized schema marker advances.
+
+**Verified, executed locally:** all nine catalog/PHP locale checks, nine isolated admin rendering checks, 141 form regressions, PHP syntax, package manifest/hash checks and ZIP integrity. The ZIP is prepared locally; no tag or remote release was created for 1.8.1. Production WordPress/Polylang verification remains separate.
 
 ## Upgrade to 1.8.0
 
@@ -32,7 +38,7 @@ The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefi
 
 ## Workflow and package contents
 
-`.github/workflows/release.yml` installs both Composer lockfiles, audits runtime dependencies, builds the isolated PDF runtime and runs form/PDF regressions. scripts/build-package.py assembles only the plugin entrypoint, direct includes/*.php, direct translation catalogs and manifest-verified runtime/pdf assets. It requires fourteen class files, the PDF loader, Unicode fonts and dependency license; it rejects runtime path/hash mismatches and symlinks, lints every packaged PHP, checks tag/header/schema equality and verifies the ZIP. Every entry has non-executable permissions and the stable user-data-collection root. No tests, build tools, unscoped vendor dependencies, credentials or development documents are packaged. The workflow attaches the ZIP to a GitHub release with contents:write and commit-pinned release actions.
+`.github/workflows/release.yml` installs both Composer lockfiles, audits runtime dependencies, builds the isolated PDF runtime and runs form/PDF regressions. scripts/build-package.py assembles only the plugin entrypoint, direct includes/*.php, direct translation catalogs and manifest-verified runtime/pdf assets. It requires fifteen class files, the PDF loader, Unicode fonts and dependency license; it rejects runtime path/hash mismatches and symlinks, lints every packaged PHP, checks tag/header/schema equality and verifies the ZIP. Every entry has non-executable permissions and the stable user-data-collection root. No tests, build tools, unscoped vendor dependencies, credentials or development documents are packaged. The workflow attaches the ZIP to a GitHub release with contents:write and commit-pinned release actions.
 
 The generated runtime retains third-party source and original licenses. Composer/PHP-Scoper/Python are build tools, not production requirements. Build commands and runtime compatibility are canonical in [Development and quality](development-and-quality.md#pdf-build-and-validation). This PDF change does not alter database schema or version metadata, create a new tag or publish a release; existing tags remain unchanged.
 
@@ -50,3 +56,5 @@ Before a release, a maintainer should verify the following against the active so
 6. Record runtime, backup, external-integration, and migration verification separately from documentation review.
 
 Changing the tag convention or adding release gates requires a separate change to the workflow or project configuration; this document does not make that change.
+
+**Verified, tattoo PDF addition (2026-10-26):** the package includes UDC_Tattoo_Care_Document and the class-inventory gate now expects fifteen files. This follows the local 1.8.1 changes without another version increment, schema change, Git tag or publication.

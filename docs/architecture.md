@@ -16,7 +16,7 @@ The component and lifecycle descriptions below are **Verified** from `user-data-
 
 ## Entrypoint and lifecycle
 
-`user-data-collection.php` defines plugin constants, manually requires fifteen classes and the document-provider interface, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Fourteen class files are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`.
+`user-data-collection.php` defines plugin constants, manually requires sixteen classes and the document-provider interface, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Fifteen class files are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`.
 
 On activation, `UDC_Activator::activate()` calls `dbDelta`, migrates the retired approval column, stores `UDC_DB_VERSION` only if that inspection/migration succeeds, and then calls the three scheduler methods. See [Data, security, and privacy](data-security-privacy.md) for the migration contract. On later loads, `udc_init_plugin()` calls the activator when the stored database version differs. It then instantiates `UDC_i18n`, `UDC_Shortcode`, `UDC_Piercing_Form`, `UDC_Backup`, `UDC_GDrive`, and `UDC_Email_Sync`. In an administrative request it also instantiates `UDC_Admin` and `UDC_Settings`.
 
@@ -31,11 +31,12 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `UDC_Piercing_Form` | Extends the shared submission handler with `[udc_piercing_form]`, French source copy, categorized care downloads, signed rendered-text evidence and Polylang strings. |
 | `UDC_Document` / `UDC_Document_Provider` | Plain-text document contract and public-content provider interface. |
 | `UDC_Piercing_Care_Document` | Builds a care document from the same translated text as the form snapshot. |
+| `UDC_Tattoo_Care_Document` | Owns translated tattoo aftercare shared between the original form and the reusable PDF provider. |
 | `UDC_Pdf_Renderer` | Owns the A4 print template, isolated PDF engine and temporary-artifact cleanup. |
 | `UDC_Document_Download` | Registers public providers, validates requests, restores locale context and streams complete PDF responses. |
 | `UDC_Validation` | Shared static date, datetime, time, and length validators used by the shortcode handler and backup restore. |
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
-| `UDC_Admin` | Creates the Submissions, Backups, and Settings screens; renders read-only list/detail views. The list retains filters, sortable data columns, pagination, and the surname detail link; the surname is the responsive primary column. |
+| `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Tattoos, Piercings, Backups and Settings views; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the surname detail link; the surname is the responsive primary column. |
 | `UDC_Backup` | Creates local JSON snapshots, rotates local files, restores missing rows, accepts uploaded JSON, and exposes administrative AJAX actions. |
 | `UDC_Settings` | Registers integration and design options and exposes the global Delete All Data action. |
 | `UDC_GDrive` | Creates JWT credentials from the configured service-account JSON, uploads local JSON files, lists Drive files, and rotates the configured folder. |
@@ -67,6 +68,8 @@ UDC_Piercing_Form registers authenticated/public admin_post_udc_submit_piercing 
 
 ## Reusable public PDF documents
 
+**Verified, tattoo aftercare:** UDC_Shortcode registers `tattoo-care` with the common document registry. Its care block and PDF use UDC_Tattoo_Care_Document::translate() for the same six paragraphs. The form link uses `admin-post.php?action=udc_download_document&document=tattoo-care&language=...`; no category or personal data is needed. The document has its own version 1.0 and automatic WordPress home URL. New Polylang strings use the `UDC Tattoo Care` group and distinct IDs, so old piercing-care overrides from the original form cannot replace them. The legacy dictionary is retained for compatibility, but its old care paragraphs are no longer rendered on the tattoo form. Existing liability wording, personal/health fields, submission handling and stored records are unchanged.
+
 **Verified from source:** UDC_Document_Download also registers authenticated/public `admin_post_udc_download_document` handlers. Its `document` parameter selects a registered provider; it accepts no HTML, filesystem path or submission identifier. `piercing-care` requires an allowlisted category and an installed/Polylang language. The controller resolves Polylang slug to locale, builds all bytes before sending `application/pdf`, attachment and nosniff headers, and restores the previous locale on success or failure. Invalid requests return 400; generation failures return a generic 503 without dependency/path details.
 
 UDC_Piercing_Form::care_data() reuses snapshot translations and restores its explicit translation language in a finally block. The existing care_document() HTML helper remains available for preview tooling; download actions return PDF exclusively. PDFs use home_url('/') automatically and show that URL once, without a promotional label. The public website/review links and their admin settings, registration hook and helper methods have been removed. The admin list retains the shortcode and submission controls. Legacy URL options are ignored; the existing global reset still deletes them for compatibility. No consent text, schema or stored evidence changes are introduced by this module.
@@ -88,3 +91,5 @@ The plugin depends on WordPress APIs, the WordPress database abstraction, filesy
 **Verified limitation:** `UDC_Backup` and `UDC_Settings` are instantiated during plugin initialization and again from `UDC_Admin::add_admin_menu()`. Their constructors register hooks, so administrative requests can register duplicate effects.
 
 **Verified limitation:** The form, admin actions, and settings pages emit inline CSS or JavaScript. This increases coupling to the rendered page and makes a strict content-security-policy and independent asset testing harder.
+
+**Verified, tattoo introduction:** the original form now starts with the translatable title_tattoo and intro_tattoo entries in UDC_i18n, mirroring the piercing introduction. They state required fields, completion before the session and in-person review of uncertain answers. They are registered through the existing original-form Polylang group. No validation, consent or submission behavior changes accompany this copy addition.

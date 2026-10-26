@@ -30,12 +30,14 @@ function esc_url_raw($value, $protocols = []) { return preg_match('~^https?://~i
 function wp_die($message, $title = '', $args = []) { throw new RuntimeException('wp_die:' . ($args['response'] ?? 0)); }
 
 $strings = UDC_i18n::get_strings();
-foreach (['answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
-check(hash('sha256', serialize($strings)) === 'd92f05d6f65a14b66819aa3ea2905eb4e0def1f689cdd9a02938ae62e3a88cea', 'Every existing form string remains byte-for-byte unchanged');
+foreach (['title_tattoo', 'intro_tattoo', 'answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
+check(hash('sha256', serialize($strings)) === 'd92f05d6f65a14b66819aa3ea2905eb4e0def1f689cdd9a02938ae62e3a88cea', 'Legacy dictionary and consent wording remain unchanged; tattoo aftercare uses its own provider');
 $tattoo = new UDC_Shortcode();
 $piercing = new UDC_Piercing_Form();
 $_GET = [];
 $tattoo_html = $tattoo->render_form();
+check(str_contains($tattoo_html, 'document=tattoo-care') && str_contains($tattoo_html, 'Download tattoo aftercare (PDF)'), 'Tattoo form links to its reusable PDF provider');
+check(str_contains($tattoo_html, 'TATTOO AFTERCARE INSTRUCTIONS') && !str_contains($tattoo_html, 'PIERCING CARE INSTRUCTIONS'), 'Tattoo form displays tattoo-specific care instead of old piercing instructions');
 check(substr_count($tattoo_html, '<select ') === 5 && !str_contains($tattoo_html, 'type="checkbox" name="udc_health_'), 'Existing form has five labelled health dropdowns');
 check(substr_count($tattoo_html, 'value="2"') === 5 && substr_count($tattoo_html, 'value="0"') === 5, 'Each dropdown distinguishes No and Discuss');
 $piercing_html = $piercing->render_form();

@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.8.0\n"
+"Project-Id-Version: User Data Collection 1.8.1\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-25 23:34+0000\n"
-"PO-Revision-Date: 2026-10-25 23:34+0000\n"
+"POT-Creation-Date: 2026-10-26 00:10+0000\n"
+"PO-Revision-Date: 2026-10-26 00:10+0000\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: scripts/update-translations.py\n"
@@ -1009,3 +1009,63 @@ msgstr "Invalid document request."
 #: includes/class-udc-document-download.php
 msgid "PDF temporarily unavailable. Please try again later."
 msgstr "PDF temporarily unavailable. Please try again later."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Waivers"
+msgstr "Waivers"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoos"
+msgstr "Tattoos"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "TATTOO AFTERCARE INSTRUCTIONS"
+msgstr "TATTOO AFTERCARE INSTRUCTIONS"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Dressing: Follow your tattoo artist’s instructions for the type of dressing used and when to remove or replace it. Wash your hands before handling it."
+msgstr "Dressing: Follow your tattoo artist’s instructions for the type of dressing used and when to remove or replace it. Wash your hands before handling it."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Cleaning: Gently wash the tattoo with water and mild, fragrance-free soap, then rinse and pat dry with clean disposable paper. Do not scrub."
+msgstr "Cleaning: Gently wash the tattoo with water and mild, fragrance-free soap, then rinse and pat dry with clean disposable paper. Do not scrub."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Skin care: After removing the dressing, use a thin layer of fragrance-free aftercare moisturiser as advised by your tattoo artist. Do not scratch or pick scabs. Do not use disinfectants or antibiotic creams unless prescribed by a healthcare professional."
+msgstr "Skin care: After removing the dressing, use a thin layer of fragrance-free aftercare moisturiser as advised by your tattoo artist. Do not scratch or pick scabs. Do not use disinfectants or antibiotic creams unless prescribed by a healthcare professional."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "While healing: Wear clean, loose clothing and avoid rubbing, swimming, soaking, saunas and direct sun until the skin has healed. Showering is fine."
+msgstr "While healing: Wear clean, loose clothing and avoid rubbing, swimming, soaking, saunas and direct sun until the skin has healed. Showering is fine."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Warning signs: Seek prompt medical advice for increasing redness, pain, warmth, swelling or pus. Seek urgent medical care for fever, rapidly spreading redness or feeling unwell."
+msgstr "Warning signs: Seek prompt medical advice for increasing redness, pain, warmth, swelling or pus. Seek urgent medical care for fever, rapidly spreading redness or feeling unwell."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Follow-up and sun protection: Healing varies. Ask your tattoo artist about follow-up. Once healed, protect exposed tattooed skin with broad-spectrum SPF 30 or higher sunscreen."
+msgstr "Follow-up and sun protection: Healing varies. Ask your tattoo artist about follow-up. Once healed, protect exposed tattooed skin with broad-spectrum SPF 30 or higher sunscreen."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-tattoo-care-document.php
+msgid "Download tattoo aftercare (PDF)"
+msgstr "Download tattoo aftercare (PDF)"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Consent for a tattoo"
+msgstr "Consent for a tattoo"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
+msgstr "All fields and answers are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."

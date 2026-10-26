@@ -8,6 +8,8 @@ class UDC_Shortcode
 
     public function __construct()
     {
+        UDC_Document_Download::register('tattoo-care', new UDC_Tattoo_Care_Document());
+        add_action('init', ['UDC_Tattoo_Care_Document', 'register_strings']);
         add_shortcode('udc_contact_form', [$this, 'render_form']);
         add_action('template_redirect', [$this, 'prevent_result_cache']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_form_behavior']);
@@ -181,6 +183,8 @@ class UDC_Shortcode
         ?>
 
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form">
+            <h2><?php echo esc_html(UDC_i18n::translate('title_tattoo')); ?></h2>
+            <p><?php echo esc_html(UDC_i18n::translate('intro_tattoo')); ?></p>
             <?php self::render_nonce('udc_form_action', $prefix); ?>
             <input type="hidden" name="action" value="udc_submit_form">
 
@@ -232,14 +236,14 @@ class UDC_Shortcode
                 <input type="text" id="<?php echo esc_attr($prefix); ?>piercing_location" name="udc_piercing_location" maxlength="255" required>
             </p>
 
-            <h2><?php echo esc_html(UDC_i18n::translate('subtitle_care')); ?></h2>
+            <h2><?php echo esc_html(UDC_Tattoo_Care_Document::translate('title')); ?></h2>
             <div class="udc-care-instructions" <?php if (!$design_enabled)
                 echo 'style="background: #f9f9f9; padding: 15px; border-left: 4px solid #ccc; margin-bottom: 15px;"'; ?>>
                 <ul>
                     <?php
                     $care_keys = ['care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6'];
                     foreach ($care_keys as $key) {
-                        $care_text = UDC_i18n::translate($key);
+                        $care_text = UDC_Tattoo_Care_Document::translate($key);
                         // Make text before colon bold
                         $parts = explode(':', $care_text, 2);
                         if (count($parts) === 2) {
@@ -250,6 +254,7 @@ class UDC_Shortcode
                     }
                     ?>
                 </ul>
+                <p><a href="<?php echo esc_url(add_query_arg(['action' => 'udc_download_document', 'document' => 'tattoo-care', 'language' => UDC_Tattoo_Care_Document::language()], admin_url('admin-post.php'))); ?>"><?php echo esc_html(UDC_Tattoo_Care_Document::translate('download')); ?></a></p>
             </div>
 
             <h2><?php echo esc_html(UDC_i18n::translate('title_liability')); ?></h2>

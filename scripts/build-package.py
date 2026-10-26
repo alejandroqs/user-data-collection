@@ -19,7 +19,7 @@ def build(output, tag=None):
     if tag:
         assert tag == 'v' + header, 'Tag/header versions disagree'
     files = [entry, *sorted((ROOT / 'includes').glob('*.php'))]
-    assert len(list((ROOT / 'includes').glob('class-udc-*.php'))) == 14, 'Unexpected class inventory'
+    assert len(list((ROOT / 'includes').glob('class-udc-*.php'))) == 15, 'Unexpected class inventory'
     files += sorted(path for path in (ROOT / 'languages').iterdir() if path.suffix in ('.po', '.mo', '.pot'))
     runtime = ROOT / 'runtime/pdf'
     manifest = json.loads((runtime / 'manifest.json').read_text(encoding='utf-8'))

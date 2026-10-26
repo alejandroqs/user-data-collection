@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.8.0
+python scripts/build-package.py --tag v1.8.1
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -115,3 +115,17 @@ An isolated Edge preview used a #550000 background, #ead8c3 configured text and 
 | `npm test` | Intentionally failing placeholder. | Not a test or quality gate. |
 | Functional WordPress, database, browser, cron, mail, Drive, or web-server checks | No configured gate exists in the checkout. | **Unknown** until executed in an authorized environment. |
 | PHPUnit, PHPCS, PHPStan, or WPCS | No configured gate exists in the checkout. | Do not claim conformance or a passing result. |
+
+## Admin naming in 1.8.1
+
+**Verified, executed:** Waivers and Tattoos are now required admin message IDs in the default-string manifest (63 required IDs per locale). All nine catalogs and compiled MO files were rebuilt with version 1.8.1 and passed validation while preserving existing nonempty translations. An isolated PHP rendering check loaded each compiled catalog and checked the menu label, first submenu, tattoo view heading and both shortcode legends. It used WordPress/list-table doubles; real WordPress menu rendering and Polylang remain unverified for this change. The 141 existing form regressions and PHP syntax checks also passed.
+
+## Tattoo aftercare PDF (2026-10-26)
+
+**Verified, executed:** the default-string manifest now includes tattoo_care (71 required message IDs per locale, sharing the existing Version ID). All nine PO/MO catalogs and the PHP fallback checks pass for the new tattoo text, button and title. Existing nonempty translations remain preserved. The new provider uses distinct Polylang names; tests cover explicit overrides, locale mapping/restoration and gettext fallback with doubles.
+
+`php tests/forms-review.php --preview` now passes 143 assertions, including preservation of the legacy string dictionary/consent and the tattoo-specific care block/download link. `python tests/pdf-documents.py` generates and independently parses 55 PDFs: nine tattoo documents, 45 piercing documents and a multipage test provider. It checks all section text, requested-language filenames, fonts, A4, metadata, numbering and the automatic website URL. The tattoo PDFs use exactly the six paragraphs rendered on the form. Spanish and German samples were rendered with Poppler and visually inspected. Edge downloaded both services' PDFs from their forms and retained the responsive/duplicate-submit checks. The ZIP gate passes with fifteen class files and 351 total archive entries.
+
+These checks use the real PDF engine and compiled catalogs with synthetic WordPress functions. Real Polylang and production acceptance, and studio approval of tattoo-aftercare wording, remain pending. Clinical reference sources and scope are canonical in [Data, security, and privacy](data-security-privacy.md).
+
+**Verified, tattoo introduction:** tattoo_intro adds two required message IDs (73 current required IDs per locale). All nine PO/MO variants and the PHP fallback checks pass, including the tattoo title and intro. The 143 form regressions pass; the preservation check excludes these two authorized new entries while continuing to protect the legacy dictionary.
