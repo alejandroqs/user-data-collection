@@ -198,6 +198,7 @@ check(str_contains($html, 'Appointment Info') && str_contains($html, 'Liability 
 $wpdb = new SyntheticDatabase();
 $_POST = ['udc_form_nonce' => 'synthetic-nonce'];
 foreach ($current as $field => $value) { $_POST['udc_' . $field] = (string) $value; }
+$_POST += ['udc_risk_text' => '1', 'udc_care_ack' => '1', 'udc_privacy_text' => '1'];
 $tattoo_evidence = wp_json_encode(UDC_Shortcode::snapshot());
 $_POST['udc_evidence'] = addslashes($tattoo_evidence);
 $_POST['udc_evidence_signature'] = hash_hmac('sha256', $tattoo_evidence, wp_salt('nonce'));

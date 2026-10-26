@@ -63,3 +63,9 @@ Initial triage: 2026-10-24. Items under Open items are **Open**; no owner or dea
 **Requirement:** add only source-backed findings, explicit requirements, or clearly labelled hypotheses. Include a path and symbol for source findings, the relevant canonical document, and a testable completion criterion. Do not store personal data, credentials, production backup contents, or unverified success claims.
 
 Move completed items to a Closed items section with the completion date, change reference when available, and actual validation evidence. Keep unresolved subchecks open or create linked follow-up items. Record Blocked only with the specific dependency that prevents progress.
+
+## TATTOO-CONSENT-02 — Four explicit tattoo acknowledgements
+
+**Implemented:** separate procedure/truthfulness, risk, care and data-processing acceptances; server validation, document version 2.0, exact stored text in admin, translations and plugin minor version 1.10.0. The maintainer reports clearing the development database and explicitly excludes historical-record work. No automatic acceptance or destructive cleanup was implemented. Studio review of wording and actual pre-procedure information remains separate from technical verification. See Architecture and Data, security, and privacy for the implementation contract.
+
+**Verification:** 229 synthetic PHP checks, nine catalog/PHP locale checks, Edge form checks and local 351-file ZIP/lint/hash/integrity gates passed. Native installation and production wording acceptance remain unverified.

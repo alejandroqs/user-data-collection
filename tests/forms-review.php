@@ -132,6 +132,17 @@ $tattoo_post = form_post(false);
 $tattoo_record = $tattoo_inserts[0][1] + ['id' => 92, 'created_at' => '2026-10-26 12:00:00'];
 $tattoo_snapshot = UDC_Shortcode::valid_evidence($tattoo_record['form_evidence']);
 check($tattoo_snapshot && $tattoo_record['form_version'] === UDC_Shortcode::FORM_VERSION && $tattoo_snapshot['care']['version'] === UDC_Tattoo_Care_Document::VERSION, 'Tattoo stores its accepted document and independent form/care versions');
+foreach (['udc_liability_accepted', 'udc_risk_text', 'udc_care_ack', 'udc_privacy_text'] as $field) {
+    foreach (['missing', '0', '2', 'true', 'array'] as $mode) {
+        $post = form_post(false);
+        if ('missing' === $mode) { unset($post[$field]); } else { $post[$field] = 'array' === $mode ? ['1'] : $mode; }
+        check(!submit_form($tattoo, $post)[1], 'Tattoo rejects absent or invalid explicit acceptance: ' . $field);
+    }
+}
+check(substr_count($tattoo_html, 'type="checkbox"') === 4 && !str_contains($tattoo_html, 'waive all legal') && str_contains($tattoo_html, 'https://example.test/privacy'), 'Tattoo renders four unchecked acknowledgements and a privacy link without the former waiver');
+foreach (['liability_text', 'risk_text', 'care_ack', 'privacy_text'] as $key) {
+    check(!empty($tattoo_snapshot['document'][$key]), 'Tattoo evidence includes accepted ' . $key);
+}
 check($tattoo_record['form_language'] === $tattoo_snapshot['language'] && $tattoo_record['form_evidence'] === wp_unslash($tattoo_post['udc_evidence']), 'Tattoo preserves the exact signed text and language');
 check(isset($GLOBALS['shortcodes']['udc_tattoo_form'], $GLOBALS['shortcodes']['udc_contact_form']), 'New tattoo shortcode and compatibility alias both resolve');
 foreach (['udc_evidence', 'udc_evidence_signature'] as $key) {
@@ -166,7 +177,7 @@ foreach (['form_version' => '9.9', 'form_language' => 'invalid', 'piercing_categ
 }
 $historical = $tattoo_record; $historical['form_language'] = ''; $historical['form_version'] = ''; $historical['form_evidence'] = '';
 check(!is_wp_error(invoke_private($backup, 'validate_backup_rows', [$historical])), 'Historical tattoo records without document evidence remain restorable');
-$source = UDC_i18n::get_strings()['liability_text'];
+$source = UDC_i18n::get_strings()['tattoo_consent_procedure'];
 $GLOBALS['gettext'][$source] = 'CURRENT REPLACEMENT TEXT';
 $older = $tattoo_snapshot; $older['version'] = '0.9'; $older['care']['version'] = '0.8'; $older['document']['intro'] = 'HISTORICAL TATTOO INTRODUCTION';
 $record = $tattoo_record; $record['form_version'] = '0.9'; $record['form_evidence'] = wp_json_encode($older);
@@ -175,6 +186,9 @@ $admin = new UDC_Admin();
 ob_start(); invoke_private($admin, 'render_details_page', 92); $detail = ob_get_clean();
 check(str_contains($detail, 'HISTORICAL TATTOO INTRODUCTION') && str_contains($detail, esc_html($tattoo_snapshot['document']['liability_text'])) && !str_contains($detail, 'CURRENT REPLACEMENT TEXT'), 'Tattoo details render stored historical text, not current translations');
 check(str_contains($detail, 'Document version') && str_contains($detail, '0.9') && str_contains($detail, 'Care document version') && str_contains($detail, '0.8'), 'Tattoo details identify historical form and care versions separately');
+foreach (['liability_text', 'risk_text', 'care_ack', 'privacy_text'] as $key) {
+    check(str_contains($detail, esc_html($tattoo_snapshot['document'][$key])), 'Tattoo details show stored acceptance: ' . $key);
+}
 $wpdb->record = $historical;
 ob_start(); invoke_private($admin, 'render_details_page', 92); $detail = ob_get_clean();
 check(str_contains($detail, 'Document evidence is unavailable.'), 'Tattoo history without a snapshot is explicitly marked unavailable');

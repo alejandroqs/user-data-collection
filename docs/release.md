@@ -12,7 +12,7 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.9.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.9.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.10.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.10.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
@@ -82,3 +82,7 @@ Changing the tag convention or adding release gates requires a separate change t
 ## 1.8.1 release checkpoint (2026-10-26)
 
 **Verified before tagging:** plugin/schema marker, npm and gettext metadata agree on 1.8.1; the implementation includes the admin labels, both shortcode legends, tattoo introduction and translated tattoo-care PDF. Prior isolated gates passed with 143 form checks and 55 parsed PDFs. The tag-triggered workflow installs locked dependencies, audits the runtime, rebuilds isolated PDF assets, runs the regressions and validates the final ZIP before publishing it. This checkpoint does not claim production theme/Polylang or clinical wording approval.
+
+## Upgrade to 1.10.0
+
+**Verified from source:** minor release introducing four separate tattoo acknowledgements and document version 2.0, translated into all nine locale catalogs. The existing table and evidence columns are reused; no CREATE TABLE change is needed. Plugin/schema marker, npm, assets and gettext metadata are synchronized to 1.10.0. No old-format migration is included because the maintainer cleared the development data. No commit, tag or push is performed by this change. The target annotated release tag is v1.10.0.

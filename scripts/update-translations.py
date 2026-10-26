@@ -11,7 +11,7 @@ DOMAIN = 'user-data-collection'
 ADMIN = ['Document version', 'Form language', 'Care document version', 'Care category', 'Waivers', 'Tattoos', 'Piercings', 'Piercing Submissions', 'Accepted document', 'Document evidence is unavailable.', 'Piercing consent accepted by the user.']
 
 def sources():
-    php = """<?php define('ABSPATH', __DIR__); require 'includes/class-udc-i18n.php'; require 'includes/class-udc-shortcode.php'; require 'includes/class-udc-piercing-form.php'; require 'includes/class-udc-document-download.php'; require 'includes/class-udc-document.php'; require 'includes/class-udc-tattoo-care-document.php'; echo json_encode(['tattoo_labels'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['label_location'])),'tattoo_intro'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['title_tattoo','intro_tattoo'])),'tattoo_care'=>UDC_Tattoo_Care_Document::get_strings(),'download'=>UDC_Document_Download::get_strings(),'piercing'=>UDC_Piercing_Form::get_strings(),'health'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['answer_choose','answer_yes','answer_no','answer_discuss']))], JSON_UNESCAPED_UNICODE);"""
+    php = """<?php define('ABSPATH', __DIR__); require 'includes/class-udc-i18n.php'; require 'includes/class-udc-shortcode.php'; require 'includes/class-udc-piercing-form.php'; require 'includes/class-udc-document-download.php'; require 'includes/class-udc-document.php'; require 'includes/class-udc-tattoo-care-document.php'; echo json_encode(['tattoo_consent'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['tattoo_consent_title','tattoo_consent_procedure','tattoo_consent_risks','tattoo_consent_care','tattoo_consent_privacy','tattoo_privacy_link'])),'tattoo_labels'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['label_location'])),'tattoo_intro'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['title_tattoo','intro_tattoo'])),'tattoo_care'=>UDC_Tattoo_Care_Document::get_strings(),'download'=>UDC_Document_Download::get_strings(),'piercing'=>UDC_Piercing_Form::get_strings(),'health'=>array_intersect_key(UDC_i18n::get_strings(),array_flip(['answer_choose','answer_yes','answer_no','answer_discuss']))], JSON_UNESCAPED_UNICODE);"""
     return json.loads(subprocess.check_output(['php'], input=php, text=True, encoding='utf-8', cwd=ROOT))
 
 def entries(text):
@@ -82,14 +82,14 @@ def required(source, defaults, locale):
     language = locale.split('_')[0]
     data = defaults[language]
     result = {}
-    for group in ['piercing', 'health', 'download', 'tattoo_care', 'tattoo_intro', 'tattoo_labels']:
+    for group in ['piercing', 'health', 'download', 'tattoo_care', 'tattoo_intro', 'tattoo_labels', 'tattoo_consent']:
         if group in data and set(data[group]) != set(source[group]):
             raise ValueError(f'{language}/{group}: translation keys do not match active source')
         for key, msgid in source[group].items():
             value = msgid if language == 'fr' and group == 'piercing' else data[group][key]
             if locale == 'de_CH':
                 value = value.replace('ß', 'ss')
-            result[msgid] = (value, {'piercing': 'includes/class-udc-piercing-form.php', 'health': 'includes/class-udc-i18n.php', 'download': 'includes/class-udc-document-download.php', 'tattoo_care': 'includes/class-udc-tattoo-care-document.php', 'tattoo_intro': 'includes/class-udc-i18n.php', 'tattoo_labels': 'includes/class-udc-i18n.php'}[group])
+            result[msgid] = (value, {'piercing': 'includes/class-udc-piercing-form.php', 'health': 'includes/class-udc-i18n.php', 'download': 'includes/class-udc-document-download.php', 'tattoo_care': 'includes/class-udc-tattoo-care-document.php', 'tattoo_intro': 'includes/class-udc-i18n.php', 'tattoo_labels': 'includes/class-udc-i18n.php', 'tattoo_consent': 'includes/class-udc-i18n.php'}[group])
     if set(data['admin']) != set(ADMIN):
         raise ValueError(f'{language}/admin: incomplete translation keys')
     for msgid in ADMIN:
@@ -161,7 +161,7 @@ def validate_php_fallback(catalogs):
         foreach (UDC_Piercing_Form::get_strings() as $key => $source) {
             if (UDC_Piercing_Form::translate($key) !== $catalog[$source]) { throw new RuntimeException($locale . ': PHP fallback mismatch: ' . $key); }
         }
-        foreach (['label_location','title_tattoo','intro_tattoo','answer_choose','answer_yes','answer_no','answer_discuss'] as $key) {
+        foreach (['tattoo_consent_title', 'tattoo_consent_procedure', 'tattoo_consent_risks', 'tattoo_consent_care', 'tattoo_consent_privacy', 'tattoo_privacy_link','label_location','title_tattoo','intro_tattoo','answer_choose','answer_yes','answer_no','answer_discuss'] as $key) {
             $source = UDC_i18n::get_strings()[$key];
             if (UDC_i18n::translate($key) !== $catalog[$source]) { throw new RuntimeException($locale . ': existing form dropdown mismatch'); }
         }

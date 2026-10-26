@@ -5,7 +5,7 @@ if (!defined('ABSPATH')) {
 
 class UDC_Shortcode
 {
-    const FORM_VERSION = '1.0';
+    const FORM_VERSION = '2.0';
 
     public function __construct()
     {
@@ -32,7 +32,10 @@ class UDC_Shortcode
             'document' => [
                 'title' => UDC_i18n::translate('title_tattoo'),
                 'intro' => UDC_i18n::translate('intro_tattoo'),
-                'liability_text' => self::field_label(UDC_i18n::translate('liability_text')),
+                'liability_text' => UDC_i18n::translate('tattoo_consent_procedure'),
+                'risk_text' => UDC_i18n::translate('tattoo_consent_risks'),
+                'care_ack' => UDC_i18n::translate('tattoo_consent_care'),
+                'privacy_text' => UDC_i18n::translate('tattoo_consent_privacy'),
             ],
             'care' => $care,
         ];
@@ -45,7 +48,7 @@ class UDC_Shortcode
         if (!is_array($data) || array_keys($data) !== ['version', 'language', 'document', 'care'] ||
             !is_string($data['version']) || !preg_match('/^[0-9]+\.[0-9]+$/D', $data['version']) ||
             !is_string($data['language']) || !preg_match('/^[A-Za-z0-9_@-]{1,32}$/D', $data['language'])) { return false; }
-        foreach (['document' => ['title', 'intro', 'liability_text'], 'care' => ['version', 'title', 'care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6']] as $group => $keys) {
+        foreach (['document' => ['title', 'intro', 'liability_text', 'risk_text', 'care_ack', 'privacy_text'], 'care' => ['version', 'title', 'care_1', 'care_2', 'care_3', 'care_4', 'care_5', 'care_6']] as $group => $keys) {
             if (!is_array($data[$group]) || array_keys($data[$group]) !== $keys) { return false; }
             foreach ($data[$group] as $text) {
                 if (!is_string($text) || '' === trim($text) || strlen($text) > 6000) { return false; }
@@ -57,6 +60,11 @@ class UDC_Shortcode
 
     public static function submission_evidence()
     {
+        foreach (['risk_text', 'care_ack', 'privacy_text'] as $key) {
+            if (!isset($_POST['udc_' . $key]) || !is_string($_POST['udc_' . $key]) || '1' !== wp_unslash($_POST['udc_' . $key])) {
+                return new WP_Error('invalid_consent', 'Invalid tattoo consent.');
+            }
+        }
         $json = isset($_POST['udc_evidence']) && is_string($_POST['udc_evidence']) ? wp_unslash($_POST['udc_evidence']) : '';
         $signature = isset($_POST['udc_evidence_signature']) && is_string($_POST['udc_evidence_signature']) ? wp_unslash($_POST['udc_evidence_signature']) : '';
         $data = self::valid_evidence($json);
@@ -309,13 +317,13 @@ class UDC_Shortcode
                 <p><a href="<?php echo esc_url(add_query_arg(['action' => 'udc_download_document', 'document' => 'tattoo-care', 'language' => UDC_Tattoo_Care_Document::language()], admin_url('admin-post.php'))); ?>"><?php echo esc_html(UDC_Tattoo_Care_Document::translate('download')); ?></a></p>
             </div>
 
-            <h2><?php echo esc_html(UDC_i18n::translate('title_liability')); ?></h2>
-            <p>
-                <label>
-                    <input type="checkbox" name="udc_liability_accepted" value="1" required>
-                    <?php echo esc_html($document['document']['liability_text']); ?>
-                </label>
-            </p>
+            <h2><?php echo esc_html(UDC_i18n::translate('tattoo_consent_title')); ?></h2>
+            <?php foreach (['liability_text', 'risk_text', 'care_ack', 'privacy_text'] as $key): $field = 'liability_text' === $key ? 'liability_accepted' : $key; ?>
+                <p><label><input type="checkbox" name="udc_<?php echo esc_attr($field); ?>" value="1" required> <?php echo esc_html(self::field_label($document['document'][$key])); ?></label></p>
+            <?php endforeach; ?>
+            <?php if (get_privacy_policy_url()): ?>
+                <p><a href="<?php echo esc_url(get_privacy_policy_url()); ?>"><?php echo esc_html(UDC_i18n::translate('tattoo_privacy_link')); ?></a></p>
+            <?php endif; ?>
 
             <p>
                 <button type="submit"><?php echo esc_html(UDC_i18n::translate('submit_btn')); ?></button>
@@ -333,7 +341,7 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.9.1', true);
+        wp_register_script('udc-forms', false, [], '1.10.0', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {

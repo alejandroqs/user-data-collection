@@ -116,7 +116,8 @@ const { spawn } = require('node:child_process');
                 if (body.get('udc_health_allergies') !== '2') throw new Error('Explicit health value was not submitted');
                 if (body.get('action') === 'udc_submit_form') {
                     const document = JSON.parse(body.get('udc_evidence'));
-                    if (!document.document?.liability_text || !document.care?.care_6 || !document.version || !body.get('udc_evidence_signature')) throw new Error('Tattoo POST omitted its versioned accepted document');
+                    if (['udc_liability_accepted','udc_risk_text','udc_care_ack','udc_privacy_text'].some(key => body.get(key) !== '1')) throw new Error('Tattoo POST omitted an acknowledgement');
+                    if (!document.document?.risk_text || !document.document?.care_ack || !document.document?.privacy_text || !document.document?.liability_text || !document.care?.care_6 || !document.version || !body.get('udc_evidence_signature')) throw new Error('Tattoo POST omitted its versioned accepted document');
                 }
                 await route.fulfill({status:200,contentType:'text/html',body:'<p>Synthetic browser submission received</p>'});
             } else await route.continue();
@@ -129,12 +130,13 @@ const { spawn } = require('node:child_process');
         if (posts !== 1) throw new Error('Piercing duplicate request reached the network');
         await page.setContent(preview);
         const original = page.locator('.udc-form');
+        if (await original.locator('input[type=checkbox]').count() !== 4 || await original.locator('input[type=checkbox]:checked').count() !== 0 || await original.locator('input[type=checkbox]:not([required])').count() !== 0) throw new Error('Tattoo acknowledgements must be four required, unchecked controls');
         for (const [name,value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',address:'Test address',city:'Test city',zip:'1000',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic service'})) await original.locator('[name=udc_'+name+']').fill(value);
         for (const select of await original.locator('select').all()) await select.selectOption('2');
         await original.locator('[name=udc_address]').fill('');
         await original.locator('[name=udc_zip]').fill('');
         await original.locator('[name=udc_city]').fill('');
-        await original.locator('input[type=checkbox]').check();
+        for (const checkbox of await original.locator('input[type=checkbox]').all()) await checkbox.check();
         if (!(await original.evaluate(form => form.checkValidity()))) throw new Error('Complete original form fails browser validation');
         await original.locator('[name=udc_dob]').fill('2999-01-01');
         if (!(await original.locator('[name=udc_dob]').evaluate(el => el.validity.rangeOverflow))) throw new Error('Original DOB lacks its upper bound');

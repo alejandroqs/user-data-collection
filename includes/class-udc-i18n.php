@@ -82,6 +82,12 @@ class UDC_i18n
             'health_allergies' => 'I am prone to allergies, latex, or others.',
             'health_pregnant' => 'I am pregnant or breastfeeding.',
 
+            'tattoo_consent_title' => 'INFORMATION AND CONSENT',
+            'tattoo_consent_procedure' => 'I request and authorize the tattoo indicated. I declare that I have answered truthfully and will tell the professional about any information that needs checking before the procedure.',
+            'tattoo_consent_risks' => 'I have received information about the procedure and its risks, including infection, allergy, bleeding and scarring, and have had the opportunity to ask questions.',
+            'tattoo_consent_care' => 'I have read the tattoo aftercare instructions and know how to download them. I understand that healing varies and follow-up may be necessary.',
+            'tattoo_consent_privacy' => 'I have been informed that this form sends my identity and contact details and health answers to the studio to prepare and document the service. I can contact the studio with any questions about how these data are handled.',
+            'tattoo_privacy_link' => 'Read the privacy policy',
             'title_liability' => 'Liability Clause',
             'liability_text' => 'I declare I am aware that minors cannot get a tattoo/piercing without the presence of a parent. I accept that Titanium Shop is subject to the strictest hygiene rules: sterile single-use needles and sterilization equipment meeting standards and approved by EYECO.ch. I assume full responsibility for the hygiene and care of my piercing/tattoo outside the shop; therefore, I release the studio from any liability for any consequences following the procedure (infection, rejection, allergy, etc.). I waive all legal or criminal actions. I acknowledge that if I deliberately conceal information regarding my age or nature that endangers my health or that of the staff, legal action could be taken against me. *',
 

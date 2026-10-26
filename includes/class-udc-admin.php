@@ -17,7 +17,7 @@ class UDC_Admin
     {
         $page = isset($_GET['page']) && is_string($_GET['page']) ? wp_unslash($_GET['page']) : '';
         if (!current_user_can('manage_options') || !in_array($page, ['udc-submissions', 'udc-piercings'], true)) { return; }
-        wp_register_style('udc-admin', false, [], '1.9.1');
+        wp_register_style('udc-admin', false, [], '1.10.0');
         wp_enqueue_style('udc-admin');
         wp_add_inline_style('udc-admin', '@media(min-width:783px){#udc-filter .column-id{width:9em}#udc-filter .column-id .row-actions{white-space:nowrap}#udc-filter .column-dob{width:13em;white-space:nowrap}#udc-filter th.column-dob a{display:flex;align-items:center;gap:4px}#udc-filter th.column-dob .sorting-indicators{flex-shrink:0}}');
     }
@@ -148,7 +148,7 @@ class UDC_Admin
                         <h3><?php echo esc_html($evidence['care']['title']); ?></h3>
                         <p><strong><?php esc_html_e('Care document version', 'user-data-collection'); ?>:</strong> <?php echo esc_html($evidence['care']['version']); ?></p>
                         <?php foreach (range(1, 6) as $number): ?><p><?php echo esc_html($evidence['care']['care_' . $number]); ?></p><?php endforeach; ?>
-                        <p><?php echo esc_html($evidence['document']['liability_text']); ?></p>
+                        <?php foreach (['liability_text', 'risk_text', 'care_ack', 'privacy_text'] as $key): ?><p><?php echo esc_html($evidence['document'][$key]); ?></p><?php endforeach; ?>
                     <?php endif; ?>
                 <?php else: ?><p><?php esc_html_e('Document evidence is unavailable.', 'user-data-collection'); ?></p><?php endif; ?>
             </div></div>

@@ -92,6 +92,14 @@
     },
     "tattoo_labels": {
       "label_location": "Tattoo location *"
+    },
+    "tattoo_consent": {
+      "tattoo_consent_title": "INFORMATION AND CONSENT",
+      "tattoo_consent_procedure": "I request and authorize the tattoo indicated. I declare that I have answered truthfully and will tell the professional about any information that needs checking before the procedure.",
+      "tattoo_consent_risks": "I have received information about the procedure and its risks, including infection, allergy, bleeding and scarring, and have had the opportunity to ask questions.",
+      "tattoo_consent_care": "I have read the tattoo aftercare instructions and know how to download them. I understand that healing varies and follow-up may be necessary.",
+      "tattoo_consent_privacy": "I have been informed that this form sends my identity and contact details and health answers to the studio to prepare and document the service. I can contact the studio with any questions about how these data are handled.",
+      "tattoo_privacy_link": "Read the privacy policy"
     }
   },
   "es": {
@@ -187,6 +195,14 @@
     },
     "tattoo_labels": {
       "label_location": "Ubicación del tatuaje *"
+    },
+    "tattoo_consent": {
+      "tattoo_consent_title": "INFORMACIÓN Y CONSENTIMIENTO",
+      "tattoo_consent_procedure": "Solicito y autorizo la realización del tatuaje indicado. Declaro haber respondido sinceramente y comunicaré al profesional cualquier información que deba comprobarse antes del procedimiento.",
+      "tattoo_consent_risks": "He recibido información sobre el procedimiento y sus riesgos, como infección, alergia, sangrado y cicatrices, y he podido plantear mis preguntas.",
+      "tattoo_consent_care": "He leído las instrucciones de cuidado del tatuaje y sé cómo descargarlas. Entiendo que la cicatrización varía y que puede ser necesario un seguimiento.",
+      "tattoo_consent_privacy": "He sido informado de que este formulario transmite al estudio mis datos identificativos, de contacto y mis respuestas de salud para preparar y documentar el servicio. Puedo contactar con el estudio para cualquier consulta sobre el tratamiento de estos datos.",
+      "tattoo_privacy_link": "Consultar la política de privacidad"
     }
   },
   "de": {
@@ -282,6 +298,14 @@
     },
     "tattoo_labels": {
       "label_location": "Position des Tattoos *"
+    },
+    "tattoo_consent": {
+      "tattoo_consent_title": "INFORMATION UND EINWILLIGUNG",
+      "tattoo_consent_procedure": "Ich wünsche und erlaube die Durchführung des angegebenen Tattoos. Ich erkläre, wahrheitsgemäß geantwortet zu haben, und werde der Fachperson vor dem Eingriff alle noch zu prüfenden Angaben mitteilen.",
+      "tattoo_consent_risks": "Ich wurde über den Eingriff und seine Risiken, darunter Infektionen, Allergien, Blutungen und Narbenbildung, informiert und konnte meine Fragen stellen.",
+      "tattoo_consent_care": "Ich habe die Pflegehinweise für das Tattoo gelesen und weiß, wie ich sie herunterladen kann. Mir ist bewusst, dass die Heilung unterschiedlich verläuft und eine Nachkontrolle erforderlich sein kann.",
+      "tattoo_consent_privacy": "Ich wurde darüber informiert, dass dieses Formular meine Identitäts- und Kontaktdaten sowie meine Gesundheitsangaben an das Studio übermittelt, um die Leistung vorzubereiten und zu dokumentieren. Bei Fragen zur Verarbeitung dieser Daten kann ich mich an das Studio wenden.",
+      "tattoo_privacy_link": "Datenschutzerklärung lesen"
     }
   },
   "it": {
@@ -377,6 +401,14 @@
     },
     "tattoo_labels": {
       "label_location": "Posizione del tatuaggio *"
+    },
+    "tattoo_consent": {
+      "tattoo_consent_title": "INFORMAZIONI E CONSENSO",
+      "tattoo_consent_procedure": "Richiedo e autorizzo la realizzazione del tatuaggio indicato. Dichiaro di aver risposto sinceramente e comunicherò al professionista ogni informazione da verificare prima della procedura.",
+      "tattoo_consent_risks": "Ho ricevuto informazioni sulla procedura e sui suoi rischi, tra cui infezione, allergia, sanguinamento e cicatrici, e ho potuto porre le mie domande.",
+      "tattoo_consent_care": "Ho letto le istruzioni per la cura del tatuaggio e so come scaricarle. Comprendo che la guarigione varia e che potrebbe essere necessario un controllo.",
+      "tattoo_consent_privacy": "Sono stato informato che questo modulo trasmette allo studio i miei dati identificativi, di contatto e le risposte sulla salute per preparare e documentare il servizio. Posso contattare lo studio per qualsiasi domanda sul trattamento di questi dati.",
+      "tattoo_privacy_link": "Consultare l’informativa sulla privacy"
     }
   },
   "fr": {
@@ -420,6 +452,14 @@
     },
     "tattoo_labels": {
       "label_location": "Emplacement du tatouage *"
+    },
+    "tattoo_consent": {
+      "tattoo_consent_title": "INFORMATION ET CONSENTEMENT",
+      "tattoo_consent_procedure": "Je demande et j’autorise la réalisation du tatouage indiqué. Je déclare avoir répondu sincèrement et je signalerai au professionnel toute information à vérifier avant le geste.",
+      "tattoo_consent_risks": "J’ai reçu des informations sur le geste et ses risques, notamment infection, allergie, saignement et cicatrice, et j’ai pu poser mes questions.",
+      "tattoo_consent_care": "J’ai lu les instructions de soins du tatouage et je sais comment les télécharger. Je comprends que la cicatrisation varie et qu’un suivi peut être nécessaire.",
+      "tattoo_consent_privacy": "J’ai été informé que ce formulaire transmet au studio mes données d’identité, de contact et mes réponses de santé pour préparer et documenter la prestation. Je peux contacter le studio pour toute question sur leur traitement.",
+      "tattoo_privacy_link": "Consulter la politique de confidentialité"
     }
   }
 }

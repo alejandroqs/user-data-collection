@@ -113,3 +113,9 @@ Version policy: UDC_Shortcode::FORM_VERSION starts at 1.0 and identifies the tat
 **Verified, optional city in 1.9.0:** city remains varchar(255) NOT NULL, and optionality is represented as an empty string rather than SQL NULL, matching address/postal code. No CREATE TABLE or ALTER TABLE change is required. Browser and server requirements are relaxed for both services; scalar/character-length limits and evidence validation remain unchanged. Restore accepts an empty city in all supported backup schemas while requiring the city key and string type.
 
 **Verified, tattoo location label in 1.9.1:** UDC_i18n::get_strings()['label_location'] now renders Tattoo location with its translated default in every supported locale. The stored/request field piercing_location is retained for compatibility. The piercing form owns a separate location label and is unaffected by this copy correction.
+
+## Tattoo acknowledgements (1.10.0)
+
+**Verified from source:** UDC_Shortcode::FORM_VERSION is 2.0. The tattoo document contains four separate procedure/truthfulness, risk-information, aftercare and data-processing acknowledgements. All four controls start unchecked and are required in the browser; the handler requires the exact scalar string 1 for each acceptance. The existing liability_accepted column records the procedure acceptance, and the other three are prerequisites to saving the exact signed document in form_evidence, matching the piercing approach. No schema columns are added.
+
+The document snapshot includes the four texts under document, alongside title/intro and care content. Admin details render all four stored texts, and backup validation uses the revised bounded snapshot shape. The previous tattoo document shape is not migrated or accepted as the new format; the maintainer reports clearing the development data. No automatic acceptance, database deletion or historical-format reader was added. Old generic missing-evidence handling remains unchanged.

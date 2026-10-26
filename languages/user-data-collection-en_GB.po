@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.9.1\n"
+"Project-Id-Version: User Data Collection 1.10.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-26 15:49+0000\n"
-"PO-Revision-Date: 2026-10-26 15:49+0000\n"
+"POT-Creation-Date: 2026-10-26 16:35+0000\n"
+"PO-Revision-Date: 2026-10-26 16:35+0000\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: scripts/update-translations.py\n"
@@ -1104,3 +1104,33 @@ msgstr "Care document version"
 #: includes/class-udc-i18n.php
 msgid "Tattoo location *"
 msgstr "Tattoo location *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "INFORMATION AND CONSENT"
+msgstr "INFORMATION AND CONSENT"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I request and authorize the tattoo indicated. I declare that I have answered truthfully and will tell the professional about any information that needs checking before the procedure."
+msgstr "I request and authorize the tattoo indicated. I declare that I have answered truthfully and will tell the professional about any information that needs checking before the procedure."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I have received information about the procedure and its risks, including infection, allergy, bleeding and scarring, and have had the opportunity to ask questions."
+msgstr "I have received information about the procedure and its risks, including infection, allergy, bleeding and scarring, and have had the opportunity to ask questions."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I have read the tattoo aftercare instructions and know how to download them. I understand that healing varies and follow-up may be necessary."
+msgstr "I have read the tattoo aftercare instructions and know how to download them. I understand that healing varies and follow-up may be necessary."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I have been informed that this form sends my identity and contact details and health answers to the studio to prepare and document the service. I can contact the studio with any questions about how these data are handled."
+msgstr "I have been informed that this form sends my identity and contact details and health answers to the studio to prepare and document the service. I can contact the studio with any questions about how these data are handled."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Read the privacy policy"
+msgstr "Read the privacy policy"

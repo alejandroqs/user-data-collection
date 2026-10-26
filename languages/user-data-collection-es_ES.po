@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.9.1\n"
+"Project-Id-Version: User Data Collection 1.10.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 15:49+0000\n"
-"PO-Revision-Date: 2026-10-26 15:49+0000\n"
+"POT-Creation-Date: 2026-10-26 16:35+0000\n"
+"PO-Revision-Date: 2026-10-26 16:35+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -998,3 +998,33 @@ msgstr "Versión de los cuidados"
 #: includes/class-udc-i18n.php
 msgid "Tattoo location *"
 msgstr "Ubicación del tatuaje *"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "INFORMATION AND CONSENT"
+msgstr "INFORMACIÓN Y CONSENTIMIENTO"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I request and authorize the tattoo indicated. I declare that I have answered truthfully and will tell the professional about any information that needs checking before the procedure."
+msgstr "Solicito y autorizo la realización del tatuaje indicado. Declaro haber respondido sinceramente y comunicaré al profesional cualquier información que deba comprobarse antes del procedimiento."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I have received information about the procedure and its risks, including infection, allergy, bleeding and scarring, and have had the opportunity to ask questions."
+msgstr "He recibido información sobre el procedimiento y sus riesgos, como infección, alergia, sangrado y cicatrices, y he podido plantear mis preguntas."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I have read the tattoo aftercare instructions and know how to download them. I understand that healing varies and follow-up may be necessary."
+msgstr "He leído las instrucciones de cuidado del tatuaje y sé cómo descargarlas. Entiendo que la cicatrización varía y que puede ser necesario un seguimiento."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "I have been informed that this form sends my identity and contact details and health answers to the studio to prepare and document the service. I can contact the studio with any questions about how these data are handled."
+msgstr "He sido informado de que este formulario transmite al estudio mis datos identificativos, de contacto y mis respuestas de salud para preparar y documentar el servicio. Puedo contactar con el estudio para cualquier consulta sobre el tratamiento de estos datos."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Read the privacy policy"
+msgstr "Consultar la política de privacidad"

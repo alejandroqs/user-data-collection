@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.9.1
+python scripts/build-package.py --tag v1.10.0
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -155,3 +155,9 @@ An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded the HEAD bas
 ## Tattoo location label in 1.9.1
 
 **Verified, executed:** tattoo_labels adds the corrected label_location source and defaults for en_GB, es_ES, fr/fr_FR/fr_CH, de_DE/de_CH and it_IT/it_CH (78 required IDs per locale). PO/MO compilation and all nine PHP fallback checks pass. The 200 form regressions pass. The legacy-copy hash invariant now excludes only the explicitly authorized location-label change, with its remaining baseline derived from the previous committed source. No input/column rename is part of this wording correction.
+
+## Tattoo acknowledgements in 1.10.0
+
+**Verified, executed:** 229 PHP assertions pass with WordPress/database doubles, including missing/invalid acknowledgement rejection, exact evidence persistence, backup normalization/restore and all four stored texts in admin details. All nine PO/MO/POT and PHP locale checks pass with 84 required strings. Edge checks at 320, 390, 782 and 1280px pass; tattoo has four required unchecked controls and submits all four explicit values with its signed document. PDF downloads and duplicate-submit protection remain functional in the synthetic server/browser harness. The local v1.10.0 ZIP passes the 351-file allowlist, PHP lint, runtime hashes and ZIP integrity checks.
+
+**Unknown / not executed:** native WordPress/MySQL installation or deployment for this change, production Polylang overrides, studio/legal approval, and remote CI. The graph tools returned Transport closed, so investigation used direct source and tests; no graph-completeness claim is made. No historical-record migration was added.
