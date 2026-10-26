@@ -20,7 +20,7 @@ The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefi
 
 **Verified from source:** patch release for administrative naming and shortcode legends. Waivers (Descargos in Spanish) is the main menu; the explicit first submenu and original list title are Tattoos. Existing admin slugs, capability checks, service filters and consent wording are retained. Tattoo aftercare and its PDF are described in Architecture. Both lists display their own shortcode. The two new labels have defaults in all nine PO/MO catalogs. No database columns or consent document versions change; the existing idempotent activation path runs when the synchronized schema marker advances.
 
-**Verified, executed locally:** all nine catalog/PHP locale checks, nine isolated admin rendering checks, 141 form regressions, PHP syntax, package manifest/hash checks and ZIP integrity. The ZIP is prepared locally; no tag or remote release was created for 1.8.1. Production WordPress/Polylang verification remains separate.
+**Verified, executed locally:** all nine catalog/PHP locale checks, nine isolated admin rendering checks, 141 form regressions, PHP syntax, package manifest/hash checks and ZIP integrity. The implementation is committed as f84363b. The maintainer authorized the release checkpoint and annotated v1.8.1 tag on 2026-10-26. Release automation must independently confirm ZIP generation after the tag push. Production WordPress/Polylang verification remains separate.
 
 ## Upgrade to 1.8.0
 
@@ -58,3 +58,7 @@ Before a release, a maintainer should verify the following against the active so
 Changing the tag convention or adding release gates requires a separate change to the workflow or project configuration; this document does not make that change.
 
 **Verified, tattoo PDF addition (2026-10-26):** the package includes UDC_Tattoo_Care_Document and the class-inventory gate now expects fifteen files. This follows the local 1.8.1 changes without another version increment, schema change, Git tag or publication.
+
+## 1.8.1 release checkpoint (2026-10-26)
+
+**Verified before tagging:** plugin/schema marker, npm and gettext metadata agree on 1.8.1; the implementation includes the admin labels, both shortcode legends, tattoo introduction and translated tattoo-care PDF. Prior isolated gates passed with 143 form checks and 55 parsed PDFs. The tag-triggered workflow installs locked dependencies, audits the runtime, rebuilds isolated PDF assets, runs the regressions and validates the final ZIP before publishing it. This checkpoint does not claim production theme/Polylang or clinical wording approval.
