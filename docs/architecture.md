@@ -125,3 +125,8 @@ The document snapshot includes the four texts under document, alongside title/in
 **Verified from source:** UDC_Shortcode::form_styles() provides the existing piercing rules under fixed service-specific selectors. Piercing enqueues the shared rules; tattoo renders its scoped variant and a care-panel override. Both now use full-width fields, inherited font, 44px input/button minimum height, visible focus, custom checkboxes, select arrows and date/time color-scheme rules. Tattoo section headings follow the piercing h2/h3 hierarchy. No consent wording or data behavior changes.
 
 **Verified, checkbox styling:** both forms reuse the former tattoo checkbox shape and animated checkmark, with the existing background/border/check color options when design is enabled and visible neutral defaults otherwise. Reduced-motion preferences disable the transition. Native checked/required behavior and keyboard focus remain intact.
+
+
+## QR posters
+
+Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.

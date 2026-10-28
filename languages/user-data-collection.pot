@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.10.1\n"
+"Project-Id-Version: User Data Collection 1.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 17:25+0000\n"
+"POT-Creation-Date: 2026-10-28 16:54+0000\n"
 "PO-Revision-Date: 2026-05-06 20:25+0100\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: \n"
@@ -1023,4 +1023,54 @@ msgstr ""
 #. Default form translation; client wording review remains separate.
 #: includes/class-udc-i18n.php
 msgid "Read the privacy policy"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "QR Image"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Download QR"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Background color"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Text color"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "QR color"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoo page URL"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing page URL"
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Invalid QR image setting."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "QR image could not be generated."
+msgstr ""
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Save changes before downloading. Use a dark QR color on its white panel."
 msgstr ""

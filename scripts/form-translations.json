@@ -69,7 +69,17 @@
       "Care category": "Care category",
       "Document version": "Document version",
       "Form language": "Form language",
-      "Care document version": "Care document version"
+      "Care document version": "Care document version",
+      "QR Image": "QR Image",
+      "Download QR": "Download QR",
+      "Background color": "Background color",
+      "Text color": "Text color",
+      "QR color": "QR color",
+      "Tattoo page URL": "Tattoo page URL",
+      "Piercing page URL": "Piercing page URL",
+      "Invalid QR image setting.": "Invalid QR image setting.",
+      "QR image could not be generated.": "QR image could not be generated.",
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Save changes before downloading. Use a dark QR color on its white panel."
     },
     "download": {
       "invalid_request": "Invalid document request.",
@@ -172,7 +182,17 @@
       "Care category": "Categoría de cuidados",
       "Document version": "Versión del documento",
       "Form language": "Idioma del formulario",
-      "Care document version": "Versión de los cuidados"
+      "Care document version": "Versión de los cuidados",
+      "QR Image": "Imagen QR",
+      "Download QR": "Descargar QR",
+      "Background color": "Color de fondo",
+      "Text color": "Color del texto",
+      "QR color": "Color del QR",
+      "Tattoo page URL": "URL de tatuajes",
+      "Piercing page URL": "URL de piercings",
+      "Invalid QR image setting.": "Configuración de imagen QR no válida.",
+      "QR image could not be generated.": "No se pudo generar la imagen QR.",
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Guarde los cambios antes de descargar. Utilice un QR oscuro sobre su recuadro blanco."
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
@@ -275,7 +295,17 @@
       "Care category": "Pflegekategorie",
       "Document version": "Dokumentversion",
       "Form language": "Formularsprache",
-      "Care document version": "Version der Pflegehinweise"
+      "Care document version": "Version der Pflegehinweise",
+      "QR Image": "QR-Bild",
+      "Download QR": "QR herunterladen",
+      "Background color": "Hintergrundfarbe",
+      "Text color": "Textfarbe",
+      "QR color": "QR-Farbe",
+      "Tattoo page URL": "URL für Tattoos",
+      "Piercing page URL": "URL für Piercings",
+      "Invalid QR image setting.": "Ungültige QR-Bildeinstellung.",
+      "QR image could not be generated.": "Das QR-Bild konnte nicht erstellt werden.",
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Vor dem Herunterladen speichern. Einen dunklen QR-Code auf weißem Hintergrund verwenden."
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
@@ -378,7 +408,17 @@
       "Care category": "Categoria di cura",
       "Document version": "Versione del documento",
       "Form language": "Lingua del modulo",
-      "Care document version": "Versione delle istruzioni di cura"
+      "Care document version": "Versione delle istruzioni di cura",
+      "QR Image": "Immagine QR",
+      "Download QR": "Scarica QR",
+      "Background color": "Colore di sfondo",
+      "Text color": "Colore del testo",
+      "QR color": "Colore del QR",
+      "Tattoo page URL": "URL dei tatuaggi",
+      "Piercing page URL": "URL dei piercing",
+      "Invalid QR image setting.": "Impostazione dell’immagine QR non valida.",
+      "QR image could not be generated.": "Impossibile generare l’immagine QR.",
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Salvare prima di scaricare. Usare un QR scuro nel riquadro bianco."
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
@@ -429,7 +469,17 @@
       "Care category": "Catégorie de soins",
       "Document version": "Version du document",
       "Form language": "Langue du formulaire",
-      "Care document version": "Version des soins"
+      "Care document version": "Version des soins",
+      "QR Image": "Image QR",
+      "Download QR": "Télécharger le QR",
+      "Background color": "Couleur du fond",
+      "Text color": "Couleur du texte",
+      "QR color": "Couleur du QR",
+      "Tattoo page URL": "URL des tatouages",
+      "Piercing page URL": "URL des piercings",
+      "Invalid QR image setting.": "Paramètre de l’image QR non valide.",
+      "QR image could not be generated.": "Impossible de générer l’image QR.",
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Enregistrez avant de télécharger. Utilisez un QR foncé sur son encadré blanc."
     },
     "download": {
       "invalid_request": "Demande de document non valide.",

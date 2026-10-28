@@ -156,7 +156,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
 
     public function enqueue_styles()
     {
-        wp_register_style('udc-piercing', false, [], '1.10.1');
+        wp_register_style('udc-piercing', false, [], '1.11.0');
         wp_enqueue_style('udc-piercing');
         wp_add_inline_style('udc-piercing', self::form_styles(true));
     }

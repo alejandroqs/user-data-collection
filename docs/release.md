@@ -12,7 +12,7 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.10.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.10.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.11.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.11.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
@@ -90,3 +90,13 @@ Changing the tag convention or adding release gates requires a separate change t
 ## Upgrade to 1.10.1
 
 **Verified from source:** patch release for shared tattoo/piercing styles, configurable tattoo-care background defaulting to rgba(0, 0, 0, 0.15), and the former tattoo custom checkbox design on both forms. Plugin/schema marker, npm, asset and catalog metadata are synchronized. No database structure or consent-document version change is required. Target tag: v1.10.1; no commit, tag or push performed by this update.
+
+
+## QR posters
+
+Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.
+
+
+## Upgrade to 1.11.0
+
+Requirement implemented: minor release introducing downloadable QR posters for both services and the QR Image settings tab. Plugin, schema marker, npm, assets and translation metadata are synchronized to 1.11.0. No database structure or consent-document version change. Target tag: v1.11.0. Commit, tag and push are left to the maintainer.

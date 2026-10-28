@@ -75,3 +75,8 @@ Move completed items to a Closed items section with the completion date, change 
 **Implemented and verified locally:** shared scoped CSS for both forms; tattoo care background remains configurable and defaults to rgba(0, 0, 0, 0.15) when design is disabled or the value is unspecified/invalid. Settings registration, display fallback and clearing behavior agree. PHP regressions, Edge responsive/focus checks, computed-style comparison and option checks pass. No version bump or remote publication requested for this adjustment.
 
 **Verified, checkbox styling:** both forms reuse the former tattoo checkbox shape and animated checkmark, with the existing background/border/check color options when design is enabled and visible neutral defaults otherwise. Reduced-motion preferences disable the transition. Native checked/required behavior and keyboard focus remain intact.
+
+
+## QR posters
+
+Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.

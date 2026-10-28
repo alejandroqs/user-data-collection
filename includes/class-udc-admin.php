@@ -17,7 +17,7 @@ class UDC_Admin
     {
         $page = isset($_GET['page']) && is_string($_GET['page']) ? wp_unslash($_GET['page']) : '';
         if (!current_user_can('manage_options') || !in_array($page, ['udc-submissions', 'udc-piercings'], true)) { return; }
-        wp_register_style('udc-admin', false, [], '1.10.1');
+        wp_register_style('udc-admin', false, [], '1.11.0');
         wp_enqueue_style('udc-admin');
         wp_add_inline_style('udc-admin', '@media(min-width:783px){#udc-filter .column-id{width:9em}#udc-filter .column-id .row-actions{white-space:nowrap}#udc-filter .column-dob{width:13em;white-space:nowrap}#udc-filter th.column-dob a{display:flex;align-items:center;gap:4px}#udc-filter th.column-dob .sorting-indicators{flex-shrink:0}}');
     }
@@ -94,6 +94,7 @@ class UDC_Admin
         <div class="wrap">
             <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Submissions' : 'Tattoos', 'user-data-collection'); ?></h1>
 
+            <?php UDC_QR_Poster::button($this->is_piercing ? 'piercing' : 'tattoo'); ?>
             <p><code><?php echo esc_html($this->is_piercing ? '[udc_piercing_form]' : '[udc_tattoo_form]'); ?></code></p>
             <form id="udc-filter" method="get">
                 <input type="hidden" name="page"

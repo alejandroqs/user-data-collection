@@ -75,7 +75,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.10.1
+python scripts/build-package.py --tag v1.11.0
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -165,3 +165,8 @@ An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded the HEAD bas
 ## Shared tattoo/piercing styles
 
 **Verified, executed:** the 229 PHP regressions and existing Edge checks pass after the styling change. An additional local Edge check compared computed field, select-arrow, button and checkbox styles across both forms; they match in the default fixture. The default care-panel background computes to rgba(0, 0, 0, 0.15), and its screenshot was inspected. Synthetic option checks verify missing, empty, invalid and disabled care-background cases, valid custom color preservation, and clearing the setting to its default. Production theme overrides remain unverified.
+
+
+## QR posters
+
+Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.

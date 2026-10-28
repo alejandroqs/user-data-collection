@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.10.1\n"
+"Project-Id-Version: User Data Collection 1.11.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-26 17:25+0000\n"
-"PO-Revision-Date: 2026-10-26 17:25+0000\n"
+"POT-Creation-Date: 2026-10-28 16:54+0000\n"
+"PO-Revision-Date: 2026-10-28 16:54+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: German\n"
 "Language: de_DE\n"
@@ -1028,3 +1028,43 @@ msgstr "Ich wurde darüber informiert, dass dieses Formular meine Identitäts- u
 #: includes/class-udc-i18n.php
 msgid "Read the privacy policy"
 msgstr "Datenschutzerklärung lesen"
+
+
+msgid "QR Image"
+msgstr "QR-Bild"
+
+
+msgid "Download QR"
+msgstr "QR herunterladen"
+
+
+msgid "Background color"
+msgstr "Hintergrundfarbe"
+
+
+msgid "Text color"
+msgstr "Textfarbe"
+
+
+msgid "QR color"
+msgstr "QR-Farbe"
+
+
+msgid "Tattoo page URL"
+msgstr "URL für Tattoos"
+
+
+msgid "Piercing page URL"
+msgstr "URL für Piercings"
+
+
+msgid "Invalid QR image setting."
+msgstr "Ungültige QR-Bildeinstellung."
+
+
+msgid "QR image could not be generated."
+msgstr "Das QR-Bild konnte nicht erstellt werden."
+
+
+msgid "Save changes before downloading. Use a dark QR color on its white panel."
+msgstr "Vor dem Herunterladen speichern. Einen dunklen QR-Code auf weißem Hintergrund verwenden."

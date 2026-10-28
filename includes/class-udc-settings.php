@@ -35,6 +35,7 @@ class UDC_Settings
         $wpdb->query("DELETE FROM $table_name"); 
 
         // 3. Clear Options
+        foreach (UDC_QR_Poster::defaults() as $key => $default) { delete_option($key); }
         // Remove retired link options when resetting legacy installations.
         delete_option('udc_piercing_website_url');
         delete_option('udc_piercing_review_url');
@@ -62,6 +63,11 @@ class UDC_Settings
 
     public function register_settings()
     {
+        // QR poster settings.
+        foreach (UDC_QR_Poster::defaults() as $key => $default) {
+            register_setting('udc_qr_settings', $key, ['type' => 'string', 'default' => $default,
+                'sanitize_callback' => function ($value) use ($key, $default) { return UDC_QR_Poster::sanitize($value, $key, $default); }]);
+        }
         // GDrive Settings
         register_setting('udc_gdrive_settings', 'udc_gdrive_json', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_gdrive_json']]);
         register_setting('udc_gdrive_settings', 'udc_gdrive_folder', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_folder_id']]);
@@ -233,6 +239,7 @@ class UDC_Settings
             <?php settings_errors(); ?>
             
             <h2 class="nav-tab-wrapper">
+                <a href="?page=udc-settings&amp;tab=qr" class="nav-tab <?php echo $active_tab === 'qr' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('QR Image', 'user-data-collection'); ?></a>
                 <a href="?page=udc-settings&tab=gdrive" class="nav-tab <?php echo $active_tab == 'gdrive' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Google Drive Integration', 'user-data-collection'); ?></a>
                 <a href="?page=udc-settings&tab=email" class="nav-tab <?php echo $active_tab == 'email' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Email Backups', 'user-data-collection'); ?></a>
                 <a href="?page=udc-settings&tab=design" class="nav-tab <?php echo $active_tab == 'design' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Design Customization', 'user-data-collection'); ?></a>
@@ -406,6 +413,8 @@ class UDC_Settings
                     <?php submit_button(); ?>
                 </form>
 
+            <?php elseif ($active_tab == 'qr'): ?>
+                <?php UDC_QR_Poster::settings(); ?>
             <?php elseif ($active_tab == 'advanced'): ?>
                 <div class="notice notice-error inline"><p><strong><?php esc_html_e('Warning: Irreversible Action', 'user-data-collection'); ?></strong></p></div>
                 <p><?php esc_html_e('This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values.', 'user-data-collection'); ?></p>
