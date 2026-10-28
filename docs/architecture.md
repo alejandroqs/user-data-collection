@@ -130,3 +130,6 @@ The document snapshot includes the four texts under document, alongside title/in
 ## QR posters
 
 Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.
+
+
+QR poster branding uses the transparent logo supplied by the studio, bundled as assets/qr/logo-titanium.png from https://titaniumlausanne.ch/wp-content/uploads/2024/10/Logo-titanium-galeria.png. The renderer awaits image decoding for previews and downloads, preserves aspect ratio and reports the existing translated error if loading fails. Bundling avoids remote Canvas access restrictions.

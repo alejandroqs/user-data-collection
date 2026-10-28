@@ -226,7 +226,7 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.11.0', true);
+        wp_register_script('udc-forms', false, [], '1.11.1', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {

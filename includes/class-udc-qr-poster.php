@@ -34,6 +34,7 @@ final class UDC_QR_Poster
         wp_enqueue_script('udc-qr-poster', UDC_PLUGIN_URL . 'assets/qr/poster.js', ['udc-qr-library'], UDC_DB_VERSION, true);
         $options = [];
         foreach (self::defaults() as $key => $default) { $options[$key] = get_option($key, $default); }
+        $options['logo'] = UDC_PLUGIN_URL . 'assets/qr/logo-titanium.png';
         $options['contrast'] = __('Save changes before downloading. Use a dark QR color on its white panel.', 'user-data-collection');
         $options['error'] = __('QR image could not be generated.', 'user-data-collection');
         wp_add_inline_script('udc-qr-poster', 'window.udcQR = ' . wp_json_encode($options) . ';', 'before');

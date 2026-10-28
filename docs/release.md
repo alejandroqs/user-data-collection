@@ -12,7 +12,7 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.11.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.11.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.11.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.11.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The current `v1.5.0` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
@@ -100,3 +100,8 @@ Requirement implemented: admin list buttons and the QR Image settings tab provid
 ## Upgrade to 1.11.0
 
 Requirement implemented: minor release introducing downloadable QR posters for both services and the QR Image settings tab. Plugin, schema marker, npm, assets and translation metadata are synchronized to 1.11.0. No database structure or consent-document version change. Target tag: v1.11.0. Commit, tag and push are left to the maintainer.
+
+
+## Upgrade to 1.11.1
+
+Patch release: QR posters use the supplied transparent studio logo and center the invitation text between the logo and QR panel. Plugin, schema marker, npm, asset and catalog metadata are synchronized to 1.11.1. No database structure or consent-document change. Target tag: v1.11.1. Commit, tag and push remain unexecuted.
