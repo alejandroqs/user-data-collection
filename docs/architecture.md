@@ -12,13 +12,13 @@
 
 ## Evidence status
 
-The component and lifecycle descriptions below are **Verified** from `user-data-collection.php`, the ten `includes/class-udc-*.php` files, and `includes/udc-validation.php`. Structural tools are discovery aids; active source is authoritative when coverage is incomplete or stale.
+The component and lifecycle descriptions below are **Verified** from `user-data-collection.php`, the sixteen `includes/class-udc-*.php` files, and `includes/udc-validation.php`. Structural tools are discovery aids; active source is authoritative when coverage is incomplete or stale.
 
 ## Entrypoint and lifecycle
 
-`user-data-collection.php` defines plugin constants, manually requires sixteen classes and the document-provider interface, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Fifteen class files are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`.
+`user-data-collection.php` defines plugin constants, manually requires seventeen classes and the document-provider interface, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Sixteen class files are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`.
 
-On activation, `UDC_Activator::activate()` calls `dbDelta`, migrates the retired approval column, stores `UDC_DB_VERSION` only if that inspection/migration succeeds, and then calls the three scheduler methods. See [Data, security, and privacy](data-security-privacy.md) for the migration contract. On later loads, `udc_init_plugin()` calls the activator when the stored database version differs. It then instantiates `UDC_i18n`, `UDC_Shortcode`, `UDC_Piercing_Form`, `UDC_Backup`, `UDC_GDrive`, and `UDC_Email_Sync`. In an administrative request it also instantiates `UDC_Admin` and `UDC_Settings`.
+On activation, `UDC_Activator::activate()` calls `dbDelta`, migrates the retired approval column, stores `UDC_DB_VERSION` only if that inspection/migration succeeds, and then calls the three scheduler methods. See [Data, security, and privacy](data-security-privacy.md) for the migration contract. On later loads, `udc_init_plugin()` calls the activator when the stored database version differs. It then instantiates `UDC_i18n`, `UDC_Shortcode`, `UDC_Document_Download`, `UDC_Piercing_Form`, `UDC_Backup`, `UDC_GDrive`, and `UDC_Email_Sync`. In an administrative request it also instantiates `UDC_Admin`, `UDC_QR_Poster` and `UDC_Settings`.
 
 Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `UDC_Email_Sync::clear_cron()`. Each clearing loop stops if WordPress reports an unscheduling failure, so complete removal is not guaranteed. There is no uninstall flow in the current source.
 
@@ -38,7 +38,8 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
 | `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Tattoos, Piercings, Backups and Settings views; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the ID detail link; ID is the first and responsive primary column. |
 | `UDC_Backup` | Creates local JSON snapshots, rotates local files, restores missing rows, accepts uploaded JSON, and exposes administrative AJAX actions. |
-| `UDC_Settings` | Registers integration and design options and exposes the global Delete All Data action. |
+| `UDC_QR_Poster` | Supplies admin QR poster defaults, validates settings, loads local rendering assets and renders buttons/previews. |
+| `UDC_Settings` | Registers integration, design and QR options and exposes the global Delete All Data action. |
 | `UDC_GDrive` | Creates JWT credentials from the configured service-account JSON, uploads local JSON files, lists Drive files, and rotates the configured folder. |
 | `UDC_Email_Sync` | Sends the newest local JSON file through `wp_mail` and registers the monthly scheduler. |
 | `UDC_i18n` | Loads the text domain and optionally registers and resolves Polylang strings. |
@@ -94,13 +95,15 @@ The plugin depends on WordPress APIs, the WordPress database abstraction, filesy
 
 **Verified, tattoo introduction:** the original form now starts with the translatable title_tattoo and intro_tattoo entries in UDC_i18n, mirroring the piercing introduction. They state required fields, completion before the session and in-person review of uncertain answers. They are registered through the existing original-form Polylang group. No validation, consent or submission behavior changes accompany this copy addition.
 
-## Unreleased table and optional-field adjustments
+## Table and optional-field adjustments (1.8.2–1.9.0)
 
 **Verified from source:** both list views keep eight columns with ID first and primary. Detail actions move with the primary ID cell so native mobile expansion remains singular. Admin styles are enqueued only on the two service pages; the birth-date heading stays on one line on desktop and the ID column accommodates its detail action. Care category and exact body location are shown in piercing details, alongside the existing health choices and accepted-text evidence; category is not added to the index.
 
 UDC_Shortcode::field_label() normalizes required markers for both forms without rewriting existing consent strings. Address, city and postal code have no required marker or browser required attribute. Shared submission validation accepts blank or omitted address/city/postal values while keeping scalar, character-length, nonce, consent and other required-field checks. The schema is unchanged.
 
 ## Tattoo document evidence (1.8.3)
+
+**Historical checkpoint:** this section describes the initial evidence format. The current tattoo format is 2.0; see [Tattoo acknowledgements](#tattoo-acknowledgements-1100) for its replacement and historical-format limits.
 
 **Verified from source:** UDC_Shortcode::snapshot() captures the rendered tattoo heading, introduction, liability text and all six care paragraphs, with form version, care version and interface language. render_form() renders those captured values and embeds the JSON and its server HMAC. submission_evidence() validates the bounded shape, current form/care versions and signature before save_submission() writes the exact JSON and metadata. The handler also requires the existing liability checkbox.
 
@@ -129,7 +132,18 @@ The document snapshot includes the four texts under document, alongside title/in
 
 ## QR posters
 
-Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.
+**Verified from source:** `UDC_Admin::render_list_page()` adds a Download QR button for each service. `UDC_Settings` registers a separate `udc_qr_settings` group and QR Image tab. `UDC_QR_Poster::enqueue()` restricts assets/configuration to administrators with `manage_options` on the plugin list/settings pages. The existing Settings API save flow protects changes; no new public download endpoint or database columns are added.
+
+`UDC_QR_Poster::defaults()` defines shared background/text/module colors (#550000, #ffffff, #000000) and two direct French page URLs:
+
+- Tattoo: https://titaniumlausanne.ch/fr/formulaire-de-rendez-vous-pour-un-tatouage/
+- Piercing: https://titaniumlausanne.ch/fr/formulaire-de-rendez-vous-pour-un-piercing/
+
+Colors accept six-digit hexadecimal values. URLs accept HTTP(S), at most 1,000 bytes, without embedded credentials. Blank values restore defaults; invalid values produce a settings error and preserve the previous value. Previews and downloads use saved settings; the global reset deletes these options.
+
+`assets/qr/poster.js` composes a 1748 × 2480 portrait PNG with 300 dpi pHYs metadata, French text and a fixed white QR panel. It uses the locally bundled qrcode-generator 1.4.4 with error correction M, integer module sizing and a four-module quiet zone. The invitation block is centered between logo and panel using measured text bounds. Georgia/serif uses the browser's available fonts, so glyph metrics can vary by platform. A contrast ratio below 4.5 against white triggers an advisory; this is not a QR readability certification.
+
+Canvas generation runs in the administrator's browser without a QR service. The encoded URL is direct and contains no submission data. Changing settings does not change printed posters. Download failures use the translated error and re-enable the button. See [QR validation](development-and-quality.md#qr-poster-validation) and [pending acceptance](backlog.md#qr-01--qr-posters).
 
 
 QR poster branding uses the transparent logo supplied by the studio, bundled as assets/qr/logo-titanium.png from https://titaniumlausanne.ch/wp-content/uploads/2024/10/Logo-titanium-galeria.png. The renderer awaits image decoding for previews and downloads, preserves aspect ratio and reports the existing translated error if loading fails. Bundling avoids remote Canvas access restrictions.

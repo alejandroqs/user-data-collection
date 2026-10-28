@@ -20,7 +20,7 @@ Add the shortcode below to a page, post, or widget:
 
 The previous `[udc_contact_form]` shortcode remains a compatibility alias. New tattoo submissions retain the exact accepted text, language, form version and care version for the administrative detail view. Older records without a saved document are explicitly marked unavailable.
 
-The existing form keeps its personal-data, health and consent wording. Its five health questions require an explicit Yes, No, or Not sure / discuss in person answer. Its care section now provides tattoo-specific instructions and a translated PDF download using the same text and the automatic site URL.
+The tattoo form requires four separate acknowledgements covering procedure/truthfulness, risk information, aftercare and data processing. Its five health questions require an explicit Yes, No, or Not sure / discuss in person answer. Its care section now provides tattoo-specific instructions and a translated PDF download using the same text and the automatic site URL.
 
 For the new piercing form, use:
 
@@ -34,7 +34,7 @@ PDF downloads require PHP 7.4+, DOM, mbstring and a writable temporary directory
 
 Both forms mark required fields and answers with an asterisk (*). Address, city and postal code are optional.
 
-The existing form collects personal data, health questionnaire answers, appointment details, piercing location, and a required liability acceptance checkbox. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
+The tattoo form collects personal data, health questionnaire answers, appointment details, tattoo location, and the four required acknowledgements. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
 
 ## Administration
 
@@ -44,11 +44,16 @@ Users with the `manage_options` capability can open the **Waivers** menu (**Desc
 - open submission details;
 - open **Tattoos** or **Piercings** and copy the corresponding shortcode shown above each list;
 - create, restore, and upload local JSON backups;
-- configure optional Google Drive, email backup, and frontend design settings.
+- configure optional Google Drive, email backup, and frontend design settings;
+- download a French A5 QR poster from either service list and configure its colors and destination URLs in **Settings → QR Image**.
 
 The piercing form has no promotional website or review links. Care PDFs use the WordPress home URL automatically, without an editable URL field. Existing records remain in the original section without being retrospectively classified as tattoos.
 
 Both forms reject future birth dates and use character limits that preserve accented names. Result messages require a short-lived handler receipt. With JavaScript enabled, repeated browser submits are blocked while an earlier submission is pending; controls are restored when returning with the Back button.
+
+## QR posters
+
+Save the settings before downloading. Posters include the bundled studio logo and always use French invitation text. Changing a destination URL requires downloading and printing a new poster; already printed QR codes keep their original URL. See [QR poster architecture](docs/architecture.md#qr-posters) for defaults and implementation, and [QR validation](docs/development-and-quality.md#qr-poster-validation) for verification limits.
 
 ## Optional integrations
 

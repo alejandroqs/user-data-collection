@@ -28,6 +28,7 @@ Use the smallest applicable reading set. Follow links from those documents only 
 | --- | --- |
 | Change the form, shortcode, or submission validation | [Architecture](architecture.md) and [Data, security, and privacy](data-security-privacy.md) |
 | Change the database schema or migration behavior | [Data, security, and privacy](data-security-privacy.md) and [Release](release.md) |
+| Change QR posters, logo, colors or destination URLs | [Architecture](architecture.md#qr-posters) and [Development and quality](development-and-quality.md#qr-poster-validation) |
 | Change administrative screens, AJAX actions, or permissions | [Architecture](architecture.md) and [Data, security, and privacy](data-security-privacy.md) |
 | Change backup, restore, retention, or deletion behavior | [Operations](operations.md) and [Data, security, and privacy](data-security-privacy.md) |
 | Change cron, Google Drive, or email behavior | [Operations](operations.md) |

@@ -20,6 +20,8 @@ The plugin header and PDF runtime require PHP 7.4+. The repository does not decl
 
 ## Translations
 
+**Current source:** the generator requires 94 message IDs per locale, including QR administration labels. Counts and versions in dated execution records describe their original checkpoints.
+
 **Verified, generated and checked on 2026-10-25:** bundled catalogs cover the new piercing form, the four explicit health-answer strings and eight new administration strings (64 required message IDs per locale). Existing variants are de_CH, de_DE, en_GB, es_ES, fr, fr_CH, fr_FR, it_CH and it_IT. Every PO has a matching compiled MO and the language header matches its filename. POT and PO project metadata now match plugin version 1.8.0. Two identical pre-existing POT duplicates were normalized; 1,538 pre-existing nonempty translations were compared with Git HEAD and preserved exactly.
 
 The source copy for the new form remains French. French defaults use that copy; other languages have translated defaults. New Swiss German entries use ss instead of sharp s. The care document's version label is now translatable as well. Existing tattoo strings and their translations were not rewritten.
@@ -113,7 +115,7 @@ An isolated Edge preview used a #550000 background, #ead8c3 configured text and 
 | `git diff --check` | Available through Git but not configured as a repository workflow gate. | Report only the result of the current executed command. |
 | `php tests/confirmation-removal.php` | Focused standalone checks with WordPress/database doubles; not currently a CI gate. | A particular execution proves only these isolated checks. |
 | `npm test` | Intentionally failing placeholder. | Not a test or quality gate. |
-| Functional WordPress, database, browser, cron, mail, Drive, or web-server checks | No configured gate exists in the checkout. | **Unknown** until executed in an authorized environment. |
+| Browser / native WordPress / external services | Local scripts exist under `tests/` (including `forms-browser.cjs`, `qr-posters.cjs`, `upgrade-package.py`); no native WordPress or browser CI step is configured. Cron, mail, Drive and web-server acceptance require separate setup. | A script being present does not establish execution or production success. |
 | PHPUnit, PHPCS, PHPStan, or WPCS | No configured gate exists in the checkout. | Do not claim conformance or a passing result. |
 
 ## Admin naming in 1.8.1
@@ -130,7 +132,7 @@ These checks use the real PDF engine and compiled catalogs with synthetic WordPr
 
 **Verified, tattoo introduction:** tattoo_intro adds two required message IDs (73 current required IDs per locale). All nine PO/MO variants and the PHP fallback checks pass, including the tattoo title and intro. The 143 form regressions pass; the preservation check excludes these two authorized new entries while continuing to protect the legacy dictionary.
 
-## Unreleased optional fields and admin tables
+## Optional fields and admin tables (1.8.2)
 
 **Verified, executed:** 169 PHP assertions cover both handlers with blank/omitted address and postal code, length/array rejection, required city, backup normalization/restore, ID-first primary-column contracts and translated category/body-location details. All nine catalog/PHP locale checks pass with 74 required IDs, including updated asterisk wording and the new Care category label. Edge form checks pass at 320, 390, 782 and 1280px; required labels end with an asterisk and optional controls do not, and completed forms remain valid with blank address/postal code.
 
@@ -167,6 +169,14 @@ An isolated WordPress 7.1.3 / PHP 8.3.28 / MySQL 8.4.3 run upgraded the HEAD bas
 **Verified, executed:** the 229 PHP regressions and existing Edge checks pass after the styling change. An additional local Edge check compared computed field, select-arrow, button and checkbox styles across both forms; they match in the default fixture. The default care-panel background computes to rgba(0, 0, 0, 0.15), and its screenshot was inspected. Synthetic option checks verify missing, empty, invalid and disabled care-background cases, valid custom color preservation, and clearing the setting to its default. Production theme overrides remain unverified.
 
 
-## QR posters
+## QR poster validation
 
-Requirement implemented: admin list buttons and the QR Image settings tab provide local A5 portrait PNG generation (1748 x 2480, 300 dpi metadata). QR modules use a white four-module quiet zone; saved colors and direct French destination URLs are shared through UDC_QR_Poster. Assets include qrcode-generator 1.4.4 (MIT). Settings use the Settings API and manage_options; no submission schema changes. Physical printing and phone-camera acceptance remain pending.
+**Verified from source:** `tests/qr-posters.cjs` runs Edge through Playwright with synthetic configuration and a data-URL copy of the bundled logo. It downloads both service posters, checks filenames and confirms that buttons are re-enabled. It requires Node, resolvable Playwright and Edge; these are not declared npm dependencies. Run from the repository root:
+
+```powershell
+node tests/qr-posters.cjs
+```
+
+Outputs are ignored `tmp/qr-tattoo.png` and `tmp/qr-piercing.png`. The test does not independently assert QR contents, resolution metadata, production asset loading, option persistence or permissions. Local checks during the QR implementation on 2026-10-28 independently decoded both images with ZXing and inspected dimensions/dpi with Pillow; those additional checks are not part of the committed test. Both posters and logo spacing were visually inspected. Physical print and camera checks remain [QR-01](backlog.md#qr-01--qr-posters).
+
+**Verified from configuration:** QR browser checks and translation validation are local commands, not steps in the current release workflow. CI runs form/PDF checks and package validation; see [Release](release.md#workflow-and-package-contents). The active catalog generator requires 94 strings per locale across nine catalogs; counts in dated records describe historical checkpoints.
