@@ -34,6 +34,7 @@ Use the smallest applicable reading set. Follow links from those documents only 
 | Change cron, Google Drive, or email behavior | [Operations](operations.md) |
 | Change the environment, tools, quality gates, or translations | [Development and quality](development-and-quality.md) |
 | Change versions, tags, package contents, or the release workflow | [Release](release.md) |
+| Guardian form update scope | [Approved plan](form-update-plan.md), then [Pending work](backlog.md) |
 | Resume work or choose the next task | [Pending work](backlog.md), then the canonical document linked by the selected item |
 | Investigate without changing code | Read the document for the affected area; do not read every document by default. |
 

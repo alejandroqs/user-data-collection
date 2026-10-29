@@ -97,17 +97,17 @@ foreach ([false, true] as $is_piercing) {
             if ('blank' === $mode) { $post[$field] = ''; } else { unset($post[$field]); }
         }
         [$url, $inserts] = submit_form($object, $post);
-        check(count($inserts) === 1 && $inserts[0][1]['address'] === '' && $inserts[0][1]['city'] === '' && $inserts[0][1]['zip'] === '', 'Both handlers accept blank or omitted optional address/city/postal code');
+        check(count($inserts) === 1 && !array_intersect(['address','city','zip'], array_keys($inserts[0][1])), 'Both handlers accept blank or omitted optional address/city/postal code');
         $row = $inserts[0][1] + ['id' => 91, 'created_at' => '2026-10-26 12:00:00'];
         $normalized = invoke_private($backup, 'validate_backup_rows', [$row]);
-        check(!is_wp_error($normalized) && $normalized[0]['address'] === '' && $normalized[0]['city'] === '' && $normalized[0]['zip'] === '', 'Optional data survives backup normalization');
+        check(!is_wp_error($normalized) && !array_intersect(['address','city','zip'], array_keys($normalized[0])), 'Retired contact data is absent after backup normalization');
         $wpdb = new SyntheticDatabase();
-        check(invoke_private($backup, 'insert_backup_data', $normalized) === 1 && $wpdb->inserts[0][1]['address'] === '' && $wpdb->inserts[0][1]['city'] === '' && $wpdb->inserts[0][1]['zip'] === '', 'Restore preserves empty optional fields');
+        check(invoke_private($backup, 'insert_backup_data', $normalized) === 1 && !array_intersect(['address','city','zip'], array_keys($wpdb->inserts[0][1])), 'Restore does not reintroduce retired contact fields');
     }
     foreach (['udc_address' => [str_repeat('a', 256), ['array']], 'udc_city' => [str_repeat('a', 256), ['array']], 'udc_zip' => [str_repeat('1', 51), ['array']]] as $field => $values) {
         foreach ($values as $value) {
             $post = form_post($is_piercing); $post[$field] = $value;
-            check(!submit_form($object, $post)[1], 'Optional values still reject excessive lengths and arrays');
+            check(count(submit_form($object, $post)[1]) === 1, 'Retired request fields are ignored, including stale and malformed values');
         }
     }
     $post = form_post($is_piercing); $post['udc_city'] = '';
@@ -139,7 +139,7 @@ foreach (['udc_liability_accepted', 'udc_risk_text', 'udc_care_ack', 'udc_privac
         check(!submit_form($tattoo, $post)[1], 'Tattoo rejects absent or invalid explicit acceptance: ' . $field);
     }
 }
-check(substr_count($tattoo_html, 'type="checkbox"') === 4 && !str_contains($tattoo_html, 'waive all legal') && str_contains($tattoo_html, 'https://example.test/privacy'), 'Tattoo renders four unchecked acknowledgements and a privacy link without the former waiver');
+check(substr_count($tattoo_html, 'type="checkbox"') === 5 && !str_contains($tattoo_html, 'waive all legal') && str_contains($tattoo_html, 'https://example.test/privacy'), 'Tattoo renders four acknowledgements, the minority declaration and a privacy link');
 foreach (['liability_text', 'risk_text', 'care_ack', 'privacy_text'] as $key) {
     check(!empty($tattoo_snapshot['document'][$key]), 'Tattoo evidence includes accepted ' . $key);
 }

@@ -7,6 +7,7 @@ class UDC_Settings
 {
     public function __construct()
     {
+        add_action('admin_enqueue_scripts', ['UDC_Guardian', 'enqueue_admin']);
         add_action('admin_init', [$this, 'register_settings']);
         add_action('wp_ajax_udc_delete_all_data', [$this, 'ajax_delete_all_data']);
     }
@@ -34,6 +35,7 @@ class UDC_Settings
         $table_name = $wpdb->prefix . 'udc_submissions';
         $wpdb->query("DELETE FROM $table_name"); 
 
+        foreach (UDC_Guardian::languages() as $language => $label) { delete_option('udc_guardian_document_' . $language); }
         // 3. Clear Options
         foreach (UDC_QR_Poster::defaults() as $key => $default) { delete_option($key); }
         // Remove retired link options when resetting legacy installations.
@@ -63,6 +65,7 @@ class UDC_Settings
 
     public function register_settings()
     {
+        UDC_Guardian::register_settings();
         // QR poster settings.
         foreach (UDC_QR_Poster::defaults() as $key => $default) {
             register_setting('udc_qr_settings', $key, ['type' => 'string', 'default' => $default,
@@ -206,7 +209,7 @@ class UDC_Settings
             return;
         }
 
-        $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'gdrive';
+        $active_tab = isset($_GET['tab']) ? sanitize_text_field(wp_unslash($_GET['tab'])) : 'general';
 
         // GDrive options
         $gdrive_json = get_option('udc_gdrive_json', '');
@@ -239,6 +242,7 @@ class UDC_Settings
             <?php settings_errors(); ?>
             
             <h2 class="nav-tab-wrapper">
+                <a href="?page=udc-settings&amp;tab=general" class="nav-tab <?php echo $active_tab === 'general' ? 'nav-tab-active' : ''; ?>"><?php echo esc_html(UDC_Guardian::translate('general')); ?></a>
                 <a href="?page=udc-settings&amp;tab=qr" class="nav-tab <?php echo $active_tab === 'qr' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('QR Image', 'user-data-collection'); ?></a>
                 <a href="?page=udc-settings&tab=gdrive" class="nav-tab <?php echo $active_tab == 'gdrive' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Google Drive Integration', 'user-data-collection'); ?></a>
                 <a href="?page=udc-settings&tab=email" class="nav-tab <?php echo $active_tab == 'email' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Email Backups', 'user-data-collection'); ?></a>
@@ -246,7 +250,9 @@ class UDC_Settings
                 <a href="?page=udc-settings&tab=advanced" class="nav-tab <?php echo $active_tab == 'advanced' ? 'nav-tab-active' : ''; ?>"><?php esc_html_e('Advanced', 'user-data-collection'); ?></a>
             </h2>
 
-            <?php if ($active_tab == 'gdrive'): ?>
+            <?php if ($active_tab === 'general'): ?>
+                <?php UDC_Guardian::render_settings(); ?>
+            <?php elseif ($active_tab == 'gdrive'): ?>
                 <?php if (!empty($last_sync_status)): ?>
                     <?php 
                         $is_error = isset($last_sync_status['error']) && $last_sync_status['error'] === true; 
@@ -343,14 +349,13 @@ class UDC_Settings
                 <form method="post" action="options.php">
                     <?php settings_fields('udc_design_settings'); ?>
                     
-                    <p><?php esc_html_e('Customize the frontend form colors to match your dark/red theme seamlessly.', 'user-data-collection'); ?></p>
+                    <p><?php echo esc_html(UDC_Guardian::translate('design_help')); ?></p>
 
                     <table class="form-table">
                         <tr>
                             <th scope="row"><?php esc_html_e('Enable Custom Design', 'user-data-collection'); ?></th>
                             <td>
                                 <input type="checkbox" name="udc_design_enabled" value="1" <?php checked(1, $design_enabled, true); ?> />
-                                <p class="description"><?php esc_html_e('Check to override default browser styles with the custom colors below.', 'user-data-collection'); ?></p>
                             </td>
                         </tr>
                         <tr>

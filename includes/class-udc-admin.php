@@ -173,18 +173,7 @@ class UDC_Admin
                                         <th><?php esc_html_e('Date of Birth', 'user-data-collection'); ?></th>
                                         <td><?php echo esc_html($submission->dob); ?></td>
                                     </tr>
-                                    <tr>
-                                        <th><?php esc_html_e('Address', 'user-data-collection'); ?></th>
-                                        <td><?php echo esc_html($submission->address); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th><?php esc_html_e('City', 'user-data-collection'); ?></th>
-                                        <td><?php echo esc_html($submission->city); ?></td>
-                                    </tr>
-                                    <tr>
-                                        <th><?php esc_html_e('Zip Code', 'user-data-collection'); ?></th>
-                                        <td><?php echo esc_html($submission->zip); ?></td>
-                                    </tr>
+                                    <tr><th><?php echo esc_html(UDC_Guardian::translate('declared')); ?></th><td><?php echo esc_html(!isset($submission->minor_declared) ? UDC_Guardian::translate('unknown') : UDC_i18n::translate((int) $submission->minor_declared === 1 ? 'answer_yes' : 'answer_no')); ?></td></tr>
                                     <tr>
                                         <th><?php esc_html_e('Phone', 'user-data-collection'); ?></th>
                                         <td><?php echo esc_html($submission->phone); ?></td>

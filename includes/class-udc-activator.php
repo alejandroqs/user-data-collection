@@ -25,9 +25,7 @@ class UDC_Activator
             last_name varchar(255) NOT NULL,
             first_name varchar(255) NOT NULL,
             dob date NOT NULL,
-            address varchar(255) NOT NULL,
-            city varchar(255) NOT NULL,
-            zip varchar(50) NOT NULL,
+            minor_declared tinyint(1) DEFAULT NULL,
             phone varchar(50) NOT NULL,
             health_good tinyint(1) DEFAULT 0 NOT NULL,
             health_treatment tinyint(1) DEFAULT 0 NOT NULL,
@@ -57,8 +55,19 @@ class UDC_Activator
             error_log('UDC_SCHEMA_INSPECTION_FAILED');
             return;
         }
-        if (array_diff(['form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'], $columns)) {
+        if (array_diff(['minor_declared', 'form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'], $columns)) {
             error_log('UDC_FORM_SCHEMA_UPGRADE_FAILED');
+            return;
+        }
+        foreach (['address', 'city', 'zip'] as $retired) {
+            if (in_array($retired, $columns, true) && false === $wpdb->query("ALTER TABLE $quoted_table DROP COLUMN `$retired`")) {
+                error_log('UDC_ADDRESS_REMOVAL_FAILED');
+                return;
+            }
+        }
+        $remaining = $wpdb->get_col("SHOW COLUMNS FROM $quoted_table");
+        if (!is_array($remaining) || '' !== $wpdb->last_error || array_intersect(['address', 'city', 'zip'], $remaining)) {
+            error_log('UDC_ADDRESS_REMOVAL_FAILED');
             return;
         }
         if (in_array('is_confirmed', $columns, true)) {

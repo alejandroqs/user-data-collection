@@ -13,6 +13,15 @@ final class UDC_Validation
         return $date && $date->format('Y-m-d') === $value && (false === $errors || (0 === $errors['warning_count'] && 0 === $errors['error_count']));
     }
 
+    /** Calendar years; a February 29 birthday reaches its anniversary on March 1 in non-leap years. */
+    public static function is_minor($dob, $today)
+    {
+        if (!self::valid_date($dob) || !self::valid_date($today) || $dob > $today) { return false; }
+        $age = (int) substr($today, 0, 4) - (int) substr($dob, 0, 4);
+        if (substr($today, 5) < substr($dob, 5)) { --$age; }
+        return $age < 18;
+    }
+
     public static function valid_datetime($value)
     {
         $value = (string) $value;

@@ -74,7 +74,7 @@ class WP_List_Table {
 class SyntheticDatabase {
     public $prefix = 'synthetic_';
     public $last_error = '';
-    public $columns = ['id', 'first_name', 'is_confirmed', 'form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'];
+    public $columns = ['id', 'first_name', 'address', 'city', 'zip', 'minor_declared', 'is_confirmed', 'form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'];
     public $failInspection = false;
     public $failDrop = false;
     public $queries = [];
@@ -90,7 +90,7 @@ class SyntheticDatabase {
         $this->queries[] = $sql;
         if (str_contains($sql, 'DROP COLUMN')) {
             if ($this->failDrop) { return false; }
-            $this->columns = array_values(array_diff($this->columns, ['is_confirmed']));
+            $this->columns = array_values(array_diff($this->columns, [str_contains($sql, '`is_confirmed`') ? 'is_confirmed' : (str_contains($sql, '`address`') ? 'address' : (str_contains($sql, '`city`') ? 'city' : 'zip'))]));
         }
         return 1;
     }

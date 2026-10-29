@@ -20,7 +20,7 @@ The plugin header and PDF runtime require PHP 7.4+. The repository does not decl
 
 ## Translations
 
-**Current source:** the generator requires 94 message IDs per locale, including QR administration labels. Counts and versions in dated execution records describe their original checkpoints.
+**Current source:** the generator requires 114 message IDs per locale, including QR administration labels. Counts and versions in dated execution records describe their original checkpoints.
 
 **Verified, generated and checked on 2026-10-25:** bundled catalogs cover the new piercing form, the four explicit health-answer strings and eight new administration strings (64 required message IDs per locale). Existing variants are de_CH, de_DE, en_GB, es_ES, fr, fr_CH, fr_FR, it_CH and it_IT. Every PO has a matching compiled MO and the language header matches its filename. POT and PO project metadata now match plugin version 1.8.0. Two identical pre-existing POT duplicates were normalized; 1,538 pre-existing nonempty translations were compared with Git HEAD and preserved exactly.
 
@@ -180,3 +180,11 @@ node tests/qr-posters.cjs
 Outputs are ignored `tmp/qr-tattoo.png` and `tmp/qr-piercing.png`. The test does not independently assert QR contents, resolution metadata, production asset loading, option persistence or permissions. Local checks during the QR implementation on 2026-10-28 independently decoded both images with ZXing and inspected dimensions/dpi with Pillow; those additional checks are not part of the committed test. Both posters and logo spacing were visually inspected. Physical print and camera checks remain [QR-01](backlog.md#qr-01--qr-posters).
 
 **Verified from configuration:** QR browser checks and translation validation are local commands, not steps in the current release workflow. CI runs form/PDF checks and package validation; see [Release](release.md#workflow-and-package-contents). The active catalog generator requires 94 strings per locale across nine catalogs; counts in dated records describe historical checkpoints.
+
+## Guardian forms and reduced schema in 1.12.0
+
+**Verified, executed:** `php tests/guardian.php` runs the existing form/review suites plus age boundaries, strict declarations, signed minor errors, historical NULL normalization, five media settings, all allowed types, invalid attachments, language selection and column removal. `python scripts/update-translations.py` verifies all nine PO/MO catalogs and PHP translation fallbacks, including all guardian/admin strings. `php tests/forms.php --preview` and `node tests/forms-browser.cjs` exercise Edge at 320/390/782/1280px, both minor disclosures/rejections, local font/default styles, downloads and duplicate-submit protection.
+
+**Verified, executed:** `python tests/pdf-documents.py` also parses 55 PDFs and checks the unchanged tattoo/piercing aftercare, Unicode fonts, A4 format, metadata, page numbering, escaping and controlled failures after the shared form update.
+
+**Verified, executed:** the native upgrade command is `python tests/upgrade-package.py --mysqld <absolute-mysqld-path> --package tmp/user-data-collection.zip --old-ref v1.11.1 --browser`. It creates its own WordPress/MySQL workspace with synthetic records and blocks outbound WordPress HTTP/mail. WordPress 7.1.4/MySQL 8.4.3 passes upgrade/restore and native Edge media/settings/download/submission checks, including SQL confirmation of one new record per service. Exact remaining boundaries are tracked under FORM-GUARDIAN-01 in [Pending work](backlog.md). PHPStan/PHPCS are not configured gates; PHP 7.4 syntax is retained but the executed PHP runtime is 8.3.28.

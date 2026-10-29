@@ -156,7 +156,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
 
     public function enqueue_styles()
     {
-        wp_register_style('udc-piercing', false, [], '1.11.1');
+        wp_register_style('udc-piercing', false, [], '1.12.0');
         wp_enqueue_style('udc-piercing');
         wp_add_inline_style('udc-piercing', self::form_styles(true));
     }
@@ -169,21 +169,22 @@ class UDC_Piercing_Form extends UDC_Shortcode
         $json = wp_json_encode($snapshot);
         ob_start();
         ?>
-        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" class="udc-piercing-form">
+        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" class="udc-piercing-form<?php echo get_option('udc_design_enabled', '0') ? '' : ' udc-default'; ?>">
             <h2><?php echo esc_html(self::translate('title')); ?></h2>
             <p><?php echo esc_html(self::translate('intro')); ?></p>
             <?php if ('' !== $status): ?>
-                <p role="status"><?php echo esc_html(self::translate('success' === $status ? 'msg_success' : 'msg_error')); ?></p>
+                <p role="status"><?php echo esc_html(('minor_error' === $status ? UDC_Guardian::translate('error') : self::translate('success' === $status ? 'msg_success' : 'msg_error'))); ?></p>
             <?php endif; ?>
             <?php self::render_nonce('udc_piercing_action', $prefix); ?>
             <input type="hidden" name="action" value="udc_submit_piercing">
             <input type="hidden" name="udc_evidence" value="<?php echo esc_attr($json); ?>">
             <input type="hidden" name="udc_evidence_signature" value="<?php echo esc_attr(hash_hmac('sha256', $json, wp_salt('nonce'))); ?>">
             <h3><?php echo esc_html(self::translate('title_personal_info')); ?></h3>
-            <?php foreach (['last_name' => 'text', 'first_name' => 'text', 'dob' => 'date', 'address' => 'text', 'city' => 'text', 'zip' => 'text', 'phone' => 'tel'] as $field => $type): ?>
-                <p><label for="<?php echo esc_attr($prefix . $field); ?>"><?php echo esc_html(self::field_label(self::translate('label_' . $field), !in_array($field, ['address', 'city', 'zip'], true))); ?></label>
-                <input id="<?php echo esc_attr($prefix . $field); ?>" type="<?php echo esc_attr($type); ?>" name="udc_<?php echo esc_attr($field); ?>" maxlength="<?php echo in_array($field, ['zip', 'phone'], true) ? '50' : '255'; ?>" <?php if ('dob' === $field): ?> min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>"<?php endif; ?> <?php if (!in_array($field, ['address', 'city', 'zip'], true)): ?>required<?php endif; ?>></p>
+            <?php foreach (['last_name' => 'text', 'first_name' => 'text', 'dob' => 'date', 'phone' => 'tel'] as $field => $type): ?>
+                <p><label for="<?php echo esc_attr($prefix . $field); ?>"><?php echo esc_html(self::field_label(self::translate('label_' . $field))); ?></label>
+                <input id="<?php echo esc_attr($prefix . $field); ?>" type="<?php echo esc_attr($type); ?>" name="udc_<?php echo esc_attr($field); ?>" maxlength="<?php echo 'phone' === $field ? '50' : '255'; ?>" <?php if ('dob' === $field): ?> min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>"<?php endif; ?> required></p>
             <?php endforeach; ?>
+            <?php UDC_Guardian::render($prefix); ?>
             <h3><?php echo esc_html(self::translate('title_health')); ?></h3>
             <?php self::render_health_fields([self::class, 'translate'], $prefix); ?>
             <h3><?php echo esc_html(self::translate('title_appointment_info')); ?></h3>

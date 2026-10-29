@@ -110,6 +110,28 @@
       "tattoo_consent_care": "I have read the tattoo aftercare instructions and know how to download them. I understand that healing varies and follow-up may be necessary.",
       "tattoo_consent_privacy": "I have been informed that this form sends my identity and contact details and health answers to the studio to prepare and document the service. I can contact the studio with any questions about how these data are handled.",
       "tattoo_privacy_link": "Read the privacy policy"
+    },
+    "guardian": {
+      "minor": "I am under 18 years old",
+      "notice": "Minors must come to the appointment with the paper authorization completed and signed by their legal guardian.",
+      "download": "Download the legal guardian authorization template",
+      "missing": "The authorization template is not available in this language. Contact the studio before your appointment to obtain it.",
+      "error": "Your date of birth indicates that you are under 18, but you have not checked \"I am under 18 years old\". Check the box or correct your date of birth.",
+      "general": "General",
+      "title": "Legal guardian authorization",
+      "description": "Select one blank authorization template per language, shared by the tattoo and piercing forms. Minors must bring the printed document completed and signed by their legal guardian. Accepted formats: PDF, JPG, JPEG, PNG, WebP and AVIF.",
+      "select": "Select or change document",
+      "remove": "Remove selection",
+      "empty": "No document selected.",
+      "invalid": "The document was not saved. Select a valid PDF, JPG, JPEG, PNG, WebP or AVIF attachment.",
+      "declared": "Declared under 18",
+      "unknown": "Not recorded",
+      "fr": "French",
+      "de": "German",
+      "it": "Italian",
+      "en": "English",
+      "es": "Spanish",
+      "design_help": "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead."
     }
   },
   "es": {
@@ -223,6 +245,28 @@
       "tattoo_consent_care": "He leído las instrucciones de cuidado del tatuaje y sé cómo descargarlas. Entiendo que la cicatrización varía y que puede ser necesario un seguimiento.",
       "tattoo_consent_privacy": "He sido informado de que este formulario transmite al estudio mis datos identificativos, de contacto y mis respuestas de salud para preparar y documentar el servicio. Puedo contactar con el estudio para cualquier consulta sobre el tratamiento de estos datos.",
       "tattoo_privacy_link": "Consultar la política de privacidad"
+    },
+    "guardian": {
+      "minor": "Soy menor de edad",
+      "notice": "El menor deberá acudir a la cita con la autorización en papel cumplimentada y firmada por su tutor legal.",
+      "download": "Descargar modelo de autorización del tutor legal",
+      "missing": "El modelo de autorización no está disponible en este idioma. Contacta con el estudio antes de la cita para obtenerlo.",
+      "error": "Tu fecha de nacimiento indica que eres menor de 18 años, pero no has marcado «Soy menor de edad». Marca la casilla o corrige tu fecha de nacimiento.",
+      "general": "General",
+      "title": "Autorización del tutor legal",
+      "description": "Selecciona un modelo de autorización en blanco por idioma, compartido por los formularios de tatuaje y piercing. El menor deberá traer el documento impreso cumplimentado y firmado por su tutor legal. Formatos admitidos: PDF, JPG, JPEG, PNG, WebP y AVIF.",
+      "select": "Seleccionar o cambiar documento",
+      "remove": "Quitar selección",
+      "empty": "Ningún documento seleccionado.",
+      "invalid": "No se ha guardado el documento. Selecciona un adjunto válido de tipo PDF, JPG, JPEG, PNG, WebP o AVIF.",
+      "declared": "Declaración de minoría de edad",
+      "unknown": "No registrado",
+      "fr": "Francés",
+      "de": "Alemán",
+      "it": "Italiano",
+      "en": "Inglés",
+      "es": "Español",
+      "design_help": "El diseño predeterminado está optimizado para páginas blancas y dispositivos móviles. Activa el diseño personalizado para utilizar los colores configurados."
     }
   },
   "de": {
@@ -336,6 +380,28 @@
       "tattoo_consent_care": "Ich habe die Pflegehinweise für das Tattoo gelesen und weiß, wie ich sie herunterladen kann. Mir ist bewusst, dass die Heilung unterschiedlich verläuft und eine Nachkontrolle erforderlich sein kann.",
       "tattoo_consent_privacy": "Ich wurde darüber informiert, dass dieses Formular meine Identitäts- und Kontaktdaten sowie meine Gesundheitsangaben an das Studio übermittelt, um die Leistung vorzubereiten und zu dokumentieren. Bei Fragen zur Verarbeitung dieser Daten kann ich mich an das Studio wenden.",
       "tattoo_privacy_link": "Datenschutzerklärung lesen"
+    },
+    "guardian": {
+      "minor": "Ich bin minderjährig",
+      "notice": "Die minderjährige Person muss zum Termin die ausgefüllte und von ihrer gesetzlichen Vertretung unterschriebene Einwilligung auf Papier mitbringen.",
+      "download": "Vorlage für die Einwilligung der gesetzlichen Vertretung herunterladen",
+      "missing": "Die Einwilligungsvorlage ist in dieser Sprache nicht verfügbar. Kontaktieren Sie das Studio vor dem Termin, um sie zu erhalten.",
+      "error": "Ihr Geburtsdatum zeigt, dass Sie unter 18 Jahre alt sind, aber Sie haben «Ich bin minderjährig» nicht angekreuzt. Kreuzen Sie das Kästchen an oder korrigieren Sie Ihr Geburtsdatum.",
+      "general": "Allgemein",
+      "title": "Einwilligung der gesetzlichen Vertretung",
+      "description": "Wählen Sie pro Sprache eine leere Einwilligungsvorlage für die Tattoo- und Piercingformulare. Minderjährige müssen das ausgedruckte Dokument ausgefüllt und von ihrer gesetzlichen Vertretung unterschrieben mitbringen. Erlaubte Formate: PDF, JPG, JPEG, PNG, WebP und AVIF.",
+      "select": "Dokument auswählen oder ändern",
+      "remove": "Auswahl entfernen",
+      "empty": "Kein Dokument ausgewählt.",
+      "invalid": "Das Dokument wurde nicht gespeichert. Wählen Sie einen gültigen Anhang im Format PDF, JPG, JPEG, PNG, WebP oder AVIF.",
+      "declared": "Als minderjährig angegeben",
+      "unknown": "Nicht erfasst",
+      "fr": "Französisch",
+      "de": "Deutsch",
+      "it": "Italienisch",
+      "en": "Englisch",
+      "es": "Spanisch",
+      "design_help": "Das Standarddesign ist für weisse Seiten und Mobilgeräte optimiert. Aktivieren Sie das individuelle Design, um die eingestellten Farben zu verwenden."
     }
   },
   "it": {
@@ -449,6 +515,28 @@
       "tattoo_consent_care": "Ho letto le istruzioni per la cura del tatuaggio e so come scaricarle. Comprendo che la guarigione varia e che potrebbe essere necessario un controllo.",
       "tattoo_consent_privacy": "Sono stato informato che questo modulo trasmette allo studio i miei dati identificativi, di contatto e le risposte sulla salute per preparare e documentare il servizio. Posso contattare lo studio per qualsiasi domanda sul trattamento di questi dati.",
       "tattoo_privacy_link": "Consultare l’informativa sulla privacy"
+    },
+    "guardian": {
+      "minor": "Sono minorenne",
+      "notice": "Il minore dovrà presentarsi all’appuntamento con l’autorizzazione cartacea compilata e firmata dal proprio tutore legale.",
+      "download": "Scarica il modello di autorizzazione del tutore legale",
+      "missing": "Il modello di autorizzazione non è disponibile in questa lingua. Contatta lo studio prima dell’appuntamento per ottenerlo.",
+      "error": "La tua data di nascita indica che hai meno di 18 anni, ma non hai selezionato «Sono minorenne». Seleziona la casella o correggi la data di nascita.",
+      "general": "Generale",
+      "title": "Autorizzazione del tutore legale",
+      "description": "Seleziona un modello di autorizzazione vuoto per ogni lingua, condiviso dai moduli per tatuaggi e piercing. Il minore deve portare il documento stampato compilato e firmato dal proprio tutore legale. Formati accettati: PDF, JPG, JPEG, PNG, WebP e AVIF.",
+      "select": "Seleziona o cambia documento",
+      "remove": "Rimuovi selezione",
+      "empty": "Nessun documento selezionato.",
+      "invalid": "Il documento non è stato salvato. Seleziona un allegato valido in formato PDF, JPG, JPEG, PNG, WebP o AVIF.",
+      "declared": "Dichiarazione di minore età",
+      "unknown": "Non registrato",
+      "fr": "Francese",
+      "de": "Tedesco",
+      "it": "Italiano",
+      "en": "Inglese",
+      "es": "Spagnolo",
+      "design_help": "Il design predefinito è ottimizzato per pagine bianche e dispositivi mobili. Attiva il design personalizzato per usare i colori configurati."
     }
   },
   "fr": {
@@ -510,6 +598,28 @@
       "tattoo_consent_care": "J’ai lu les instructions de soins du tatouage et je sais comment les télécharger. Je comprends que la cicatrisation varie et qu’un suivi peut être nécessaire.",
       "tattoo_consent_privacy": "J’ai été informé que ce formulaire transmet au studio mes données d’identité, de contact et mes réponses de santé pour préparer et documenter la prestation. Je peux contacter le studio pour toute question sur leur traitement.",
       "tattoo_privacy_link": "Consulter la politique de confidentialité"
+    },
+    "guardian": {
+      "minor": "Je suis mineur(e)",
+      "notice": "Le mineur doit venir au rendez-vous avec l’autorisation sur papier remplie et signée par son représentant légal.",
+      "download": "Télécharger le modèle d’autorisation du représentant légal",
+      "missing": "Le modèle d’autorisation n’est pas disponible dans cette langue. Contactez le studio avant le rendez-vous pour l’obtenir.",
+      "error": "Votre date de naissance indique que vous avez moins de 18 ans, mais vous n’avez pas coché « Je suis mineur(e) ». Cochez la case ou corrigez votre date de naissance.",
+      "general": "Général",
+      "title": "Autorisation du représentant légal",
+      "description": "Sélectionnez un modèle d’autorisation vierge par langue, commun aux formulaires de tatouage et de piercing. Le mineur doit apporter le document imprimé rempli et signé par son représentant légal. Formats acceptés : PDF, JPG, JPEG, PNG, WebP et AVIF.",
+      "select": "Sélectionner ou changer le document",
+      "remove": "Retirer la sélection",
+      "empty": "Aucun document sélectionné.",
+      "invalid": "Le document n’a pas été enregistré. Sélectionnez une pièce jointe valide au format PDF, JPG, JPEG, PNG, WebP ou AVIF.",
+      "declared": "Déclaration de minorité",
+      "unknown": "Non enregistré",
+      "fr": "Français",
+      "de": "Allemand",
+      "it": "Italien",
+      "en": "Anglais",
+      "es": "Espagnol",
+      "design_help": "Le style par défaut est optimisé pour les pages blanches et les appareils mobiles. Activez le style personnalisé pour utiliser les couleurs configurées."
     }
   }
 }

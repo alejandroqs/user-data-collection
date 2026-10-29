@@ -24,11 +24,12 @@ wp-content/uploads/udc-backups/
 
 Restore is additive: insert_backup_data() validates the complete bounded document, checks each supplied positive id, and inserts missing rows in an InnoDB transaction. Version 1.7 snapshots explicitly include service type, care category, interface language, document version, and text evidence. A snapshot can contain both service types, with identical row keys. Identity/contact/location string limits are measured in Unicode characters, matching submission and database varchar lengths; evidence/metadata limits remain byte-based. Health answers accept 0/1/2; liability acceptance remains strictly 0/1. Piercing metadata and its structured evidence must agree. Tattoo records with evidence must have matching language/form version, an empty piercing category, liability acceptance and a valid tattoo document snapshot. Older tattoo rows with entirely empty evidence metadata remain accepted. Valid historical form/care versions are preserved rather than rewritten. Missing or extra keys, invalid service/category values, and mixtures of historical schema variants remain rejected.
 
-The exact pre-1.7 schema, pre-1.6 schema with is_confirmed, and historical zip_city schema remain accepted. The retired approval value must be 0/1 and is discarded. Historical rows are normalized to form_type=legacy with empty evidence metadata. Historical zip_city is preserved as city with an empty zip. Address, city and postal code now accept empty strings in every supported schema, matching both public forms. Their keys, string types and length limits remain mandatory in backup documents; the other required fields cannot be empty.
+The current reduced schema adds nullable `minor_declared` and omits address/city/postal code. Supported historical pre-1.7, pre-1.6 approval and zip_city formats remain recognized. Legacy approval values are validated and discarded; all retired address, city, zip and zip_city fields are discarded before insertion. Older records receive a NULL minority declaration. New snapshots retain explicit 0/1/NULL declarations. Unknown keys, invalid declaration types and mixed historical schemas remain rejected.
 
-**Verified with doubles:** historical normalization followed by new-schema validation preserves the empty legacy postal code, unknown service classification, and accepted piercing evidence. Real database and filesystem backup/restore execution remain unverified. See [Development and quality](development-and-quality.md) for executed checks.
+**Verified:** synthetic and isolated native upgrade/restore checks are recorded in [Development and quality](development-and-quality.md). Existing local JSON, Drive objects, sent email attachments and operator backups can still contain retired data. Inventory and dispose of those copies under a separately recorded retention decision; the database migration does not certify their erasure.
 
-**Verified limitations:** the local protection files still depend on web-server behavior, and no functional WordPress or database runtime gate exists in this checkout. Backup creation bounds the full-table snapshot to 10,000 rows, rejects encoded JSON larger than the 10 MiB restore limit, writes through a locked temporary file, and atomically renames it before rotation.
+**Verified limitations:** protection files depend on web-server behavior. Backup creation bounds the full-table snapshot to 10,000 rows and 10 MiB, writes through a locked temporary file, and atomically renames it before rotation.
+
 
 ## Scheduled work
 
@@ -56,7 +57,7 @@ When enabled, `UDC_Email_Sync::send_backup()` selects the newest local `*.json` 
 
 ## Delete All Data
 
-The administrative `UDC_Settings::ajax_delete_all_data()` action checks capability and nonce, deletes local JSON files, deletes all rows from the custom table, and removes the listed Drive, email, design, status, and retired piercing website/review-link options (legacy cleanup only). It does not remove Drive objects, sent email attachments, or other external copies. It also does not unschedule events or remove every possible WordPress metadata item.
+The administrative `UDC_Settings::ajax_delete_all_data()` action checks capability and nonce, deletes local JSON files, deletes all rows from the custom table, and removes the five guardian-template selections and the listed Drive, email, design, status, and retired piercing website/review-link options (legacy cleanup only). It does not remove Drive objects, sent email attachments, or other external copies. It also does not unschedule events or remove every possible WordPress metadata item.
 
 **Verified limitation:** local file deletion uses suppressed, unchecked unlink results, and the database deletion result is not checked before the handler returns success. The response is not proof that local deletion completed. Track remediation as DELETE-01 in [Pending work](backlog.md).
 

@@ -16,10 +16,10 @@ This document describes current source behavior. It is not a legal assessment an
 
 `UDC_Activator::activate()` defines the `{prefix}udc_submissions` table with:
 
-- identity and contact: first name, last name, date of birth, address, city, postal code, and phone;
+- identity and contact: first name, last name, date of birth, and phone;
 - health-related answers: general health, treatment, blood-thinning medication, allergies, and pregnancy or breastfeeding;
 - appointment and service details: appointment date, time, and piercing location;
-- consent and operational state: `liability_accepted`, generated `id`, and `created_at`;
+- consent and operational state: `liability_accepted`, nullable `minor_declared`, generated `id`, and `created_at`;
 - form metadata: `form_type`, `piercing_category`, `form_language`, `form_version`, and `form_evidence`.
 
 The liability field is stored as a boolean/tinyint. New tattoo and piercing submissions store the presented document text, version and language. Tattoo evidence begins in 1.8.3; older tattoo and unclassified legacy records can lack it and are explicitly marked unavailable in details. Piercing evidence also retains its selected care category.
@@ -40,7 +40,9 @@ Care draft reference sources: [APP body piercing aftercare](https://safepiercing
 
 ## Validation and result review
 
-**Verified from source:** address, city and postal code are optional in both services and are stored as empty strings when omitted. The remaining required controls stay required. Every required control has an asterisk in its translated label, including health dropdowns and acknowledgements. The introductions state that asterisk-marked fields/answers are required. Optional fields still reject arrays and excessive lengths. This changes validation only, not schema or historical records.
+**Verified from source, 1.12.0:** address, city and postal code are no longer collected, inserted or displayed. Activation explicitly drops `address`, `city` and `zip` if present, discarding their historical database values. The CREATE TABLE declaration and UDC_DB_VERSION change together. The migration verifies removal and does not advance the stored version after a failed inspection/drop, allowing retries. Retired request fields are ignored. Existing backup files and external copies are not rewritten or deleted by this schema migration.
+
+**Verified from source:** minority means under 18 by completed calendar years on the WordPress submission date, not the appointment date. February 29 birthdays reach the anniversary on March 1 in non-leap years. Minors without an explicit `1` declaration are rejected before insertion. New records store the submitted declaration as 0/1; historical records remain NULL, never an invented negative declaration. A declaration is not proof of guardian signature or attendance. The blank template is public; signed authorizations are not uploaded by this feature.
 
 **Verified:** new submissions reject impossible/future birth dates, dates outside the MySQL DATE range, and birth after the procedure date. Both browser birth-date fields have matching lower/current-date bounds. Text length is checked in Unicode characters rather than UTF-8 bytes, and restore uses the same character limits for identity/contact/location fields. Evidence/metadata byte limits are retained. Existing records are not retroactively edited.
 
@@ -63,6 +65,18 @@ Public form -> custom database table -> local JSON backup -> optional Google Dri
 ```
 
 `UDC_Backup::create_backup()` serializes all rows to JSON under the uploads directory. `UDC_GDrive::sync_backups()` can upload those files to a configured Drive folder. `UDC_Email_Sync::send_backup()` can attach the newest local JSON file to an email. These destinations create copies outside the primary table and may have different access, retention, and deletion controls.
+
+## Public form token caching: investigation 2026-10-29
+
+**Verified from source:** `UDC_Shortcode::render_nonce()` embeds the current WordPress nonce in the HTML for each service. `save_submission()` checks it before field validation and returns HTTP 403 with `Security check failed.` on failure. `enqueue_form_behavior()` prevents duplicate submission and restores buttons on Back navigation; it does not renew a token when a page stays open or is restored. `prevent_result_cache()` calls `nocache_headers()` only when `udc_result` is present. Ordinary initial form pages therefore have no plugin-specific cache exclusion in this implementation.
+
+**Inference:** a full-page/browser/hosting cache can retain a form beyond its nonce lifetime, or deliver a token that does not match a logged-in session. A long-open/restored tab or login/logout after opening the form can produce the same failure without a page-cache defect. Missing initial-page cache controls are an exposure to investigate, not proof of the cause of the reported two-person incident. Repeated equal guest tokens during one validity window are expected and do not prove caching. WordPress documents nonce lifetime and session binding in its [nonce handbook](https://developer.wordpress.org/apis/security/nonces/).
+
+**Verified live, limited to fresh anonymous requests on 2026-10-29:** the public tattoo page used Autoptimize 3.1.17 assets. Six variants (normal twice, `ao_noptimize=1`, unique query, both parameters, and mobile User-Agent) and the four linked French/German/Italian/English pages all returned a single nonempty nonce. Each nonce passed the initial server check: a deliberately incomplete POST without consent or personal/appointment fields returned HTTP 303 to the matching error result instead of HTTP 403. Autoptimize asset references dropped to zero in the two explicit bypass variants; the nonce fingerprint matched the normal response. The form was also opened in a browser with and without optimization, with no captured console errors during those readings. No completed browser submission or database insertion was performed.
+
+**Unknown:** settings of page/browser/hosting caches; logged-in behavior on the production site; the original failed HTTP requests and their age/session context; whether all deployed PHP matches this checkout. Fresh tests do not reproduce an intermittent old-cache failure. No `Cache-Control`, `Expires`, `Age` or cache-hit header identifying a full-page cache was observed on the initial-page responses. Autoptimize presence alone does not identify the component that cached any HTML. Its documented [diagnostic bypass](https://wordpress.org/plugins/autoptimize/#faq) is `ao_noptimize=1`; a changed query can also affect another cache, so a successful bypass in an affected browser would not by itself isolate the cause to JavaScript optimization.
+
+**Requirement for closure:** capture the next failure without recording contact/health fields, cookies or full tokens; compare page age, requested URL/language, authentication changes and rejection status. Validate a targeted full-page-cache exclusion for every actual form page and its language variants, and confirm POST handlers are never cached. Purging only optimized CSS/JS does not establish that old HTML or an already open tab was replaced. Keep nonce verification and administrative capabilities. Track production verification in FORM-NONCE-01 in [Pending work](backlog.md).
 
 ## Existing controls
 

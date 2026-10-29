@@ -20,6 +20,16 @@ const { spawn } = require('node:child_process');
         page.on('pageerror', error => errors.push(error.message));
         const preview = fs.readFileSync(path.join(os.tmpdir(), 'udc-forms-preview.html'), 'utf8').replaceAll('https://example.test/wp-admin/admin-post.php', origin + '/download');
         await page.setContent(preview);
+        await page.evaluate(() => document.fonts.ready);
+        for (const form of await page.locator('.udc-default').all()) {
+            const style = await form.evaluate(el => {
+                const field = getComputedStyle(el.querySelector('input[type=text]'));
+                const root = getComputedStyle(el);
+                return {color:root.color,background:root.backgroundColor,font:root.fontFamily,size:root.fontSize,radius:field.borderRadius,height:field.minHeight};
+            });
+            if (style.color !== 'rgb(0, 0, 0)' || style.background !== 'rgba(0, 0, 0, 0)' || style.size !== '18px' || style.radius !== '8px' || style.height !== '48px' || !style.font.includes('UDCRoboto')) throw new Error('Default accessible design mismatch: '+JSON.stringify(style));
+        }
+        if (!(await page.evaluate(() => document.fonts.check('18px UDCRoboto')))) throw new Error('Local Roboto did not load');
         const duplicateIds = await page.locator('[id]').evaluateAll(elements => elements.length - new Set(elements.map(el => el.id)).size);
         if (duplicateIds) throw new Error('Duplicate HTML IDs across the two form types');
         for (const width of [320, 390, 782, 1280]) {
@@ -53,7 +63,7 @@ const { spawn } = require('node:child_process');
             if (markerErrors.length) throw new Error('Required/optional markers disagree: ' + markerErrors.join(', '));
             for (const form of await page.locator('.udc-form,.udc-piercing-form').all()) {
                 for (const field of ['address','city','zip']) {
-                    if (await form.locator('[name=udc_'+field+']').evaluate(el => el.required)) throw new Error('Optional field is required: '+field);
+                    if (await form.locator('[name=udc_'+field+']').count()) throw new Error('Retired field remains: '+field);
                 }
             }
             await page.screenshot({ path: path.join(os.tmpdir(), 'udc-forms-' + width + '.png'), fullPage: true });
@@ -86,18 +96,24 @@ const { spawn } = require('node:child_process');
         await tattooDownload.saveAs(path.join(os.tmpdir(), 'udc-downloaded-tattoo-care.pdf'));
         console.log('PASS: Browser downloads tattoo care from the original form');
         const newForm = page.locator('.udc-piercing-form');
-        for (const [name, value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',address:'Test address',city:'Test city',zip:'1000',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic oral piercing'})) {
+        for (const [name, value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic oral piercing'})) {
             await newForm.locator('[name=udc_' + name + ']').fill(value);
         }
         await newForm.locator('[name=udc_dob]').fill('2999-01-01');
         if (!(await newForm.locator('[name=udc_dob]').evaluate(el => el.validity.rangeOverflow))) throw new Error('Piercing DOB lacks its upper bound');
         await newForm.locator('[name=udc_dob]').fill('1990-01-01');
-        await newForm.locator('[name=udc_address]').fill('');
-        await newForm.locator('[name=udc_zip]').fill('');
-        await newForm.locator('[name=udc_city]').fill('');
         for (const select of await newForm.locator('select[name^=udc_health_]').all()) await select.selectOption('2');
         await newForm.locator('[name=udc_piercing_category]').selectOption('oral');
         for (const checkbox of await newForm.locator('input[type=checkbox]').all()) await checkbox.check();
+        await newForm.locator('[name=udc_dob]').fill('2010-01-01');
+        await newForm.locator('[name=udc_minor_declared]').uncheck();
+        if (await newForm.evaluate(el => el.checkValidity())) throw new Error('Unchecked minor passed browser validation');
+        if (!(await newForm.locator('.udc-minor-error').textContent()).includes('under 18')) throw new Error('Minor error was not announced inline');
+        if (await newForm.locator('button[type=submit]').isDisabled()) throw new Error('Minor rejection locked the submit button');
+        await newForm.locator('[name=udc_minor_declared]').check();
+        if (!(await newForm.locator('.udc-minor-notice').isVisible())) throw new Error('Guardian notice did not expand');
+        await page.screenshot({path:path.join(os.tmpdir(),'udc-guardian-notice.png'),fullPage:true});
+        await newForm.locator('[name=udc_dob]').fill('1990-01-01');
         if (!(await newForm.evaluate(el => el.checkValidity()))) throw new Error('Complete synthetic form fails browser validation');
         const submitState = await newForm.evaluate(form => {
             const first = form.dispatchEvent(new Event('submit', {bubbles:true,cancelable:true}));
@@ -130,13 +146,16 @@ const { spawn } = require('node:child_process');
         if (posts !== 1) throw new Error('Piercing duplicate request reached the network');
         await page.setContent(preview);
         const original = page.locator('.udc-form');
-        if (await original.locator('input[type=checkbox]').count() !== 4 || await original.locator('input[type=checkbox]:checked').count() !== 0 || await original.locator('input[type=checkbox]:not([required])').count() !== 0) throw new Error('Tattoo acknowledgements must be four required, unchecked controls');
-        for (const [name,value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',address:'Test address',city:'Test city',zip:'1000',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic service'})) await original.locator('[name=udc_'+name+']').fill(value);
+        if (await original.locator('input[type=checkbox][required]').count() !== 4 || await original.locator('input[type=checkbox]:checked').count() !== 0 || await original.locator('input[type=checkbox]:not([required])').count() !== 1) throw new Error('Expected four required acknowledgements and one optional minority declaration');
+        for (const [name,value] of Object.entries({last_name:'Example',first_name:'Synthetic',dob:'1990-01-01',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic service'})) await original.locator('[name=udc_'+name+']').fill(value);
         for (const select of await original.locator('select').all()) await select.selectOption('2');
-        await original.locator('[name=udc_address]').fill('');
-        await original.locator('[name=udc_zip]').fill('');
-        await original.locator('[name=udc_city]').fill('');
         for (const checkbox of await original.locator('input[type=checkbox]').all()) await checkbox.check();
+        await original.locator('[name=udc_dob]').fill('2010-01-01');
+        await original.locator('[name=udc_minor_declared]').uncheck();
+        if (await original.evaluate(form => form.checkValidity())) throw new Error('Tattoo minor passed without declaration');
+        await original.locator('[name=udc_minor_declared]').check();
+        if (!(await original.locator('.udc-minor-notice').isVisible())) throw new Error('Tattoo guardian notice did not expand');
+        await original.locator('[name=udc_dob]').fill('1990-01-01');
         if (!(await original.evaluate(form => form.checkValidity()))) throw new Error('Complete original form fails browser validation');
         await original.locator('[name=udc_dob]').fill('2999-01-01');
         if (!(await original.locator('[name=udc_dob]').evaluate(el => el.validity.rangeOverflow))) throw new Error('Original DOB lacks its upper bound');

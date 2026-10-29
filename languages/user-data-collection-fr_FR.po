@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.11.1\n"
+"Project-Id-Version: User Data Collection 1.12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-28 17:52+0000\n"
-"PO-Revision-Date: 2026-10-28 17:52+0000\n"
+"POT-Creation-Date: 2026-10-29 17:36+0000\n"
+"PO-Revision-Date: 2026-10-29 17:36+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -1068,3 +1068,103 @@ msgstr "Impossible de générer l’image QR."
 
 msgid "Save changes before downloading. Use a dark QR color on its white panel."
 msgstr "Enregistrez avant de télécharger. Utilisez un QR foncé sur son encadré blanc."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "I am under 18 years old"
+msgstr "Je suis mineur(e)"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Minors must come to the appointment with the paper authorization completed and signed by their legal guardian."
+msgstr "Le mineur doit venir au rendez-vous avec l’autorisation sur papier remplie et signée par son représentant légal."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Download the legal guardian authorization template"
+msgstr "Télécharger le modèle d’autorisation du représentant légal"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "The authorization template is not available in this language. Contact the studio before your appointment to obtain it."
+msgstr "Le modèle d’autorisation n’est pas disponible dans cette langue. Contactez le studio avant le rendez-vous pour l’obtenir."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Your date of birth indicates that you are under 18, but you have not checked \"I am under 18 years old\". Check the box or correct your date of birth."
+msgstr "Votre date de naissance indique que vous avez moins de 18 ans, mais vous n’avez pas coché « Je suis mineur(e) ». Cochez la case ou corrigez votre date de naissance."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "General"
+msgstr "Général"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Legal guardian authorization"
+msgstr "Autorisation du représentant légal"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Select one blank authorization template per language, shared by the tattoo and piercing forms. Minors must bring the printed document completed and signed by their legal guardian. Accepted formats: PDF, JPG, JPEG, PNG, WebP and AVIF."
+msgstr "Sélectionnez un modèle d’autorisation vierge par langue, commun aux formulaires de tatouage et de piercing. Le mineur doit apporter le document imprimé rempli et signé par son représentant légal. Formats acceptés : PDF, JPG, JPEG, PNG, WebP et AVIF."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Select or change document"
+msgstr "Sélectionner ou changer le document"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Remove selection"
+msgstr "Retirer la sélection"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "No document selected."
+msgstr "Aucun document sélectionné."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "The document was not saved. Select a valid PDF, JPG, JPEG, PNG, WebP or AVIF attachment."
+msgstr "Le document n’a pas été enregistré. Sélectionnez une pièce jointe valide au format PDF, JPG, JPEG, PNG, WebP ou AVIF."
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Declared under 18"
+msgstr "Déclaration de minorité"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Not recorded"
+msgstr "Non enregistré"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "French"
+msgstr "Français"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "German"
+msgstr "Allemand"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Italian"
+msgstr "Italien"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "English"
+msgstr "Anglais"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Spanish"
+msgstr "Espagnol"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead."
+msgstr "Le style par défaut est optimisé pour les pages blanches et les appareils mobiles. Activez le style personnalisé pour utiliser les couleurs configurées."

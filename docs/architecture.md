@@ -16,7 +16,7 @@ The component and lifecycle descriptions below are **Verified** from `user-data-
 
 ## Entrypoint and lifecycle
 
-`user-data-collection.php` defines plugin constants, manually requires seventeen classes and the document-provider interface, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Sixteen class files are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`.
+`user-data-collection.php` defines plugin constants, manually requires eighteen classes and the document-provider interface, registers activation and deactivation callbacks, and attaches `udc_init_plugin()` to `plugins_loaded`. Sixteen class files are stored in `includes/class-udc-*.php`; `UDC_Validation` is stored in `includes/udc-validation.php`; `UDC_Guardian` is stored in `includes/udc-guardian.php`.
 
 On activation, `UDC_Activator::activate()` calls `dbDelta`, migrates the retired approval column, stores `UDC_DB_VERSION` only if that inspection/migration succeeds, and then calls the three scheduler methods. See [Data, security, and privacy](data-security-privacy.md) for the migration contract. On later loads, `udc_init_plugin()` calls the activator when the stored database version differs. It then instantiates `UDC_i18n`, `UDC_Shortcode`, `UDC_Document_Download`, `UDC_Piercing_Form`, `UDC_Backup`, `UDC_GDrive`, and `UDC_Email_Sync`. In an administrative request it also instantiates `UDC_Admin`, `UDC_QR_Poster` and `UDC_Settings`.
 
@@ -34,12 +34,13 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `UDC_Tattoo_Care_Document` | Owns translated tattoo aftercare shared between the original form and the reusable PDF provider. |
 | `UDC_Pdf_Renderer` | Owns the A4 print template, isolated PDF engine and temporary-artifact cleanup. |
 | `UDC_Document_Download` | Registers public providers, validates requests, restores locale context and streams complete PDF responses. |
+| `UDC_Guardian` | Resolves the active form language, validates blank authorization attachments, renders the shared minority declaration, and owns the five native media settings and original-file download. |
 | `UDC_Validation` | Shared static date, datetime, time, and length validators used by the shortcode handler and backup restore. |
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
 | `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Tattoos, Piercings, Backups and Settings views; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the ID detail link; ID is the first and responsive primary column. |
 | `UDC_Backup` | Creates local JSON snapshots, rotates local files, restores missing rows, accepts uploaded JSON, and exposes administrative AJAX actions. |
 | `UDC_QR_Poster` | Supplies admin QR poster defaults, validates settings, loads local rendering assets and renders buttons/previews. |
-| `UDC_Settings` | Registers integration, design and QR options and exposes the global Delete All Data action. |
+| `UDC_Settings` | Registers general guardian-document, integration, design and QR options and exposes the global Delete All Data action. |
 | `UDC_GDrive` | Creates JWT credentials from the configured service-account JSON, uploads local JSON files, lists Drive files, and rotates the configured folder. |
 | `UDC_Email_Sync` | Sends the newest local JSON file through `wp_mail` and registers the monthly scheduler. |
 | `UDC_i18n` | Loads the text domain and optionally registers and resolves Polylang strings. |
@@ -125,7 +126,7 @@ The document snapshot includes the four texts under document, alongside title/in
 
 ## Shared public-form styling
 
-**Verified from source:** UDC_Shortcode::form_styles() provides the existing piercing rules under fixed service-specific selectors. Piercing enqueues the shared rules; tattoo renders its scoped variant and a care-panel override. Both now use full-width fields, inherited font, 44px input/button minimum height, visible focus, custom checkboxes, select arrows and date/time color-scheme rules. Tattoo section headings follow the piercing h2/h3 hierarchy. No consent wording or data behavior changes.
+**Verified from source:** UDC_Shortcode::form_styles() provides the existing piercing rules under fixed service-specific selectors. Piercing enqueues the shared rules; tattoo renders its scoped variant and a care-panel override. With design disabled, both use local Roboto, black 18px base text, a transparent form container, rounded 48px controls, and visible focus through assets/forms/default.css. Custom design retains the existing color options and 44px base controls. Tattoo section headings follow the piercing h2/h3 hierarchy. See [Data, security, and privacy](data-security-privacy.md) for current validation and schema behavior.
 
 **Verified, checkbox styling:** both forms reuse the former tattoo checkbox shape and animated checkmark, with the existing background/border/check color options when design is enabled and visible neutral defaults otherwise. Reduced-motion preferences disable the transition. Native checked/required behavior and keyboard focus remain intact.
 
@@ -147,3 +148,11 @@ Canvas generation runs in the administrator's browser without a QR service. The 
 
 
 QR poster branding uses the transparent logo supplied by the studio, bundled as assets/qr/logo-titanium.png from https://titaniumlausanne.ch/wp-content/uploads/2024/10/Logo-titanium-galeria.png. The renderer awaits image decoding for previews and downloads, preserves aspect ratio and reports the existing translated error if loading fails. Bundling avoids remote Canvas access restrictions.
+
+## Guardian authorization in 1.12.0
+
+**Verified from source:** `UDC_Guardian` is shared by both forms. General settings contain one attachment ID for each of fr/de/it/en/es. Settings API handles saves with existing administrative capability checks; the media modal loads only on the General screen. A valid attachment requires a matching allowlisted extension/MIME and a non-trash attachment post. The active Polylang locale/slug or WordPress locale chooses the language; there is no cross-language document substitution. Missing documents show translated contact instructions and do not independently block submission.
+
+The minority notice states that the minor must bring a completed paper authorization signed by their legal guardian. `assets/forms/minor.js` enhances the initially visible no-JavaScript notice, validates before submit locking, and keeps errors connected to the checkbox. `save_submission()` repeats the age/declaration check and returns a service-bound signed `minor_error` receipt. Existing consent snapshots retain their original contracts.
+
+Public authenticated/anonymous `admin_post_udc_guardian_download` handlers serve only the configured language attachment's readable local original, with attachment and nosniff headers. No path or arbitrary URL is accepted. Offloaded media without a readable local original returns 404; no remote-fetch proxy is introduced.

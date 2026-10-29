@@ -10,6 +10,9 @@ class UDC_Shortcode
     public function __construct()
     {
         UDC_Document_Download::register('tattoo-care', new UDC_Tattoo_Care_Document());
+        add_action('init', ['UDC_Guardian', 'register_strings']);
+        add_action('admin_post_udc_guardian_download', ['UDC_Guardian', 'download']);
+        add_action('admin_post_nopriv_udc_guardian_download', ['UDC_Guardian', 'download']);
         add_action('init', ['UDC_Tattoo_Care_Document', 'register_strings']);
         add_shortcode('udc_tattoo_form', [$this, 'render_form']);
         add_shortcode('udc_contact_form', [$this, 'render_form']); // Compatibility for existing pages.
@@ -79,10 +82,10 @@ class UDC_Shortcode
     protected static function form_styles($piercing = false)
     {
         $enabled = get_option('udc_design_enabled', '0');
-        $text = $enabled ? UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff') : '#222222';
+        $text = $enabled ? UDC_Settings::get_valid_color('udc_design_input_text', '#ffffff') : '#000000';
         $background = $enabled ? UDC_Settings::get_valid_color('udc_design_input_bg', 'transparent') : '#ffffff';
         $border = $enabled ? UDC_Settings::get_valid_color('udc_design_input_border', 'rgba(255,255,255,0.5)') : '#767676';
-        $select_text = $enabled ? $text : 'inherit';
+        $select_text = $text;
         $arrow_color = $enabled ? $text : '#767676';
         $arrow = 'data:image/svg+xml,' . rawurlencode('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16"><path d="m4 6 4 4 4-4" fill="none" stroke="' . esc_attr($arrow_color) . '" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>');
         $scheme = $enabled && get_option('udc_design_invert_icons', '1') ? 'dark' : 'light';
@@ -93,11 +96,14 @@ class UDC_Shortcode
         $css = '.udc-piercing-form{max-width:760px;overflow-wrap:anywhere}.udc-piercing-form input:not([type=checkbox]):not([type=hidden]),.udc-piercing-form select{display:block;width:100%;max-width:100%;min-width:0;box-sizing:border-box;min-height:44px;padding:10px;font:inherit;background:' . $background . ';color:' . $text . ';border:1px solid ' . $border . '}.udc-piercing-form select option{background:#fff;color:#111}.udc-piercing-form :focus-visible{outline:2px solid currentColor;outline-offset:3px}.udc-piercing-form details{padding:12px 0;border-bottom:1px solid currentColor}.udc-piercing-form summary{cursor:pointer;min-height:32px}.udc-piercing-form .udc-resources{display:flex;flex-wrap:wrap;gap:16px}.udc-piercing-form button{min-height:44px;padding:10px 18px;font:inherit;cursor:pointer}.udc-piercing-form input[type=checkbox]{width:1.1em;height:1.1em;vertical-align:middle}' . $control_css;
         $checkbox_background = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_bg', 'transparent') : 'transparent';
         $checkbox_border = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_border', 'rgba(255, 255, 255, 0.5)') : '#767676';
-        $checkbox_check = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_check', '#ffffff') : '#222222';
+        $checkbox_check = $enabled ? UDC_Settings::get_valid_color('udc_design_cb_check', '#ffffff') : '#000000';
         $css .= '.udc-piercing-form input[type=checkbox]{appearance:none;-webkit-appearance:none;background-color:' . $checkbox_background . ';margin:0 8px 0 0;font:inherit;color:currentColor;width:1.15em;height:1.15em;box-sizing:border-box;border:1px solid ' . $checkbox_border . ';border-radius:0.15em;transform:translateY(-0.075em);display:inline-grid;place-content:center;cursor:pointer}';
         $css .= '.udc-piercing-form input[type=checkbox]::before{content:"";width:0.65em;height:0.65em;transform:scale(0);transition:120ms transform ease-in-out;box-shadow:inset 1em 1em ' . $checkbox_check . ';transform-origin:bottom left;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%)}';
         $css .= '.udc-piercing-form input[type=checkbox]:checked::before{transform:scale(1)}';
         $css .= '@media(prefers-reduced-motion:reduce){.udc-piercing-form input[type=checkbox]::before{transition:none}}';
+        if ($enabled) {
+            $css .= '.udc-piercing-form .udc-minor-notice{padding:16px;border-left:4px solid ' . UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff') . ';background:' . UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') . '}';
+        }
         return $piercing ? $css : str_replace('.udc-piercing-form', '.udc-form', $css);
     }
 
@@ -112,12 +118,12 @@ class UDC_Shortcode
         // Only display a result authenticated by the submission handler.
         if ('success' === $status) {
             echo '<div style="background-color: #b2c7b7; border: 1px solid #7d9482; color: #155724; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#10004; ' . esc_html(UDC_i18n::translate('msg_success')) . '</div>';
-        } elseif ('error' === $status) {
-            echo '<div style="background-color: #d2b6b9; border: 1px solid #a18185; color: #721c24; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#9888; ' . esc_html(UDC_i18n::translate('msg_error')) . '</div>';
+        } elseif (in_array($status, ['error', 'minor_error'], true)) {
+            echo '<div style="background-color: #d2b6b9; border: 1px solid #a18185; color: #721c24; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#9888; ' . esc_html('minor_error' === $status ? UDC_Guardian::translate('error') : UDC_i18n::translate('msg_error')) . '</div>';
         }
 
         $design_enabled = get_option('udc_design_enabled', '0');
-        $care_bg = $design_enabled ? UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') : 'rgba(0, 0, 0, 0.15)';
+        $care_bg = $design_enabled ? UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') : '#f1f5fa';
         $care_border = $design_enabled ? UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff') : '#ccc';
         ?>
         <style>
@@ -126,7 +132,7 @@ class UDC_Shortcode
             .udc-form .udc-care-instructions ul {margin:0;padding-left:20px}
         </style>
 
-        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form">
+        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form<?php echo $design_enabled ? '' : ' udc-default'; ?>">
             <h2><?php echo esc_html($document['document']['title']); ?></h2>
             <p><?php echo esc_html($document['document']['intro']); ?></p>
             <?php self::render_nonce('udc_form_action', $prefix); ?>
@@ -149,22 +155,11 @@ class UDC_Shortcode
                 <input type="date" id="<?php echo esc_attr($prefix); ?>dob" name="udc_dob" min="1000-01-01" max="<?php echo esc_attr(current_time('Y-m-d')); ?>" required>
             </p>
             <p>
-                <label for="<?php echo esc_attr($prefix); ?>address"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_address'), false)); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>address" name="udc_address" maxlength="255">
-            </p>
-            <p>
-                <label for="<?php echo esc_attr($prefix); ?>city"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_city'), false)); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>city" name="udc_city" maxlength="255">
-            </p>
-            <p>
-                <label for="<?php echo esc_attr($prefix); ?>zip"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_zip'), false)); ?></label><br>
-                <input type="text" id="<?php echo esc_attr($prefix); ?>zip" name="udc_zip" maxlength="50">
-            </p>
-            <p>
                 <label for="<?php echo esc_attr($prefix); ?>phone"><?php echo esc_html(self::field_label(UDC_i18n::translate('label_phone'))); ?></label><br>
                 <input type="tel" id="<?php echo esc_attr($prefix); ?>phone" name="udc_phone" maxlength="50" required>
             </p>
 
+            <?php UDC_Guardian::render($prefix); ?>
             <h3><?php echo esc_html(UDC_i18n::translate('title_health')); ?></h3>
             <?php self::render_health_fields(['UDC_i18n', 'translate'], $prefix); ?>
 
@@ -226,7 +221,9 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_register_script('udc-forms', false, [], '1.11.1', true);
+        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.12.0');
+        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.12.0', true);
+        wp_register_script('udc-forms', false, [], '1.12.0', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {
@@ -263,7 +260,7 @@ JS
         $key = $is_piercing ? 'udc_piercing_status' : 'udc_status';
         $status = isset($_GET[$key]) && is_string($_GET[$key]) ? wp_unslash($_GET[$key]) : '';
         $receipt = isset($_GET['udc_result']) && is_string($_GET['udc_result']) ? wp_unslash($_GET['udc_result']) : '';
-        if (!in_array($status, ['success', 'error'], true) || !preg_match('/^([0-9]{10})\.([a-f0-9]{64})$/D', $receipt, $parts)) {
+        if (!in_array($status, ['success', 'error', 'minor_error'], true) || !preg_match('/^([0-9]{10})\.([a-f0-9]{64})$/D', $receipt, $parts)) {
             return '';
         }
         $expires = (int) $parts[1];
@@ -326,7 +323,7 @@ JS
             wp_die('Security check failed.', 'Error', ['response' => 403]);
         }
 
-        $fields = ['last_name', 'first_name', 'dob', 'address', 'city', 'zip', 'phone', 'appointment_date', 'appointment_time', 'piercing_location', 'liability_accepted', 'health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];
+        $fields = ['last_name', 'first_name', 'dob', 'minor_declared', 'phone', 'appointment_date', 'appointment_time', 'piercing_location', 'liability_accepted', 'health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];
         foreach ($fields as $field) {
             $key = 'udc_' . $field;
             if (array_key_exists($key, $_POST) && !is_scalar($_POST[$key])) {
@@ -337,9 +334,6 @@ JS
         $last_name = $this->sanitize_request_value('udc_last_name');
         $first_name = $this->sanitize_request_value('udc_first_name');
         $dob = $this->sanitize_request_value('udc_dob');
-        $address = $this->sanitize_request_value('udc_address');
-        $city = $this->sanitize_request_value('udc_city');
-        $zip = $this->sanitize_request_value('udc_zip');
         $phone = $this->sanitize_request_value('udc_phone');
         $appointment_date = $this->sanitize_request_value('udc_appointment_date');
         $appointment_time = $this->sanitize_request_value('udc_appointment_time');
@@ -366,8 +360,17 @@ JS
 
         $appointment_time = $this->normalize_time($appointment_time);
         $required = [$last_name, $first_name, $dob, $phone, $appointment_date, $appointment_time, $piercing_location, $liability_accepted];
-        if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || $dob < '1000-01-01' || $appointment_date < '1000-01-01' || $dob > current_time('Y-m-d') || $dob > $appointment_date || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($address, 255) || !$this->within_length($city, 255) || !$this->within_length($zip, 50) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
+        if (in_array('', $required, true) || !$this->valid_date($dob) || !$this->valid_date($appointment_date) || $dob < '1000-01-01' || $appointment_date < '1000-01-01' || $dob > current_time('Y-m-d') || $dob > $appointment_date || false === $appointment_time || !$this->within_length($last_name, 255) || !$this->within_length($first_name, 255) || !$this->within_length($phone, 50) || !$this->within_length($piercing_location, 255)) {
             $this->redirect_error($is_piercing);
+        }
+
+        $minor_declared = 0;
+        if (array_key_exists('udc_minor_declared', $_POST)) {
+            if (!is_string($_POST['udc_minor_declared']) || '1' !== wp_unslash($_POST['udc_minor_declared'])) { $this->redirect_error($is_piercing); }
+            $minor_declared = 1;
+        }
+        if (!$minor_declared && UDC_Validation::is_minor($dob, current_time('Y-m-d'))) {
+            $this->redirect_result('minor_error', $is_piercing);
         }
 
         $extra = $is_piercing ? UDC_Piercing_Form::submission_evidence() : self::submission_evidence();
@@ -391,9 +394,7 @@ JS
                 'last_name' => $last_name,
                 'first_name' => $first_name,
                 'dob' => $dob,
-                'address' => $address,
-                'city' => $city,
-                'zip' => $zip,
+                'minor_declared' => $minor_declared,
                 'phone' => $phone,
                 'health_good' => $health_good,
                 'health_treatment' => $health_treatment,
@@ -405,24 +406,7 @@ JS
                 'appointment_time' => $appointment_time,
                 'piercing_location' => $piercing_location
             ] + $extra,
-            [
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%s',
-                '%d',
-                '%d',
-                '%d',
-                '%d',
-                '%d',
-                '%d',
-                '%s',
-                '%s',
-                '%s', '%s', '%s', '%s', '%s', '%s'
-            ]
+            ['%s', '%s', '%s', '%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
         );
 
         if (false === $inserted) {

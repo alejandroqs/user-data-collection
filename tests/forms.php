@@ -39,7 +39,7 @@ check(str_contains($tattoo_html, 'TATTOO AFTERCARE INSTRUCTIONS') && !str_contai
 check(substr_count($tattoo_html, '<select ') === 5 && !str_contains($tattoo_html, 'type="checkbox" name="udc_health_'), 'Existing form has five labelled health dropdowns');
 check(substr_count($tattoo_html, 'value="2"') === 5 && substr_count($tattoo_html, 'value="0"') === 5, 'Each dropdown distinguishes No and Discuss');
 $piercing_html = $piercing->render_form();
-check(str_contains($piercing_html, 'value="udc_submit_piercing"') && substr_count($piercing_html, 'type="checkbox"') === 4, 'Piercing form has its own action and four explicit acknowledgements');
+check(str_contains($piercing_html, 'value="udc_submit_piercing"') && substr_count($piercing_html, 'type="checkbox"') === 5, 'Piercing form has its own action and four explicit acknowledgements');
 check(substr_count($piercing_html, '<details>') === 5 && substr_count($piercing_html, 'udc_piercing_care') === 5, 'Five care categories have accessible disclosures and downloads');
 check(!str_contains($piercing_html, 'Laisser un avis') && !str_contains($piercing_html, 'Nous découvrir'), 'Piercing form has no website or review calls to action');
 $GLOBALS['options']['udc_piercing_review_url'] = 'https://example.test/review';
@@ -104,7 +104,7 @@ check(!is_wp_error($restored) && $restored[0]['health_allergies'] === 2 && $rest
 $legacy = synthetic_row(); $legacy['is_confirmed'] = 1; $legacy['zip_city'] = $legacy['city']; unset($legacy['city'], $legacy['zip']);
 $normalized = invoke_private($backup, 'validate_backup_rows', [$legacy]);
 $roundtrip = invoke_private($backup, 'validate_backup_rows', $normalized);
-check(!is_wp_error($roundtrip) && $roundtrip[0]['zip'] === '' && $roundtrip[0]['form_type'] === 'legacy', 'Historical data survives normalization and a new-format restore without invented service classification');
+check(!is_wp_error($roundtrip) && !array_key_exists('zip', $roundtrip[0]) && $roundtrip[0]['form_type'] === 'legacy', 'Historical data survives normalization and a new-format restore without invented service classification');
 foreach (['form_type' => 'invalid', 'form_evidence' => '{}', 'form_language' => 'mismatch', 'piercing_category' => 'unsupported', 'liability_accepted' => 2] as $field => $value) {
     $bad = $saved_piercing; $bad[$field] = $value;
     check(is_wp_error(invoke_private($backup, 'validate_backup_rows', [$bad])), 'Backup rejects invalid ' . $field);
@@ -157,7 +157,9 @@ check(str_contains($detail, 'Accepted document') && str_contains($detail, 'Not s
 if (in_array('--preview', $argv ?? [], true)) {
     $piercing->enqueue_styles();
     $tattoo->enqueue_form_behavior();
-    $html = '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic consent preview</title><style>body{font:16px/1.6 system-ui;margin:24px auto;padding:0 16px;max-width:760px}input,select{max-width:100%;box-sizing:border-box}label{display:inline-block}h2{margin-top:40px}' . $GLOBALS['form_css'] . '</style><body>' . $tattoo_html . '<hr>' . $piercing_html . '<script>' . $GLOBALS['form_script'] . '</script></body></html>';
+    $default_css = file_get_contents(dirname(__DIR__) . '/assets/forms/default.css');
+    $default_css = str_replace('../fonts/Roboto.ttf', 'data:font/ttf;base64,' . base64_encode(file_get_contents(dirname(__DIR__) . '/assets/fonts/Roboto.ttf')), $default_css);
+    $html = '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic consent preview</title><style>body{font:16px/1.6 system-ui;margin:24px auto;padding:0 16px;max-width:760px}input,select{max-width:100%;box-sizing:border-box}label{display:inline-block}h2{margin-top:40px}' . $GLOBALS['form_css'] . $default_css . '</style><body>' . $tattoo_html . '<hr>' . $piercing_html . '<script>' . file_get_contents(dirname(__DIR__) . '/assets/forms/minor.js') . $GLOBALS['form_script'] . '</script></body></html>';
     file_put_contents(sys_get_temp_dir() . '/udc-forms-preview.html', $html);
     $GLOBALS['options']['udc_design_enabled'] = '1';
     file_put_contents(sys_get_temp_dir() . '/udc-forms-design-preview.html', '<!doctype html><html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font:16px system-ui;background:#222;color:#fff;max-width:760px;margin:auto;padding:20px}</style><body>' . $tattoo->render_form() . $tattoo->render_form() . '</body></html>');

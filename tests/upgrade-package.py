@@ -27,6 +27,7 @@ def main():
     parser.add_argument('--package', required=True, type=Path, help='New release ZIP')
     parser.add_argument('--wordpress-zip', type=Path, help='Optional cached official WordPress ZIP')
     parser.add_argument('--old-ref', default='v1.5.0', help='Local historical Git ref to install first')
+    parser.add_argument('--browser', action='store_true', help='Exercise real WordPress settings, media selection and both public forms in Edge')
     args = parser.parse_args()
     package = args.package.resolve(strict=True)
     workspace = Path(tempfile.mkdtemp(prefix='udc-wordpress-upgrade-')).resolve()
@@ -124,6 +125,20 @@ def main():
             $upgrader = new Plugin_Upgrader(new Capturing_Upgrader_Skin());
             $result = $upgrader->install($argv[2], ['overwrite_package'=>true]);
             ensure($result === true, 'Confirmed replacement overwrites the existing plugin without manual deletion');
+        } elseif ($argv[1] === 'browser') {
+            update_option('home',$argv[2]); update_option('siteurl',$argv[2]);
+            update_option('udc_design_enabled',0);
+            $page=wp_insert_post(['post_title'=>'Synthetic forms','post_content'=>'[udc_tattoo_form][udc_piercing_form]','post_type'=>'page','post_status'=>'publish']);
+            $uploads=wp_upload_dir(); wp_mkdir_p($uploads['path']);
+            $file=$uploads['path'].'/guardian-browser.pdf'; file_put_contents($file,"%PDF-1.4\n%%EOF\n");
+            $attachment=wp_insert_attachment(['post_title'=>'Guardian browser fixture','post_mime_type'=>'application/pdf','post_status'=>'inherit'],$file);
+            foreach(['fr','de','it','en','es'] as $language) update_option('udc_guardian_document_'.$language,$attachment);
+            echo json_encode(['page'=>$page,'attachment'=>$attachment]);
+        } elseif ($argv[1] === 'browser-verify') {
+            $table=$wpdb->prefix.'udc_submissions';
+            foreach(['tattoo','piercing'] as $type) {
+                ensure((int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table WHERE form_type=%s AND minor_declared=1",$type))===1,'Native browser submission persisted exactly once: '.$type);
+            }
         } else {
             if (!is_plugin_active('user-data-collection/user-data-collection.php')) {
                 ensure(!is_wp_error(activate_plugin('user-data-collection/user-data-collection.php')), 'Updated plugin can be activated');
@@ -131,13 +146,41 @@ def main():
             $before=json_decode(file_get_contents(__DIR__.'/before.json'),true);
             $table=$wpdb->prefix.'udc_submissions';
             $after=$wpdb->get_row("SELECT * FROM $table",ARRAY_A);
-            ensure(UDC_DB_VERSION === '1.11.1' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.11.1');
+            ensure(UDC_DB_VERSION === '1.12.0' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.12.0');
             ensure((int)$wpdb->get_var("SELECT COUNT(*) FROM $table") === 1, 'Existing record count is preserved');
             foreach($before['row'] as $key=>$value) {
-                if ($key === 'is_confirmed') continue;
-                ensure(isset($after[$key]) && (string)$after[$key] === (string)$value, 'Existing field preserved: '.$key);
+                if (in_array($key, ['is_confirmed','address','city','zip','zip_city'], true)) continue;
+                ensure(array_key_exists($key,$after) && (string)$after[$key] === (string)$value, 'Existing field preserved: '.$key);
             }
             ensure($after['form_type'] === 'legacy', 'Historical record is retained as legacy');
+            $columns=$wpdb->get_col("SHOW COLUMNS FROM $table");
+            ensure(!array_intersect(['address','city','zip'], $columns), 'Retired contact columns are physically removed');
+            ensure(array_key_exists('minor_declared', $after) && null === $after['minor_declared'], 'Historical minority declaration remains unknown');
+            $backup=new UDC_Backup();
+            $validate=new ReflectionMethod($backup,'validate_backup_rows');
+            $validate->setAccessible(true);
+            $normalized=$validate->invoke($backup,[$before['row']]);
+            ensure(!is_wp_error($normalized) && !array_intersect(['address','city','zip'],array_keys($normalized[0])), 'Historical backup normalization discards retired fields');
+            $normalized[0]['id']=999;
+            $restore=new ReflectionMethod($backup,'insert_backup_data');
+            $restore->setAccessible(true);
+            ensure($restore->invoke($backup,$normalized)===1, 'Historical backup inserts into the real reduced schema');
+            ensure((int)$wpdb->get_var("SELECT COUNT(*) FROM $table")===2, 'Restore adds exactly one synthetic record');
+            $uploads=wp_upload_dir();
+            wp_mkdir_p($uploads['path']);
+            $media_file=$uploads['path'].'/guardian-example.pdf';
+            file_put_contents($media_file, "%PDF-1.4\n%%EOF\n");
+            $attachment=wp_insert_attachment(['post_title'=>'Synthetic guardian template','post_mime_type'=>'application/pdf','post_status'=>'inherit'],$media_file);
+            ensure(UDC_Guardian::valid_attachment($attachment), 'Native WordPress PDF attachment passes validation');
+            UDC_Guardian::register_settings();
+            foreach(['fr','de','it','en','es'] as $language) {
+                update_option('udc_guardian_document_'.$language,$attachment);
+                ensure((int)get_option('udc_guardian_document_'.$language)===$attachment,'Native per-language media setting persists: '.$language);
+            }
+            update_option('udc_guardian_document_fr',999999);
+            ensure((int)get_option('udc_guardian_document_fr')===$attachment,'Invalid native attachment selection preserves the previous option');
+            wp_delete_attachment($attachment,true);
+            ensure(!UDC_Guardian::valid_attachment($attachment),'Deleted native attachment becomes unavailable');
             ensure(get_option('udc_design_enabled') === '1' && get_option('udc_design_input_text') === '#123456', 'Existing settings are preserved');
             echo 'WORDPRESS_VERSION=' . $wp_version . PHP_EOL;
             echo 'MYSQL_VERSION=' . $wpdb->db_version() . PHP_EOL;
@@ -151,6 +194,18 @@ def main():
             output=execute(['php',str(runner),phase,str(archive)],cwd=site)
             print(output,flush=True)
         print('PASS: real WordPress ZIP replacement and data/settings preservation', flush=True)
+        if args.browser:
+            with socket.socket() as sock:
+                sock.bind(('127.0.0.1',0)); web_port=sock.getsockname()[1]
+            origin='http://127.0.0.1:'+str(web_port)
+            setup=json.loads(execute(['php',str(runner),'browser',origin],cwd=site))
+            web_log=(workspace/'http.log').open('wb')
+            web_server=subprocess.Popen(['php','-S','127.0.0.1:'+str(web_port),'-t',str(site)],stdout=web_log,stderr=subprocess.STDOUT,creationflags=getattr(subprocess,'CREATE_NO_WINDOW',0))
+            try:
+                print(execute(['node',str(ROOT/'tests/guardian-native-browser.cjs'),origin,str(setup['page'])],cwd=ROOT),flush=True)
+                print(execute(['php',str(runner),'browser-verify',origin],cwd=site),flush=True)
+            finally:
+                web_server.terminate(); web_server.wait(timeout=10); web_log.close()
     finally:
         shutdown = "mysqli_report(MYSQLI_REPORT_OFF); $db=@new mysqli('127.0.0.1','root','',''," + str(port) + "); if (!$db->connect_errno) { @$db->query('SHUTDOWN'); }"
         subprocess.run(['php', '-r', shutdown], capture_output=True)

@@ -21,6 +21,7 @@ def build(output, tag=None):
     files = [entry, *sorted((ROOT / 'includes').glob('*.php'))]
     assert len(list((ROOT / 'includes').glob('class-udc-*.php'))) == 16, 'Unexpected class inventory'
     files += sorted(path for path in (ROOT / 'assets/qr').iterdir() if path.is_file())
+    files += sorted(path for folder in ['assets/forms', 'assets/fonts'] for path in (ROOT / folder).iterdir() if path.is_file())
     files += sorted(path for path in (ROOT / 'languages').iterdir() if path.suffix in ('.po', '.mo', '.pot'))
     runtime = ROOT / 'runtime/pdf'
     manifest = json.loads((runtime / 'manifest.json').read_text(encoding='utf-8'))

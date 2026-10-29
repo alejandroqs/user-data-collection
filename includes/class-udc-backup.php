@@ -232,7 +232,8 @@ class UDC_Backup
         if (!is_array($data) || (count($data) > 0 && $data_keys !== range(0, count($data) - 1)) || count($data) > 10000) {
             return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }
-        $current = $this->backup_columns();
+        $current = array_values(array_diff($this->backup_columns(), ['minor_declared']));
+        $current = array_merge($current, ['address', 'city', 'zip']);
         $pre_forms = array_values(array_diff($current, ['form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence']));
         $previous = array_merge($pre_forms, ['is_confirmed']);
         $legacy = array_values(array_diff($previous, ['city','zip']));
@@ -248,13 +249,18 @@ class UDC_Backup
                     return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
                 }
             }
+            $minor_declared = $row['minor_declared'] ?? null;
+            if (null !== $minor_declared && !in_array($minor_declared, [0, 1, '0', '1'], true)) { return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection')); }
+            $has_minor = array_key_exists('minor_declared', $row);
+            unset($row['minor_declared']);
             $keys = array_keys($row);
             sort($keys);
             $current_keys = $current; sort($current_keys);
             $pre_forms_keys = $pre_forms; sort($pre_forms_keys);
             $previous_keys = $previous; sort($previous_keys);
             $legacy_keys = $legacy; sort($legacy_keys);
-            $row_mode = $keys === $current_keys ? 'current' : ($keys === $pre_forms_keys ? 'pre_forms' : ($keys === $previous_keys ? 'previous' : ($keys === $legacy_keys ? 'legacy' : false)));
+            $new_keys = array_values(array_diff($current, ['address', 'city', 'zip'])); sort($new_keys);
+            $row_mode = $has_minor && $keys === $new_keys ? 'new' : ($keys === $current_keys ? 'current' : ($keys === $pre_forms_keys ? 'pre_forms' : ($keys === $previous_keys ? 'previous' : ($keys === $legacy_keys ? 'legacy' : false))));
             if (false === $row_mode || (null !== $mode && $mode !== $row_mode)) {
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
@@ -270,9 +276,11 @@ class UDC_Backup
                 $row['zip'] = '';
                 unset($row['zip_city']);
             }
-            if ('current' !== $mode) {
+            if (!in_array($mode, ['current', 'new'], true)) {
                 $row += ['form_type' => 'legacy', 'piercing_category' => '', 'form_language' => '', 'form_version' => '', 'form_evidence' => ''];
             }
+            unset($row['address'], $row['city'], $row['zip'], $row['zip_city']);
+            $row['minor_declared'] = null === $minor_declared ? null : (int) $minor_declared;
             $validated = $this->validate_backup_row($row, 'legacy' === $mode || ('current' === $mode && 'legacy' === $row['form_type']));
             if (is_wp_error($validated)) {
                 return $validated;
@@ -284,7 +292,7 @@ class UDC_Backup
 
     private function validate_backup_row($row, $legacy_schema = false)
     {
-        $lengths = ['last_name'=>255,'first_name'=>255,'address'=>255,'city'=>255,'zip'=>50,'phone'=>50,'piercing_location'=>255];
+        $lengths = ['last_name'=>255,'first_name'=>255,'phone'=>50,'piercing_location'=>255];
         if (!is_array($row)) {
             return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }
@@ -297,8 +305,7 @@ class UDC_Backup
             return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
         }
         foreach ($lengths as $field => $length) {
-            $optional = in_array($field, ['address', 'city', 'zip'], true);
-            if (!is_string($row[$field]) || ('' === $row[$field] && !$optional) || !UDC_Validation::within_length($row[$field], $length)) {
+            if (!is_string($row[$field]) || '' === $row[$field] || !UDC_Validation::within_length($row[$field], $length)) {
                 return new WP_Error('restore_error', __('Backup could not be restored.', 'user-data-collection'));
             }
         }
@@ -355,12 +362,12 @@ class UDC_Backup
 
     private function backup_columns()
     {
-        return ['id','last_name','first_name','dob','address','city','zip','phone','health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','appointment_date','appointment_time','piercing_location','created_at','form_type','piercing_category','form_language','form_version','form_evidence'];
+        return ['id','last_name','first_name','dob','minor_declared','phone','health_good','health_treatment','health_blood_thinners','health_allergies','health_pregnant','liability_accepted','appointment_date','appointment_time','piercing_location','created_at','form_type','piercing_category','form_language','form_version','form_evidence'];
     }
 
     private function backup_formats()
     {
-        return ['%d','%s','%s','%s','%s','%s','%s','%s','%d','%d','%d','%d','%d','%d','%s','%s','%s','%s','%s','%s','%s','%s','%s'];
+        return ['%d','%s','%s','%s','%d','%s','%d','%d','%d','%d','%d','%d','%s','%s','%s','%s','%s','%s','%s','%s','%s'];
     }
 
     public function ajax_create_backup()
