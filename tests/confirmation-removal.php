@@ -174,7 +174,7 @@ $_GET = ['orderby' => 'is_confirmed'];
 $_REQUEST = ['appt_filter' => 'upcoming'];
 $table->prepare_items();
 $columns = $table->get_columns();
-check(count($columns) === 8 && !isset($columns['is_confirmed']) && !isset($columns['action']), 'List contains eight data columns without empty action/status columns');
+check(count($columns) === 9 && !isset($columns['is_confirmed']) && !isset($columns['action']), 'List contains nine data columns including minority without empty action/status columns');
 $query = end($wpdb->queries);
 check(str_contains($query, 'ORDER BY appointment_date ASC LIMIT 20 OFFSET 20'), 'Old status sort URL falls back while retaining pagination');
 $headers = (new ReflectionProperty(WP_List_Table::class, '_column_headers'))->getValue($table);

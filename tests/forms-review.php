@@ -121,7 +121,7 @@ check(str_contains($detail, '<strong>Care category:</strong>') && str_contains($
 check(str_contains($detail, esc_html($saved_piercing['piercing_location'])) && str_contains($detail, 'Not sure / discuss in person'), 'Exact body location and selected health answers remain in details');
 foreach (['udc-submissions', 'udc-piercings'] as $page) {
     $_GET = ['page' => $page]; $admin->enqueue_styles();
-    check(str_contains($GLOBALS['form_css'], 'column-dob') && str_contains($GLOBALS['form_css'], 'white-space:nowrap'), 'Both admin tables receive nonwrapping date-heading styles');
+    check(str_contains($GLOBALS['admin_form_css'] ?? $GLOBALS['form_css'], 'column-dob') && str_contains($GLOBALS['admin_form_css'] ?? $GLOBALS['form_css'], 'white-space:nowrap'), 'Both admin tables receive nonwrapping date-heading styles');
 }
 $_GET = [];
 

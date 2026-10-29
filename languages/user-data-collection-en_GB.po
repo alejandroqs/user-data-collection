@@ -1,14 +1,14 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.12.0\n"
+"Project-Id-Version: User Data Collection 1.13.0\n"
 "Report-Msgid-Bugs-To: \n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-29 17:36+0000\n"
-"PO-Revision-Date: 2026-10-29 17:36+0000\n"
+"POT-Creation-Date: 2026-10-29 18:56+0000\n"
+"PO-Revision-Date: 2026-10-29 18:56+0000\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: scripts/update-translations.py\n"
@@ -1274,3 +1274,23 @@ msgstr "Spanish"
 #: includes/udc-guardian.php
 msgid "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead."
 msgstr "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Submit my consent"
+msgstr "Submit my consent"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoo Waivers"
+msgstr "Tattoo waivers"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing Waivers"
+msgstr "Waivers for piercings"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Is a minor"
+msgstr "Is a minor"

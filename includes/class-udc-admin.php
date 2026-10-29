@@ -17,15 +17,16 @@ class UDC_Admin
     {
         $page = isset($_GET['page']) && is_string($_GET['page']) ? wp_unslash($_GET['page']) : '';
         if (!current_user_can('manage_options') || !in_array($page, ['udc-submissions', 'udc-piercings'], true)) { return; }
-        wp_register_style('udc-admin', false, [], '1.11.1');
+        wp_register_style('udc-admin', false, [], '1.13.0');
         wp_enqueue_style('udc-admin');
         wp_add_inline_style('udc-admin', '@media(min-width:783px){#udc-filter .column-id{width:9em}#udc-filter .column-id .row-actions{white-space:nowrap}#udc-filter .column-dob{width:13em;white-space:nowrap}#udc-filter th.column-dob a{display:flex;align-items:center;gap:4px}#udc-filter th.column-dob .sorting-indicators{flex-shrink:0}}');
+        wp_add_inline_style('udc-admin', '.udc-minority-badge{display:inline-block;min-width:24px;padding:2px 9px;border-radius:999px;font-weight:600;line-height:1.6;text-align:center;white-space:nowrap;color:#fff}.udc-minority-no{background:#146c2e}.udc-minority-yes{background:#a61b1b}.udc-minority-unknown{background:#50575e}@media(min-width:783px){#udc-filter .column-minor{width:6em;white-space:nowrap}}');
     }
 
     public function add_admin_menu()
     {
         add_menu_page(
-            __('Tattoos', 'user-data-collection'),
+            __('Tattoo Waivers', 'user-data-collection'),
             __('Waivers', 'user-data-collection'),
             'manage_options',
             'udc-submissions',
@@ -34,8 +35,8 @@ class UDC_Admin
             30
         );
 
-        add_submenu_page('udc-submissions', __('Tattoos', 'user-data-collection'), __('Tattoos', 'user-data-collection'), 'manage_options', 'udc-submissions', [$this, 'render_admin_page']);
-        add_submenu_page('udc-submissions', __('Piercings', 'user-data-collection'), __('Piercings', 'user-data-collection'), 'manage_options', 'udc-piercings', [$this, 'render_piercing_page']);
+        add_submenu_page('udc-submissions', __('Tattoo Waivers', 'user-data-collection'), __('Tattoos', 'user-data-collection'), 'manage_options', 'udc-submissions', [$this, 'render_admin_page']);
+        add_submenu_page('udc-submissions', __('Piercing Waivers', 'user-data-collection'), __('Piercings', 'user-data-collection'), 'manage_options', 'udc-piercings', [$this, 'render_piercing_page']);
 
         add_submenu_page(
             'udc-submissions',
@@ -92,7 +93,7 @@ class UDC_Admin
         $list_table->prepare_items();
         ?>
         <div class="wrap">
-            <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Submissions' : 'Tattoos', 'user-data-collection'); ?></h1>
+            <h1 class="wp-heading-inline"><?php echo esc_html__($this->is_piercing ? 'Piercing Waivers' : 'Tattoo Waivers', 'user-data-collection'); ?></h1>
 
             <?php UDC_QR_Poster::button($this->is_piercing ? 'piercing' : 'tattoo'); ?>
             <p><code><?php echo esc_html($this->is_piercing ? '[udc_piercing_form]' : '[udc_tattoo_form]'); ?></code></p>
@@ -173,7 +174,7 @@ class UDC_Admin
                                         <th><?php esc_html_e('Date of Birth', 'user-data-collection'); ?></th>
                                         <td><?php echo esc_html($submission->dob); ?></td>
                                     </tr>
-                                    <tr><th><?php echo esc_html(UDC_Guardian::translate('declared')); ?></th><td><?php echo esc_html(!isset($submission->minor_declared) ? UDC_Guardian::translate('unknown') : UDC_i18n::translate((int) $submission->minor_declared === 1 ? 'answer_yes' : 'answer_no')); ?></td></tr>
+                                    <tr><th><?php echo esc_html(UDC_Guardian::translate('is_minor')); ?>:</th><td><?php echo UDC_Guardian::badge($submission); ?></td></tr>
                                     <tr>
                                         <th><?php esc_html_e('Phone', 'user-data-collection'); ?></th>
                                         <td><?php echo esc_html($submission->phone); ?></td>

@@ -104,6 +104,7 @@ class UDC_i18n
             'care_5' => 'Monitoring for signs of infection: Redness, pain, heat, yellow or green discharge. If you notice these signs, consult a healthcare professional. An infection must be treated quickly.',
             'care_6' => 'Healing time: Healing time varies depending on the location of the piercing. Earlobe piercings usually take 6 to 8 weeks, while cartilage, nose, or navel piercings can take several months.',
 
+            'tattoo_submit_btn' => 'Submit my consent',
             'submit_btn' => 'Submit'
         ];
     }

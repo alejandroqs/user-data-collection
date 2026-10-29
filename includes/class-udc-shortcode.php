@@ -101,6 +101,8 @@ class UDC_Shortcode
         $css .= '.udc-piercing-form input[type=checkbox]::before{content:"";width:0.65em;height:0.65em;transform:scale(0);transition:120ms transform ease-in-out;box-shadow:inset 1em 1em ' . $checkbox_check . ';transform-origin:bottom left;clip-path:polygon(14% 44%,0 65%,50% 100%,100% 16%,80% 0%,43% 62%)}';
         $css .= '.udc-piercing-form input[type=checkbox]:checked::before{transform:scale(1)}';
         $css .= '@media(prefers-reduced-motion:reduce){.udc-piercing-form input[type=checkbox]::before{transition:none}}';
+        $css .= '.udc-piercing-form .udc-minor{margin-bottom:24px}.udc-piercing-form details + p{margin-top:16px}';
+        $css .= '.udc-piercing-form .udc-minor-error:not(:empty){margin-bottom:24px}';
         if ($enabled) {
             $css .= '.udc-piercing-form .udc-minor-notice{padding:16px;border-left:4px solid ' . UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff') . ';background:' . UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') . '}';
         }
@@ -206,7 +208,7 @@ class UDC_Shortcode
             <?php endif; ?>
 
             <p>
-                <button type="submit"><?php echo esc_html(UDC_i18n::translate('submit_btn')); ?></button>
+                <button type="submit"><?php echo esc_html(UDC_i18n::translate('tattoo_submit_btn')); ?></button>
             </p>
         </form>
 
@@ -221,9 +223,9 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.12.0');
-        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.12.0', true);
-        wp_register_script('udc-forms', false, [], '1.12.0', true);
+        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.13.0');
+        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.13.0', true);
+        wp_register_script('udc-forms', false, [], '1.13.0', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 document.addEventListener('submit', function (event) {

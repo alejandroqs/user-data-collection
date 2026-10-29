@@ -20,7 +20,7 @@ The plugin header and PDF runtime require PHP 7.4+. The repository does not decl
 
 ## Translations
 
-**Current source:** the generator requires 114 message IDs per locale, including QR administration labels. Counts and versions in dated execution records describe their original checkpoints.
+**Current source:** the generator requires 118 message IDs per locale, including QR administration labels. Counts and versions in dated execution records describe their original checkpoints.
 
 **Verified, generated and checked on 2026-10-25:** bundled catalogs cover the new piercing form, the four explicit health-answer strings and eight new administration strings (64 required message IDs per locale). Existing variants are de_CH, de_DE, en_GB, es_ES, fr, fr_CH, fr_FR, it_CH and it_IT. Every PO has a matching compiled MO and the language header matches its filename. POT and PO project metadata now match plugin version 1.8.0. Two identical pre-existing POT duplicates were normalized; 1,538 pre-existing nonempty translations were compared with Git HEAD and preserved exactly.
 
@@ -77,7 +77,7 @@ python -m pip install -r tests/requirements-pdf.txt
 python tests/pdf-documents.py
 php tests/forms-review.php
 python scripts/update-translations.py
-python scripts/build-package.py --tag v1.11.1
+python scripts/build-package.py --tag v1.13.0
 ```
 
 The build script regenerates only runtime/pdf, a Git-ignored build output containing isolated dependency source, Unicode fonts, original licenses, a relative plugin-owned autoloader and a SHA-256 manifest. vendor and tools/pdf-build/vendor are ignored as well. Source checkouts must build the runtime before using PDF downloads. The package command defaults to tmp/user-data-collection.zip. tmp contains synthetic test artifacts and is excluded from Git and the release ZIP. Dependency licenses are preserved; the unresolved project license remains META-01.
@@ -187,4 +187,18 @@ Outputs are ignored `tmp/qr-tattoo.png` and `tmp/qr-piercing.png`. The test does
 
 **Verified, executed:** `python tests/pdf-documents.py` also parses 55 PDFs and checks the unchanged tattoo/piercing aftercare, Unicode fonts, A4 format, metadata, page numbering, escaping and controlled failures after the shared form update.
 
-**Verified, executed:** the native upgrade command is `python tests/upgrade-package.py --mysqld <absolute-mysqld-path> --package tmp/user-data-collection.zip --old-ref v1.11.1 --browser`. It creates its own WordPress/MySQL workspace with synthetic records and blocks outbound WordPress HTTP/mail. WordPress 7.1.4/MySQL 8.4.3 passes upgrade/restore and native Edge media/settings/download/submission checks, including SQL confirmation of one new record per service. Exact remaining boundaries are tracked under FORM-GUARDIAN-01 in [Pending work](backlog.md). PHPStan/PHPCS are not configured gates; PHP 7.4 syntax is retained but the executed PHP runtime is 8.3.28.
+**Historical executed run, 1.12.0:** the native upgrade command was `python tests/upgrade-package.py --mysqld <absolute-mysqld-path> --package tmp/user-data-collection.zip --old-ref v1.11.1 --browser`. It creates its own WordPress/MySQL workspace with synthetic records and blocks outbound WordPress HTTP/mail. WordPress 7.1.4/MySQL 8.4.3 passes upgrade/restore and native Edge media/settings/download/submission checks, including SQL confirmation of one new record per service. Exact remaining boundaries are tracked under FORM-GUARDIAN-01 in [Pending work](backlog.md). PHPStan/PHPCS are not configured gates; PHP 7.4 syntax is retained but the executed PHP runtime is 8.3.28.
+
+## Patch 1.12.1 validation boundary
+
+**Verified in the preceding implementation turns:** nine PO/MO catalogs and PHP locale fallbacks passed with 117 required messages per locale. Both administrative titles/headings and the tattoo consent button were rendered with each compiled catalog using synthetic WordPress functions. The local v1.12.1 package passed its 362-file allowlist, PHP lint, PDF-runtime hashes and ZIP integrity checks. The earlier spacing correction passed eight Edge fixture combinations covering default/custom design, mobile/desktop and open/closed care disclosures.
+
+**Historical evidence:** the 298-assertion guardian suite, 55-PDF analysis and complete native WordPress 7.1.4/MySQL 8.4.3/browser run above belong to the 1.12.0 implementation checkpoint. They were not rerun in full for 1.12.1. At that checkpoint the upgrade harness expected 1.12.1, but the full native 1.12.1 run remains **Unknown / not executed**. The current harness command and executed 1.13.0 results are recorded under [Minority badges in 1.13.0](#minority-badges-in-1130). Production theme and Polylang override acceptance remain open.
+
+**Documentation-only reconciliation:** source/configuration and saved local artifact checks do not rerun PHP, browser, native database or external-service tests. Record those checks separately when executed.
+
+## Minority badges in 1.13.0
+
+**Verified, executed:** `php tests/minority-badges.php` passes 347 assertions including the preceding guardian/form suites. New cases cover saved zero/one precedence, string database values, missing/NULL history, calendar boundaries, invalid dates, matching list/detail badges and no source-record mutation. Nine compiled-catalog runs additionally verify the translated heading and Yes/No badges (27 assertions). Catalog validation now requires 118 message IDs per locale. PHP syntax and the 362-file package lint/hash/ZIP gate pass.
+
+**Verified, executed:** the native upgrade/browser harness checks the ninth column, row expansion at 390/1280px, badge styles, detail placement and the error-to-health-heading gap. Its historical fixture adapts to old releases with or without retired contact columns. The command `python tests/upgrade-package.py --mysqld <absolute-mysqld-path> --package tmp/user-data-collection.zip --old-ref v1.12.0 --browser` passes with isolated WordPress 7.1.4/MySQL 8.4.3 and Edge, including anonymous form submission and SQL persistence. Remaining acceptance is recorded in [Pending work](backlog.md#admin-minority-01--minority-badges).

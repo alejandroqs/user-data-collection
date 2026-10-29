@@ -32,9 +32,17 @@ The piercing form has French source copy and bundled default translations for th
 
 PDF downloads require PHP 7.4+, DOM, mbstring and a writable temporary directory. Source checkouts need the [PDF build steps](docs/development-and-quality.md#pdf-build-and-validation); Composer is not needed on the production host when installing the built ZIP.
 
-Both forms mark required fields and answers with an asterisk (*). Address, city and postal code are optional.
+Both forms mark required fields and answers with an asterisk (*). Address, city and postal code are no longer collected. See [data migration and retired fields](docs/data-security-privacy.md#validation-and-result-review) before upgrading an older installation.
 
 The tattoo form collects personal data, health questionnaire answers, appointment details, tattoo location, and the four required acknowledgements. The submission is sent through WordPress's `admin-post.php` endpoint and, when accepted, is saved to the custom table.
+
+## Guardian authorization
+
+Under **Waivers → Settings → General**, select a blank authorization template for each of French, German, Italian, English and Spanish, then save changes. The selectors use the WordPress media library and accept PDF, JPG/JPEG, PNG, WebP and AVIF. Both service forms share these settings; the form language selects its document. Supply templates approved by the studio.
+
+Visitors under 18 on the submission date must check the minority declaration. The displayed notice instructs them to attend with the paper authorization completed and signed by their legal guardian. The form does not upload a signed authorization. If the corresponding template is missing, the form displays contact instructions rather than substituting another language or independently blocking submission. See [guardian architecture](docs/architecture.md#guardian-authorization) for language resolution and the local-file download limitation.
+
+With custom design disabled, both forms use a mobile layout with local Roboto, black text and a transparent container. Enable custom design in Settings to apply the configured colors. The tattoo submit button uses the translated **Submit my consent** label, matching the piercing form's intent.
 
 ## Administration
 
@@ -42,8 +50,10 @@ Users with the `manage_options` capability can open the **Waivers** menu (**Desc
 
 - review upcoming and past appointments;
 - open submission details;
-- open **Tattoos** or **Piercings** and copy the corresponding shortcode shown above each list;
+- read the final **Is a minor** column (**Es menor** in Spanish), with green No / red Yes badges; details show the same badge below date of birth. See [minority display rules](docs/architecture.md#minority-badges) for stored declarations versus calculated age;
+- open **Tattoos** or **Piercings** and copy the corresponding shortcode shown above each list; their page headings are **Tattoo waivers** and **Waivers for piercings** (**Descargos tatuajes** / **Descargos piercings** in Spanish);
 - create, restore, and upload local JSON backups;
+- configure the five language-specific guardian authorization templates under **Settings → General**;
 - configure optional Google Drive, email backup, and frontend design settings;
 - download a French A5 QR poster from either service list and configure its colors and destination URLs in **Settings → QR Image**.
 

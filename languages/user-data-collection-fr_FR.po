@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.12.0\n"
+"Project-Id-Version: User Data Collection 1.13.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-29 17:36+0000\n"
-"PO-Revision-Date: 2026-10-29 17:36+0000\n"
+"POT-Creation-Date: 2026-10-29 18:56+0000\n"
+"PO-Revision-Date: 2026-10-29 18:56+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
@@ -1168,3 +1168,23 @@ msgstr "Espagnol"
 #: includes/udc-guardian.php
 msgid "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead."
 msgstr "Le style par défaut est optimisé pour les pages blanches et les appareils mobiles. Activez le style personnalisé pour utiliser les couleurs configurées."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-i18n.php
+msgid "Submit my consent"
+msgstr "Envoyer mon consentement"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoo Waivers"
+msgstr "Décharges tatouages"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing Waivers"
+msgstr "Décharges piercings"
+
+#. Default form translation; client wording review remains separate.
+#: includes/udc-guardian.php
+msgid "Is a minor"
+msgstr "Est mineur"

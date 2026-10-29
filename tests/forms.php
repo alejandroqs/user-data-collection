@@ -23,12 +23,12 @@ function wp_enqueue_script(...$args) {}
 function wp_add_inline_script($handle, $script) { $GLOBALS['form_script'] = $script; }
 function wp_register_style(...$args) {}
 function wp_enqueue_style(...$args) {}
-function wp_add_inline_style($handle, $css) { $GLOBALS['form_css'] = $css; }
+function wp_add_inline_style($handle, $css) { $GLOBALS['form_css'] = $css; if ($handle === 'udc-admin') { $GLOBALS['admin_form_css'] = ($GLOBALS['admin_form_css'] ?? '') . $css; } }
 function esc_url_raw($value, $protocols = []) { return preg_match('~^https?://~i', $value) ? $value : ''; }
 function wp_die($message, $title = '', $args = []) { throw new RuntimeException('wp_die:' . ($args['response'] ?? 0)); }
 
 $strings = UDC_i18n::get_strings();
-foreach (['tattoo_consent_title', 'tattoo_consent_procedure', 'tattoo_consent_risks', 'tattoo_consent_care', 'tattoo_consent_privacy', 'tattoo_privacy_link', 'label_location', 'title_tattoo', 'intro_tattoo', 'answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
+foreach (['tattoo_submit_btn', 'tattoo_consent_title', 'tattoo_consent_procedure', 'tattoo_consent_risks', 'tattoo_consent_care', 'tattoo_consent_privacy', 'tattoo_privacy_link', 'label_location', 'title_tattoo', 'intro_tattoo', 'answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
 check(hash('sha256', serialize($strings)) === '06caaf3b25960e746282a68eae3dd159ecc1805addf9b0761ec23cd82cd3a070', 'Legacy dictionary entries remain unchanged while tattoo consent uses separate keys');
 $tattoo = new UDC_Shortcode();
 $piercing = new UDC_Piercing_Form();

@@ -37,6 +37,7 @@ class UDC_List_Table extends WP_List_Table
             'appointment_date' => __('Appt Date', 'user-data-collection'),
             'appointment_time' => __('Appt Time', 'user-data-collection'),
             'created_at' => __('Sub. Date', 'user-data-collection'),
+            'minor' => UDC_Guardian::translate('is_minor'),
         ];
     }
 
@@ -134,6 +135,8 @@ class UDC_List_Table extends WP_List_Table
     public function column_default($item, $column_name)
     {
         switch ($column_name) {
+            case 'minor':
+                return UDC_Guardian::badge($item);
             case 'created_at':
                 return esc_html(date_i18n(get_option('date_format') . ' ' . get_option('time_format'), strtotime($item->$column_name)));
             default:

@@ -79,7 +79,9 @@
       "Piercing page URL": "Piercing page URL",
       "Invalid QR image setting.": "Invalid QR image setting.",
       "QR image could not be generated.": "QR image could not be generated.",
-      "Save changes before downloading. Use a dark QR color on its white panel.": "Save changes before downloading. Use a dark QR color on its white panel."
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Save changes before downloading. Use a dark QR color on its white panel.",
+      "Tattoo Waivers": "Tattoo waivers",
+      "Piercing Waivers": "Waivers for piercings"
     },
     "download": {
       "invalid_request": "Invalid document request.",
@@ -101,7 +103,8 @@
       "intro_tattoo": "Fields and answers marked with an asterisk (*) are required. Complete this form before the session. The professional will check your answers with you before the procedure. Any uncertain answer must be discussed in person."
     },
     "tattoo_labels": {
-      "label_location": "Tattoo location *"
+      "label_location": "Tattoo location *",
+      "tattoo_submit_btn": "Submit my consent"
     },
     "tattoo_consent": {
       "tattoo_consent_title": "INFORMATION AND CONSENT",
@@ -131,7 +134,8 @@
       "it": "Italian",
       "en": "English",
       "es": "Spanish",
-      "design_help": "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead."
+      "design_help": "The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead.",
+      "is_minor": "Is a minor"
     }
   },
   "es": {
@@ -214,7 +218,9 @@
       "Piercing page URL": "URL de piercings",
       "Invalid QR image setting.": "Configuración de imagen QR no válida.",
       "QR image could not be generated.": "No se pudo generar la imagen QR.",
-      "Save changes before downloading. Use a dark QR color on its white panel.": "Guarde los cambios antes de descargar. Utilice un QR oscuro sobre su recuadro blanco."
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Guarde los cambios antes de descargar. Utilice un QR oscuro sobre su recuadro blanco.",
+      "Tattoo Waivers": "Descargos tatuajes",
+      "Piercing Waivers": "Descargos piercings"
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
@@ -236,7 +242,8 @@
       "intro_tattoo": "Los campos y las respuestas marcados con un asterisco (*) son obligatorios. Complete este formulario antes de la sesión. El profesional revisará las respuestas con usted antes del procedimiento. Cualquier respuesta incierta deberá comentarse presencialmente."
     },
     "tattoo_labels": {
-      "label_location": "Ubicación del tatuaje *"
+      "label_location": "Ubicación del tatuaje *",
+      "tattoo_submit_btn": "Enviar mi consentimiento"
     },
     "tattoo_consent": {
       "tattoo_consent_title": "INFORMACIÓN Y CONSENTIMIENTO",
@@ -266,7 +273,8 @@
       "it": "Italiano",
       "en": "Inglés",
       "es": "Español",
-      "design_help": "El diseño predeterminado está optimizado para páginas blancas y dispositivos móviles. Activa el diseño personalizado para utilizar los colores configurados."
+      "design_help": "El diseño predeterminado está optimizado para páginas blancas y dispositivos móviles. Activa el diseño personalizado para utilizar los colores configurados.",
+      "is_minor": "Es menor"
     }
   },
   "de": {
@@ -349,7 +357,9 @@
       "Piercing page URL": "URL für Piercings",
       "Invalid QR image setting.": "Ungültige QR-Bildeinstellung.",
       "QR image could not be generated.": "Das QR-Bild konnte nicht erstellt werden.",
-      "Save changes before downloading. Use a dark QR color on its white panel.": "Vor dem Herunterladen speichern. Einen dunklen QR-Code auf weißem Hintergrund verwenden."
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Vor dem Herunterladen speichern. Einen dunklen QR-Code auf weißem Hintergrund verwenden.",
+      "Tattoo Waivers": "Haftungsausschlüsse für Tattoos",
+      "Piercing Waivers": "Haftungsausschlüsse für Piercings"
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
@@ -371,7 +381,8 @@
       "intro_tattoo": "Mit einem Sternchen (*) gekennzeichnete Felder und Antworten sind Pflichtangaben. Füllen Sie dieses Formular vor dem Termin aus. Die Fachperson wird Ihre Antworten vor dem Eingriff mit Ihnen prüfen. Unsichere Antworten müssen vor Ort besprochen werden."
     },
     "tattoo_labels": {
-      "label_location": "Position des Tattoos *"
+      "label_location": "Position des Tattoos *",
+      "tattoo_submit_btn": "Meine Einwilligung senden"
     },
     "tattoo_consent": {
       "tattoo_consent_title": "INFORMATION UND EINWILLIGUNG",
@@ -401,7 +412,8 @@
       "it": "Italienisch",
       "en": "Englisch",
       "es": "Spanisch",
-      "design_help": "Das Standarddesign ist für weisse Seiten und Mobilgeräte optimiert. Aktivieren Sie das individuelle Design, um die eingestellten Farben zu verwenden."
+      "design_help": "Das Standarddesign ist für weisse Seiten und Mobilgeräte optimiert. Aktivieren Sie das individuelle Design, um die eingestellten Farben zu verwenden.",
+      "is_minor": "Minderjährig"
     }
   },
   "it": {
@@ -484,7 +496,9 @@
       "Piercing page URL": "URL dei piercing",
       "Invalid QR image setting.": "Impostazione dell’immagine QR non valida.",
       "QR image could not be generated.": "Impossibile generare l’immagine QR.",
-      "Save changes before downloading. Use a dark QR color on its white panel.": "Salvare prima di scaricare. Usare un QR scuro nel riquadro bianco."
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Salvare prima di scaricare. Usare un QR scuro nel riquadro bianco.",
+      "Tattoo Waivers": "Liberatorie tatuaggi",
+      "Piercing Waivers": "Liberatorie per i piercing"
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
@@ -506,7 +520,8 @@
       "intro_tattoo": "I campi e le risposte contrassegnati da un asterisco (*) sono obbligatori. Compili questo modulo prima della seduta. Il professionista verificherà le risposte con lei prima della procedura. Le risposte incerte devono essere discusse di persona."
     },
     "tattoo_labels": {
-      "label_location": "Posizione del tatuaggio *"
+      "label_location": "Posizione del tatuaggio *",
+      "tattoo_submit_btn": "Inviare il mio consenso"
     },
     "tattoo_consent": {
       "tattoo_consent_title": "INFORMAZIONI E CONSENSO",
@@ -536,7 +551,8 @@
       "it": "Italiano",
       "en": "Inglese",
       "es": "Spagnolo",
-      "design_help": "Il design predefinito è ottimizzato per pagine bianche e dispositivi mobili. Attiva il design personalizzato per usare i colori configurati."
+      "design_help": "Il design predefinito è ottimizzato per pagine bianche e dispositivi mobili. Attiva il design personalizzato per usare i colori configurati.",
+      "is_minor": "È minorenne"
     }
   },
   "fr": {
@@ -567,7 +583,9 @@
       "Piercing page URL": "URL des piercings",
       "Invalid QR image setting.": "Paramètre de l’image QR non valide.",
       "QR image could not be generated.": "Impossible de générer l’image QR.",
-      "Save changes before downloading. Use a dark QR color on its white panel.": "Enregistrez avant de télécharger. Utilisez un QR foncé sur son encadré blanc."
+      "Save changes before downloading. Use a dark QR color on its white panel.": "Enregistrez avant de télécharger. Utilisez un QR foncé sur son encadré blanc.",
+      "Tattoo Waivers": "Décharges tatouages",
+      "Piercing Waivers": "Décharges piercings"
     },
     "download": {
       "invalid_request": "Demande de document non valide.",
@@ -589,7 +607,8 @@
       "intro_tattoo": "Les champs et les réponses marqués d’un astérisque (*) sont obligatoires. Complétez ce formulaire avant la séance. Le professionnel vérifiera vos réponses avec vous avant le geste. Une réponse incertaine doit être discutée sur place."
     },
     "tattoo_labels": {
-      "label_location": "Emplacement du tatouage *"
+      "label_location": "Emplacement du tatouage *",
+      "tattoo_submit_btn": "Envoyer mon consentement"
     },
     "tattoo_consent": {
       "tattoo_consent_title": "INFORMATION ET CONSENTEMENT",
@@ -619,7 +638,8 @@
       "it": "Italien",
       "en": "Anglais",
       "es": "Espagnol",
-      "design_help": "Le style par défaut est optimisé pour les pages blanches et les appareils mobiles. Activez le style personnalisé pour utiliser les couleurs configurées."
+      "design_help": "Le style par défaut est optimisé pour les pages blanches et les appareils mobiles. Activez le style personnalisé pour utiliser les couleurs configurées.",
+      "is_minor": "Est mineur"
     }
   }
 }

@@ -30,11 +30,13 @@ Use the smallest applicable reading set. Follow links from those documents only 
 | Change the database schema or migration behavior | [Data, security, and privacy](data-security-privacy.md) and [Release](release.md) |
 | Change QR posters, logo, colors or destination URLs | [Architecture](architecture.md#qr-posters) and [Development and quality](development-and-quality.md#qr-poster-validation) |
 | Change administrative screens, AJAX actions, or permissions | [Architecture](architecture.md) and [Data, security, and privacy](data-security-privacy.md) |
+| Interpret or change administrative minority badges | [Minority display rules](architecture.md#minority-badges), [1.13.0 validation](development-and-quality.md#minority-badges-in-1130), and [pending acceptance](backlog.md#admin-minority-01--minority-badges) |
 | Change backup, restore, retention, or deletion behavior | [Operations](operations.md) and [Data, security, and privacy](data-security-privacy.md) |
 | Change cron, Google Drive, or email behavior | [Operations](operations.md) |
 | Change the environment, tools, quality gates, or translations | [Development and quality](development-and-quality.md) |
 | Change versions, tags, package contents, or the release workflow | [Release](release.md) |
-| Guardian form update scope | [Approved plan](form-update-plan.md), then [Pending work](backlog.md) |
+| Configure guardian templates or change minority handling | [Architecture](architecture.md#guardian-authorization) and [Data, security, and privacy](data-security-privacy.md#validation-and-result-review); use the [README](../README.md#guardian-authorization) for setup |
+| Review the approved guardian form update scope | [Historical approved scope](form-update-plan.md), then [Pending work](backlog.md) for execution evidence |
 | Resume work or choose the next task | [Pending work](backlog.md), then the canonical document linked by the selected item |
 | Investigate without changing code | Read the document for the affected area; do not read every document by default. |
 

@@ -98,7 +98,9 @@ The plugin depends on WordPress APIs, the WordPress database abstraction, filesy
 
 ## Table and optional-field adjustments (1.8.2–1.9.0)
 
-**Verified from source:** both list views keep eight columns with ID first and primary. Detail actions move with the primary ID cell so native mobile expansion remains singular. Admin styles are enqueued only on the two service pages; the birth-date heading stays on one line on desktop and the ID column accommodates its detail action. Care category and exact body location are shown in piercing details, alongside the existing health choices and accepted-text evidence; category is not added to the index.
+**Historical checkpoint:** the optional contact-field behavior below was superseded by field removal in 1.12.0. The eight-column list layout described here gained a ninth minority column in 1.13.0; see [current minority badges](#minority-badges). Current collection, migration and restore behavior is documented in [Data, security, and privacy](data-security-privacy.md#validation-and-result-review) and [Operations](operations.md#local-backup).
+
+**Verified at the 1.8.2–1.9.0 checkpoint:** both list views kept eight columns with ID first and primary. Detail actions move with the primary ID cell so native mobile expansion remains singular. Admin styles are enqueued only on the two service pages; the birth-date heading stays on one line on desktop and the ID column accommodates its detail action. Care category and exact body location are shown in piercing details, alongside the existing health choices and accepted-text evidence; category is not added to the index.
 
 UDC_Shortcode::field_label() normalizes required markers for both forms without rewriting existing consent strings. Address, city and postal code have no required marker or browser required attribute. Shared submission validation accepts blank or omitted address/city/postal values while keeping scalar, character-length, nonce, consent and other required-field checks. The schema is unchanged.
 
@@ -114,7 +116,7 @@ Both admin detail views show Accepted document. Tattoo details display the store
 
 Version policy: UDC_Shortcode::FORM_VERSION starts at 1.0 and identifies the tattoo consent document. Increment it for future changes to accepted consent wording/structure. UDC_Tattoo_Care_Document::VERSION independently identifies care text. Current form submissions require both current versions; historical detail and restore accept valid older versioned snapshots. Plugin release version 1.8.3 is independent of those document versions.
 
-**Verified, optional city in 1.9.0:** city remains varchar(255) NOT NULL, and optionality is represented as an empty string rather than SQL NULL, matching address/postal code. No CREATE TABLE or ALTER TABLE change is required. Browser and server requirements are relaxed for both services; scalar/character-length limits and evidence validation remain unchanged. Restore accepts an empty city in all supported backup schemas while requiring the city key and string type.
+**Historical checkpoint, optional city in 1.9.0:** city remains varchar(255) NOT NULL, and optionality is represented as an empty string rather than SQL NULL, matching address/postal code. No CREATE TABLE or ALTER TABLE change is required. Browser and server requirements are relaxed for both services; scalar/character-length limits and evidence validation remain unchanged. Restore accepts an empty city in all supported backup schemas while requiring the city key and string type.
 
 **Verified, tattoo location label in 1.9.1:** UDC_i18n::get_strings()['label_location'] now renders Tattoo location with its translated default in every supported locale. The stored/request field piercing_location is retained for compatibility. The piercing form owns a separate location label and is unaffected by this copy correction.
 
@@ -124,11 +126,23 @@ Version policy: UDC_Shortcode::FORM_VERSION starts at 1.0 and identifies the tat
 
 The document snapshot includes the four texts under document, alongside title/intro and care content. Admin details render all four stored texts, and backup validation uses the revised bounded snapshot shape. The previous tattoo document shape is not migrated or accepted as the new format; the maintainer reports clearing the development data. No automatic acceptance, database deletion or historical-format reader was added. Old generic missing-evidence handling remains unchanged.
 
+## Administrative labels
+
+**Verified from source:** tattoo and piercing list-page titles and H1 headings use the translated `Tattoo Waivers` and `Piercing Waivers` messages (Spanish: Descargos tatuajes / Descargos piercings). The tattoo submit button uses the separately registered `tattoo_submit_btn` string, `Submit my consent`, matching the piercing button's intent. Existing sidebar labels and consent snapshots retain their current contracts.
+
+## Minority badges
+
+**Verified from source, 1.13.0:** both service lists have nine columns, ending with the small translated minority column. `UDC_Guardian::record_is_minor()` prioritizes a saved 0/1 declaration, including the string values returned by the database. A saved zero remains No even if the date would otherwise indicate a minor; a saved one remains Yes even if the person has since turned 18. When no valid saved 0/1 declaration is available, the helper calculates completed calendar years from date of birth on the current WordPress site date. It does not use the appointment date or rewrite records. Invalid/missing/future historical birth dates yield a neutral Not recorded badge rather than inventing an adult status.
+
+`UDC_Guardian::badge()` supplies identical escaped, translated Yes/No text and state classes to `UDC_List_Table::column_default()` and the detail row immediately below date of birth. No is green and Yes is red; text conveys the state independently of color. The derived column is not SQL-sortable. Scoped admin CSS gives it a 6em desktop width, and native WP_List_Table mobile row expansion exposes it alongside the other secondary columns.
+
 ## Shared public-form styling
 
 **Verified from source:** UDC_Shortcode::form_styles() provides the existing piercing rules under fixed service-specific selectors. Piercing enqueues the shared rules; tattoo renders its scoped variant and a care-panel override. With design disabled, both use local Roboto, black 18px base text, a transparent form container, rounded 48px controls, and visible focus through assets/forms/default.css. Custom design retains the existing color options and 44px base controls. Tattoo section headings follow the piercing h2/h3 hierarchy. See [Data, security, and privacy](data-security-privacy.md) for current validation and schema behavior.
 
 **Verified, checkbox styling:** both forms reuse the former tattoo checkbox shape and animated checkmark, with the existing background/border/check color options when design is enabled and visible neutral defaults otherwise. Reduced-motion preferences disable the transition. Native checked/required behavior and keyboard focus remain intact.
+
+**Verified from source:** shared rules leave 24px below the minority block in both forms and 16px above a paragraph immediately following the piercing care disclosures. These margins apply with custom design enabled or disabled. Nonempty minority errors also explicitly receive 24px bottom margin, including when the guardian notice is hidden.
 
 
 ## QR posters
@@ -149,7 +163,7 @@ Canvas generation runs in the administrator's browser without a QR service. The 
 
 QR poster branding uses the transparent logo supplied by the studio, bundled as assets/qr/logo-titanium.png from https://titaniumlausanne.ch/wp-content/uploads/2024/10/Logo-titanium-galeria.png. The renderer awaits image decoding for previews and downloads, preserves aspect ratio and reports the existing translated error if loading fails. Bundling avoids remote Canvas access restrictions.
 
-## Guardian authorization in 1.12.0
+## Guardian authorization
 
 **Verified from source:** `UDC_Guardian` is shared by both forms. General settings contain one attachment ID for each of fr/de/it/en/es. Settings API handles saves with existing administrative capability checks; the media modal loads only on the General screen. A valid attachment requires a matching allowlisted extension/MIME and a non-trash attachment post. The active Polylang locale/slug or WordPress locale chooses the language; there is no cross-language document substitution. Missing documents show translated contact instructions and do not independently block submission.
 

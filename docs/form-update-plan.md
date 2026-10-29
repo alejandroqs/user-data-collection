@@ -1,6 +1,6 @@
-# Form update implementation
+# Approved form update scope (1.12.0)
 
-**Requirement:** implement the approved tattoo and piercing form changes. The approved implementation scope is below; execution evidence is tracked in [Pending work](backlog.md#form-guardian-01--reduced-contact-data-and-guardian-authorization).
+**Historical approved scope, implemented locally:** the original tattoo and piercing requirements are retained below for traceability; current behavior belongs in the [canonical documentation](README.md) and execution evidence is tracked in [Pending work](backlog.md#form-guardian-01--reduced-contact-data-and-guardian-authorization).
 
 - Remove address, city and postal code from forms, storage, administration and future backups. Migrate existing columns explicitly and discard retired fields when restoring supported historical backups.
 - Calculate minority as under 18 on the submission date in the WordPress site timezone. Reject unchecked minority declarations on the client and server when the birth date indicates a minor.

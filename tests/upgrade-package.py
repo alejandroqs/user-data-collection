@@ -109,6 +109,7 @@ def main():
             $table = $wpdb->prefix . 'udc_submissions';
             $values = ['last_name'=>'Synthetic','first_name'=>'Example','dob'=>'1990-01-01','address'=>'Test address','city'=>'Test city','zip'=>'1000','phone'=>'5550100','health_good'=>1,'health_treatment'=>0,'health_blood_thinners'=>0,'health_allergies'=>1,'health_pregnant'=>0,'liability_accepted'=>1,'appointment_date'=>'2026-11-01','appointment_time'=>'12:00:00','piercing_location'=>'Synthetic service'];
             $columns = $wpdb->get_col("SHOW COLUMNS FROM $table");
+            foreach (['address','city','zip'] as $retired) { if (!in_array($retired,$columns,true)) unset($values[$retired]); }
             if (in_array('is_confirmed', $columns, true)) $values['is_confirmed'] = 1;
             if (in_array('zip_city', $columns, true)) { $values['zip_city'] = '1000 Test city'; unset($values['city'],$values['zip']); }
             ensure($wpdb->insert($table,$values) === 1, 'Synthetic historical record inserted');
@@ -146,7 +147,7 @@ def main():
             $before=json_decode(file_get_contents(__DIR__.'/before.json'),true);
             $table=$wpdb->prefix.'udc_submissions';
             $after=$wpdb->get_row("SELECT * FROM $table",ARRAY_A);
-            ensure(UDC_DB_VERSION === '1.12.0' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.12.0');
+            ensure(UDC_DB_VERSION === '1.13.0' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.13.0');
             ensure((int)$wpdb->get_var("SELECT COUNT(*) FROM $table") === 1, 'Existing record count is preserved');
             foreach($before['row'] as $key=>$value) {
                 if (in_array($key, ['is_confirmed','address','city','zip','zip_city'], true)) continue;

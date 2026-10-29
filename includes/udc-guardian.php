@@ -25,6 +25,7 @@ final class UDC_Guardian
             'empty' => 'No document selected.',
             'invalid' => 'The document was not saved. Select a valid PDF, JPG, JPEG, PNG, WebP or AVIF attachment.',
             'declared' => 'Declared under 18',
+            'is_minor' => 'Is a minor',
             'unknown' => 'Not recorded',
             'design_help' => 'The default design is optimized for white pages and mobile devices. Enable custom design to use the configured colors instead.',
         ] + self::languages();
@@ -39,6 +40,26 @@ final class UDC_Guardian
             if ($translated !== $text) { return $translated; }
         }
         return __($text, 'user-data-collection');
+    }
+
+    /** Prefer an explicit saved declaration, including zero; derive age only for missing history. */
+    public static function record_is_minor($record)
+    {
+        if (isset($record->minor_declared) && in_array($record->minor_declared, [0, 1, '0', '1'], true)) {
+            return 1 === (int) $record->minor_declared;
+        }
+        $dob = isset($record->dob) && is_string($record->dob) ? $record->dob : '';
+        $today = current_time('Y-m-d');
+        if (!UDC_Validation::valid_date($dob) || $dob < '1000-01-01' || $dob > $today) { return null; }
+        return UDC_Validation::is_minor($dob, $today);
+    }
+
+    public static function badge($record)
+    {
+        $minor = self::record_is_minor($record);
+        $state = null === $minor ? 'unknown' : ($minor ? 'yes' : 'no');
+        $label = null === $minor ? self::translate('unknown') : UDC_i18n::translate($minor ? 'answer_yes' : 'answer_no');
+        return '<span class="udc-minority-badge udc-minority-' . $state . '">' . esc_html($label) . '</span>';
     }
 
     public static function register_strings()
@@ -87,7 +108,7 @@ final class UDC_Guardian
     {
         if (!current_user_can('manage_options') || !isset($_GET['page']) || 'udc-settings' !== $_GET['page'] || (isset($_GET['tab']) && 'general' !== $_GET['tab'])) { return; }
         wp_enqueue_media();
-        wp_enqueue_script('udc-guardian-settings', UDC_PLUGIN_URL . 'assets/forms/settings.js', ['media-views'], '1.12.0', true);
+        wp_enqueue_script('udc-guardian-settings', UDC_PLUGIN_URL . 'assets/forms/settings.js', ['media-views'], '1.13.0', true);
     }
 
     public static function render_settings()

@@ -36,6 +36,8 @@ const os = require('node:os');
             for (const checkbox of await form.locator('input[type=checkbox][required]').all()) await checkbox.check();
             await form.locator('[name=udc_dob]').dispatchEvent('change');
             if (await form.evaluate(el=>el.checkValidity())) throw new Error('Native minor passed without declaration');
+            const errorGap=await form.evaluate(el=>el.querySelector('.udc-minor').nextElementSibling.getBoundingClientRect().top-el.querySelector('.udc-minor-error').getBoundingClientRect().bottom);
+            if(errorGap<23.9) throw new Error('Minor error lacks separation before the health heading: '+errorGap);
             if (await form.locator('button[type=submit]').isDisabled()) throw new Error('Native rejection left submit disabled');
             await form.locator('[name=udc_minor_declared]').check();
             if (!(await form.locator('.udc-minor-notice').isVisible())) throw new Error('Native guardian notice did not expand');
@@ -50,6 +52,28 @@ const os = require('node:os');
             console.log('PASS: Native anonymous '+selector+' minor validation, original document download and submission');
         }
         if (errors.length) throw new Error(errors.join('\n'));
+        for(const slug of ['udc-submissions','udc-piercings']) {
+            await admin.goto(origin+'/wp-admin/admin.php?page='+slug);
+            if(await admin.locator('#udc-filter thead th').count()!==9 || (await admin.locator('#udc-filter thead th').last().innerText()).trim()!=='Is a minor') throw new Error('Native table does not end with the minority column');
+            const row=admin.locator('#the-list tr').filter({has:admin.locator('.udc-minority-yes')}).first();
+            if(await row.locator('.udc-minority-yes').innerText()!=='Yes') throw new Error('Saved native minor lacks a Yes badge');
+            for(const width of [390,1280]) {
+                await admin.setViewportSize({width,height:900});
+                if(width===390) await row.locator('.toggle-row').click();
+                if(!(await row.locator('.udc-minority-yes').isVisible())) throw new Error('Minority badge is not accessible in native mobile row expansion');
+                if(await admin.evaluate(()=>document.documentElement.scrollWidth>innerWidth)) throw new Error('Minority column introduced horizontal overflow');
+                await admin.screenshot({path:path.join(os.tmpdir(),'udc-minority-'+slug+'-'+width+'.png'),fullPage:true});
+            }
+            const style=await row.locator('.udc-minority-yes').evaluate(el=>getComputedStyle(el).backgroundColor);
+            if(style!=='rgb(166, 27, 27)') throw new Error('Minor badge is not red');
+            if(slug==='udc-submissions' && await admin.locator('#the-list .udc-minority-no').count()<1) throw new Error('Legacy adult lacks its calculated No badge');
+            await row.hover();
+            await row.locator('a[href*="action=view"]').click();
+            const dob=admin.locator('tr').filter({has:admin.getByRole('cell',{name:'2010-01-01',exact:true})});
+            const minorityRow=dob.locator('xpath=following-sibling::tr[1]');
+            if(!(await minorityRow.innerText()).includes('Is a minor:') || !(await minorityRow.locator('.udc-minority-yes').count())) throw new Error('Native detail minority badge is not below date of birth');
+            console.log('PASS: Native '+slug+' ninth column, red/green badges, mobile row expansion and detail placement');
+        }
         await context.close();
     } finally { await browser.close(); }
 }()).catch(error=>{console.error(error);process.exitCode=1;});
