@@ -202,3 +202,28 @@ Outputs are ignored `tmp/qr-tattoo.png` and `tmp/qr-piercing.png`. The test does
 **Verified, executed:** `php tests/minority-badges.php` passes 347 assertions including the preceding guardian/form suites. New cases cover saved zero/one precedence, string database values, missing/NULL history, calendar boundaries, invalid dates, matching list/detail badges and no source-record mutation. Nine compiled-catalog runs additionally verify the translated heading and Yes/No badges (27 assertions). Catalog validation now requires 118 message IDs per locale. PHP syntax and the 362-file package lint/hash/ZIP gate pass.
 
 **Verified, executed:** the native upgrade/browser harness checks the ninth column, row expansion at 390/1280px, badge styles, detail placement and the error-to-health-heading gap. Its historical fixture adapts to old releases with or without retired contact columns. The command `python tests/upgrade-package.py --mysqld <absolute-mysqld-path> --package tmp/user-data-collection.zip --old-ref v1.12.0 --browser` passes with isolated WordPress 7.1.4/MySQL 8.4.3 and Edge, including anonymous form submission and SQL persistence. Remaining acceptance is recorded in [Pending work](backlog.md#admin-minority-01--minority-badges).
+
+
+## Public-form honeypot and feedback
+
+**Verified, executed (same-version 1.13.0 working tree):**
+
+- PHP tests/forms-review.php and tests/minority-badges.php passed, including inherited form/guardian suites. Both services accept an empty or absent trap and reject text, whitespace, "0", HTML, backslashes, arrays, null, integers and booleans with no inserts or transient writes. Invalid nonces still fail first. Repeated renderers use one unique trap per form, and authenticated results follow the heading.
+- PHP tests/forms.php --preview followed by node tests/forms-browser.cjs passed in Edge at 320/390/782/1280px. The enabled trap remains hidden and unfocusable, submits empty in FormData, and stays hidden with JavaScript disabled in both designs and repeated tattoo/piercing instances. A synthetic theme override changes ordinary links while buttons remain white. Existing validation, PDF downloads and duplicate-submit checks pass.
+- The same-version local ZIP passed the 362-file allowlist, PHP lint, PDF-runtime hashes and archive integrity. Modified PHP files passed explicit lint; git diff --check passed.
+- The native command below passed in isolated WordPress 7.1.4/MySQL 8.4.3 and Edge. Both services rejected deliberate trap content, retained HTTP 403 nonce precedence, accepted anonymous missing-field submissions with JavaScript disabled and authenticated empty-field submissions, and showed success/error notices immediately below the heading. SQL confirmed exactly two legitimate Honeypot fixture rows per service and no extra rejected rows. Existing anonymous minor submissions, media/download checks, upgrade/restore and administrative badges also passed.
+
+The native fixture alone raises the filterable attempt budget to ten to accommodate six legitimate requests from one loopback address; the product default remains five and its existing counter regressions run with doubles. The native harness blocks outbound WordPress HTTP/mail and uses synthetic data; it does not submit to production.
+
+Run with the local PHP directory on PATH, Playwright resolvable through NODE_PATH, and the Python runtime:
+
+    python tests/upgrade-package.py --mysqld <absolute-mysqld-path> --package tmp/user-data-collection.zip --old-ref v1.12.0 --browser
+
+**Unknown / not executed:** production Divi/cache behavior and real Polylang overrides. No version bump, commit, tag, push or deployment was performed. FORM-NONCE-01 remains independent. The graph had partial parsing in the PHP renderers; exact affected source was read directly rather than treating graph coverage as exhaustive.
+
+
+### Patch 1.13.1 metadata validation
+
+**Verified, executed:** all nine PO/MO catalogs and PHP locale fallbacks pass with 118 required messages after regeneration using scripts/update-translations.py --write. PHP tests/minority-badges.php passes its inherited form/review/guardian checks. The local v1.13.1 ZIP passes the 362-file allowlist, packaged PHP lint, runtime hashes and ZIP integrity; git diff --check passes. Asset cache keys and plugin/npm/catalog metadata agree on 1.13.1.
+
+The complete native WordPress/MySQL and Edge behavior run above was executed immediately before this metadata bump with the same functional changes at 1.13.0. It was not rerun for 1.13.1; no additional native acceptance is implied. No schema or accepted-document changes were introduced by the bump. The ZIP is a local artifact; commit, tag, push, remote CI and deployment remain unexecuted.

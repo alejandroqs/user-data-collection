@@ -37,7 +37,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `UDC_Guardian` | Resolves the active form language, validates blank authorization attachments, renders the shared minority declaration, and owns the five native media settings and original-file download. |
 | `UDC_Validation` | Shared static date, datetime, time, and length validators used by the shortcode handler and backup restore. |
 | `UDC_List_Table` | Extends `WP_List_Table`; displays filtered, paginated submissions with an allowlist for sortable columns and row actions. |
-| `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Tattoos, Piercings, Backups and Settings views; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the ID detail link; ID is the first and responsive primary column. |
+| `UDC_Admin` | Creates the Waivers menu (Descargos in Spanish) with Piercings, Tattoos, Backups and Settings views, in that order; renders read-only list/detail views. Both service lists display their shortcode. The list retains filters, sortable data columns, pagination, and the ID detail link; ID is the first and responsive primary column. |
 | `UDC_Backup` | Creates local JSON snapshots, rotates local files, restores missing rows, accepts uploaded JSON, and exposes administrative AJAX actions. |
 | `UDC_QR_Poster` | Supplies admin QR poster defaults, validates settings, loads local rendering assets and renders buttons/previews. |
 | `UDC_Settings` | Registers general guardian-document, integration, design and QR options and exposes the global Delete All Data action. |
@@ -83,6 +83,13 @@ The renderer lazy-loads the build-generated UDCPdfVendor runtime, embeds DejaVu 
 ## Result and browser behavior
 
 **Verified from source:** UDC_Shortcode::redirect_result() redirects with HTTP 303 and a five-minute HMAC receipt bound to the result and form type. UDC_Shortcode::result_status() ignores unsigned, altered, expired and cross-form statuses. Old result parameters are removed before redirecting; an absent referer falls back to the site home. The template_redirect callback requests no-cache headers for receipt URLs. Hosting caches that bypass PHP still require separate verification.
+
+**Verified from source:** both forms render service-bound authenticated feedback through UDC_Shortcode::render_result() immediately below their main heading, before the introduction. Success uses a green status notice; generic and minority errors use a red alert, with 16px top/24px bottom margin. Existing translated messages are reused. The form script focuses and scrolls to the first rendered result; without JavaScript the notice remains in the same document location. Nonce failures retain HTTP 403 and budget exhaustion retains HTTP 429 rather than masquerading as ordinary validation redirects.
+
+Shared form styles force only actual buttons and download-button links (a.udc-download) to white text using !important, including WebKit text fill. Ordinary links retain their existing default rules and can be customized by the theme. Result colors are independently scoped to result notices. Both design modes use the shared rules; no global heading/link color override is added.
+
+Both services delegate the honeypot check to shared save_submission(); see [Public-form honeypot](data-security-privacy.md#public-form-honeypot) for the exact acceptance and compatibility contract.
+
 
 The shared wp_enqueue_scripts callback adds submit locking for both forms. It disables submit buttons and exposes aria-busy after a valid browser submit, rejects a second submit event, and restores controls on pageshow (including browser Back). This is browser interaction protection; there is no server-side exactly-once guarantee if scripts are disabled or requests are replayed.
 

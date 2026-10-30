@@ -198,3 +198,42 @@ check(str_contains($detail, 'Document evidence is unavailable.'), 'A mismatched 
 unset($GLOBALS['gettext'][$source]);
 
 echo "All review checks passed (synthetic WordPress/database doubles).\n";
+
+// Both endpoints must apply the same trap contract before parsing any other fields.
+foreach ([false, true] as $is_piercing) {
+    $object = $is_piercing ? $piercing : $tattoo;
+    foreach (['', 'missing'] as $value) {
+        $post = form_post($is_piercing);
+        if ('' === $value) { $post['udc_contact_reference'] = ''; }
+        [$url, $inserts] = submit_form($object, $post);
+        check(count($inserts) === 1 && str_contains($url, 'status=success'), 'Empty/absent honeypot preserves normal saving for each service');
+        check(!array_key_exists('contact_reference', $inserts[0][1]) && !str_contains($inserts[0][1]['form_evidence'], 'udc_contact_reference'), 'Honeypot is absent from rows and accepted documents');
+    }
+    foreach (['text', ' ', '0', '<b></b>', '\\\\', [], ['text'], null, 0, false] as $value) {
+        $post = form_post($is_piercing); $post['udc_contact_reference'] = $value;
+        [$url, $inserts] = submit_form($object, $post);
+        parse_str(parse_url($url, PHP_URL_QUERY), $_GET);
+        check(!$inserts && UDC_Shortcode::result_status($is_piercing) === 'error', 'Nonempty or non-string honeypots produce a signed generic error');
+        check($GLOBALS['transients'] === [], 'Honeypot rejection consumes no submission attempts');
+    }
+    $post = form_post($is_piercing); $post['udc_contact_reference'] = ['trap']; $post['udc_form_nonce'] = 'wrong';
+    try { submit_form($object, $post); check(false, 'Nonce must reject first'); }
+    catch (RuntimeException $error) { check($error->getMessage() === 'wp_die:403' && !$wpdb->inserts && !$GLOBALS['transients'], 'Invalid nonce precedes the trap and all writes'); }
+    foreach (['success', 'error', 'minor_error'] as $status) {
+        $key = $is_piercing ? 'udc_piercing_status' : 'udc_status'; $expires = time() + 120;
+        $_GET = [$key => $status, 'udc_result' => $expires . '.' . hash_hmac('sha256', $key . '|' . $status . '|' . $expires, wp_salt('auth'))];
+        $html = $object->render_form();
+        check((bool) preg_match('~</h2>\s*<div class="udc-result udc-result--' . ('success' === $status ? 'success' : 'error') . '"~', $html), 'Authenticated feedback follows the form heading');
+        check(substr_count($html, 'class="udc-result ') === 1, 'Each form has exactly one authenticated result notice');
+    }
+}
+$_GET = [];
+foreach (['0', '1'] as $enabled) {
+    $GLOBALS['options']['udc_design_enabled'] = $enabled;
+    $html = $tattoo->render_form() . $tattoo->render_form() . $piercing->render_form() . $piercing->render_form();
+    preg_match_all('~<input type="text" id="([^"]+)" name="udc_contact_reference" value="" autocomplete="off" tabindex="-1">~', $html, $matches);
+    check(count($matches[1]) === 4 && count(array_unique($matches[1])) === 4, 'Repeated forms have exactly one empty enabled text trap with unique IDs in either design');
+    check(substr_count($html, 'hidden aria-hidden="true" style="display:none!important"') === 4, 'Traps are hidden without JavaScript');
+}
+$GLOBALS['options']['udc_design_enabled'] = '0';
+echo "All honeypot/result checks passed (synthetic WordPress/database doubles).\n";

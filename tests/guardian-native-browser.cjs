@@ -27,6 +27,46 @@ const os = require('node:os');
         const context=await browser.newContext();
         const page=await context.newPage();
         const errors=[]; page.on('pageerror',error=>errors.push(error.message));
+
+        // Send through real admin-post handlers, with JS disabled in the anonymous context.
+        const noScript = await browser.newContext({javaScriptEnabled:false});
+        const plain = await noScript.newPage();
+        for (const client of [plain, admin]) {
+            for (const selector of ['.udc-form','.udc-piercing-form']) {
+                await client.goto(origin+'/?page_id='+pageId);
+                const form=client.locator(selector);
+                const trap=form.locator('[name=udc_contact_reference]');
+                if (await trap.count()!==1 || await trap.isVisible() || !(await trap.isEnabled())) throw new Error('Native trap visibility/enabled state failed');
+                for (const [field,value] of Object.entries({last_name:'Synthetic',first_name:'Honeypot',dob:'1990-01-01',phone:'5550100',appointment_date:'2026-11-01',appointment_time:'12:30',piercing_location:'Synthetic service'})) await form.locator('[name=udc_'+field+']').fill(value);
+                for (const select of await form.locator('select[name^=udc_health_]').all()) await select.selectOption('2');
+                if (selector.includes('piercing')) await form.locator('[name=udc_piercing_category]').selectOption('oral');
+                for (const checkbox of await form.locator('input[type=checkbox][required]').all()) await checkbox.check();
+                // Use FormData via DOM inspection even when page scripts are disabled.
+                const body=await form.evaluate(el=>Object.fromEntries(new FormData(el)));
+                if (body.udc_contact_reference!=='') throw new Error('Native FormData trap must start empty');
+                const endpoint=await form.getAttribute('action');
+                for (const value of ['bot',' ','0','<b></b>','\\\\']) {
+                    const rejected=await client.request.post(endpoint,{form:{...body,udc_contact_reference:value}});
+                    if (!rejected.url().includes('status=error')) throw new Error('Native filled trap did not reject');
+                }
+                const invalid=await client.request.post(endpoint,{form:{...body,udc_contact_reference:'bot',udc_form_nonce:'wrong'}});
+                if (invalid.status()!==403) throw new Error('Native invalid nonce did not reject first');
+                // Missing stays compatible for anonymous old pages; authenticated sends empty.
+                if (client===plain) delete body.udc_contact_reference;
+                const accepted=await client.request.post(endpoint,{form:body});
+                if (!accepted.url().includes('status=success')) throw new Error('Native legitimate trap request failed');
+                await client.goto(accepted.url());
+                const notice=client.locator(selector+' .udc-result--success');
+                if (!(await notice.isVisible()) || !(await notice.evaluate(el=>el.previousElementSibling.tagName==='H2'))) throw new Error('Native success notice is missing or misplaced');
+                const rejected=await client.request.post(endpoint,{form:{...body,udc_contact_reference:'bot'}});
+                await client.goto(rejected.url());
+                if (!(await client.locator(selector+' .udc-result--error').isVisible())) throw new Error('Native generic error notice missing');
+                const noticeColors=await client.locator(selector+' .udc-result--error').evaluate(el=>({color:getComputedStyle(el).color,background:getComputedStyle(el).backgroundColor}));
+                if (noticeColors.color!=='rgb(88, 21, 28)' || noticeColors.background!=='rgb(248, 215, 218)') throw new Error('Native error colors failed');
+            }
+        }
+        await noScript.close();
+        console.log('PASS: Native anonymous/no-JS and authenticated submissions, trap rejections, nonce precedence and success/error notices');
         for (const selector of ['.udc-form','.udc-piercing-form']) {
             await page.goto(origin+'/?page_id='+pageId);
             const form=page.locator(selector);

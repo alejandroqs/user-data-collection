@@ -108,7 +108,7 @@ final class UDC_Guardian
     {
         if (!current_user_can('manage_options') || !isset($_GET['page']) || 'udc-settings' !== $_GET['page'] || (isset($_GET['tab']) && 'general' !== $_GET['tab'])) { return; }
         wp_enqueue_media();
-        wp_enqueue_script('udc-guardian-settings', UDC_PLUGIN_URL . 'assets/forms/settings.js', ['media-views'], '1.13.0', true);
+        wp_enqueue_script('udc-guardian-settings', UDC_PLUGIN_URL . 'assets/forms/settings.js', ['media-views'], '1.13.1', true);
     }
 
     public static function render_settings()

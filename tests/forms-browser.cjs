@@ -30,6 +30,23 @@ const { spawn } = require('node:child_process');
             if (style.color !== 'rgb(0, 0, 0)' || style.background !== 'rgba(0, 0, 0, 0)' || style.size !== '18px' || style.radius !== '8px' || style.height !== '48px' || !style.font.includes('UDCRoboto')) throw new Error('Default accessible design mismatch: '+JSON.stringify(style));
         }
         if (!(await page.evaluate(() => document.fonts.check('18px UDCRoboto')))) throw new Error('Local Roboto did not load');
+
+        await page.addStyleTag({content:'.udc-default a{color:red!important}'});
+        for (const form of await page.locator('form').all()) {
+            const trap = form.locator('[name=udc_contact_reference]');
+            if (await trap.count() !== 1 || await trap.isVisible() || !(await trap.isEnabled())) throw new Error('Trap visibility/count/enabled contract failed');
+            const data = await form.evaluate(el => {
+                const trap = el.querySelector('[name=udc_contact_reference]');
+                trap.focus();
+                return {value:new FormData(el).get('udc_contact_reference'),focused:document.activeElement===trap,tab:trap.tabIndex};
+            });
+            if (data.value !== '' || data.focused || data.tab !== -1) throw new Error('Hidden trap must submit empty without receiving focus');
+            await form.locator('[name=udc_last_name]').focus(); await page.keyboard.press('Tab');
+            if (await page.evaluate(()=>document.activeElement.name==='udc_contact_reference')) throw new Error('Tab reached the trap');
+            const colors = await form.evaluate(el=>({button:getComputedStyle(el.querySelector('button')).color,link:getComputedStyle(el.querySelector('a:not(.udc-download)')).color}));
+            if (colors.button !== 'rgb(255, 255, 255)' || colors.link !== 'rgb(255, 0, 0)') throw new Error('Button contrast or editable ordinary links failed');
+        }
+        console.log('PASS: Hidden enabled honeypots stay out of focus and submit empty; button-only white override preserves editable links');
         const duplicateIds = await page.locator('[id]').evaluateAll(elements => elements.length - new Set(elements.map(el => el.id)).size);
         if (duplicateIds) throw new Error('Duplicate HTML IDs across the two form types');
         for (const width of [320, 390, 782, 1280]) {
@@ -176,6 +193,21 @@ const { spawn } = require('node:child_process');
             const focusVisible = await page.evaluate(() => { const style=getComputedStyle(document.activeElement); return style.outlineStyle !== 'none' && parseFloat(style.outlineWidth)>0; });
             if (!focusVisible) throw new Error('Styled original form hides keyboard focus');
         }
+
+        for (const form of await page.locator('form').all()) {
+            const trap=form.locator('[name=udc_contact_reference]');
+            if (await trap.count()!==1 || await trap.isVisible() || !(await trap.isEnabled())) throw new Error('Repeated custom form trap failed');
+        }
+        const noScript=await browser.newContext({javaScriptEnabled:false});
+        const plain=await noScript.newPage();
+        for (const file of ['udc-forms-preview.html','udc-forms-design-preview.html']) {
+            await plain.setContent(fs.readFileSync(path.join(os.tmpdir(),file),'utf8'));
+            for (const form of await plain.locator('form').all()) {
+                if (await form.locator('[name=udc_contact_reference]').isVisible() || await form.evaluate(el=>new FormData(el).get('udc_contact_reference'))!=='') throw new Error('No-JS trap failed in '+file);
+            }
+        }
+        await noScript.close();
+        console.log('PASS: Repeated tattoo/piercing traps in both designs remain hidden and submit empty without JavaScript');
         const repeatedIds = await page.locator('[id]').evaluateAll(elements => elements.length-new Set(elements.map(el=>el.id)).size);
         if (repeatedIds) throw new Error('Repeated original shortcodes duplicate IDs');
         await page.screenshot({path:path.join(os.tmpdir(),'udc-review-styled.png'),fullPage:true});

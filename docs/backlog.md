@@ -119,3 +119,22 @@ Move completed items to a Closed items section with the completion date, change 
 **Verification boundary:** source, metadata and saved-log inspection confirm the existing local implementation record; this review does not rerun application, database, browser or external-service suites. Existing pending code and catalog changes are preserved.
 
 **Verified, executed in this review:** 137 local Markdown file/anchor links pass; active version metadata and the saved ZIP agree on 1.13.0 and archive integrity passes. All 75 tracked/nonignored non-Markdown files remain byte-identical. Diff whitespace checks pass.
+
+
+## FORM-SPAM-FEEDBACK-01 — Honeypot and public feedback
+
+**Done (source and isolated runtime validation):** shared trap rendering/server checks, white button text without a general link override, and authenticated success/error notices immediately below both form headings. Canonical contracts: [antispam controls](data-security-privacy.md#public-form-honeypot) and [result feedback](architecture.md).
+
+**Verified, executed:** PHP form/review/guardian/minority regressions, Edge fixture checks at 320/390/782/1280px, modified PHP lint and the same-version local ZIP gate. Native WordPress 7.1.4/MySQL 8.4.3/Edge integration passed anonymous no-JavaScript and authenticated submissions for both services, deliberate filled-trap rejections, nonce precedence, notice placement/colors and SQL confirmation that only legitimate requests persisted. See [validation boundaries](development-and-quality.md#public-form-honeypot-and-feedback). No version bump, commit, tag, push, deployment or production submission is part of this item.
+
+**Open acceptance:** production theme/cache and real Polylang overrides. Bots can omit or leave the field empty; this barrier does not close FORM-NONCE-01. Local implementation is complete; production acceptance remains separate.
+
+
+## RELEASE-1.13.1 — Patch preparation
+
+**Done (local preparation):** patch metadata and asset cache keys advance to 1.13.1 for FORM-SPAM-FEEDBACK-01. Schema and accepted documents are unchanged. Nine catalog/PHP locale checks, the inherited form/guardian/minority regressions, package PHP lint/hash/362-file ZIP checks and git diff --check pass. See [Release](release.md#patch-release-1131). Commit, annotated tag and push remain for the maintainer; remote publication is unverified.
+
+
+## ADMIN-MENU-01 — Piercings first
+
+**Done (source and local regression checks):** UDC_Admin::add_admin_menu() passes position zero for the Piercings submenu, followed by Tattoos, Backups and Settings. Existing labels, slugs and capability checks remain. PHP form/review regressions, modified PHP lint, git diff --check and the same-version package gate pass. No additional version bump or Git publication; native admin visual acceptance remains separate.

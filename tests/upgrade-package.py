@@ -71,7 +71,7 @@ def main():
         site = workspace / 'wordpress'
         mu = site / 'wp-content/mu-plugins'
         mu.mkdir(exist_ok=True)
-        (mu / 'isolated-test.php').write_text("<?php add_filter('pre_wp_mail', '__return_true'); add_filter('pre_http_request', function () { return new WP_Error('isolated_test', 'External HTTP disabled for the isolated test.'); });", encoding='utf-8')
+        (mu / 'isolated-test.php').write_text("<?php add_filter('udc_submission_rate_limit', function () { return 10; }); add_filter('pre_wp_mail', '__return_true'); add_filter('pre_http_request', function () { return new WP_Error('isolated_test', 'External HTTP disabled for the isolated test.'); });", encoding='utf-8')
         config = "<?php\ndefine('DB_NAME', 'udc_upgrade_test');\ndefine('DB_USER', 'root');\ndefine('DB_PASSWORD', '');\ndefine('DB_HOST', '127.0.0.1:" + str(port) + "');\ndefine('DB_CHARSET', 'utf8mb4');\ndefine('DB_COLLATE', '');\ndefine('FS_METHOD', 'direct');\ndefine('DISABLE_WP_CRON', true);\ndefine('AUTOMATIC_UPDATER_DISABLED', true);\ndefine('WP_DEBUG', false);\n$table_prefix = 'wp_';\nif (!defined('ABSPATH')) define('ABSPATH', __DIR__ . '/');\nrequire_once ABSPATH . 'wp-settings.php';\n"
         (site / 'wp-config.php').write_text(config, encoding='utf-8')
         create_db = "mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT); $db=new mysqli('127.0.0.1','root','',''," + str(port) + "); $db->query('CREATE DATABASE udc_upgrade_test CHARACTER SET utf8mb4');"
@@ -139,6 +139,7 @@ def main():
             $table=$wpdb->prefix.'udc_submissions';
             foreach(['tattoo','piercing'] as $type) {
                 ensure((int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table WHERE form_type=%s AND minor_declared=1",$type))===1,'Native browser submission persisted exactly once: '.$type);
+                ensure((int)$wpdb->get_var($wpdb->prepare("SELECT COUNT(*) FROM $table WHERE form_type=%s AND first_name='Honeypot'",$type))===2,'Only legitimate anonymous/authenticated honeypot test requests persisted: '.$type);
             }
         } else {
             if (!is_plugin_active('user-data-collection/user-data-collection.php')) {
@@ -147,7 +148,7 @@ def main():
             $before=json_decode(file_get_contents(__DIR__.'/before.json'),true);
             $table=$wpdb->prefix.'udc_submissions';
             $after=$wpdb->get_row("SELECT * FROM $table",ARRAY_A);
-            ensure(UDC_DB_VERSION === '1.13.0' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.13.0');
+            ensure(UDC_DB_VERSION === '1.13.1' && get_option('udc_db_version') === UDC_DB_VERSION, 'New plugin and real database schema reach 1.13.1');
             ensure((int)$wpdb->get_var("SELECT COUNT(*) FROM $table") === 1, 'Existing record count is preserved');
             foreach($before['row'] as $key=>$value) {
                 if (in_array($key, ['is_confirmed','address','city','zip','zip_city'], true)) continue;

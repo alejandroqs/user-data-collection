@@ -12,7 +12,7 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.13.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.13.0`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.13.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.13.1`. Plugin, schema marker, npm and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The `vX.Y.Z` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
@@ -123,3 +123,14 @@ Patch release: QR posters use the supplied transparent studio logo and center th
 **Verified from source:** adds the translated minority badge as the ninth/final list column and below date of birth in both detail views. Saved 0/1 declarations take priority; missing history derives age without changing stored values. The existing 24px minority-block spacing remains, with explicit spacing below nonempty errors. Plugin/schema marker, npm, relevant asset versions and all nine catalog headers are synchronized to 1.13.0. This release adds no database columns and does not change accepted consent/care snapshots. It includes the preceding pending 1.12.1 copy and spacing changes.
 
 Local checks and their boundaries are recorded in [Development and quality](development-and-quality.md#minority-badges-in-1130). Build output remains tmp/user-data-collection.zip. The annotated publication tag is v1.13.0; the agent has not committed, tagged or pushed it.
+
+
+## Patch release 1.13.1
+
+**Verified from source:** the administrative submenu now places Piercings first, followed by Tattoos, Backups and Settings, using the native submenu position argument. Existing translated labels, page slugs, callbacks and capabilities are retained.
+
+**Verified from source:** fixes white text on form buttons/download buttons while leaving ordinary links theme-customizable; unifies translated authenticated success/error notices beneath both form headings; adds a shared server-side honeypot with compatibility for absent fields in old cached/open forms. See [Architecture](architecture.md) and [antispam controls](data-security-privacy.md#public-form-honeypot).
+
+Plugin/header, schema marker, npm, asset cache keys and translation metadata are synchronized to 1.13.1. The schema marker follows this repository's synchronized release convention; table structure and accepted-document versions are unchanged. The existing idempotent activator runs when the stored marker differs.
+
+Local behavior checks before the metadata bump are recorded in [Development and quality](development-and-quality.md#public-form-honeypot-and-feedback). The 1.13.1 package and metadata checks are recorded there separately. Target annotated tag: v1.13.1. No commit, tag, push, GitHub workflow or production deployment has been performed by the agent.

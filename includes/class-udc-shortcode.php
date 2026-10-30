@@ -106,6 +106,11 @@ class UDC_Shortcode
         if ($enabled) {
             $css .= '.udc-piercing-form .udc-minor-notice{padding:16px;border-left:4px solid ' . UDC_Settings::get_valid_color('udc_design_care_border', '#ffffff') . ';background:' . UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') . '}';
         }
+        $css .= 'form.udc-piercing-form button,form.udc-piercing-form a.udc-download{color:#fff!important;-webkit-text-fill-color:#fff!important}';
+        $css .= '.udc-piercing-form .udc-honeypot[hidden]{display:none!important}';
+        $css .= '.udc-piercing-form .udc-result{padding:16px 20px;margin:16px 0 24px;border:1px solid;border-left-width:4px;border-radius:6px;font:500 1rem/1.5 Roboto,Arial,sans-serif;letter-spacing:normal;scroll-margin-top:24px}';
+        $css .= '.udc-piercing-form .udc-result--success{background:#d1e7dd!important;border-color:#a3cfbb!important;color:#0a3622!important;-webkit-text-fill-color:#0a3622!important}';
+        $css .= '.udc-piercing-form .udc-result--error{background:#f8d7da!important;border-color:#f1aeb5!important;color:#58151c!important;-webkit-text-fill-color:#58151c!important}';
         return $piercing ? $css : str_replace('.udc-piercing-form', '.udc-form', $css);
     }
 
@@ -116,13 +121,6 @@ class UDC_Shortcode
         $document = self::snapshot();
         $json = wp_json_encode($document);
         ob_start();
-
-        // Only display a result authenticated by the submission handler.
-        if ('success' === $status) {
-            echo '<div style="background-color: #b2c7b7; border: 1px solid #7d9482; color: #155724; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#10004; ' . esc_html(UDC_i18n::translate('msg_success')) . '</div>';
-        } elseif (in_array($status, ['error', 'minor_error'], true)) {
-            echo '<div style="background-color: #d2b6b9; border: 1px solid #a18185; color: #721c24; padding: 15px 20px; margin: 20px 0 30px 0; border-radius: 4px; font-family: system-ui, -apple-system, BlinkMacSystemFont, \'Segoe UI\', Roboto, Arial, sans-serif; font-size: 16px; font-weight: 500;">&#9888; ' . esc_html('minor_error' === $status ? UDC_Guardian::translate('error') : UDC_i18n::translate('msg_error')) . '</div>';
-        }
 
         $design_enabled = get_option('udc_design_enabled', '0');
         $care_bg = $design_enabled ? UDC_Settings::get_valid_color('udc_design_care_bg', 'rgba(0, 0, 0, 0.15)') : '#f1f5fa';
@@ -136,8 +134,10 @@ class UDC_Shortcode
 
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form<?php echo $design_enabled ? '' : ' udc-default'; ?>">
             <h2><?php echo esc_html($document['document']['title']); ?></h2>
+            <?php self::render_result($status); ?>
             <p><?php echo esc_html($document['document']['intro']); ?></p>
             <?php self::render_nonce('udc_form_action', $prefix); ?>
+            <?php self::render_honeypot($prefix); ?>
             <input type="hidden" name="action" value="udc_submit_form">
             <input type="hidden" name="udc_evidence" value="<?php echo esc_attr($json); ?>">
             <input type="hidden" name="udc_evidence_signature" value="<?php echo esc_attr(hash_hmac('sha256', $json, wp_salt('nonce'))); ?>">
@@ -223,11 +223,17 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.13.0');
-        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.13.0', true);
-        wp_register_script('udc-forms', false, [], '1.13.0', true);
+        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.13.1');
+        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.13.1', true);
+        wp_register_script('udc-forms', false, [], '1.13.1', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
+function udcShowResult() {
+    var notice = document.querySelector('.udc-form .udc-result, .udc-piercing-form .udc-result');
+    if (notice) { notice.focus({preventScroll: true}); notice.scrollIntoView({block: 'center'}); }
+}
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', udcShowResult);
+else udcShowResult();
 document.addEventListener('submit', function (event) {
     var form = event.target;
     if (!(form instanceof HTMLFormElement) || !form.matches('.udc-form, .udc-piercing-form') || event.defaultPrevented) return;
@@ -255,6 +261,23 @@ JS
             ['id="' . esc_attr($prefix . 'nonce') . '"', 'id="' . esc_attr($prefix . 'referer') . '"'],
             $html
         );
+    }
+
+    /** Render one cache-compatible text trap; never persist its value. */
+    public static function render_honeypot($prefix)
+    {
+        $id = $prefix . 'contact-reference';
+        echo '<div class="udc-honeypot" hidden aria-hidden="true" style="display:none!important"><label for="' . esc_attr($id) . '">Leave this field empty</label><input type="text" id="' . esc_attr($id) . '" name="udc_contact_reference" value="" autocomplete="off" tabindex="-1"></div>';
+    }
+
+    /** Display only an authenticated result, immediately below the form heading. */
+    public static function render_result($status, $is_piercing = false)
+    {
+        if (!in_array($status, ['success', 'error', 'minor_error'], true)) { return; }
+        $success = 'success' === $status;
+        $message = 'minor_error' === $status ? UDC_Guardian::translate('error') :
+            ($is_piercing ? UDC_Piercing_Form::translate($success ? 'msg_success' : 'msg_error') : UDC_i18n::translate($success ? 'msg_success' : 'msg_error'));
+        echo '<div class="udc-result udc-result--' . ($success ? 'success' : 'error') . '" role="' . ($success ? 'status' : 'alert') . '" tabindex="-1">' . esc_html($message) . '</div>';
     }
 
     public static function result_status($is_piercing = false)
@@ -323,6 +346,12 @@ JS
         $nonce_action = $is_piercing ? 'udc_piercing_action' : 'udc_form_action';
         if (!isset($_POST['udc_form_nonce']) || !is_scalar($_POST['udc_form_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), $nonce_action)) {
             wp_die('Security check failed.', 'Error', ['response' => 403]);
+        }
+
+        // Missing fields remain compatible with older cached/open forms.
+        if (array_key_exists('udc_contact_reference', $_POST) &&
+            (!is_string($_POST['udc_contact_reference']) || '' !== $_POST['udc_contact_reference'])) {
+            $this->redirect_error($is_piercing);
         }
 
         $fields = ['last_name', 'first_name', 'dob', 'minor_declared', 'phone', 'appointment_date', 'appointment_time', 'piercing_location', 'liability_accepted', 'health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];

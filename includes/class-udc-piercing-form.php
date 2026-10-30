@@ -156,7 +156,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
 
     public function enqueue_styles()
     {
-        wp_register_style('udc-piercing', false, [], '1.13.0');
+        wp_register_style('udc-piercing', false, [], '1.13.1');
         wp_enqueue_style('udc-piercing');
         wp_add_inline_style('udc-piercing', self::form_styles(true));
     }
@@ -171,11 +171,10 @@ class UDC_Piercing_Form extends UDC_Shortcode
         ?>
         <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" class="udc-piercing-form<?php echo get_option('udc_design_enabled', '0') ? '' : ' udc-default'; ?>">
             <h2><?php echo esc_html(self::translate('title')); ?></h2>
+            <?php self::render_result($status, true); ?>
             <p><?php echo esc_html(self::translate('intro')); ?></p>
-            <?php if ('' !== $status): ?>
-                <p role="status"><?php echo esc_html(('minor_error' === $status ? UDC_Guardian::translate('error') : self::translate('success' === $status ? 'msg_success' : 'msg_error'))); ?></p>
-            <?php endif; ?>
             <?php self::render_nonce('udc_piercing_action', $prefix); ?>
+            <?php self::render_honeypot($prefix); ?>
             <input type="hidden" name="action" value="udc_submit_piercing">
             <input type="hidden" name="udc_evidence" value="<?php echo esc_attr($json); ?>">
             <input type="hidden" name="udc_evidence_signature" value="<?php echo esc_attr(hash_hmac('sha256', $json, wp_salt('nonce'))); ?>">

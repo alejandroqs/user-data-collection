@@ -84,6 +84,15 @@ Public form -> custom database table -> local JSON backup -> optional Google Dri
 
 These are source-level controls, not evidence of complete security or privacy compliance.
 
+### Public-form honeypot
+
+**Verified from source:** both renderers call UDC_Shortcode::render_honeypot() once per instance. The enabled text input udc_contact_reference starts exactly empty, has a unique prefixed ID, autocomplete="off" and tabindex="-1". Its container uses hidden, aria-hidden="true" and an inline display:none!important safeguard. Rendering and hiding do not require JavaScript or the optional design.
+
+UDC_Shortcode::save_submission() checks the trap immediately after successful nonce verification, before reading personal fields, verifying document evidence, counting attempts or inserting a row. A present value must be a string strictly equal to ''. Whitespace, "0", HTML, backslashes, arrays, null and other non-string values fail through the existing service-specific generic error redirect. The raw trap value is not sanitized into emptiness, reflected, logged, persisted or included in accepted-document snapshots/backups.
+
+**Compatibility decision / limitation:** absence is accepted for forms opened or cached before this change. Bots that detect the field, leave it empty or omit it can bypass this barrier. It targets basic bots; nonces, signed evidence, consent/health validation and the attempt budget remain independent controls. This does not resolve [FORM-NONCE-01](backlog.md) and does not change Autoptimize, cache configuration, database schema, persistent options or public endpoints.
+
+
 `UDC_Shortcode::handle_submission()` counts attempts only after nonce, scalar structure, health-answer/acknowledgement, required-field, length, date, and time validation, using a filterable transient lifetime of ten minutes per observed `REMOTE_ADDR`. The transient key uses an HMAC of that address; the raw address is not stored or logged. The default budget is five attempts. Each counted attempt resets the transient lifetime; this is an inactivity-based expiry, not a fixed window. Rejected field values do not consume this budget. The transient counter is non-atomic and is not protection against distributed sources. Counter failures fail closed, and an exceeded budget returns HTTP 429.
 
 `UDC_Settings::register_settings()` supplies explicit setting types, defaults, and sanitizers. Email values, Drive folder IDs, service-account JSON structure, and design color tokens are validated before storage. An administrator can clear the configured credentials by submitting an empty or whitespace-only value; while configured, the service-account JSON and private key remain stored in a WordPress option pending an operator decision about secret storage.

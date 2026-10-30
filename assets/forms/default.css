@@ -13,3 +13,5 @@
 .udc-minor-notice[hidden]{display:none!important}.udc-minor-error:not(:empty){border:2px solid currentColor;padding:12px;font-weight:600}
 .udc-default .udc-minor-error{color:#9e1c1c}.udc-default button:disabled{opacity:.65;cursor:wait}
 @media(forced-colors:active){.udc-default input[type=checkbox]{appearance:auto!important}.udc-default input[type=checkbox]::before{display:none}.udc-default .udc-download{border:2px solid ButtonText}}
+
+form.udc-form button,form.udc-piercing-form button,form.udc-form a.udc-download,form.udc-piercing-form a.udc-download{color:#fff!important;-webkit-text-fill-color:#fff!important}

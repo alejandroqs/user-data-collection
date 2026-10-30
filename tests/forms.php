@@ -162,7 +162,8 @@ if (in_array('--preview', $argv ?? [], true)) {
     $html = '<!doctype html><html lang="fr"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Synthetic consent preview</title><style>body{font:16px/1.6 system-ui;margin:24px auto;padding:0 16px;max-width:760px}input,select{max-width:100%;box-sizing:border-box}label{display:inline-block}h2{margin-top:40px}' . $GLOBALS['form_css'] . $default_css . '</style><body>' . $tattoo_html . '<hr>' . $piercing_html . '<script>' . file_get_contents(dirname(__DIR__) . '/assets/forms/minor.js') . $GLOBALS['form_script'] . '</script></body></html>';
     file_put_contents(sys_get_temp_dir() . '/udc-forms-preview.html', $html);
     $GLOBALS['options']['udc_design_enabled'] = '1';
-    file_put_contents(sys_get_temp_dir() . '/udc-forms-design-preview.html', '<!doctype html><html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font:16px system-ui;background:#222;color:#fff;max-width:760px;margin:auto;padding:20px}</style><body>' . $tattoo->render_form() . $tattoo->render_form() . '</body></html>');
+    $piercing->enqueue_styles();
+    file_put_contents(sys_get_temp_dir() . '/udc-forms-design-preview.html', '<!doctype html><html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><style>body{font:16px system-ui;background:#222;color:#fff;max-width:760px;margin:auto;padding:20px}</style><body>' . '<style>' . $GLOBALS['form_css'] . '</style>' . $tattoo->render_form() . $tattoo->render_form() . $piercing->render_form() . $piercing->render_form() . '</body></html>');
     $GLOBALS['options']['udc_design_enabled'] = '0';
     file_put_contents(sys_get_temp_dir() . '/udc-care-oral-preview.html', UDC_Piercing_Form::care_document('oral'));
 }
