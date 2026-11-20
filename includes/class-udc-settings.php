@@ -49,6 +49,10 @@ class UDC_Settings
         delete_option('udc_email_address');
         delete_option('udc_email_sender_address');
         delete_option('udc_email_sender_name');
+        delete_option('udc_diagnostic_email_enabled');
+        delete_option('udc_diagnostic_email_address');
+        delete_option('udc_diagnostic_email_sender_address');
+        delete_option('udc_diagnostic_email_sender_name');
         delete_option('udc_design_enabled');
         delete_option('udc_design_input_bg');
         delete_option('udc_design_input_border');
@@ -81,6 +85,11 @@ class UDC_Settings
         register_setting('udc_email_settings', 'udc_email_address', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_email']]);
         register_setting('udc_email_settings', 'udc_email_sender_address', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_email']]);
         register_setting('udc_email_settings', 'udc_email_sender_name', ['type' => 'string', 'default' => '', 'sanitize_callback' => [$this, 'sanitize_plain_text']]);
+
+        register_setting('udc_diagnostic_settings', 'udc_diagnostic_email_enabled', ['type' => 'integer', 'default' => 0, 'sanitize_callback' => [$this, 'sanitize_checkbox']]);
+        register_setting('udc_diagnostic_settings', 'udc_diagnostic_email_address', ['type' => 'string', 'sanitize_callback' => [$this, 'sanitize_email']]);
+        register_setting('udc_diagnostic_settings', 'udc_diagnostic_email_sender_address', ['type' => 'string', 'sanitize_callback' => [$this, 'sanitize_email']]);
+        register_setting('udc_diagnostic_settings', 'udc_diagnostic_email_sender_name', ['type' => 'string', 'sanitize_callback' => [$this, 'sanitize_plain_text']]);
 
         // Design Settings
         register_setting('udc_design_settings', 'udc_design_enabled', ['type' => 'integer', 'default' => 0, 'sanitize_callback' => [$this, 'sanitize_checkbox']]);
@@ -222,6 +231,7 @@ class UDC_Settings
         $email_address = get_option('udc_email_address', get_option('admin_email'));
         $email_sender_address = get_option('udc_email_sender_address', '');
         $email_sender_name = get_option('udc_email_sender_name', '');
+        $diagnostic_settings = UDC_Email_Sync::diagnostic_settings();
 
         // Design options
         $design_enabled = get_option('udc_design_enabled', '0');
@@ -421,6 +431,17 @@ class UDC_Settings
             <?php elseif ($active_tab == 'qr'): ?>
                 <?php UDC_QR_Poster::settings(); ?>
             <?php elseif ($active_tab == 'advanced'): ?>
+                <h3><?php esc_html_e('Submission Diagnostics', 'user-data-collection'); ?></h3>
+                <form method="post" action="options.php">
+                    <?php settings_fields('udc_diagnostic_settings'); ?>
+                    <table class="form-table">
+                        <tr><th scope="row"><?php esc_html_e('Enable Diagnostic Emails', 'user-data-collection'); ?></th><td><input type="hidden" name="udc_diagnostic_email_enabled" value="0" /><input type="checkbox" name="udc_diagnostic_email_enabled" value="1" <?php checked(1, $diagnostic_settings['enabled'], true); ?> /></td></tr>
+                        <tr><th scope="row"><?php esc_html_e('Destination Email Address', 'user-data-collection'); ?></th><td><input type="email" name="udc_diagnostic_email_address" value="<?php echo esc_attr($diagnostic_settings['recipient']); ?>" class="regular-text" /></td></tr>
+                        <tr><th scope="row"><?php esc_html_e('Sender Email Address (From)', 'user-data-collection'); ?></th><td><input type="email" name="udc_diagnostic_email_sender_address" value="<?php echo esc_attr($diagnostic_settings['sender_email']); ?>" class="regular-text" /></td></tr>
+                        <tr><th scope="row"><?php esc_html_e('Sender Name (From Name)', 'user-data-collection'); ?></th><td><input type="text" name="udc_diagnostic_email_sender_name" value="<?php echo esc_attr($diagnostic_settings['sender_name']); ?>" class="regular-text" /></td></tr>
+                    </table>
+                    <?php submit_button(); ?>
+                </form>
                 <div class="notice notice-error inline"><p><strong><?php esc_html_e('Warning: Irreversible Action', 'user-data-collection'); ?></strong></p></div>
                 <p><?php esc_html_e('This action will delete all submitted forms from the database, clear all local JSON backups, and reset all configuration options to their default values.', 'user-data-collection'); ?></p>
                 <button id="udc-delete-all" class="button button-primary" data-nonce="<?php echo esc_attr(wp_create_nonce('udc_advanced_nonce')); ?>" style="background: #dc3232; border-color: #dc3232; color: #fff;">

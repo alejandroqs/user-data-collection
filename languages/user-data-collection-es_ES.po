@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: User Data Collection 1.13.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 15:59+0000\n"
-"PO-Revision-Date: 2026-10-30 15:59+0000\n"
+"POT-Creation-Date: 2026-11-20 19:09+0000\n"
+"PO-Revision-Date: 2026-11-20 19:09+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: Spanish\n"
 "Language: es_ES\n"
@@ -1188,3 +1188,38 @@ msgstr "Descargos piercings"
 #: includes/udc-guardian.php
 msgid "Is a minor"
 msgstr "Es menor"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Submission Diagnostics"
+msgstr "Diagnóstico de envíos"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Enable Diagnostic Emails"
+msgstr "Activar correos de diagnóstico"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "A form submission could not be saved because the database insert failed."
+msgstr "No se pudo guardar un envío del formulario por un error de inserción en la base de datos."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "The form submission limit could not be checked."
+msgstr "No se pudo comprobar el límite de envíos del formulario."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "A submission diagnostic event occurred."
+msgstr "Se produjo un evento de diagnóstico de envío."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s"
+msgstr "Descripción: %1$s\\nTipo de formulario: %2$s\\nCódigo del evento: %3$s"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "User Data Collection submission diagnostic"
+msgstr "Diagnóstico de envío de User Data Collection"

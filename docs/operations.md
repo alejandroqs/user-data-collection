@@ -55,6 +55,14 @@ When enabled, `UDC_GDrive::sync_backups()` paginates a bounded Drive listing, up
 
 When enabled, `UDC_Email_Sync::send_backup()` selects the newest local `*.json` file by modification time and sends it as an attachment using `wp_mail()`. The configured recipient and optional sender values come from plugin options. Mailbox retention, forwarding, transport, and provider access are outside this plugin.
 
+## Submission diagnostics
+
+`UDC_Shortcode::save_submission()` sends fixed event codes and the `tattoo` or `piercing` form identifier to PHP `error_log()`. The destination is PHP's configured error log; when WordPress debug logging is enabled, this may be the configured WordPress debug log. The exact file and retention are controlled by the site's PHP/WordPress configuration. Successful insert events are logged only when `WP_DEBUG` is enabled. Log messages contain no submitted values or database error details.
+
+The Advanced settings form resolves the diagnostic destination, sender address and sender name from the corresponding Email Backups settings while each diagnostic value is absent. The destination uses the backup UI's `admin_email` fallback; absent sender values inherit the backup sender values, which default to blank and therefore leave WordPress mail defaults in effect. Once saved, a diagnostic value overrides its backup counterpart, including an explicitly saved blank. The diagnostics enable option defaults off. Display and delivery use the same resolved values, and saving either settings form does not update the other form's options.
+
+Only insertion failures and internal submission-limit mechanism failures are eligible for diagnostic email, and only when email is enabled and the resolved destination is valid. Alerts include a localized description, form type and the same stable event code as the local log. They have no attachments. Attempts are throttled site-wide to one per 15 minutes with a separate transient; the claim is written before calling `wp_mail()`, and a failed transient write skips the attempt. WordPress transient operations do not provide an atomic lock across concurrent requests, so overlapping requests may both pass the check. A successful `wp_mail()` return means the mailer accepted the message for processing; it does not establish inbox delivery. A false return or thrown mail error is logged locally with a fixed code and does not change the submission result or cause another alert.
+
 ## Delete All Data
 
 The administrative `UDC_Settings::ajax_delete_all_data()` action checks capability and nonce, deletes local JSON files, deletes all rows from the custom table, and removes the five guardian-template selections and the listed Drive, email, design, status, and retired piercing website/review-link options (legacy cleanup only). It does not remove Drive objects, sent email attachments, or other external copies. It also does not unschedule events or remove every possible WordPress metadata item.

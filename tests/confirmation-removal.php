@@ -14,14 +14,23 @@ function add_action($hook, $callback) { $GLOBALS['hooks'][$hook][] = $callback; 
 function add_shortcode($tag, $callback) { $GLOBALS['shortcodes'][$tag] = $callback; }
 function get_locale() { return $GLOBALS['locale'] ?? 'fr_FR'; }
 function wp_json_encode($value) { return json_encode($value, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES); }
-function add_filter($hook, $callback, $priority = 10) {}
+function add_filter($hook, $callback, $priority = 10) { $GLOBALS['active_filters'][$hook][] = $callback; }
+function remove_filter($hook, $callback, $priority = 10) { $GLOBALS['active_filters'][$hook] = array_values(array_filter($GLOBALS['active_filters'][$hook] ?? [], function ($item) use ($callback) { return $item !== $callback; })); }
 function has_filter($hook, $callback) { return false; }
 function register_activation_hook($file, $callback) {}
 function register_deactivation_hook($file, $callback) {}
 function plugin_dir_path($file) { return dirname($file) . '/'; }
 function plugin_dir_url($file) { return 'https://example.test/plugin/'; }
-function get_option($name, $default = false) { return $GLOBALS['options'][$name] ?? $default; }
-function update_option($name, $value) { $GLOBALS['options'][$name] = $value; }
+function get_option($name, $default = false) {
+    if (array_key_exists($name, $GLOBALS['options'])) { return $GLOBALS['options'][$name]; }
+    if (isset($GLOBALS['registered_settings'][$name]['default'])) { return $GLOBALS['registered_settings'][$name]['default']; }
+    return $default;
+}
+function update_option($name, $value) {
+    if (get_option($name) === $value) { return false; }
+    $GLOBALS['options'][$name] = $value;
+    return true;
+}
 function is_admin() { return true; }
 function load_plugin_textdomain(...$args) {}
 function wp_upload_dir() { return ['basedir' => sys_get_temp_dir() . '/udc-synthetic-tests']; }
@@ -48,13 +57,16 @@ function current_user_can($capability) { return $GLOBALS['can_manage'] ?? true; 
 function current_time($format) { return $format === 'Y-m-d' ? '2026-10-24' : '2026-10-24 12:00:00'; }
 function date_i18n($format, $timestamp) { return date($format ?: 'Y-m-d', $timestamp); }
 function sanitize_text_field($value) { return trim(strip_tags((string) $value)); }
+function sanitize_email($value) { return filter_var($value, FILTER_SANITIZE_EMAIL); }
+function is_email($value) { return is_string($value) && false !== filter_var($value, FILTER_VALIDATE_EMAIL); }
+function wp_mail($to, $subject, $message, $headers = '', $attachments = []) { $GLOBALS['mail_sender_filter_counts'][] = [count($GLOBALS['active_filters']['wp_mail_from'] ?? []), count($GLOBALS['active_filters']['wp_mail_from_name'] ?? [])]; $GLOBALS['captured_mail'][] = [$to, $subject, $message, $headers, $attachments]; if (!empty($GLOBALS['throw_mail'])) { throw new RuntimeException('synthetic transport failure'); } return $GLOBALS['mail_result'] ?? true; }
 function wp_unslash($value) { return stripslashes($value); }
 function esc_sql($value) { return $value; }
 function wp_verify_nonce($value, $action) { return $value === 'synthetic-nonce' && (!isset($GLOBALS['expected_nonce_action']) || $action === $GLOBALS['expected_nonce_action']); }
 function apply_filters($hook, $value) { return $value; }
 function wp_salt($scheme) { return 'synthetic-test-salt'; }
 function get_transient($key) { return $GLOBALS['transients'][$key] ?? false; }
-function set_transient($key, $value, $expiry) { $GLOBALS['transients'][$key] = $value; return true; }
+function set_transient($key, $value, $expiry) { if (!empty($GLOBALS['fail_transient_write'])) { return false; } $GLOBALS['transients'][$key] = $value; return true; }
 function wp_get_referer() { return array_key_exists('referer', $GLOBALS) ? $GLOBALS['referer'] : 'https://example.test/form'; }
 class RedirectCaptured extends RuntimeException {}
 function wp_safe_redirect($url, $status = 302) { $GLOBALS['redirect_status'] = $status; throw new RedirectCaptured($url); }
@@ -74,6 +86,8 @@ class WP_List_Table {
 class SyntheticDatabase {
     public $prefix = 'synthetic_';
     public $last_error = '';
+    public $suppress_errors = false;
+    public function suppress_errors($suppress = true) { $previous = $this->suppress_errors; $this->suppress_errors = (bool) $suppress; return $previous; }
     public $columns = ['id', 'first_name', 'address', 'city', 'zip', 'minor_declared', 'is_confirmed', 'form_type', 'piercing_category', 'form_language', 'form_version', 'form_evidence'];
     public $failInspection = false;
     public $failDrop = false;

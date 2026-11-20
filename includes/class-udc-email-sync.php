@@ -5,6 +5,73 @@ if (!defined('ABSPATH')) {
 
 class UDC_Email_Sync
 {
+    public static function send_with_sender($recipient, $subject, $message, $attachments, $sender_email, $sender_name)
+    {
+        $sender_email = is_scalar($sender_email) && ('' === $sender_email || is_email($sender_email)) ? (string) $sender_email : '';
+        $sender_name = is_scalar($sender_name) ? sanitize_text_field((string) $sender_name) : '';
+        $email_filter = function ($original) use ($sender_email) { return '' !== $sender_email ? $sender_email : $original; };
+        $name_filter = function ($original) use ($sender_name) { return '' !== $sender_name ? $sender_name : $original; };
+        if ('' !== $sender_email) { add_filter('wp_mail_from', $email_filter); }
+        if ('' !== $sender_name) { add_filter('wp_mail_from_name', $name_filter); }
+        try { return wp_mail($recipient, $subject, $message, '', $attachments); }
+        finally {
+            if ('' !== $sender_email) { remove_filter('wp_mail_from', $email_filter); }
+            if ('' !== $sender_name) { remove_filter('wp_mail_from_name', $name_filter); }
+        }
+    }
+
+    public static function diagnostic_settings()
+    {
+        $missing = new stdClass();
+        $enabled = get_option('udc_diagnostic_email_enabled', 0);
+        $recipient = get_option('udc_diagnostic_email_address', $missing);
+        $sender_email = get_option('udc_diagnostic_email_sender_address', $missing);
+        $sender_name = get_option('udc_diagnostic_email_sender_name', $missing);
+
+        if ($missing === $recipient) {
+            $recipient = get_option('udc_email_address', get_option('admin_email'));
+        }
+        if ($missing === $sender_email) {
+            $sender_email = get_option('udc_email_sender_address', '');
+        }
+        if ($missing === $sender_name) {
+            $sender_name = get_option('udc_email_sender_name', '');
+        }
+
+        return [
+            'enabled' => (int) (bool) $enabled,
+            'recipient' => is_scalar($recipient) ? (string) $recipient : '',
+            'sender_email' => is_scalar($sender_email) ? (string) $sender_email : '',
+            'sender_name' => is_scalar($sender_name) ? (string) $sender_name : '',
+        ];
+    }
+
+    public static function send_diagnostic($event, $form_type)
+    {
+        $settings = self::diagnostic_settings();
+        if (empty($settings['enabled']) || !is_string($settings['recipient']) || !is_email($settings['recipient'])) { return false; }
+        $claim = 'udc_diagnostic_mail_throttle';
+        if (false !== get_transient($claim)) { return false; }
+        if (!set_transient($claim, 1, 15 * MINUTE_IN_SECONDS)) {
+            UDC_Shortcode::log_diagnostic('diagnostic_throttle_write_failed', $form_type);
+            return false;
+        }
+        $descriptions = [
+            'insert_failed' => __('A form submission could not be saved because the database insert failed.', 'user-data-collection'),
+            'submission_limit_failure' => __('The form submission limit could not be checked.', 'user-data-collection'),
+        ];
+        $description = isset($descriptions[$event]) ? $descriptions[$event] : __('A submission diagnostic event occurred.', 'user-data-collection');
+        $body_template = __('Description: %1$s\nForm type: %2$s\nEvent code: %3$s', 'user-data-collection');
+        $body = sprintf(str_replace('\\n', "\n", $body_template), $description, $form_type, UDC_Shortcode::diagnostic_code($event));
+        try {
+            $sent = self::send_with_sender($settings['recipient'], __('User Data Collection submission diagnostic', 'user-data-collection'), $body, [], $settings['sender_email'], $settings['sender_name']);
+        } catch (Throwable $error) {
+            UDC_Shortcode::log_diagnostic('diagnostic_mail_exception', $form_type);
+            return false;
+        }
+        if (!$sent) { UDC_Shortcode::log_diagnostic('diagnostic_mail_failed', $form_type); }
+        return (bool) $sent;
+    }
     public function __construct()
     {
         add_action('wp_ajax_udc_manual_email_backup', [$this, 'ajax_manual_email_backup']);
@@ -80,32 +147,7 @@ class UDC_Email_Sync
 
         $sender_email = get_option('udc_email_sender_address', '');
         $sender_name = get_option('udc_email_sender_name', '');
-        $sender_email = is_scalar($sender_email) && ('' === $sender_email || is_email($sender_email)) ? (string) $sender_email : '';
-        $sender_name = is_scalar($sender_name) ? sanitize_text_field((string) $sender_name) : '';
-
-        // Temporarily override mail from features
-        $mail_from_filter = function ($original_email_address) use ($sender_email) {
-            return !empty($sender_email) ? $sender_email : $original_email_address;
-        };
-        $mail_from_name_filter = function ($original_email_from) use ($sender_name) {
-            return !empty($sender_name) ? $sender_name : $original_email_from;
-        };
-
-        if (!empty($sender_email)) {
-            add_filter('wp_mail_from', $mail_from_filter);
-        }
-        if (!empty($sender_name)) {
-            add_filter('wp_mail_from_name', $mail_from_name_filter);
-        }
-
-        $sent = wp_mail($email_address, $subject, $message, '', $attachments);
-
-        if (!empty($sender_email)) {
-            remove_filter('wp_mail_from', $mail_from_filter);
-        }
-        if (!empty($sender_name)) {
-            remove_filter('wp_mail_from_name', $mail_from_name_filter);
-        }
+        $sent = self::send_with_sender($email_address, $subject, $message, $attachments, $sender_email, $sender_name);
 
         if ($sent) {
             return true;

@@ -343,15 +343,26 @@ JS
 
     protected function save_submission($is_piercing)
     {
+        $form_type = $is_piercing ? 'piercing' : 'tattoo';
         $nonce_action = $is_piercing ? 'udc_piercing_action' : 'udc_form_action';
-        if (!isset($_POST['udc_form_nonce']) || !is_scalar($_POST['udc_form_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), $nonce_action)) {
+        if (!isset($_POST['udc_form_nonce'])) {
+            self::log_diagnostic('nonce_missing', $form_type);
+            wp_die('Security check failed.', 'Error', ['response' => 403]);
+        }
+        if (!is_scalar($_POST['udc_form_nonce'])) {
+            self::log_diagnostic('nonce_malformed', $form_type);
+            wp_die('Security check failed.', 'Error', ['response' => 403]);
+        }
+        if (!wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), $nonce_action)) {
+            self::log_diagnostic('nonce_rejected', $form_type);
             wp_die('Security check failed.', 'Error', ['response' => 403]);
         }
 
         // Missing fields remain compatible with older cached/open forms.
         if (array_key_exists('udc_contact_reference', $_POST) &&
             (!is_string($_POST['udc_contact_reference']) || '' !== $_POST['udc_contact_reference'])) {
-            $this->redirect_error($is_piercing);
+            self::log_diagnostic('honeypot_rejected', $form_type);
+            $this->redirect_result('error', $is_piercing);
         }
 
         $fields = ['last_name', 'first_name', 'dob', 'minor_declared', 'phone', 'appointment_date', 'appointment_time', 'piercing_location', 'liability_accepted', 'health_good', 'health_treatment', 'health_blood_thinners', 'health_allergies', 'health_pregnant'];
@@ -401,24 +412,29 @@ JS
             $minor_declared = 1;
         }
         if (!$minor_declared && UDC_Validation::is_minor($dob, current_time('Y-m-d'))) {
+            self::log_diagnostic('validation_rejected', $form_type);
             $this->redirect_result('minor_error', $is_piercing);
         }
 
         $extra = $is_piercing ? UDC_Piercing_Form::submission_evidence() : self::submission_evidence();
-        if (is_wp_error($extra)) { $this->redirect_error($is_piercing); }
+        if (is_wp_error($extra)) { self::log_diagnostic('evidence_rejected', $form_type); $this->redirect_result('error', $is_piercing); }
 
         $attempt = $this->consume_submission_attempt();
         if (0 === $attempt) {
+            self::log_diagnostic('submission_limit_reached', $form_type);
             wp_die(esc_html($is_piercing ? UDC_Piercing_Form::translate('msg_error') : UDC_i18n::translate('msg_error')), 'Error', ['response' => 429]);
         }
         if (false === $attempt) {
-            $this->redirect_error($is_piercing);
+            self::log_diagnostic('submission_limit_failure', $form_type, true);
+            $this->redirect_result('error', $is_piercing);
         }
 
         // 4. Save to Custom Table
         global $wpdb;
         $table_name = $wpdb->prefix . 'udc_submissions';
 
+        $previous_suppression = $wpdb->suppress_errors(true);
+        try {
         $inserted = $wpdb->insert(
             $table_name,
             [
@@ -439,14 +455,33 @@ JS
             ] + $extra,
             ['%s', '%s', '%s', '%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
         );
+        } finally {
+            $wpdb->suppress_errors($previous_suppression);
+        }
 
         if (false === $inserted) {
-            error_log('UDC_SUBMISSION_INSERT_FAILED');
+            self::log_diagnostic('insert_failed', $form_type, true);
+        } elseif (defined('WP_DEBUG') && WP_DEBUG) {
+            self::log_diagnostic('insert_succeeded', $form_type);
         }
 
         // 5. Redirect based on result
         $status = $inserted ? 'success' : 'error';
         $this->redirect_result($status, $is_piercing);
+    }
+
+    public static function log_diagnostic($event, $form_type, $alert = false)
+    {
+        $events = ['nonce_missing', 'nonce_malformed', 'nonce_rejected', 'honeypot_rejected', 'validation_rejected', 'evidence_rejected', 'submission_limit_reached', 'submission_limit_failure', 'insert_failed', 'insert_succeeded', 'diagnostic_mail_failed', 'diagnostic_mail_exception', 'diagnostic_throttle_write_failed'];
+        if (!in_array($event, $events, true) || !in_array($form_type, ['tattoo', 'piercing'], true)) { return; }
+        $identifier = self::diagnostic_code($event);
+        error_log($identifier . ' form=' . $form_type);
+        if ($alert && class_exists('UDC_Email_Sync')) { UDC_Email_Sync::send_diagnostic($event, $form_type); }
+    }
+
+    public static function diagnostic_code($event)
+    {
+        return 'insert_failed' === $event ? 'UDC_SUBMISSION_INSERT_FAILED' : 'UDC_' . strtoupper($event);
     }
 
     private function sanitize_request_value($key)
@@ -456,6 +491,7 @@ JS
 
     private function redirect_error($is_piercing = false)
     {
+        self::log_diagnostic('validation_rejected', $is_piercing ? 'piercing' : 'tattoo');
         $this->redirect_result('error', $is_piercing);
     }
 

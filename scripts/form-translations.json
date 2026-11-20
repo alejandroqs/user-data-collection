@@ -81,7 +81,17 @@
       "QR image could not be generated.": "QR image could not be generated.",
       "Save changes before downloading. Use a dark QR color on its white panel.": "Save changes before downloading. Use a dark QR color on its white panel.",
       "Tattoo Waivers": "Tattoo waivers",
-      "Piercing Waivers": "Waivers for piercings"
+      "Piercing Waivers": "Waivers for piercings",
+      "Submission Diagnostics": "Submission Diagnostics",
+      "Enable Diagnostic Emails": "Enable Diagnostic Emails",
+      "Destination Email Address": "Destination Email Address",
+      "Sender Email Address (From)": "Sender Email Address (From)",
+      "Sender Name (From Name)": "Sender Name (From Name)",
+      "A form submission could not be saved because the database insert failed.": "A form submission could not be saved because the database insert failed.",
+      "The form submission limit could not be checked.": "The form submission limit could not be checked.",
+      "A submission diagnostic event occurred.": "A submission diagnostic event occurred.",
+      "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s",
+      "User Data Collection submission diagnostic": "User Data Collection submission diagnostic"
     },
     "download": {
       "invalid_request": "Invalid document request.",
@@ -220,7 +230,17 @@
       "QR image could not be generated.": "No se pudo generar la imagen QR.",
       "Save changes before downloading. Use a dark QR color on its white panel.": "Guarde los cambios antes de descargar. Utilice un QR oscuro sobre su recuadro blanco.",
       "Tattoo Waivers": "Descargos tatuajes",
-      "Piercing Waivers": "Descargos piercings"
+      "Piercing Waivers": "Descargos piercings",
+      "Submission Diagnostics": "Diagnóstico de envíos",
+      "Enable Diagnostic Emails": "Activar correos de diagnóstico",
+      "Destination Email Address": "Dirección de correo de destino",
+      "Sender Email Address (From)": "Dirección de correo del remitente (From)",
+      "Sender Name (From Name)": "Nombre del remitente (From Name)",
+      "A form submission could not be saved because the database insert failed.": "No se pudo guardar un envío del formulario por un error de inserción en la base de datos.",
+      "The form submission limit could not be checked.": "No se pudo comprobar el límite de envíos del formulario.",
+      "A submission diagnostic event occurred.": "Se produjo un evento de diagnóstico de envío.",
+      "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Descripción: %1$s\\nTipo de formulario: %2$s\\nCódigo del evento: %3$s",
+      "User Data Collection submission diagnostic": "Diagnóstico de envío de User Data Collection"
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
@@ -359,7 +379,17 @@
       "QR image could not be generated.": "Das QR-Bild konnte nicht erstellt werden.",
       "Save changes before downloading. Use a dark QR color on its white panel.": "Vor dem Herunterladen speichern. Einen dunklen QR-Code auf weißem Hintergrund verwenden.",
       "Tattoo Waivers": "Haftungsausschlüsse für Tattoos",
-      "Piercing Waivers": "Haftungsausschlüsse für Piercings"
+      "Piercing Waivers": "Haftungsausschlüsse für Piercings",
+      "Submission Diagnostics": "Übermittlungsdiagnose",
+      "Enable Diagnostic Emails": "Diagnose-E-Mails aktivieren",
+      "Destination Email Address": "Empfänger-E-Mail-Adresse",
+      "Sender Email Address (From)": "Absender-E-Mail-Adresse (From)",
+      "Sender Name (From Name)": "Absendername (From Name)",
+      "A form submission could not be saved because the database insert failed.": "Eine Formularübermittlung konnte wegen eines Datenbankfehlers nicht gespeichert werden.",
+      "The form submission limit could not be checked.": "Das Übermittlungslimit des Formulars konnte nicht geprüft werden.",
+      "A submission diagnostic event occurred.": "Ein Diagnoseereignis bei einer Übermittlung ist aufgetreten.",
+      "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Beschreibung: %1$s\\nFormulartyp: %2$s\\nEreigniscode: %3$s",
+      "User Data Collection submission diagnostic": "User Data Collection Übermittlungsdiagnose"
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
@@ -498,7 +528,17 @@
       "QR image could not be generated.": "Impossibile generare l’immagine QR.",
       "Save changes before downloading. Use a dark QR color on its white panel.": "Salvare prima di scaricare. Usare un QR scuro nel riquadro bianco.",
       "Tattoo Waivers": "Liberatorie tatuaggi",
-      "Piercing Waivers": "Liberatorie per i piercing"
+      "Piercing Waivers": "Liberatorie per i piercing",
+      "Submission Diagnostics": "Diagnostica degli invii",
+      "Enable Diagnostic Emails": "Abilita email diagnostiche",
+      "Destination Email Address": "Indirizzo email destinatario",
+      "Sender Email Address (From)": "Indirizzo email mittente (From)",
+      "Sender Name (From Name)": "Nome mittente (From Name)",
+      "A form submission could not be saved because the database insert failed.": "Non è stato possibile salvare un invio del modulo a causa di un errore di inserimento nel database.",
+      "The form submission limit could not be checked.": "Non è stato possibile verificare il limite di invii del modulo.",
+      "A submission diagnostic event occurred.": "Si è verificato un evento diagnostico di invio.",
+      "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Descrizione: %1$s\\nTipo di modulo: %2$s\\nCodice evento: %3$s",
+      "User Data Collection submission diagnostic": "Diagnostica invio User Data Collection"
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
@@ -585,7 +625,17 @@
       "QR image could not be generated.": "Impossible de générer l’image QR.",
       "Save changes before downloading. Use a dark QR color on its white panel.": "Enregistrez avant de télécharger. Utilisez un QR foncé sur son encadré blanc.",
       "Tattoo Waivers": "Décharges tatouages",
-      "Piercing Waivers": "Décharges piercings"
+      "Piercing Waivers": "Décharges piercings",
+      "Submission Diagnostics": "Diagnostics des soumissions",
+      "Enable Diagnostic Emails": "Activer les e-mails de diagnostic",
+      "Destination Email Address": "Adresse e-mail de destination",
+      "Sender Email Address (From)": "Adresse e-mail de l’expéditeur (From)",
+      "Sender Name (From Name)": "Nom de l’expéditeur (From Name)",
+      "A form submission could not be saved because the database insert failed.": "Une soumission du formulaire n’a pas pu être enregistrée en raison d’un échec d’insertion dans la base de données.",
+      "The form submission limit could not be checked.": "La limite de soumissions du formulaire n’a pas pu être vérifiée.",
+      "A submission diagnostic event occurred.": "Un événement de diagnostic de soumission s’est produit.",
+      "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Description : %1$s\\nType de formulaire : %2$s\\nCode événement : %3$s",
+      "User Data Collection submission diagnostic": "Diagnostic de soumission User Data Collection"
     },
     "download": {
       "invalid_request": "Demande de document non valide.",

@@ -138,3 +138,9 @@ Move completed items to a Closed items section with the completion date, change 
 ## ADMIN-MENU-01 — Piercings first
 
 **Done (source and local regression checks):** UDC_Admin::add_admin_menu() passes position zero for the Piercings submenu, followed by Tattoos, Backups and Settings. Existing labels, slugs and capability checks remain. PHP form/review regressions, modified PHP lint, git diff --check and the same-version package gate pass. No additional version bump or Git publication; native admin visual acceptance remains separate.
+
+## UDC-DIAG-01-LIVE - Production acceptance
+
+**Open:** implementation source and local synthetic checks do not establish production logging configuration, Settings API persistence/reload, concurrent transient behavior, or actual mail transport. See [Operations](operations.md#submission-diagnostics).
+
+**Next action:** Verify settings in a disposable WordPress fixture, inspect only fixed log codes, exercise mail with a local capture transport, and check operational log retention and transient behavior. Never send a real diagnostic message as part of acceptance.

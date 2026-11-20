@@ -7,8 +7,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-30 15:59+0000\n"
-"PO-Revision-Date: 2026-10-30 15:59+0000\n"
+"POT-Creation-Date: 2026-11-20 19:09+0000\n"
+"PO-Revision-Date: 2026-11-20 19:09+0000\n"
 "Language: en_GB\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: scripts/update-translations.py\n"
@@ -662,21 +662,24 @@ msgstr ""
 msgid "Deleting..."
 msgstr ""
 
-#: includes/class-udc-settings.php:192
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Destination Email Address"
-msgstr ""
+msgstr "Destination Email Address"
 
-#: includes/class-udc-settings.php:199
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Sender Email Address (From)"
-msgstr ""
+msgstr "Sender Email Address (From)"
 
 #: includes/class-udc-settings.php:202
 msgid "Optional. Set the \"From\" email address. Leaves WP default if empty."
 msgstr ""
 
-#: includes/class-udc-settings.php:206
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Sender Name (From Name)"
-msgstr ""
+msgstr "Sender Name (From Name)"
 
 #: includes/class-udc-settings.php:209
 msgid "Optional. Set the \"From\" display name. Leaves WP default if empty."
@@ -1294,3 +1297,38 @@ msgstr "Waivers for piercings"
 #: includes/udc-guardian.php
 msgid "Is a minor"
 msgstr "Is a minor"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Submission Diagnostics"
+msgstr "Submission Diagnostics"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Enable Diagnostic Emails"
+msgstr "Enable Diagnostic Emails"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "A form submission could not be saved because the database insert failed."
+msgstr "A form submission could not be saved because the database insert failed."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "The form submission limit could not be checked."
+msgstr "The form submission limit could not be checked."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "A submission diagnostic event occurred."
+msgstr "A submission diagnostic event occurred."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s"
+msgstr "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "User Data Collection submission diagnostic"
+msgstr "User Data Collection submission diagnostic"
