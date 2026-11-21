@@ -23,6 +23,7 @@ function register_deactivation_hook($file, $callback) {}
 function plugin_dir_path($file) { return dirname($file) . '/'; }
 function plugin_dir_url($file) { return 'https://example.test/plugin/'; }
 function get_option($name, $default = false) {
+    if (!empty($GLOBALS['throw_diagnostic_settings']) && 'udc_diagnostic_email_enabled' === $name) { throw new RuntimeException('synthetic-sensitive-diagnostic-settings-exception'); }
     if (array_key_exists($name, $GLOBALS['options'])) { return $GLOBALS['options'][$name]; }
     if (isset($GLOBALS['registered_settings'][$name]['default'])) { return $GLOBALS['registered_settings'][$name]['default']; }
     return $default;

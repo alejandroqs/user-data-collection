@@ -464,11 +464,7 @@ JS
         }
 
         if (false === $inserted) {
-            try {
-                self::log_diagnostic('insert_failed', $form_type, true);
-            } catch (Throwable $error) {
-                // Keep diagnostic delivery failures from changing the submission result.
-            }
+            self::log_diagnostic('insert_failed', $form_type, true);
         } elseif (defined('WP_DEBUG') && WP_DEBUG) {
             self::log_diagnostic('insert_succeeded', $form_type);
         }
@@ -484,7 +480,13 @@ JS
         if (!in_array($event, $events, true) || !in_array($form_type, ['tattoo', 'piercing'], true)) { return; }
         $identifier = self::diagnostic_code($event);
         error_log($identifier . ' form=' . $form_type);
-        if ($alert && class_exists('UDC_Email_Sync')) { UDC_Email_Sync::send_diagnostic($event, $form_type); }
+        if ($alert && class_exists('UDC_Email_Sync')) {
+            try {
+                UDC_Email_Sync::send_diagnostic($event, $form_type);
+            } catch (Throwable $error) {
+                error_log(self::diagnostic_code('diagnostic_mail_exception') . ' form=' . $form_type);
+            }
+        }
     }
 
     public static function diagnostic_code($event)
