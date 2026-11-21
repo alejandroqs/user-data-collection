@@ -223,9 +223,9 @@ class UDC_Shortcode
 
     public function enqueue_form_behavior()
     {
-        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.13.1');
-        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.13.1', true);
-        wp_register_script('udc-forms', false, [], '1.13.1', true);
+        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.14.0');
+        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.14.0', true);
+        wp_register_script('udc-forms', false, [], '1.14.0', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 function udcShowResult() {
@@ -347,15 +347,15 @@ JS
         $nonce_action = $is_piercing ? 'udc_piercing_action' : 'udc_form_action';
         if (!isset($_POST['udc_form_nonce'])) {
             self::log_diagnostic('nonce_missing', $form_type);
-            wp_die('Security check failed.', 'Error', ['response' => 403]);
+            wp_die(esc_html__('This form could not be verified. Reload the page and try again.', 'user-data-collection'), esc_html__('Submission error', 'user-data-collection'), ['response' => 403]);
         }
         if (!is_scalar($_POST['udc_form_nonce'])) {
             self::log_diagnostic('nonce_malformed', $form_type);
-            wp_die('Security check failed.', 'Error', ['response' => 403]);
+            wp_die(esc_html__('This form could not be verified. Reload the page and try again.', 'user-data-collection'), esc_html__('Submission error', 'user-data-collection'), ['response' => 403]);
         }
         if (!wp_verify_nonce(sanitize_text_field(wp_unslash((string) $_POST['udc_form_nonce'])), $nonce_action)) {
             self::log_diagnostic('nonce_rejected', $form_type);
-            wp_die('Security check failed.', 'Error', ['response' => 403]);
+            wp_die(esc_html__('This form could not be verified. Reload the page and try again.', 'user-data-collection'), esc_html__('Submission error', 'user-data-collection'), ['response' => 403]);
         }
 
         // Missing fields remain compatible with older cached/open forms.
@@ -422,7 +422,7 @@ JS
         $attempt = $this->consume_submission_attempt();
         if (0 === $attempt) {
             self::log_diagnostic('submission_limit_reached', $form_type);
-            wp_die(esc_html($is_piercing ? UDC_Piercing_Form::translate('msg_error') : UDC_i18n::translate('msg_error')), 'Error', ['response' => 429]);
+            wp_die(esc_html($is_piercing ? UDC_Piercing_Form::translate('msg_error') : UDC_i18n::translate('msg_error')), esc_html__('Submission error', 'user-data-collection'), ['response' => 429]);
         }
         if (false === $attempt) {
             self::log_diagnostic('submission_limit_failure', $form_type, true);
@@ -435,32 +435,40 @@ JS
 
         $previous_suppression = $wpdb->suppress_errors(true);
         try {
-        $inserted = $wpdb->insert(
-            $table_name,
-            [
-                'last_name' => $last_name,
-                'first_name' => $first_name,
-                'dob' => $dob,
-                'minor_declared' => $minor_declared,
-                'phone' => $phone,
-                'health_good' => $health_good,
-                'health_treatment' => $health_treatment,
-                'health_blood_thinners' => $health_blood_thinners,
-                'health_allergies' => $health_allergies,
-                'health_pregnant' => $health_pregnant,
-                'liability_accepted' => $liability_accepted,
-                'appointment_date' => $appointment_date,
-                'appointment_time' => $appointment_time,
-                'piercing_location' => $piercing_location
-            ] + $extra,
-            ['%s', '%s', '%s', '%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
-        );
+            try {
+                $inserted = $wpdb->insert(
+                    $table_name,
+                    [
+                        'last_name' => $last_name,
+                        'first_name' => $first_name,
+                        'dob' => $dob,
+                        'minor_declared' => $minor_declared,
+                        'phone' => $phone,
+                        'health_good' => $health_good,
+                        'health_treatment' => $health_treatment,
+                        'health_blood_thinners' => $health_blood_thinners,
+                        'health_allergies' => $health_allergies,
+                        'health_pregnant' => $health_pregnant,
+                        'liability_accepted' => $liability_accepted,
+                        'appointment_date' => $appointment_date,
+                        'appointment_time' => $appointment_time,
+                        'piercing_location' => $piercing_location
+                    ] + $extra,
+                    ['%s', '%s', '%s', '%d', '%s', '%d', '%d', '%d', '%d', '%d', '%d', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s']
+                );
+            } catch (Throwable $error) {
+                $inserted = false;
+            }
         } finally {
             $wpdb->suppress_errors($previous_suppression);
         }
 
         if (false === $inserted) {
-            self::log_diagnostic('insert_failed', $form_type, true);
+            try {
+                self::log_diagnostic('insert_failed', $form_type, true);
+            } catch (Throwable $error) {
+                // Keep diagnostic delivery failures from changing the submission result.
+            }
         } elseif (defined('WP_DEBUG') && WP_DEBUG) {
             self::log_diagnostic('insert_succeeded', $form_type);
         }

@@ -91,7 +91,16 @@
       "The form submission limit could not be checked.": "The form submission limit could not be checked.",
       "A submission diagnostic event occurred.": "A submission diagnostic event occurred.",
       "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s",
-      "User Data Collection submission diagnostic": "User Data Collection submission diagnostic"
+      "User Data Collection submission diagnostic": "User Data Collection submission diagnostic",
+      "Email Transport": "Email Transport",
+      "PHP mail()": "PHP mail()",
+      "WordPress SMTP plugin": "WordPress SMTP plugin",
+      "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.": "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.",
+      "This form could not be verified. Reload the page and try again.": "This form could not be verified. Reload the page and try again.",
+      "Submission error": "Submission error",
+      "Tattoo": "Tattoo",
+      "Piercing": "Piercing",
+      "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent.": "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent."
     },
     "download": {
       "invalid_request": "Invalid document request.",
@@ -240,7 +249,16 @@
       "The form submission limit could not be checked.": "No se pudo comprobar el límite de envíos del formulario.",
       "A submission diagnostic event occurred.": "Se produjo un evento de diagnóstico de envío.",
       "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Descripción: %1$s\\nTipo de formulario: %2$s\\nCódigo del evento: %3$s",
-      "User Data Collection submission diagnostic": "Diagnóstico de envío de User Data Collection"
+      "User Data Collection submission diagnostic": "Diagnóstico de envío de User Data Collection",
+      "Email Transport": "Transporte de correo electrónico",
+      "PHP mail()": "PHP mail()",
+      "WordPress SMTP plugin": "Plugin SMTP de WordPress",
+      "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.": "PHP mail() utiliza el servicio de correo local del servidor. El plugin SMTP de WordPress utiliza la integración de correo configurada en el sitio, como FluentSMTP. Sin una integración configurada, WordPress puede utilizar su transporte de correo nativo.",
+      "This form could not be verified. Reload the page and try again.": "No se pudo verificar este formulario. Recargue la página e inténtelo de nuevo.",
+      "Submission error": "Error al enviar el formulario",
+      "Tattoo": "Tatuaje",
+      "Piercing": "Piercing",
+      "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent.": "Los correos de diagnóstico están activados, pero falta la dirección de destino efectiva o no es válida. Configure una dirección válida para poder enviar alertas."
     },
     "download": {
       "invalid_request": "Solicitud de documento no válida.",
@@ -389,7 +407,16 @@
       "The form submission limit could not be checked.": "Das Übermittlungslimit des Formulars konnte nicht geprüft werden.",
       "A submission diagnostic event occurred.": "Ein Diagnoseereignis bei einer Übermittlung ist aufgetreten.",
       "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Beschreibung: %1$s\\nFormulartyp: %2$s\\nEreigniscode: %3$s",
-      "User Data Collection submission diagnostic": "User Data Collection Übermittlungsdiagnose"
+      "User Data Collection submission diagnostic": "User Data Collection Übermittlungsdiagnose",
+      "Email Transport": "E-Mail-Transport",
+      "PHP mail()": "PHP mail()",
+      "WordPress SMTP plugin": "WordPress-SMTP-Plugin",
+      "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.": "PHP mail() verwendet den lokalen Maildienst des Servers. Das WordPress-SMTP-Plugin verwendet die auf der Website konfigurierte Mail-Integration, etwa FluentSMTP. Ohne konfigurierte Integration kann WordPress seinen nativen Mail-Transport verwenden.",
+      "This form could not be verified. Reload the page and try again.": "Das Formular konnte nicht überprüft werden. Laden Sie die Seite neu und versuchen Sie es erneut.",
+      "Submission error": "Fehler bei der Übermittlung",
+      "Tattoo": "Tätowierung",
+      "Piercing": "Piercing",
+      "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent.": "Diagnose-E-Mails sind aktiviert, aber die wirksame Empfängeradresse fehlt oder ist ungültig. Geben Sie eine gültige Empfängeradresse ein, bevor Warnmeldungen gesendet werden können."
     },
     "download": {
       "invalid_request": "Ungültige Dokumentanfrage.",
@@ -538,7 +565,16 @@
       "The form submission limit could not be checked.": "Non è stato possibile verificare il limite di invii del modulo.",
       "A submission diagnostic event occurred.": "Si è verificato un evento diagnostico di invio.",
       "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Descrizione: %1$s\\nTipo di modulo: %2$s\\nCodice evento: %3$s",
-      "User Data Collection submission diagnostic": "Diagnostica invio User Data Collection"
+      "User Data Collection submission diagnostic": "Diagnostica invio User Data Collection",
+      "Email Transport": "Trasporto email",
+      "PHP mail()": "PHP mail()",
+      "WordPress SMTP plugin": "Plugin SMTP di WordPress",
+      "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.": "PHP mail() usa il servizio di posta locale del server. Il plugin SMTP di WordPress usa l’integrazione di posta configurata nel sito, ad esempio FluentSMTP. Senza un’integrazione configurata, WordPress può usare il proprio trasporto email nativo.",
+      "This form could not be verified. Reload the page and try again.": "Non è stato possibile verificare il modulo. Ricarica la pagina e riprova.",
+      "Submission error": "Errore di invio",
+      "Tattoo": "Tatuaggio",
+      "Piercing": "Piercing",
+      "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent.": "Le email diagnostiche sono attive, ma l’indirizzo di destinazione effettivo manca o non è valido. Configura un indirizzo valido per poter inviare gli avvisi."
     },
     "download": {
       "invalid_request": "Richiesta di documento non valida.",
@@ -635,7 +671,16 @@
       "The form submission limit could not be checked.": "La limite de soumissions du formulaire n’a pas pu être vérifiée.",
       "A submission diagnostic event occurred.": "Un événement de diagnostic de soumission s’est produit.",
       "Description: %1$s\\nForm type: %2$s\\nEvent code: %3$s": "Description : %1$s\\nType de formulaire : %2$s\\nCode événement : %3$s",
-      "User Data Collection submission diagnostic": "Diagnostic de soumission User Data Collection"
+      "User Data Collection submission diagnostic": "Diagnostic de soumission User Data Collection",
+      "Email Transport": "Transport des e-mails",
+      "PHP mail()": "PHP mail()",
+      "WordPress SMTP plugin": "Extension SMTP WordPress",
+      "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.": "PHP mail() utilise le service de messagerie local du serveur. L’extension SMTP WordPress utilise l’intégration de messagerie configurée sur le site, telle que FluentSMTP. Sans intégration configurée, WordPress peut utiliser son transport de messagerie natif.",
+      "This form could not be verified. Reload the page and try again.": "Ce formulaire n’a pas pu être vérifié. Rechargez la page et réessayez.",
+      "Submission error": "Erreur lors de l’envoi",
+      "Tattoo": "Tatouage",
+      "Piercing": "Piercing",
+      "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent.": "Les e-mails de diagnostic sont activés, mais l’adresse de destination effective est absente ou invalide. Configurez une adresse valide pour permettre l’envoi des alertes."
     },
     "download": {
       "invalid_request": "Demande de document non valide.",

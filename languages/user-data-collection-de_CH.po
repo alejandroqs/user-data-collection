@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.13.1\n"
+"Project-Id-Version: User Data Collection 1.14.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-20 19:09+0000\n"
-"PO-Revision-Date: 2026-11-20 19:09+0000\n"
+"POT-Creation-Date: 2026-11-21 18:11+0000\n"
+"PO-Revision-Date: 2026-11-21 18:11+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: German\n"
 "Language: de_CH\n"
@@ -1223,3 +1223,48 @@ msgstr "Beschreibung: %1$s\\nFormulartyp: %2$s\\nEreigniscode: %3$s"
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "User Data Collection submission diagnostic"
 msgstr "User Data Collection Übermittlungsdiagnose"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Email Transport"
+msgstr "E-Mail-Transport"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "PHP mail()"
+msgstr "PHP mail()"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "WordPress SMTP plugin"
+msgstr "WordPress-SMTP-Plugin"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport."
+msgstr "PHP mail() verwendet den lokalen Maildienst des Servers. Das WordPress-SMTP-Plugin verwendet die auf der Website konfigurierte Mail-Integration, etwa FluentSMTP. Ohne konfigurierte Integration kann WordPress seinen nativen Mail-Transport verwenden."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "This form could not be verified. Reload the page and try again."
+msgstr "Das Formular konnte nicht überprüft werden. Laden Sie die Seite neu und versuchen Sie es erneut."
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Submission error"
+msgstr "Fehler bei der Übermittlung"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Tattoo"
+msgstr "Tätowierung"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Piercing"
+msgstr "Piercing"
+
+#. Default form translation; client wording review remains separate.
+#: includes/class-udc-admin.php includes/class-udc-piercing-form.php
+msgid "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent."
+msgstr "Diagnose-E-Mails sind aktiviert, aber die wirksame Empfängeradresse fehlt oder ist ungültig. Geben Sie eine gültige Empfängeradresse ein, bevor Warnmeldungen gesendet werden können."

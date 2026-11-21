@@ -42,7 +42,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `UDC_QR_Poster` | Supplies admin QR poster defaults, validates settings, loads local rendering assets and renders buttons/previews. |
 | `UDC_Settings` | Registers general guardian-document, integration, design and QR options and exposes the global Delete All Data action. |
 | `UDC_GDrive` | Creates JWT credentials from the configured service-account JSON, uploads local JSON files, lists Drive files, and rotates the configured folder. |
-| `UDC_Email_Sync` | Sends the newest local JSON file through `wp_mail` and registers the monthly scheduler. |
+| `UDC_Email_Sync` | Sends backup and diagnostic email through the selected PHP mail or WordPress mail route, and registers the monthly scheduler. |
 | `UDC_i18n` | Loads the text domain and optionally registers and resolves Polylang strings. |
 
 ## Hooks and flows

@@ -12,7 +12,7 @@ function wp_nonce_field($action, $name, $referer = true, $display = true) {
 }
 function add_menu_page(...$args) {}
 function add_submenu_page(...$args) { $GLOBALS['submenus'][] = $args; }
-function register_setting($group, $key, $args) { $GLOBALS['registered_settings'][$key] = $args; }
+function register_setting($group, $key, $args) { $GLOBALS['registered_settings'][$key] = $args; $GLOBALS['registered_setting_groups'][$group][] = $key; }
 function get_available_languages() { return ['fr_FR']; }
 function switch_to_locale($language) { $GLOBALS['locale'] = $language; return true; }
 function restore_previous_locale() { $GLOBALS['locale'] = 'fr_FR'; return true; }
@@ -25,7 +25,7 @@ function wp_register_style(...$args) {}
 function wp_enqueue_style(...$args) {}
 function wp_add_inline_style($handle, $css) { $GLOBALS['form_css'] = $css; if ($handle === 'udc-admin') { $GLOBALS['admin_form_css'] = ($GLOBALS['admin_form_css'] ?? '') . $css; } }
 function esc_url_raw($value, $protocols = []) { return preg_match('~^https?://~i', $value) ? $value : ''; }
-function wp_die($message, $title = '', $args = []) { throw new RuntimeException('wp_die:' . ($args['response'] ?? 0)); }
+function wp_die($message, $title = '', $args = []) { $GLOBALS['last_wp_die'] = [$message, $title, $args]; throw new RuntimeException('wp_die:' . ($args['response'] ?? 0)); }
 
 $strings = UDC_i18n::get_strings();
 foreach (['tattoo_submit_btn', 'tattoo_consent_title', 'tattoo_consent_procedure', 'tattoo_consent_risks', 'tattoo_consent_care', 'tattoo_consent_privacy', 'tattoo_privacy_link', 'label_location', 'title_tattoo', 'intro_tattoo', 'answer_choose', 'answer_yes', 'answer_no', 'answer_discuss'] as $key) { unset($strings[$key]); }
@@ -60,7 +60,8 @@ function form_post($piercing = false) {
 function submit_form($object, $post) {
     global $wpdb;
     $wpdb = new SyntheticDatabase();
-    $GLOBALS['transients'] = [];
+    $GLOBALS['transients'] = $GLOBALS['submit_transients'] ?? [];
+    unset($GLOBALS['submit_transients']);
     $_POST = $post;
     try { $object->handle_submission(); } catch (RedirectCaptured $redirect) { return [$redirect->getMessage(), $wpdb->inserts]; }
     return ['', $wpdb->inserts];
@@ -81,7 +82,7 @@ foreach ([false, true] as $is_piercing) {
     check(!submit_form($object, $post)[1], 'An omitted health answer is rejected');
 }
 $GLOBALS['expected_nonce_action'] = 'udc_form_action';
-try { submit_form($piercing, form_post(true)); check(false, 'Cross-form nonce'); } catch (RuntimeException $error) { check($error->getMessage() === 'wp_die:403', 'Piercing validates its own nonce action'); }
+try { submit_form($piercing, form_post(true)); check(false, 'Cross-form nonce'); } catch (RuntimeException $error) { check($error->getMessage() === 'wp_die:403', 'Piercing validates its own nonce action'); check($GLOBALS['last_wp_die'][0] === 'This form could not be verified. Reload the page and try again.' && $GLOBALS['last_wp_die'][1] === 'Submission error', 'Nonce rejection gives an actionable localized message and localized error title'); }
 unset($GLOBALS['expected_nonce_action']);
 $post = form_post(true); $post['udc_form_type'] = 'tattoo';
 [$url, $inserts] = submit_form($piercing, $post);
@@ -96,7 +97,7 @@ check(!submit_form($piercing, $post)[1], 'Unsupported care category is rejected'
 $post = form_post(true); $post['udc_evidence'] = str_replace('infection', 'changed', $post['udc_evidence']);
 check(!submit_form($piercing, $post)[1], 'Modified consent evidence fails its signature');
 $post = form_post(true); $post['udc_form_nonce'] = 'wrong';
-try { submit_form($piercing, $post); check(false, 'Nonce rejection'); } catch (RuntimeException $error) { check($error->getMessage() === 'wp_die:403', 'Piercing rejects invalid nonces before insertion'); }
+try { submit_form($piercing, $post); check(false, 'Nonce rejection'); } catch (RuntimeException $error) { check($error->getMessage() === 'wp_die:403', 'Piercing rejects invalid nonces before insertion'); check($GLOBALS['last_wp_die'][1] === 'Submission error', 'Invalid nonce uses the localized error title'); }
 
 $backup = new UDC_Backup();
 $restored = invoke_private($backup, 'validate_backup_rows', [$saved_piercing]);

@@ -7,6 +7,7 @@ error_reporting(E_ALL);
 define('ABSPATH', __DIR__ . '/fixtures/');
 define('MINUTE_IN_SECONDS', 60);
 define('ARRAY_A', 'ARRAY_A');
+define('WPINC', 'wp-includes');
 $GLOBALS['options'] = [];
 $GLOBALS['hooks'] = [];
 $GLOBALS['transients'] = [];
@@ -53,13 +54,25 @@ function add_query_arg($args, $value = '', $url = '') {
 }
 function remove_query_arg($keys, $url) { return add_query_arg(array_fill_keys((array) $keys, false), $url); }
 function wp_parse_url($url) { return parse_url($url); }
+function network_home_url() { return 'https://www.site-domain.test/'; }
 function current_user_can($capability) { return $GLOBALS['can_manage'] ?? true; }
 function current_time($format) { return $format === 'Y-m-d' ? '2026-10-24' : '2026-10-24 12:00:00'; }
 function date_i18n($format, $timestamp) { return date($format ?: 'Y-m-d', $timestamp); }
+function size_format($bytes) { return (string) $bytes . ' B'; }
 function sanitize_text_field($value) { return trim(strip_tags((string) $value)); }
 function sanitize_email($value) { return filter_var($value, FILTER_SANITIZE_EMAIL); }
 function is_email($value) { return is_string($value) && false !== filter_var($value, FILTER_VALIDATE_EMAIL); }
-function wp_mail($to, $subject, $message, $headers = '', $attachments = []) { $GLOBALS['mail_sender_filter_counts'][] = [count($GLOBALS['active_filters']['wp_mail_from'] ?? []), count($GLOBALS['active_filters']['wp_mail_from_name'] ?? [])]; $GLOBALS['captured_mail'][] = [$to, $subject, $message, $headers, $attachments]; if (!empty($GLOBALS['throw_mail'])) { throw new RuntimeException('synthetic transport failure'); } return $GLOBALS['mail_result'] ?? true; }
+function wp_mail($to, $subject, $message, $headers = '', $attachments = []) {
+    $GLOBALS['mail_sender_filter_counts'][] = [count($GLOBALS['active_filters']['wp_mail_from'] ?? []), count($GLOBALS['active_filters']['wp_mail_from_name'] ?? [])];
+    $site_host = parse_url(network_home_url(), PHP_URL_HOST);
+    if (is_string($site_host) && 0 === strpos($site_host, 'www.')) { $site_host = substr($site_host, 4); }
+    $from = 'wordpress@' . (is_string($site_host) ? $site_host : 'localhost'); $from_name = 'WordPress';
+    foreach ($GLOBALS['active_filters']['wp_mail_from'] ?? [] as $filter) { $from = $filter($from); }
+    foreach ($GLOBALS['active_filters']['wp_mail_from_name'] ?? [] as $filter) { $from_name = $filter($from_name); }
+    $GLOBALS['captured_mail'][] = [$to, $subject, $message, $headers, $attachments, $from, $from_name];
+    if (!empty($GLOBALS['throw_mail'])) { throw new RuntimeException('synthetic transport failure'); }
+    return $GLOBALS['mail_result'] ?? true;
+}
 function wp_unslash($value) { return stripslashes($value); }
 function esc_sql($value) { return $value; }
 function wp_verify_nonce($value, $action) { return $value === 'synthetic-nonce' && (!isset($GLOBALS['expected_nonce_action']) || $action === $GLOBALS['expected_nonce_action']); }
@@ -93,6 +106,8 @@ class SyntheticDatabase {
     public $failDrop = false;
     public $queries = [];
     public $inserts = [];
+    public $insert_attempts = 0;
+    public function __construct() { $this->suppress_errors = (bool) ($GLOBALS['initial_suppression'] ?? false); }
     public function get_charset_collate() { return ''; }
     public function get_col($sql) {
         $this->queries[] = $sql;
@@ -115,6 +130,8 @@ class SyntheticDatabase {
     public function get_results($sql, $format = null) { $this->queries[] = $sql; return []; }
     public function get_var($sql) { return str_contains($sql, 'ENGINE') ? 'InnoDB' : 0; }
     public function insert($table, $data, $formats) {
+        $this->insert_attempts++;
+        if (!empty($GLOBALS['throw_insert'])) { throw new RuntimeException('synthetic-sensitive-insert-exception'); }
         if (!empty($GLOBALS['fail_insert'])) { return false; }
         $this->inserts[] = [$table, $data, $formats];
         return 1;
@@ -140,6 +157,7 @@ function invoke_private($object, $method, ...$args) {
     $reflection = new ReflectionMethod($object, $method);
     return $reflection->invoke($object, ...$args);
 }
+eval('namespace PHPMailer\\PHPMailer; class PHPMailer { const CHARSET_UTF8 = "UTF-8"; public $CharSet; public $Subject; public $Body; public $From; public $FromName; public $is_html = true; public $transport = ""; public $addresses = []; public $attachments = []; public $auto_reply_to = true; public function __construct($exceptions = false) {} public function isMail() { $this->transport = "mail"; } public function isHTML($value) { $this->is_html = (bool) $value; } public function setFrom($address, $name = "", $auto = true) { $this->From = $address; $this->FromName = $name; $this->auto_reply_to = $auto; return true; } public function addAddress($address) { $this->addresses[] = $address; return true; } public function addAttachment($path) { if (!is_file($path) || !is_readable($path)) { throw new \\RuntimeException("attachment unavailable"); } $this->attachments[] = $path; return true; } public function send() { $GLOBALS["phpmailer_captures"][] = ["transport" => $this->transport, "charset" => $this->CharSet, "subject" => $this->Subject, "body" => $this->Body, "from" => $this->From, "from_name" => $this->FromName, "addresses" => $this->addresses, "attachments" => $this->attachments, "is_html" => $this->is_html, "auto_reply_to" => $this->auto_reply_to]; return $GLOBALS["phpmailer_result"] ?? true; } }');
 $wpdb = new SyntheticDatabase();
 require dirname(__DIR__) . '/user-data-collection.php';
 

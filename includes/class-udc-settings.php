@@ -53,6 +53,7 @@ class UDC_Settings
         delete_option('udc_diagnostic_email_address');
         delete_option('udc_diagnostic_email_sender_address');
         delete_option('udc_diagnostic_email_sender_name');
+        delete_option('udc_mail_transport');
         delete_option('udc_design_enabled');
         delete_option('udc_design_input_bg');
         delete_option('udc_design_input_border');
@@ -70,6 +71,11 @@ class UDC_Settings
     public function register_settings()
     {
         UDC_Guardian::register_settings();
+        register_setting('udc_mail_transport_settings', 'udc_mail_transport', [
+            'type' => 'string',
+            'default' => 'mail',
+            'sanitize_callback' => [$this, 'sanitize_mail_transport'],
+        ]);
         // QR poster settings.
         foreach (UDC_QR_Poster::defaults() as $key => $default) {
             register_setting('udc_qr_settings', $key, ['type' => 'string', 'default' => $default,
@@ -129,6 +135,11 @@ class UDC_Settings
     public function sanitize_plain_text($value)
     {
         return is_scalar($value) ? sanitize_text_field((string) $value) : '';
+    }
+
+    public function sanitize_mail_transport($value)
+    {
+        return is_string($value) && in_array($value, ['mail', 'wordpress'], true) ? $value : 'mail';
     }
 
     public function sanitize_folder_id($value)
@@ -212,6 +223,15 @@ class UDC_Settings
         return true;
     }
 
+    private function render_diagnostic_email_configuration_notice($settings)
+    {
+        if (!empty($settings['enabled']) && (!isset($settings['recipient']) || !is_string($settings['recipient']) || !is_email($settings['recipient']))) {
+            echo '<div class="notice notice-warning inline"><p>';
+            esc_html_e('Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent.', 'user-data-collection');
+            echo '</p></div>';
+        }
+    }
+
     public function render_admin_page()
     {
         if (!current_user_can('manage_options')) {
@@ -262,6 +282,22 @@ class UDC_Settings
 
             <?php if ($active_tab === 'general'): ?>
                 <?php UDC_Guardian::render_settings(); ?>
+                <?php $mail_transport = UDC_Email_Sync::mail_transport(); ?>
+                <form method="post" action="options.php">
+                    <?php settings_fields('udc_mail_transport_settings'); ?>
+                    <h2><?php esc_html_e('Email Transport', 'user-data-collection'); ?></h2>
+                    <table class="form-table">
+                        <tr>
+                            <th scope="row"><?php esc_html_e('Email Transport', 'user-data-collection'); ?></th>
+                            <td>
+                                <label><input type="radio" name="udc_mail_transport" value="mail" <?php checked('mail', $mail_transport); ?> /> <?php esc_html_e('PHP mail()', 'user-data-collection'); ?></label><br>
+                                <label><input type="radio" name="udc_mail_transport" value="wordpress" <?php checked('wordpress', $mail_transport); ?> /> <?php esc_html_e('WordPress SMTP plugin', 'user-data-collection'); ?></label>
+                                <p class="description"><?php esc_html_e('PHP mail() uses the server’s local mail facility. WordPress SMTP plugin uses the site’s configured mail integration, such as FluentSMTP. Without a configured integration, WordPress may use its native mail transport.', 'user-data-collection'); ?></p>
+                            </td>
+                        </tr>
+                    </table>
+                    <?php submit_button(); ?>
+                </form>
             <?php elseif ($active_tab == 'gdrive'): ?>
                 <?php if (!empty($last_sync_status)): ?>
                     <?php 
@@ -434,6 +470,7 @@ class UDC_Settings
                 <h3><?php esc_html_e('Submission Diagnostics', 'user-data-collection'); ?></h3>
                 <form method="post" action="options.php">
                     <?php settings_fields('udc_diagnostic_settings'); ?>
+                    <?php $this->render_diagnostic_email_configuration_notice($diagnostic_settings); ?>
                     <table class="form-table">
                         <tr><th scope="row"><?php esc_html_e('Enable Diagnostic Emails', 'user-data-collection'); ?></th><td><input type="hidden" name="udc_diagnostic_email_enabled" value="0" /><input type="checkbox" name="udc_diagnostic_email_enabled" value="1" <?php checked(1, $diagnostic_settings['enabled'], true); ?> /></td></tr>
                         <tr><th scope="row"><?php esc_html_e('Destination Email Address', 'user-data-collection'); ?></th><td><input type="email" name="udc_diagnostic_email_address" value="<?php echo esc_attr($diagnostic_settings['recipient']); ?>" class="regular-text" /></td></tr>

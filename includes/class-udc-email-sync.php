@@ -9,6 +9,10 @@ class UDC_Email_Sync
     {
         $sender_email = is_scalar($sender_email) && ('' === $sender_email || is_email($sender_email)) ? (string) $sender_email : '';
         $sender_name = is_scalar($sender_name) ? sanitize_text_field((string) $sender_name) : '';
+        if ('mail' === self::mail_transport()) {
+            return self::send_with_php_mailer($recipient, $subject, $message, $attachments, $sender_email, $sender_name);
+        }
+
         $email_filter = function ($original) use ($sender_email) { return '' !== $sender_email ? $sender_email : $original; };
         $name_filter = function ($original) use ($sender_name) { return '' !== $sender_name ? $sender_name : $original; };
         if ('' !== $sender_email) { add_filter('wp_mail_from', $email_filter); }
@@ -17,6 +21,58 @@ class UDC_Email_Sync
         finally {
             if ('' !== $sender_email) { remove_filter('wp_mail_from', $email_filter); }
             if ('' !== $sender_name) { remove_filter('wp_mail_from_name', $name_filter); }
+        }
+    }
+
+    public static function mail_transport()
+    {
+        $transport = get_option('udc_mail_transport', 'mail');
+        return is_string($transport) && in_array($transport, ['mail', 'wordpress'], true) ? $transport : 'mail';
+    }
+
+    private static function send_with_php_mailer($recipient, $subject, $message, $attachments, $sender_email, $sender_name)
+    {
+        if (!is_string($recipient) || !is_email($recipient) || !is_string($subject) || !is_string($message) || !is_array($attachments)) {
+            return false;
+        }
+
+        try {
+            if (!class_exists('PHPMailer\\PHPMailer\\PHPMailer')) {
+                $phpmailer_path = ABSPATH . WPINC . '/PHPMailer/';
+                require_once $phpmailer_path . 'Exception.php';
+                require_once $phpmailer_path . 'PHPMailer.php';
+            }
+
+            $site_host = parse_url(network_home_url(), PHP_URL_HOST);
+            if (is_string($site_host) && 0 === strpos($site_host, 'www.')) {
+                $site_host = substr($site_host, 4);
+            }
+            $default_from_email = sanitize_email('wordpress@' . (is_string($site_host) ? $site_host : 'localhost'));
+            $filtered_from_email = apply_filters('wp_mail_from', $default_from_email);
+            $from_email = is_email($filtered_from_email) ? $filtered_from_email : $default_from_email;
+            $filtered_from_name = apply_filters('wp_mail_from_name', 'WordPress');
+            $from_name = is_scalar($filtered_from_name) ? sanitize_text_field((string) $filtered_from_name) : 'WordPress';
+            if ('' !== $sender_email) { $from_email = $sender_email; }
+            if ('' !== $sender_name) { $from_name = $sender_name; }
+
+            $mailer = new \PHPMailer\PHPMailer\PHPMailer(true);
+            $mailer->isMail();
+            $mailer->CharSet = \PHPMailer\PHPMailer\PHPMailer::CHARSET_UTF8;
+            $mailer->isHTML(false);
+            $mailer->setFrom($from_email, $from_name, false);
+            $mailer->addAddress($recipient);
+            $mailer->Subject = $subject;
+            $mailer->Body = $message;
+
+            foreach ($attachments as $attachment) {
+                if (!is_string($attachment) || '' === $attachment || !$mailer->addAttachment($attachment)) {
+                    return false;
+                }
+            }
+
+            return $mailer->send();
+        } catch (Throwable $error) {
+            return false;
         }
     }
 
@@ -62,7 +118,8 @@ class UDC_Email_Sync
         ];
         $description = isset($descriptions[$event]) ? $descriptions[$event] : __('A submission diagnostic event occurred.', 'user-data-collection');
         $body_template = __('Description: %1$s\nForm type: %2$s\nEvent code: %3$s', 'user-data-collection');
-        $body = sprintf(str_replace('\\n', "\n", $body_template), $description, $form_type, UDC_Shortcode::diagnostic_code($event));
+        $form_label = 'piercing' === $form_type ? __('Piercing', 'user-data-collection') : __('Tattoo', 'user-data-collection');
+        $body = sprintf(str_replace('\\n', "\n", $body_template), $description, $form_label, UDC_Shortcode::diagnostic_code($event));
         try {
             $sent = self::send_with_sender($settings['recipient'], __('User Data Collection submission diagnostic', 'user-data-collection'), $body, [], $settings['sender_email'], $settings['sender_name']);
         } catch (Throwable $error) {

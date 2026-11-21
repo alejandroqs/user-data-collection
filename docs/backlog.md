@@ -144,3 +144,9 @@ Move completed items to a Closed items section with the completion date, change 
 **Open:** implementation source and local synthetic checks do not establish production logging configuration, Settings API persistence/reload, concurrent transient behavior, or actual mail transport. See [Operations](operations.md#submission-diagnostics).
 
 **Next action:** Verify settings in a disposable WordPress fixture, inspect only fixed log codes, exercise mail with a local capture transport, and check operational log retention and transient behavior. Never send a real diagnostic message as part of acceptance.
+
+## UDC-MAIL-01-LIVE - Transport integration acceptance
+
+**Open:** the repository's synthetic test fixture does not contain a complete WordPress installation or FluentSMTP. PHP mailer and `wp_mail()` routing are covered with local doubles, but persistence through real Settings API requests and routing through a configured SMTP integration are not verified.
+
+**Next action:** In a disposable WordPress installation with FluentSMTP and a capture transport, verify both saved transport choices, the General form separation, exactly one route per send, and backup attachment preservation. Do not use production backups or deliver real email.
