@@ -156,7 +156,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
 
     public function enqueue_styles()
     {
-        wp_register_style('udc-piercing', false, [], '1.14.0');
+        wp_register_style('udc-piercing', false, [], '1.14.1');
         wp_enqueue_style('udc-piercing');
         wp_add_inline_style('udc-piercing', self::form_styles(true));
     }
@@ -169,7 +169,7 @@ class UDC_Piercing_Form extends UDC_Shortcode
         $json = wp_json_encode($snapshot);
         ob_start();
         ?>
-        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" class="udc-piercing-form<?php echo get_option('udc_design_enabled', '0') ? '' : ' udc-default'; ?>">
+        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="post" data-udc-type="piercing" data-udc-ajax="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" data-udc-error="<?php echo esc_attr(__('Unable to prepare the form for submission. Please try again.', 'user-data-collection')); ?>" class="udc-piercing-form<?php echo get_option('udc_design_enabled', '0') ? '' : ' udc-default'; ?>">
             <h2><?php echo esc_html(self::translate('title')); ?></h2>
             <?php self::render_result($status, true); ?>
             <p><?php echo esc_html(self::translate('intro')); ?></p>

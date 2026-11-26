@@ -53,6 +53,7 @@ Deactivation calls `UDC_Backup::clear_cron()`, `UDC_GDrive::clear_cron()`, and `
 | `plugins_loaded` | `udc_init_plugin()` | Updates the schema when needed and instantiates services. |
 | `admin_menu` | `UDC_Admin::add_admin_menu()` | Adds the original submissions screen, separate Piercings screen, Backups, and Settings. It constructs additional `UDC_Backup` and `UDC_Settings` objects for submenu callbacks. |
 | `admin_post_udc_submit_form` and `admin_post_nopriv_udc_submit_form` | `UDC_Shortcode` | Receives the frontend form and writes a submission. |
+| `wp_ajax_udc_refresh_nonce` and `wp_ajax_nopriv_udc_refresh_nonce` | `UDC_Shortcode::refresh_nonce()` | Issues the current user's nonce for an allowlisted public form type. |
 | `udc_daily_backup_action` | `UDC_Backup` | Creates a local JSON snapshot. |
 | `udc_weekly_gdrive_sync_action` | `UDC_GDrive` | Attempts a Drive synchronization when enabled. |
 | `udc_monthly_email_sync_action` | `UDC_Email_Sync` | Attempts an email backup when enabled. |
@@ -91,7 +92,7 @@ Shared form styles force only actual buttons and download-button links (a.udc-do
 Both services delegate the honeypot check to shared save_submission(); see [Public-form honeypot](data-security-privacy.md#public-form-honeypot) for the exact acceptance and compatibility contract.
 
 
-The shared wp_enqueue_scripts callback adds submit locking for both forms. It disables submit buttons and exposes aria-busy after a valid browser submit, rejects a second submit event, and restores controls on pageshow (including browser Back). This is browser interaction protection; there is no server-side exactly-once guarantee if scripts are disabled or requests are replayed.
+**Verified from source:** the shared submit handler requests a fresh service-specific nonce before resuming the ordinary POST. It sends only the AJAX action and form type, locks only that form, and restores controls on failure or pageshow. A failed or invalid response does not submit the form; the visitor may retry. Without JavaScript the HTML nonce is submitted normally. This is browser interaction protection; there is no server-side exactly-once guarantee if scripts are disabled or requests are replayed. See [cache and nonce operations](data-security-privacy.md#public-form-token-caching-investigation-2026-10-29).
 
 ## Dependencies and current implementation characteristics
 

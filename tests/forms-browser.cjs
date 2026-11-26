@@ -16,9 +16,12 @@ const { spawn } = require('node:child_process');
             server.once('exit', code => { clearTimeout(timer); reject(new Error('PHP test server exited: ' + code)); });
         });
         const page = await browser.newPage();
+        await page.route(origin + '/', route => route.fulfill({status:200,contentType:'text/html',body:'<html></html>'}));
+        await page.goto(origin + '/');
         const errors = [];
         page.on('pageerror', error => errors.push(error.message));
-        const preview = fs.readFileSync(path.join(os.tmpdir(), 'udc-forms-preview.html'), 'utf8').replaceAll('https://example.test/wp-admin/admin-post.php', origin + '/download');
+        const preview = fs.readFileSync(path.join(os.tmpdir(), 'udc-forms-preview.html'), 'utf8').replaceAll('https://example.test/wp-admin/admin-post.php', origin + '/download').replaceAll('https://example.test/wp-admin/admin-ajax.php', origin + '/ajax');
+        await page.route(origin + '/ajax', route => route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true,data:{nonce:'synthetic-nonce'}}),headers:{'Access-Control-Allow-Origin':'*'}}));
         await page.setContent(preview);
         await page.evaluate(() => document.fonts.ready);
         for (const form of await page.locator('.udc-default').all()) {
@@ -139,7 +142,7 @@ const { spawn } = require('node:child_process');
             window.dispatchEvent(new PageTransitionEvent('pageshow', {persisted:true}));
             return {first,second,busy,reset:!form.querySelector('button[type=submit]').disabled && !form.hasAttribute('aria-busy')};
         });
-        if (!submitState.first || submitState.second || !submitState.busy || !submitState.reset) throw new Error('Submit locking or Back restoration failed');
+        if (submitState.first || submitState.second || !submitState.busy || !submitState.reset) throw new Error('Submit locking or Back restoration failed');
         console.log('PASS: Duplicate browser submits are blocked and Back navigation restores the controls');
         let posts = 0;
         await page.route(origin + '/download', async route => {

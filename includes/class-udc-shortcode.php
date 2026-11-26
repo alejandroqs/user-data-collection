@@ -17,6 +17,8 @@ class UDC_Shortcode
         add_shortcode('udc_tattoo_form', [$this, 'render_form']);
         add_shortcode('udc_contact_form', [$this, 'render_form']); // Compatibility for existing pages.
         add_action('template_redirect', [$this, 'prevent_result_cache']);
+        add_action('wp_ajax_udc_refresh_nonce', [$this, 'refresh_nonce']);
+        add_action('wp_ajax_nopriv_udc_refresh_nonce', [$this, 'refresh_nonce']);
         add_action('wp_enqueue_scripts', [$this, 'enqueue_form_behavior']);
 
         // Handle form submission (logged in and logged out users)
@@ -132,7 +134,7 @@ class UDC_Shortcode
             .udc-form .udc-care-instructions ul {margin:0;padding-left:20px}
         </style>
 
-        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" class="udc-form<?php echo $design_enabled ? '' : ' udc-default'; ?>">
+        <form action="<?php echo esc_url(admin_url('admin-post.php')); ?>" method="POST" data-udc-type="tattoo" data-udc-ajax="<?php echo esc_url(admin_url('admin-ajax.php')); ?>" data-udc-error="<?php echo esc_attr(__('Unable to prepare the form for submission. Please try again.', 'user-data-collection')); ?>" class="udc-form<?php echo $design_enabled ? '' : ' udc-default'; ?>">
             <h2><?php echo esc_html($document['document']['title']); ?></h2>
             <?php self::render_result($status); ?>
             <p><?php echo esc_html($document['document']['intro']); ?></p>
@@ -218,14 +220,44 @@ class UDC_Shortcode
 
     public function prevent_result_cache()
     {
-        if (isset($_GET['udc_result'])) { nocache_headers(); }
+        $prevent = isset($_GET['udc_result']);
+        if (!$prevent && isset($_SERVER['REQUEST_METHOD']) && 'GET' === $_SERVER['REQUEST_METHOD'] && is_singular()) {
+            $ids = apply_filters('udc_form_page_ids', []);
+            $post = get_queried_object();
+            $prevent = is_array($ids) && in_array((int) get_queried_object_id(), array_map('intval', $ids), true);
+            if (!$prevent && $post instanceof WP_Post) {
+                foreach (['udc_tattoo_form', 'udc_contact_form', 'udc_piercing_form'] as $shortcode) {
+                    if (has_shortcode($post->post_content, $shortcode)) { $prevent = true; break; }
+                }
+            }
+        }
+        if ($prevent) { self::prevent_cache(); }
+    }
+
+    private static function prevent_cache()
+    {
+        if (!defined('DONOTCACHEPAGE')) { define('DONOTCACHEPAGE', true); }
+        nocache_headers();
+    }
+
+    public function refresh_nonce()
+    {
+        self::prevent_cache();
+        header('Cache-Control: no-store, private, max-age=0', true);
+        if (!isset($_SERVER['REQUEST_METHOD']) || 'POST' !== $_SERVER['REQUEST_METHOD']) {
+            wp_send_json_error(['code' => 'method_not_allowed'], 405);
+        }
+        $actions = ['tattoo' => 'udc_form_action', 'piercing' => 'udc_piercing_action'];
+        $type = isset($_POST['form_type']) && is_string($_POST['form_type']) ? wp_unslash($_POST['form_type']) : '';
+        if (!isset($actions[$type])) { wp_send_json_error(['code' => 'invalid_form_type'], 400); }
+        wp_send_json_success(['nonce' => wp_create_nonce($actions[$type])]);
     }
 
     public function enqueue_form_behavior()
     {
-        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.14.0');
-        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.14.0', true);
-        wp_register_script('udc-forms', false, [], '1.14.0', true);
+        wp_enqueue_style('udc-form-default', UDC_PLUGIN_URL . 'assets/forms/default.css', [], '1.14.1');
+        wp_enqueue_script('udc-minor', UDC_PLUGIN_URL . 'assets/forms/minor.js', [], '1.14.1', true);
+        wp_register_script('udc-forms', false, [], '1.14.1', true);
         wp_enqueue_script('udc-forms');
         wp_add_inline_script('udc-forms', <<<'JS'
 function udcShowResult() {
@@ -234,19 +266,57 @@ function udcShowResult() {
 }
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', udcShowResult);
 else udcShowResult();
+var udcPending = new WeakMap();
 document.addEventListener('submit', function (event) {
     var form = event.target;
     if (!(form instanceof HTMLFormElement) || !form.matches('.udc-form, .udc-piercing-form') || event.defaultPrevented) return;
+    if (form.dataset.udcSubmitting === 'ready') {
+        form.dataset.udcSubmitting = 'sent';
+        form.setAttribute('aria-busy', 'true');
+        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (button) { if (!button.disabled) { button.dataset.udcDisabled = '1'; button.disabled = true; } });
+        return;
+    }
     if (form.dataset.udcSubmitting === '1') { event.preventDefault(); return; }
+    if (form.dataset.udcSubmitting === 'sent') { event.preventDefault(); return; }
+    event.preventDefault();
+    var submitter = event.submitter;
     form.dataset.udcSubmitting = '1';
     form.setAttribute('aria-busy', 'true');
-    form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (button) { button.disabled = true; });
+    form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (button) { if (!button.disabled) { button.dataset.udcDisabled = '1'; button.disabled = true; } });
+    var notice = form.querySelector('.udc-refresh-error');
+    if (!notice) { notice = document.createElement('p'); notice.className = 'udc-refresh-error'; notice.setAttribute('role', 'alert'); form.appendChild(notice); }
+    notice.textContent = '';
+    var controller = new AbortController();
+    udcPending.set(form, controller);
+    var timer = setTimeout(function () { controller.abort(); }, 10000);
+    var body = new URLSearchParams({action: 'udc_refresh_nonce', form_type: form.dataset.udcType});
+    fetch(form.dataset.udcAjax, {method: 'POST', credentials: 'same-origin', mode: 'same-origin', headers: {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'}, body: body.toString(), signal: controller.signal})
+        .then(function (response) { if (!response.ok) throw new Error('Request failed'); return response.json(); })
+        .then(function (result) {
+            if (udcPending.get(form) !== controller) return;
+            if (!result || result.success !== true || !result.data || typeof result.data.nonce !== 'string' || !result.data.nonce.trim()) throw new Error('Invalid response');
+            var nonce = form.querySelector('[name="udc_form_nonce"]');
+            if (!nonce) throw new Error('Missing nonce field');
+            nonce.value = result.data.nonce;
+            udcRestoreForm(form);
+            form.dataset.udcSubmitting = 'ready';
+            if (submitter && submitter.form === form && !submitter.disabled) form.requestSubmit(submitter);
+            else form.requestSubmit();
+            if (form.dataset.udcSubmitting === 'ready') udcRestoreForm(form);
+        })
+        .catch(function () { if (udcPending.get(form) === controller) { udcRestoreForm(form); notice.textContent = form.dataset.udcError; } })
+        .finally(function () { clearTimeout(timer); if (udcPending.get(form) === controller) udcPending.delete(form); });
 });
+function udcRestoreForm(form) {
+    delete form.dataset.udcSubmitting;
+    form.removeAttribute('aria-busy');
+    form.querySelectorAll('[data-udc-disabled="1"]').forEach(function (button) { button.disabled = false; delete button.dataset.udcDisabled; });
+}
 window.addEventListener('pageshow', function () {
-    document.querySelectorAll('form[data-udc-submitting="1"]').forEach(function (form) {
-        delete form.dataset.udcSubmitting;
-        form.removeAttribute('aria-busy');
-        form.querySelectorAll('button[type="submit"], input[type="submit"]').forEach(function (button) { button.disabled = false; });
+    document.querySelectorAll('form[data-udc-submitting]').forEach(function (form) {
+        var controller = udcPending.get(form);
+        if (controller) { udcPending.delete(form); controller.abort(); }
+        udcRestoreForm(form);
     });
 });
 JS
@@ -343,6 +413,7 @@ JS
 
     protected function save_submission($is_piercing)
     {
+        self::prevent_cache();
         $form_type = $is_piercing ? 'piercing' : 'tattoo';
         $nonce_action = $is_piercing ? 'udc_piercing_action' : 'udc_form_action';
         if (!isset($_POST['udc_form_nonce'])) {

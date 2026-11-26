@@ -1,9 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: User Data Collection 1.14.0\n"
+"Project-Id-Version: User Data Collection 1.14.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-21 18:11+0000\n"
-"PO-Revision-Date: 2026-11-21 18:11+0000\n"
+"POT-Creation-Date: 2026-11-26 21:27+0000\n"
+"PO-Revision-Date: 2026-11-26 21:27+0000\n"
 "Last-Translator: Alejandro Quesada\n"
 "Language-Team: German\n"
 "Language: de_CH\n"
@@ -1268,3 +1268,7 @@ msgstr "Piercing"
 #: includes/class-udc-admin.php includes/class-udc-piercing-form.php
 msgid "Diagnostic emails are enabled, but the effective destination address is missing or invalid. Configure a valid destination before alerts can be sent."
 msgstr "Diagnose-E-Mails sind aktiviert, aber die wirksame Empfängeradresse fehlt oder ist ungültig. Geben Sie eine gültige Empfängeradresse ein, bevor Warnmeldungen gesendet werden können."
+
+#: includes/class-udc-shortcode.php includes/class-udc-piercing-form.php
+msgid "Unable to prepare the form for submission. Please try again."
+msgstr "Das Formular konnte nicht für den Versand vorbereitet werden. Bitte versuchen Sie es erneut."

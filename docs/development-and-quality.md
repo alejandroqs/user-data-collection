@@ -1,5 +1,9 @@
 # Development and quality
 
+## Public nonce renewal: local validation
+
+**Verified, executed:** `php tests/nonce-refresh.php`, `php tests/forms-review.php`, `php tests/guardian.php`, `php tests/confirmation-removal.php`, PHP lint for the entrypoint and files under `includes/`, and `git diff --check` passed. After `php tests/forms.php --preview`, `node tests/nonce-refresh-browser.cjs` and `node tests/forms-browser.cjs` passed using Edge and synthetic data. These tests use WordPress/database doubles and intercepted browser responses; they do not verify actual WordPress sessions, real HTTP cache headers, a database insertion or IONOS/Cerber behavior. Docker was unavailable. Production acceptance remains open in [Pending work](backlog.md).
+
 **Answers:** Which development environment, discovery tools, translation process, and quality gates are actually available or absent.
 
 **Read when:** Changing development commands, dependencies, agent tooling, translations, tests, linting, static analysis, or reproducibility requirements.

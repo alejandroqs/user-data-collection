@@ -1,4 +1,5 @@
 <?php
+function nocache_headers() { $GLOBALS['nocache_calls'] = ($GLOBALS['nocache_calls'] ?? 0) + 1; }
 /**
  * Focused behavior checks using WordPress/database doubles, not a live installation.
  * Run: php tests/confirmation-removal.php
@@ -77,7 +78,7 @@ function wp_mail($to, $subject, $message, $headers = '', $attachments = []) {
 function wp_unslash($value) { return stripslashes($value); }
 function esc_sql($value) { return $value; }
 function wp_verify_nonce($value, $action) { return $value === 'synthetic-nonce' && (!isset($GLOBALS['expected_nonce_action']) || $action === $GLOBALS['expected_nonce_action']); }
-function apply_filters($hook, $value) { return $value; }
+function apply_filters($hook, $value) { return $GLOBALS['test_filters'][$hook] ?? $value; }
 function wp_salt($scheme) { return 'synthetic-test-salt'; }
 function get_transient($key) { return $GLOBALS['transients'][$key] ?? false; }
 function set_transient($key, $value, $expiry) { if (!empty($GLOBALS['fail_transient_write'])) { return false; } $GLOBALS['transients'][$key] = $value; return true; }

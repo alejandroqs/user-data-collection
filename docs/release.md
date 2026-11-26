@@ -12,7 +12,7 @@
 
 ## Current version metadata
 
-The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.14.0`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.14.0`. Plugin, schema marker, npm, asset cache keys and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
+The active plugin header and `UDC_DB_VERSION` in `user-data-collection.php` both report `1.14.1`. `package.json`, `package-lock.json` and POT/PO/MO project metadata also report `1.14.1`. Plugin, schema marker, npm, asset cache keys and translation versions remain synchronized with the release gate. The catalog build/check procedure is in [Development and quality](development-and-quality.md). Active code is authoritative for the plugin and schema version.
 
 The local tags include `v1.5.0`, earlier `v1.x` tags, and the historical unprefixed tags `1.4.2`, `1.4.1`, and `1.4.0`. The `vX.Y.Z` convention matches the workflow's `v*` trigger; the historical unprefixed tags do not. This document does not claim whether a remote release was created for any tag.
 
@@ -140,3 +140,7 @@ Local behavior checks before the metadata bump are recorded in [Development and 
 **Verified from source:** adds opt-in submission diagnostic email alerts and a per-plugin email transport selector. PHP mail uses an isolated WordPress-bundled PHPMailer instance; the WordPress route delegates to `wp_mail()`. Blank PHP mail sender values follow the WordPress core site-host baseline. No database columns or accepted-document versions change.
 
 Plugin/header, schema marker, npm, asset cache keys and translation metadata are synchronized to 1.14.0. This metadata update does not itself create a commit, tag, push, release workflow run, or production deployment.
+
+## Patch release 1.14.1
+
+**Verified from source:** adds targeted form-page cache controls and public nonce renewal before submission. The schema marker follows the repository release convention; the table structure and accepted-document versions are unchanged. See [Data, security, and privacy](data-security-privacy.md#public-form-token-caching-investigation-2026-10-29) and [Pending work](backlog.md) for configuration and acceptance limitations.

@@ -17,7 +17,6 @@ function get_available_languages() { return ['fr_FR']; }
 function switch_to_locale($language) { $GLOBALS['locale'] = $language; return true; }
 function restore_previous_locale() { $GLOBALS['locale'] = 'fr_FR'; return true; }
 function get_temp_dir() { return sys_get_temp_dir() . '/'; }
-function nocache_headers() { $GLOBALS['nocache_calls'] = ($GLOBALS['nocache_calls'] ?? 0) + 1; }
 function wp_register_script(...$args) {}
 function wp_enqueue_script(...$args) {}
 function wp_add_inline_script($handle, $script) { $GLOBALS['form_script'] = $script; }
